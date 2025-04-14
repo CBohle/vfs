@@ -13,8 +13,8 @@ El proyecto está construido en PHP puro, HTML, CSS y MySQL, compatible con host
 | Nombre            | Rol                             | GitHub                         |
 |------------------|----------------------------------|--------------------------------|
 | Carolina Bohle    | Frontend & UI                   | [@CBohle](https://github.com/CBohle) |
-| Paulina Olave     | Backend & Lógica del formulario | [@mariagonzalez](https://github.com/mariagonzalez) |
-| Amanda Martínez   | Base de datos & Conexión        | [@carlosramirez](https://github.com/carlosramirez) |
+| Paulina Olave     | Backend & Lógica del formulario | [@polaveh](https://github.com/polaveh) |
+| Amanda Martínez   | Base de datos & Conexión        | [@belencode](https://github.com/belencode) |
 
 
 ---
