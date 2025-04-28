@@ -3,7 +3,9 @@
         <div class="row text-center text-md-start">
             <!-- COLUMNA IZQUIERDA: IDENTIFICACIÓN -->
             <div class="col-12 col-md-4 mb-4">
-                <img src="../assets/images/logo/LogoVFS.jpg" alt="Logo de la empresa" style="max-width: 150px;">
+                <a href="#top">
+                    <img src="../assets/images/logo/LogoVFS2.png" alt="Logo de la empresa" style="max-width: 150px;">
+                </a>
                 <br>
                 <p class="mb-0">Calle Ejemplo 123</p>
                 <p class="mb-0">Ciudad, País</p>

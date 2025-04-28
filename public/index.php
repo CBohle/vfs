@@ -56,7 +56,7 @@
                     </div>
                 </a>
             </div>
-            <div class="col-lg-6 col-sm-6">
+            <div class="col-lg-6 col-sm-6 pe-4">
                 <a class="servicios-box" href="../assets/images/servicios/fullsize/2.jpg" title="Project Name">
                     <img class="img-fluid" src="../assets/images/servicios/thumbnails/2.jpg" alt="..." />
                     <div class="servicios-box-caption">
@@ -276,4 +276,5 @@
 <?php include_once __DIR__ . '/../includes/footer.php'; ?>
 
 </body>
+
 </html>
