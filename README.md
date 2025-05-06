@@ -4,7 +4,7 @@
 
 Este proyecto es una landing page con un formulario de contacto y un panel de administración donde los empleados pueden gestionar clientes (CRUD) y responder mensajes recibidos por formulario.
 
-El proyecto está construido en PHP puro, HTML, CSS y MySQL, compatible con hosting tradicional como Bluehost (con cPanel).
+El proyecto está construido en PHP puro, HTML, CSS y MySQL, compatible con hosting tradicional como Bluehost (con cPanel)..
 
 ---
 
