@@ -18,7 +18,8 @@
     <!-- SimpleLightbox plugin CSS-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="/assets/css/styles.css" rel="stylesheet" />
+    <link href="../assets/css/styles.css" rel="stylesheet" />
+
 </head>
 
 <!-- INCLUDE HEADER  -->
@@ -189,35 +190,35 @@
                 <!-- To make this form functional, sign up at-->
                 <!-- https://startbootstrap.com/solution/contact-forms-->
                 <!-- to get an API token!-->
-                <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+                <form id="contactForm" method="POST" action="contact.php">
                     <!-- Nombre-->
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
+                        <input name="name" class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
                         <label for="name">Nombre completo</label>
                         <div class="invalid-feedback" data-sb-feedback="name:required">El nombre es obligatorio.</div>
                     </div>
                     <!-- Mail-->
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="email" type="email" placeholder="name@example.com" data-sb-validations="required,email" />
+                        <input name="email" class="form-control" id="email" type="email" placeholder="name@example.com" data-sb-validations="required,email" />
                         <label for="email">Mail</label>
                         <div class="invalid-feedback" data-sb-feedback="email:required">El mail es obligatorio.</div>
                         <div class="invalid-feedback" data-sb-feedback="email:email">El mail ingresado no es válido.</div>
                     </div>
                     <!-- Teléfono-->
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="phone" type="tel" placeholder="(123) 456-7890" data-sb-validations="required" />
+                        <input name="telefono" class="form-control" id="phone" type="tel" placeholder="(123) 456-7890" data-sb-validations="required" />
                         <label for="phone">Teléfono</label>
                         <div class="invalid-feedback" data-sb-feedback="phone:required">El número de teléfono es obligatorio.</div>
                     </div>
                     <!-- Empresa-->
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
+                        <input name="empresa" class="form-control" id="empresa" type="text" placeholder="Enter your name..." data-sb-validations="required" />
                         <label for="name">Empresa</label>
                         <div class="invalid-feedback" data-sb-feedback="name:required">El nombre de la empresa es obligatorio. Si es persona natural indíquelo.</div>
                     </div>
                     <!-- Región -->
                     <div class="form-floating mb-3">
-                        <select class="form-select" id="region" data-sb-validations="required">
+                        <select name="region" class="form-select" id="region" data-sb-validations="required">
                             <option value="" disabled selected>Seleccione su región</option>
                             <option value="XV">Región de Arica y Parinacota (XV)</option>
                             <option value="I">Región de Tarapacá (I)</option>
@@ -240,7 +241,7 @@
                     </div>
                     <!-- Mensaje-->
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" id="message" type="text" placeholder="Enter your message here..." style="height: 10rem" data-sb-validations="required"></textarea>
+                        <textarea name="mensaje" class="form-control" id="message" type="text" placeholder="Enter your message here..." style="height: 10rem" data-sb-validations="required"></textarea>
                         <label for="message">Mensaje</label>
                         <div class="invalid-feedback" data-sb-feedback="message:required">Un mensaje es obligatorio.</div>
                     </div>
@@ -263,8 +264,11 @@
                     <div class="d-none" id="submitErrorMessage">
                         <div class="text-center text-danger mb-3">Error al enviar el mensaje.</div>
                     </div>
+                    <div class="g-recaptcha mb-3" data-sitekey="6LdyYy0rAAAAAH9kSCDWmq8Rkp0vZRQX3oFSZcpr"></div>
+
                     <!-- Submit Button-->
-                    <div class="d-grid"><button class="btn btn-primary btn-xl disabled" id="submitButton" type="submit">Enviar</button></div>
+                    <div class="d-grid"><button class="btn btn-primary btn-xl" id="submitButton" type="submit">Enviar</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -274,6 +278,6 @@
 
 <!-- INCLUDE FOOTER-->
 <?php include_once __DIR__ . '/../includes/footer.php'; ?>
-
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </body>
 </html>
