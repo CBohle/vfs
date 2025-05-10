@@ -1,41 +1,7 @@
 <?php
 require_once __DIR__ . '/../../includes/auth.php';
-// require_once __DIR__ . '/../../includes/db.php'; // ← Activa cuando uses base de datos real
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'], $_POST['estado'])) {
-    $id = $_POST['id'];
-    $nuevoEstado = $_POST['estado'];
-
-    // Consulta real:
-    /*
-    $stmt = $conn->prepare("UPDATE mensajes SET estado = ? WHERE id = ?");
-    $stmt->bind_param("si", $nuevoEstado, $id);
-    $stmt->execute();
-    $stmt->close();
-    */
-
-    header("Location: mensajes.php");
-    exit;
-}
-
-$mensajes = [];
-
-/*
-// Código real:
-$query = "SELECT * FROM mensajes ORDER BY fecha DESC";
-$result = $conn->query($query);
-while ($row = $result->fetch_assoc()) {
-    $mensajes[] = $row;
-}
-$result->free();
-*/
-
-// Simulación de datos:
-$mensajes = [
-    ["id" => 1, "nombre" => "Juan Pérez", "email" => "juan@mail.com", "fecha" => "2025-05-03", "mensaje" => "Hola, quiero más info", "estado" => "pendiente"],
-    ["id" => 2, "nombre" => "Ana López", "email" => "ana@mail.com", "fecha" => "2025-05-02", "mensaje" => "Consulta sobre servicios", "estado" => "leído"],
-    ["id" => 3, "nombre" => "Carlos Rojas", "email" => "carlos@mail.com", "fecha" => "2025-05-01", "mensaje" => "Quiero agendar", "estado" => "respondido"]
-];
+require_once __DIR__ . '/../../includes/db.php'; // ← Activa cuando uses base de datos real
+require_once __DIR__ . '/../../includes/Controller/mensajesController.php';
 ?>
 
 <!DOCTYPE html>
@@ -97,7 +63,7 @@ $mensajes = [
                         <td>
                             <span class="badge
                                 <?= $msg['estado'] === 'respondido' ? 'bg-success' :
-                                     ($msg['estado'] === 'leído' ? 'bg-warning text-dark' : 'bg-secondary') ?>">
+                                     ($msg['estado'] === 'leido' ? 'bg-warning text-dark' : 'bg-secondary') ?>">
                                 <?= ucfirst($msg['estado']) ?>
                             </span>
                         </td>
@@ -106,7 +72,7 @@ $mensajes = [
                                 <input type="hidden" name="id" value="<?= $msg['id'] ?>">
                                 <select name="estado" class="form-select form-select-sm">
                                     <option value="pendiente" <?= $msg['estado'] === 'pendiente' ? 'selected' : '' ?>>Pendiente</option>
-                                    <option value="leído" <?= $msg['estado'] === 'leído' ? 'selected' : '' ?>>Leído</option>
+                                    <option value="leído" <?= $msg['estado'] === 'leido' ? 'selected' : '' ?>>Leído</option>
                                     <option value="respondido" <?= $msg['estado'] === 'respondido' ? 'selected' : '' ?>>Respondido</option>
                                 </select>
                                 <button type="submit" class="btn btn-sm btn-outline-dark">Guardar</button>
