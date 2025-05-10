@@ -1,3 +1,9 @@
+<?php
+// Detectar si estamos en la landing o no
+$is_landing = basename($_SERVER['PHP_SELF']) === 'index.php';
+$base_url = $is_landing ? '' : '/public/index.php'; // Ajusta esta ruta si cambia
+?>
+
 <footer class="bg-light py-5">
     <div class="container px-4 px-lg-5">
         <div class="row text-center text-md-start">
@@ -14,9 +20,9 @@
             <div class="col-12 col-md-4 mb-4">
                 <h5>Enlaces rápidos</h5>
                 <ul class="list-unstyled">
-                    <li><a href="#faq">Preguntas frecuentes</a></li>
-                    <li><a href="#contacto">Formulario de contacto</a></li>
-                    <li><a href="#servicios">Nuestros servicios</a></li>
+                    <li><a href="<?= $base_url ?>#faq">Preguntas frecuentes</a></li>
+                    <li><a href="<?= $base_url ?>#contacto">Formulario de contacto</a></li>
+                    <li><a href="<?= $base_url ?>#servicios">Nuestros servicios</a></li>
                 </ul>
             </div>
             <!-- COLUMNA DERECHA: CONTACTO-->
@@ -26,7 +32,7 @@
                     <li class="bi-phone"><a href="tel:+1234567890"> +1 234 567 890</a></li>
                     <li class="bi-envelope"><a href="mailto:contacto@empresa.com"> contacto@empresa.com</a></li>
                 </ul>
-                <a href="#contacto" class="btn btn-primary mt-2">Contáctanos</a>
+                <a href="<?= $base_url ?>#contacto" class="btn btn-primary mt-2">Contáctanos</a>
             </div>
         </div>
         <!-- Línea de copyright -->
