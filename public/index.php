@@ -1,3 +1,6 @@
+<!-- Creative - Start Bootstrap Theme
+    https://startbootstrap.com/template/creative
+    Licencia MIT -->
 <!-- Vista pública del landing -->
 <!DOCTYPE html>
 <html lang="en">
@@ -7,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Creative - Start Bootstrap Theme</title>
+    <title>VFS</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
     <!-- Bootstrap Icons-->
@@ -24,6 +27,23 @@
 
 <!-- INCLUDE HEADER  -->
 <?php include_once __DIR__ . '/../includes/header.php'; ?>
+
+<!-- INICIO MASTHEAD-->
+<header class="masthead">
+    <div class="container px-4 px-lg-5 h-100">
+        <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
+            <div class="col-lg-8 align-self-end">
+                <h1 class="text-white font-weight-bold">Profesionalismo en cada tasación</h1>
+                <hr class="divider" />
+            </div>
+            <div class="col-lg-8 align-self-baseline">
+                <p class="text-white-75 mb-5">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem vel quam, natus iure laborum quod consequatur voluptatibus ex facere necessitatibus fugit praesentium, rem accusamus exercitationem, consequuntur deleniti. Tempore, suscipit vel?</p>
+                <a class="btn btn-primary btn-xl" href="#nosotros">¡Conocer más!</a>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- FIN MASTHEAD -->
 
 <!-- INICIO SECCIÓN QUIÉNES SOMOS-->
 <section class="page-section bg-primary" id="nosotros">
@@ -57,7 +77,7 @@
                     </div>
                 </a>
             </div>
-            <div class="col-lg-6 col-sm-6">
+            <div class="col-lg-6 col-sm-6 pe-4">
                 <a class="servicios-box" href="../assets/images/servicios/fullsize/2.jpg" title="Project Name">
                     <img class="img-fluid" src="../assets/images/servicios/thumbnails/2.jpg" alt="..." />
                     <div class="servicios-box-caption">
@@ -183,42 +203,67 @@
         </div>
         <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
             <div class="col-lg-6">
-                <!-- * * * * * * * * * * * * * * *-->
-                <!-- * * SB Forms Contact Form * *-->
-                <!-- * * * * * * * * * * * * * * *-->
-                <!-- This form is pre-integrated with SB Forms.-->
-                <!-- To make this form functional, sign up at-->
-                <!-- https://startbootstrap.com/solution/contact-forms-->
-                <!-- to get an API token!-->
-                <form id="contactForm" method="POST" action="contact.php">
-                    <!-- Nombre-->
+                <!-- INICIO FORMULARIO DE CONTACTO -->
+                <form id="contactoForm" data-sb-form-api-token="API_TOKEN">
+                    <!-- Campo 1: Nombre-->
                     <div class="form-floating mb-3">
-                        <input name="name" class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
-                        <label for="name">Nombre completo</label>
+                        <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
+                        <label for="name">Nombre</label>
                         <div class="invalid-feedback" data-sb-feedback="name:required">El nombre es obligatorio.</div>
                     </div>
-                    <!-- Mail-->
+                    <!-- Campo 2: Apellido-->
+                    <div class="form-floating mb-3">
+                        <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
+                        <label for="name">Apellido</label>
+                        <div class="invalid-feedback" data-sb-feedback="name:required">El apellido es obligatorio.</div>
+                    </div>
+                    <!-- Campo 3: Mail-->
                     <div class="form-floating mb-3">
                         <input name="email" class="form-control" id="email" type="email" placeholder="name@example.com" data-sb-validations="required,email" />
                         <label for="email">Mail</label>
                         <div class="invalid-feedback" data-sb-feedback="email:required">El mail es obligatorio.</div>
                         <div class="invalid-feedback" data-sb-feedback="email:email">El mail ingresado no es válido.</div>
                     </div>
-                    <!-- Teléfono-->
+                    <!-- Campo 4: Teléfono-->
                     <div class="form-floating mb-3">
-                        <input name="telefono" class="form-control" id="phone" type="tel" placeholder="(123) 456-7890" data-sb-validations="required" />
-                        <label for="phone">Teléfono</label>
+                        <input class="form-control" id="phone" type="tel" placeholder="(123) 456-7890" data-sb-validations="required" />
+                        <label for="phone">Número de contacto</label>
                         <div class="invalid-feedback" data-sb-feedback="phone:required">El número de teléfono es obligatorio.</div>
                     </div>
-                    <!-- Empresa-->
-                    <div class="form-floating mb-3">
-                        <input name="empresa" class="form-control" id="empresa" type="text" placeholder="Enter your name..." data-sb-validations="required" />
-                        <label for="name">Empresa</label>
-                        <div class="invalid-feedback" data-sb-feedback="name:required">El nombre de la empresa es obligatorio. Si es persona natural indíquelo.</div>
-                    </div>
-                    <!-- Región -->
-                    <div class="form-floating mb-3">
-                        <select name="region" class="form-select" id="region" data-sb-validations="required">
+                    <!-- Campo 5: Tipo de activo -->
+                    <!-- <div class="form-floating mb-3">
+                        <select class="form-select" id="activo" data-sb-validations="required">
+                            <option value="" disabled selected>Seleccione su tipo de activo</option>
+                            <option value="1">Casa</option>
+                            <option value="2">Departamento</option>
+                            <option value="3">Terreno urbano</option>
+                            <option value="4">Bodega</option>
+                            <option value="5">Oficina</option>
+                            <option value="6">Local comercial</option>
+                            <option value="7">Estacionamiento</option>
+                            <option value="8">Industria</option>
+                            <option value="9">Terreno desarrollable</option>
+                            <option value="10">Uso específico (Hotel, escuela, hospital, etc.)</option>
+                            <option value="11">Parcela agroresidencial</option>
+                            <option value="12">Agrícola</option>
+                            <option value="13">Otro</option>
+                        </select>
+                        <div class="invalid-feedback" data-sb-feedback="activo:required">El tipo de activo es obligatorio.</div>
+                    </div> -->
+                    <!-- Campo 6: Rol-->
+                    <!-- <div class="form-floating mb-3">
+                        <input class="form-control" id="rol" type="text" placeholder="12345-6" />
+                        <label for="phone">Rol de la propiedad</label>
+                    </div> -->
+                    <!-- Campo 7: Dirección de la propiedad-->
+                    <!-- <div class="form-floating mb-3">
+                        <input class="form-control" id="direccion" type="text" placeholder="Ingrese la dirección..." data-sb-validations="required" />
+                        <label for="direccion">Dirección de la propiedad</label>
+                        <div class="invalid-feedback" data-sb-feedback="direccion:required">La dirección es obligatoria.</div>
+                    </div> -->
+                    <!-- Campo 8: Región de la propiedad-->
+                    <!-- <div class="form-floating mb-3">
+                        <select class="form-select" id="region" data-sb-validations="required">
                             <option value="" disabled selected>Seleccione su región</option>
                             <option value="XV">Región de Arica y Parinacota (XV)</option>
                             <option value="I">Región de Tarapacá (I)</option>
@@ -238,17 +283,57 @@
                             <option value="XII">Región de Magallanes y de la Antártica Chilena (XII)</option>
                         </select>
                         <div class="invalid-feedback" data-sb-feedback="region:required">La región es obligatoria.</div>
+                    </div> -->
+                    <!-- Campo 9: Comuna -->
+                    <!-- <div class="form-floating mb-3">
+                        <input class="form-control" id="comuna" type="text" placeholder="Ingrese la comuna..." data-sb-validations="required" />
+                        <label for="comuna">Comuna</label>
+                        <div class="invalid-feedback" data-sb-feedback="comuna:required">La comuna es obligatoria.</div>
+                    </div> -->
+
+                    <!-- Campo 10: Cantidad de propiedades a tasar -->
+                    <!-- <label>¿Desea tasar más de una propiedad?</label><br>
+                    <input type="radio" id="una" name="cantidad_propiedades" value="una" required>
+                    <label for="una">No</label><br>
+
+                    <input type="radio" id="mas" name="cantidad_propiedades" value="mas">
+                    <label for="mas">Sí</label> -->
+
+                    <!-- PENDIENTE Campo 11: CHECKBOX DE: PERSONA JURIDICA (EMPRESA) Opciones de si y no
+                    <div class="form-group">
+                        <label for="tasar-mas">¿Es persona jurídica?</label><br>
+                        <input type="radio" id="tasar-si" name="tasar-mas" value="si" required>
+                        <label for="tasar-si">Sí</label><br>
+                        <input type="radio" id="tasar-no" name="tasar-mas" value="no" required>
+                        <label for="tasar-no">No</label>
                     </div>
-                    <!-- Mensaje-->
+                    Empresa: CONDICIONAL PARA LOS QUE SEAN PERSONA JURÍDICA (EMPRESA)
+                    <div class="form-floating mb-3">
+                        <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
+                        <label for="name">Empresa</label>
+                        <div class="invalid-feedback" data-sb-feedback="name:required">El nombre de la empresa es obligatorio. Si es persona natural indíquelo.</div>
+                    </div>-->
+                    <!-- Elección de servicio -->
+                    <div class="form-group mb-3">
+                        <label for="servicio">¿Qué servicio necesita?</label>
+                        <select id="servicio" name="servicio" class="form-control" data-sb-validations="required">
+                            <option value="" disabled selected>Seleccione una opción</option>
+                            <option value="tasacion">Tasación de bienes raíces</option>
+                            <option value="consultoria">Consultoría inmobiliaria</option>
+                            <option value="ambos">Ambos servicios</option>
+                            <option value="otros">Otros</option>
+                        </select>
+                        <div class="invalid-feedback" data-sb-feedback="servicio:required">El servicio es obligatorio.</div>
+                    </div>
+
+
+                    <!-- Mensaje -->
                     <div class="form-floating mb-3">
                         <textarea name="mensaje" class="form-control" id="message" type="text" placeholder="Enter your message here..." style="height: 10rem" data-sb-validations="required"></textarea>
                         <label for="message">Mensaje</label>
                         <div class="invalid-feedback" data-sb-feedback="message:required">Un mensaje es obligatorio.</div>
                     </div>
-                    <!-- Submit success message-->
-                    <!---->
-                    <!-- This is what your users will see when the form-->
-                    <!-- has successfully submitted-->
+                    <!-- Respuesta recepcion exitosa del formulario-->
                     <div class="d-none" id="submitSuccessMessage">
                         <div class="text-center mb-3">
                             <div class="fw-bolder">Su mensaje ha sido recibido con éxito.</div>
@@ -257,19 +342,15 @@
                             <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
                         </div>
                     </div>
-                    <!-- Submit error message-->
-                    <!---->
-                    <!-- This is what your users will see when there is-->
-                    <!-- an error submitting the form-->
+                    <!--Respuesta error en el envío del formulario -->
                     <div class="d-none" id="submitErrorMessage">
                         <div class="text-center text-danger mb-3">Error al enviar el mensaje.</div>
                     </div>
+                    <!-- Botón enviar-->
+                    <div class="d-grid"><button class="btn btn-primary btn-xl disabled" id="submitButton" type="submit">Enviar</button></div>
                     <div class="g-recaptcha mb-3" data-sitekey="6LdyYy0rAAAAAH9kSCDWmq8Rkp0vZRQX3oFSZcpr"></div>
-
-                    <!-- Submit Button-->
-                    <div class="d-grid"><button class="btn btn-primary btn-xl" id="submitButton" type="submit">Enviar</button>
-                    </div>
                 </form>
+                <!-- FIN FORMULARIO DE CONTACTO -->
             </div>
         </div>
     </div>
@@ -280,4 +361,5 @@
 <?php include_once __DIR__ . '/../includes/footer.php'; ?>
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </body>
+
 </html>
