@@ -175,15 +175,25 @@ require_once __DIR__ . '/../../includes/Controller/mensajesController.php';
           <div class="content">
             <span class="task"><?= htmlspecialchars($msg['mensaje']) ?></span>
           </div>
+          <?php if ($msg['estado'] == 'respondido'): ?>
           <div class="reply">
             <div class="reply-box">
               <div class="reply-header">
-                <span class="reply-name">Thomas lean</span>
-                <span class="rol">Admin</span>
+                <span class="reply-name"><?= htmlspecialchars($msg['admin_nombre']) ?> <?= htmlspecialchars($msg['admin_apellido']) ?></span>
+                <span class="rol"><?= htmlspecialchars($msg['admin_rol']) ?></span>
               </div>
-              <span class="reply-text">Thank you for rapping up this today! 😊</span>
+              <span class="reply-text"><?= htmlspecialchars($msg['respuesta']) ?></span>
+              <small class="text-muted"><?= htmlspecialchars($msg['fecha_respuesta']) ?></small>
             </div>
           </div>
+          <?php elseif ($msg['estado'] !== 'respondido'): ?>
+            <button class="btn btn-sm btn-outline-primary mt-2" onclick="toggleReplyForm(<?= $msg['id'] ?>)">Responder</button>
+            <form id="reply-form-<?= $msg['id'] ?>" class="mt-2 d-none" method="POST" action="responder.php">
+                <input type="hidden" name="mensaje_id" value="<?= $msg['id'] ?>">
+                <textarea name="respuesta" class="form-control mb-2" required placeholder="Escribe tu respuesta..."></textarea>
+                <button type="submit" class="btn btn-success btn-sm">Enviar respuesta</button>
+            </form>
+          <?php endif; ?>
         </div>
     <?php endforeach; ?>
     <?php if (empty($mensajes)): ?>
@@ -191,5 +201,11 @@ require_once __DIR__ . '/../../includes/Controller/mensajesController.php';
     <?php endif; ?>
     </div>
   </div>
+  <script>
+    function toggleReplyForm(id) {
+      const form = document.getElementById('reply-form-' + id);
+      form.classList.toggle('d-none');
+    }
+  </script>
 </body>
 </html>
