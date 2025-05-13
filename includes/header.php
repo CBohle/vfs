@@ -21,7 +21,7 @@ $base_url = $is_landing ? '' : '/public/index.php'; // Ajusta esta ruta si cambi
     <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
         <div class="container px-4 px-lg-5">
             <!-- LOGO -->
-            <a class="navbar-brand me-4" href="<?= $is_landing ? '#page-top' : '/VFS/public/index.php' ?>">
+            <a class="navbar-brand me-4" href="<?= $is_landing ? '#page-top' : '/public/index.php' ?>">
                 <img src="../assets/images/logo/LogoVFS2.png" alt="Logo de la empresa" style="height: 50px;">
             </a>
 
