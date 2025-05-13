@@ -16,9 +16,25 @@
     function ver_mensajes() {
         global $conexion;
 
-        $sql = 'SELECT * 
-                FROM mensajes 
-                ORDER BY fecha DESC';
+        $sql = 'SELECT
+                    mensajes.*, 
+                    respuestas.*,
+                    usuarios_admin.nombre AS admin_nombre,
+                    usuarios_admin.apellido AS admin_apellido,
+                    usuarios_admin.email AS admin_email,
+                    usuarios_admin.rol AS admin_rol
+                FROM mensajes
+                LEFT JOIN (
+                    SELECT * from respuestas
+                    WHERE (mensaje_id, fecha_respuesta) IN (
+                        SELECT mensaje_id, MAX(fecha_respuesta)
+                        FROM respuestas
+                        GROUP BY mensaje_id
+                    )
+                ) AS respuestas ON mensajes.id = respuestas.mensaje_id
+                LEFT JOIN usuarios_admin ON respuestas.usuario_admin_id = usuarios_admin.id
+                WHERE mensajes.estado != "eliminado"
+                ORDER BY mensajes.fecha_creacion DESC, mensajes.id ASC';
         $resultado = mysqli_query($conexion, $sql);
 
         $filas = [];
