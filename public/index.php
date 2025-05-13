@@ -204,34 +204,90 @@
         <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
             <div class="col-lg-6">
                 <!-- INICIO FORMULARIO DE CONTACTO -->
-                <form id="contactoForm" data-sb-form-api-token="API_TOKEN">
+                <form id="contactoForm" novalidate>
                     <!-- Campo 1: Nombre-->
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
-                        <label for="name">Nombre</label>
-                        <div class="invalid-feedback" data-sb-feedback="name:required">El nombre es obligatorio.</div>
+                        <input class="form-control" id="nombre" name="nombre" type="text" placeholder="Ingrese su nombre" required />
+                        <label for="nombre">Nombre</label>
+                        <div class="invalid-feedback" id="nombre-error"></div>
                     </div>
+
                     <!-- Campo 2: Apellido-->
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
-                        <label for="name">Apellido</label>
-                        <div class="invalid-feedback" data-sb-feedback="name:required">El apellido es obligatorio.</div>
+                        <input class="form-control" id="apellido" name="apellido" type="text" placeholder="Ingrese su apellido" required minlength="2" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" />
+                        <label for="apellido">Apellido</label>
+                        <div class="invalid-feedback">El apellido es obligatorio, debe tener al menos 2 letras y no contener números ni símbolos.</div>
                     </div>
+
                     <!-- Campo 3: Mail-->
                     <div class="form-floating mb-3">
-                        <input name="email" class="form-control" id="email" type="email" placeholder="name@example.com" data-sb-validations="required,email" />
+                        <input name="email" class="form-control" id="email" type="email" placeholder="name@example.com" required />
                         <label for="email">Mail</label>
-                        <div class="invalid-feedback" data-sb-feedback="email:required">El mail es obligatorio.</div>
-                        <div class="invalid-feedback" data-sb-feedback="email:email">El mail ingresado no es válido.</div>
+                        <div class="invalid-feedback">Ingrese un correo válido.</div>
                     </div>
+
                     <!-- Campo 4: Teléfono-->
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="phone" type="tel" placeholder="(123) 456-7890" data-sb-validations="required" />
+                        <input class="form-control" id="phone" name="phone" type="tel" placeholder="56912345678" required pattern="^\+?[\d\s\-()]{8,15}$" />
                         <label for="phone">Número de contacto</label>
-                        <div class="invalid-feedback" data-sb-feedback="phone:required">El número de teléfono es obligatorio.</div>
+                        <div class="invalid-feedback">El número es obligatorio y solo debe contener dígitos o símbolos válidos (+, -, espacios).</div>
                     </div>
-                    <!-- Campo 5: Tipo de activo -->
-                    <!-- <div class="form-floating mb-3">
+
+                    <!-- Elección de servicio -->
+                    <div class="form-group mb-3">
+                        <label for="servicio">¿Qué servicio necesita?</label>
+                        <select id="servicio" name="servicio" class="form-control" required>
+                            <option value="" disabled selected>Seleccione una opción</option>
+                            <option value="tasacion">Tasación de bienes raíces</option>
+                            <option value="consultoria">Consultoría inmobiliaria</option>
+                            <option value="otros">Otros</option>
+                        </select>
+                        <div class="invalid-feedback">El servicio es obligatorio.</div>
+                    </div>
+
+                    <!-- Mensaje -->
+                    <div class="form-floating mb-3">
+                        <textarea name="mensaje" class="form-control" id="mensaje" placeholder="Ingrese su mensaje" style="height: 10rem" required minlength="20" maxlength="1000"></textarea>
+                        <label for="mensaje">Mensaje</label>
+                        <div class="invalid-feedback" id="mensajeError">El mensaje debe tener entre 20 y 1000 caracteres.</div>
+                    </div>
+
+                    <!-- Respuesta recepción exitosa -->
+                    <div class="d-none" id="submitSuccessMessage">
+                        <div class="text-center mb-3">
+                            <div class="fw-bolder">Su mensaje ha sido recibido con éxito.</div>
+                        </div>
+                    </div>
+
+                    <!-- Respuesta error envío -->
+                    <div class="d-none" id="submitErrorMessage">
+                        <div class="text-center text-danger mb-3">Error al enviar el mensaje.</div>
+                    </div>
+
+                    <!-- Botón enviar -->
+                    <div class="d-grid">
+                        <button class="btn btn-primary btn-xl" id="submitButton" type="submit">Enviar</button>
+                    </div>
+
+                    <!-- reCAPTCHA -->
+                    <div class="g-recaptcha mb-3 mt-3" data-sitekey="6LdyYy0rAAAAAH9kSCDWmq8Rkp0vZRQX3oFSZcpr"></div>
+                </form>
+                <!-- FIN FORMULARIO DE CONTACTO -->
+            </div>
+        </div>
+    </div>
+</section>
+<!-- FIN SECCIÓN FORMULARIO DE CONTACTO-->
+
+<!-- INCLUDE FOOTER-->
+<?php include_once __DIR__ . '/../includes/footer.php'; ?>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</body>
+
+</html>
+
+<!-- Campo 5: Tipo de activo -->
+<!-- <div class="form-floating mb-3">
                         <select class="form-select" id="activo" data-sb-validations="required">
                             <option value="" disabled selected>Seleccione su tipo de activo</option>
                             <option value="1">Casa</option>
@@ -250,19 +306,19 @@
                         </select>
                         <div class="invalid-feedback" data-sb-feedback="activo:required">El tipo de activo es obligatorio.</div>
                     </div> -->
-                    <!-- Campo 6: Rol-->
-                    <!-- <div class="form-floating mb-3">
+<!-- Campo 6: Rol-->
+<!-- <div class="form-floating mb-3">
                         <input class="form-control" id="rol" type="text" placeholder="12345-6" />
                         <label for="phone">Rol de la propiedad</label>
                     </div> -->
-                    <!-- Campo 7: Dirección de la propiedad-->
-                    <!-- <div class="form-floating mb-3">
+<!-- Campo 7: Dirección de la propiedad-->
+<!-- <div class="form-floating mb-3">
                         <input class="form-control" id="direccion" type="text" placeholder="Ingrese la dirección..." data-sb-validations="required" />
                         <label for="direccion">Dirección de la propiedad</label>
                         <div class="invalid-feedback" data-sb-feedback="direccion:required">La dirección es obligatoria.</div>
                     </div> -->
-                    <!-- Campo 8: Región de la propiedad-->
-                    <!-- <div class="form-floating mb-3">
+<!-- Campo 8: Región de la propiedad-->
+<!-- <div class="form-floating mb-3">
                         <select class="form-select" id="region" data-sb-validations="required">
                             <option value="" disabled selected>Seleccione su región</option>
                             <option value="XV">Región de Arica y Parinacota (XV)</option>
@@ -284,22 +340,22 @@
                         </select>
                         <div class="invalid-feedback" data-sb-feedback="region:required">La región es obligatoria.</div>
                     </div> -->
-                    <!-- Campo 9: Comuna -->
-                    <!-- <div class="form-floating mb-3">
+<!-- Campo 9: Comuna -->
+<!-- <div class="form-floating mb-3">
                         <input class="form-control" id="comuna" type="text" placeholder="Ingrese la comuna..." data-sb-validations="required" />
                         <label for="comuna">Comuna</label>
                         <div class="invalid-feedback" data-sb-feedback="comuna:required">La comuna es obligatoria.</div>
                     </div> -->
 
-                    <!-- Campo 10: Cantidad de propiedades a tasar -->
-                    <!-- <label>¿Desea tasar más de una propiedad?</label><br>
+<!-- Campo 10: Cantidad de propiedades a tasar -->
+<!-- <label>¿Desea tasar más de una propiedad?</label><br>
                     <input type="radio" id="una" name="cantidad_propiedades" value="una" required>
                     <label for="una">No</label><br>
 
                     <input type="radio" id="mas" name="cantidad_propiedades" value="mas">
                     <label for="mas">Sí</label> -->
 
-                    <!-- PENDIENTE Campo 11: CHECKBOX DE: PERSONA JURIDICA (EMPRESA) Opciones de si y no
+<!-- PENDIENTE Campo 11: CHECKBOX DE: PERSONA JURIDICA (EMPRESA) Opciones de si y no
                     <div class="form-group">
                         <label for="tasar-mas">¿Es persona jurídica?</label><br>
                         <input type="radio" id="tasar-si" name="tasar-mas" value="si" required>
@@ -313,53 +369,3 @@
                         <label for="name">Empresa</label>
                         <div class="invalid-feedback" data-sb-feedback="name:required">El nombre de la empresa es obligatorio. Si es persona natural indíquelo.</div>
                     </div>-->
-                    <!-- Elección de servicio -->
-                    <div class="form-group mb-3">
-                        <label for="servicio">¿Qué servicio necesita?</label>
-                        <select id="servicio" name="servicio" class="form-control" data-sb-validations="required">
-                            <option value="" disabled selected>Seleccione una opción</option>
-                            <option value="tasacion">Tasación de bienes raíces</option>
-                            <option value="consultoria">Consultoría inmobiliaria</option>
-                            <option value="ambos">Ambos servicios</option>
-                            <option value="otros">Otros</option>
-                        </select>
-                        <div class="invalid-feedback" data-sb-feedback="servicio:required">El servicio es obligatorio.</div>
-                    </div>
-
-
-                    <!-- Mensaje -->
-                    <div class="form-floating mb-3">
-                        <textarea name="mensaje" class="form-control" id="message" type="text" placeholder="Enter your message here..." style="height: 10rem" data-sb-validations="required"></textarea>
-                        <label for="message">Mensaje</label>
-                        <div class="invalid-feedback" data-sb-feedback="message:required">Un mensaje es obligatorio.</div>
-                    </div>
-                    <!-- Respuesta recepcion exitosa del formulario-->
-                    <div class="d-none" id="submitSuccessMessage">
-                        <div class="text-center mb-3">
-                            <div class="fw-bolder">Su mensaje ha sido recibido con éxito.</div>
-                            To activate this form, sign up at
-                            <br />
-                            <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
-                        </div>
-                    </div>
-                    <!--Respuesta error en el envío del formulario -->
-                    <div class="d-none" id="submitErrorMessage">
-                        <div class="text-center text-danger mb-3">Error al enviar el mensaje.</div>
-                    </div>
-                    <!-- Botón enviar-->
-                    <div class="d-grid"><button class="btn btn-primary btn-xl disabled" id="submitButton" type="submit">Enviar</button></div>
-                    <div class="g-recaptcha mb-3" data-sitekey="6LdyYy0rAAAAAH9kSCDWmq8Rkp0vZRQX3oFSZcpr"></div>
-                </form>
-                <!-- FIN FORMULARIO DE CONTACTO -->
-            </div>
-        </div>
-    </div>
-</section>
-<!-- FIN SECCIÓN FORMULARIO DE CONTACTO-->
-
-<!-- INCLUDE FOOTER-->
-<?php include_once __DIR__ . '/../includes/footer.php'; ?>
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
-</body>
-
-</html>
