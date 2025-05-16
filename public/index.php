@@ -52,7 +52,7 @@
             <div class="col-lg-8 text-center">
                 <h2 class="text-white mt-0">Comprometidos con tu éxito</h2>
                 <hr class="divider divider-light" />
-                <p class="text-white-75 mb-4">Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen.</p>
+                <p class="text-white-75 mb-4">Somos una empresa especializada en tasación y consultoría inmobiliaria, comprometida con la entrega de soluciones integrales que respalden decisiones estratégicas en el ámbito inmobiliario. Nuestra misión es proporcionar valor agregado a nuestros clientes mediante información precisa y asesoramiento especializado, facilitando procesos de inversión, financiamiento y gestión de activos inmobiliarios.</p>
                 <a class="btn btn-light btn-xl" href="#servicios">¡Comencemos!</a>
             </div>
         </div>
@@ -151,12 +151,20 @@
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                        ¿Qué tipo de propiedades tasan?
+                        ¿Qué tipos de propiedades pueden ser tasadas?
                     </button>
                 </h2>
                 <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                        Realizamos tasaciones de propiedades residenciales, comerciales, industriales y terrenos.
+                        <p>Ofrecemos servicios de tasación para una amplia gama de activos inmobiliarios, incluyendo:</p>
+                        <ul>
+                            <li>Casas y departamentos</li>
+                            <li>Terrenos urbanos y rurales</li>
+                            <li>Oficinas y locales comerciales</li>
+                            <li>Bodegas e industrias</li>
+                            <li>Parcelas agroresidenciales</li>
+                            <li>Activos de uso específico (hoteles, clínicas, escuelas, etc.)</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -164,12 +172,19 @@
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingTwo">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        ¿Cuánto tiempo tarda una tasación?
-                    </button>
+                        ¿Qué información se requiere para solicitar una tasación? </button>
                 </h2>
                 <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                        El proceso completo puede tomar entre 2 y 5 días hábiles dependiendo del tipo de propiedad.
+                        <p>Para iniciar el proceso de tasación, solicitamos los siguientes datos:</p>
+                        <ul>
+                            <li>Nombre y apellido del propietario</li>
+                            <li>Contacto (email y teléfono)</li>
+                            <li>Tipo de propiedad</li>
+                            <li>Rol del inmueble</li>
+                            <li>Dirección exacta y comuna</li>
+                            <li>Antecedentes de la propiedad (escritura, planos, informes previos, etc.)</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -177,15 +192,97 @@
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingThree">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        ¿Cómo puedo agendar una tasación?
+                        ¿Cuánto tiempo toma la entrega del informe de tasación?
                     </button>
                 </h2>
                 <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                        Puedes contactarnos a través del formulario en esta página o escribirnos directamente a contacto@vfs.cl.
+                        <p>El plazo de entrega del informe varía según el tipo de propiedad:</p>
+                        <ul>
+                            <li>Casa, departamento, terreno urbano: 5 días hábiles</li>
+                            <li>Propiedades comerciales o industriales: 7 a 10 días hábiles</li>
+                            <li>Activos de uso específico: 10 a 15 días hábiles</li>
+                        </ul>
                     </div>
                 </div>
             </div>
+            <!-- PREGUNTA 4 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFour">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseThree">
+                        ¿Qué métodos de valoración utilizan?
+                    </button>
+                </h2>
+                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        <p>Utilizamos metodologías reconocidas internacionalmente, tales como:</p>
+                        <ul>
+                            <li>Enfoque de mercado (comparación de ventas)</li>
+                            <li>Método de costos (valor de reposición)</li>
+                            <li>Enfoque de ingresos (capitalización de rentas)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- PREGUNTA 5 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFive">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseThree">
+                        ¿Qué sucede si no estoy conforme con el informe de tasación?
+                    </button>
+                </h2>
+                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        <p>En caso de disconformidad, el cliente puede solicitar una reconsideración. Nuestro equipo revisará el informe y, si corresponde, se realizarán los ajustes pertinentes.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- PREGUNTA 6 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingSix">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseThree">
+                        ¿Qué servicios incluye la consultoría inmobiliaria?
+                    </button>
+                </h2>
+                <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        <p>Nuestros servicios de consultoría abordan:</p>
+                        <ul>
+                            <li>Estudios de mercado y viabilidad de proyectos</li>
+                            <li>Asesoramiento en inversiones y desarrollo inmobiliario</li>
+                            <li>Optimización de carteras de activos</li>
+                            <li>Evaluación del rendimiento de propiedades arrendadas</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- PREGUNTA 7 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingSeven">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseThree">
+                        ¿Cómo se realiza el pago de los servicios?
+                    </button>
+                </h2>
+                <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        <p>El pago puede realizarse mediante transferencia bancaria o mercado pago. Los detalles del proceso de pago se incluirán en la cotización enviada al cliente.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- PREGUNTA 8 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingEight">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEight" aria-expanded="false" aria-controls="collapseThree">
+                        ¿Qué garantías ofrecen sobre la calidad del informe?
+                    </button>
+                </h2>
+                <div id="collapseEight" class="accordion-collapse collapse" aria-labelledby="headingEight" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        <p>Nuestros informes cumplen con las normativas IFRS y estándares nacionales, garantizando precisión, confiabilidad y validez ante instituciones financieras y reguladoras.</p>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </section>
@@ -222,14 +319,14 @@
                     <!-- Campo 3: Mail-->
                     <div class="form-floating mb-3">
                         <input name="email" class="form-control" id="email" type="email" placeholder="name@example.com" required />
-                        <label for="email">Mail</label>
+                        <label for="email">Correo</label>
                         <div class="invalid-feedback">Ingrese un correo válido.</div>
                     </div>
 
                     <!-- Campo 4: Teléfono-->
                     <div class="form-floating mb-3">
                         <input class="form-control" id="phone" name="phone" type="tel" placeholder="56912345678" required pattern="^\+?[\d\s\-()]{8,15}$" />
-                        <label for="phone">Número de contacto</label>
+                        <label for="phone">Teléfono de contacto</label>
                         <div class="invalid-feedback">El número es obligatorio y solo debe contener dígitos o símbolos válidos (+, -, espacios).</div>
                     </div>
 
@@ -240,7 +337,7 @@
                             <option value="" disabled selected>Seleccione una opción</option>
                             <option value="tasacion">Tasación de bienes raíces</option>
                             <option value="consultoria">Consultoría inmobiliaria</option>
-                            <option value="otros">Otros</option>
+                            <option value="otros">Otro</option>
                         </select>
                         <div class="invalid-feedback">El servicio es obligatorio.</div>
                     </div>
