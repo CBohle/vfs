@@ -319,14 +319,14 @@
                     <!-- Campo 3: Mail-->
                     <div class="form-floating mb-3">
                         <input name="email" class="form-control" id="email" type="email" placeholder="name@example.com" required />
-                        <label for="email">Mail</label>
+                        <label for="email">Correo</label>
                         <div class="invalid-feedback">Ingrese un correo válido.</div>
                     </div>
 
                     <!-- Campo 4: Teléfono-->
                     <div class="form-floating mb-3">
                         <input class="form-control" id="phone" name="phone" type="tel" placeholder="56912345678" required pattern="^\+?[\d\s\-()]{8,15}$" />
-                        <label for="phone">Número de contacto</label>
+                        <label for="phone">Teléfono de contacto</label>
                         <div class="invalid-feedback">El número es obligatorio y solo debe contener dígitos o símbolos válidos (+, -, espacios).</div>
                     </div>
 
@@ -337,7 +337,7 @@
                             <option value="" disabled selected>Seleccione una opción</option>
                             <option value="tasacion">Tasación de bienes raíces</option>
                             <option value="consultoria">Consultoría inmobiliaria</option>
-                            <option value="otros">Otros</option>
+                            <option value="otros">Otro</option>
                         </select>
                         <div class="invalid-feedback">El servicio es obligatorio.</div>
                     </div>
