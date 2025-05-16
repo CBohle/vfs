@@ -342,6 +342,14 @@ label {
   display: inline-block;
 }
 
+.custom-floating-select {
+  padding-top: 1.625rem;  /* Ya lo tienes para el label flotante */
+  padding-bottom: 0.625rem; /* <-- Aumenta el espacio inferior */
+  height: auto; /* <-- Permite al input crecer según contenido */
+  min-height: 3.5rem; /* <-- Asegura espacio suficiente para letras descendentes */
+}
+
+
 button {
   border-radius: 0;
 }
