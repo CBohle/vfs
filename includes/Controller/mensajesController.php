@@ -13,6 +13,14 @@
 
     $mensajes = ver_mensajes();
 
+    function actualizar_estado($id, $nuevoEstado) {
+        global $conexion;
+        $id = mysqli_real_escape_string($conexion, $id);
+        $nuevoEstado = mysqli_real_escape_string($conexion, $nuevoEstado);
+        $sql = "UPDATE mensajes SET estado = '$nuevoEstado' WHERE id = '$id'";
+        mysqli_query($conexion, $sql);
+    }
+
     function ver_mensajes() {
         global $conexion;
 
@@ -46,13 +54,13 @@
         //echo json_encode(['Estado' => 'ok', 'data' => $filas]);
     }
 
-    function actualizar_estado($id, $nuevoEstado) {
-        global $conexion;
-
-        $sql = "UPDATE mensajes SET estado = ? WHERE id = ?";
-        $stmt = mysqli_prepare($conexion, $sql);
-        mysqli_stmt_bind_param($stmt, 'si', $nuevoEstado, $id);
-        mysqli_stmt_execute($stmt);
-        mysqli_stmt_close($stmt);
+    function obtenerClaseEstado($estado) {
+        $estado = strtolower($estado);
+        return match ($estado) {
+            'respondido' => 'bg-secondary text-light',
+            'pendiente', 'leido' => 'bg-danger text-light',
+            'eliminado' => 'bg-secondary text-light',
+            default => 'bg-secondary',
+        };
     }
 ?>
