@@ -30,7 +30,7 @@ $base_url = $is_landing ? '' : '/public/index.php'; // Ajusta esta ruta si cambi
                 <h5>Contacto</h5>
                 <ul class="list-unstyled">
                     <li class="bi-phone"><a href="tel:+1234567890"> +1 234 567 890</a></li>
-                    <li class="bi-envelope"><a href="mailto:contacto@empresa.com"> contacto@empresa.com</a></li>
+                    <li class="bi-envelope"><a href="mailto:contacto@empresa.com"> contacto@vfs.cl</a></li>
                 </ul>
                 <a href="<?= $base_url ?>#contacto" class="btn btn-primary mt-2">Contáctanos</a>
             </div>
@@ -91,6 +91,23 @@ $base_url = $is_landing ? '' : '/public/index.php'; // Ajusta esta ruta si cambi
             event.stopPropagation();
         }
     });
+</script>
+<!-- Script para el campo adicional, del campo 13, de Formulario de postulación -->
+<script>
+    function mostrarCampoEspecificar() {
+        const seleccion = document.getElementById("formacion_tasacion").value;
+        const campoEspecificar = document.getElementById("campo_especificar");
+        const inputEspecificar = document.getElementById("detalle_formacion");
+
+        if (seleccion === "Sí") {
+            campoEspecificar.style.display = "block";
+            inputEspecificar.setAttribute("data-sb-validations", "required");
+        } else {
+            campoEspecificar.style.display = "none";
+            inputEspecificar.removeAttribute("data-sb-validations");
+            inputEspecificar.value = "";
+        }
+    }
 </script>
 <!-- // Validación personalizada para mensaje
 if (mensaje.value.length < 20) {
