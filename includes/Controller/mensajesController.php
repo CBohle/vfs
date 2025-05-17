@@ -73,4 +73,17 @@
             default => 'bg-secondary',
         };
     }
+    function tiempo_transcurrido($fecha) {
+    $ahora = new DateTime();
+    $fecha_mensaje = new DateTime($fecha);
+    $diferencia = $ahora->diff($fecha_mensaje);
+
+    if ($diferencia->y > 0) return $diferencia->y . ' año(s) atrás';
+    if ($diferencia->m > 0) return $diferencia->m . ' mes(es) atrás';
+    if ($diferencia->d > 0) return $diferencia->d . ' día(s) atrás';
+    if ($diferencia->h > 0) return $diferencia->h . ' hora(s) atrás';
+    if ($diferencia->i > 0) return $diferencia->i . ' minuto(s) atrás';
+
+    return 'Hace un momento';
+    }
 ?>

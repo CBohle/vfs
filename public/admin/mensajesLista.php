@@ -59,7 +59,7 @@ while ($msg = $result->fetch_assoc()) {
 <!-- Aquí va el HTML que antes estaba en mensajesLista.php -->
 <?php foreach ($mensajes as $i => $msg): ?>
     <?php $estadoClass = obtenerClaseEstado($msg['estado'] ?? ''); ?>
-    <div class="mb-3">
+    <div class="mb-3 position-relative">
         <div class="header2">
             <div class="header2-info">
                 <div>
@@ -67,20 +67,26 @@ while ($msg = $result->fetch_assoc()) {
                     <div class="email"><?= htmlspecialchars($msg['email'] ?? '') ?></div>
                 </div>
                 <span class="project"><?= htmlspecialchars($msg['servicio'] ?? '') ?></span>
+                <small class="text-muted ms-2">Creado: <?= tiempo_transcurrido($msg['fecha_creacion'] ?? '') ?></small>
             </div>
             <div class="text-end">
                 <span class="badge <?= $estadoClass ?>"><?= htmlspecialchars($msg['estado'] ?? '') ?></span>
-                <small class="text-muted ms-2"><?= htmlspecialchars($msg['fecha_creacion'] ?? '') ?></small>
+                <small class="text-danger ms-2 eliminar-link"
+                    onclick="eliminarMensaje(<?= $msg['id'] ?>)">
+                    Eliminar
+                </small>
             </div>
         </div>
         <p class="mb-2"><?= htmlspecialchars($msg['mensaje'] ?? '') ?></p>
         <?php if (!empty($msg['respuesta'])): ?>
             <div class="reply">
                 <div class="reply-box" style="width: 100%; position: relative;">
-                    <div class="reply-header">
-                        <span class="reply-name"><?= htmlspecialchars($msg['admin_nombre'] ?? '') ?> <?= htmlspecialchars($msg['admin_apellido'] ?? '') ?></span>
-                        <span class="rol"><?= htmlspecialchars($msg['admin_rol'] ?? '') ?></span>
-                        <span class="text-muted"><?= htmlspecialchars($msg['fecha_respuesta'] ?? '') ?></span>
+                    <div class="reply-header d-flex justify-content-between align-items-center">
+                        <div class="d-flex flex-wrap align-items-center gap-2">
+                            <span class="reply-name"><?= htmlspecialchars($msg['admin_nombre'] ?? '') ?> <?= htmlspecialchars($msg['admin_apellido'] ?? '') ?></span>
+                            <span class="rol"><?= htmlspecialchars($msg['admin_rol'] ?? '') ?></span>
+                        </div>
+                        <span class="text-muted ms-2"><?= tiempo_transcurrido($msg['fecha_respuesta'] ?? '') ?></span>
                     </div>
                     <span class="reply-text"><?= htmlspecialchars($msg['respuesta'] ?? '') ?></span>
                 </div>
