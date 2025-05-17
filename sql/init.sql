@@ -19,10 +19,11 @@ CREATE TABLE mensajes (
 );
 
 INSERT INTO mensajes (id, nombre, apellido, email, telefono, servicio, mensaje, estado) VALUES 
-(1,'Nombre 1','Apellido 1','Email1@prueba.com','111111','Otros','Mensaje 1','pendiente'),
-(2,'Nombre 2','Apellido 2','Email2@prueba.com','222222','Tasacion de bienes raices','Mensaje 2','leido'),
-(3,'Nombre 3','Apellido 3','Email3@prueba.com','333333','Ambos servicios','Mensaje 3','respondido');
-
+(1, 'Camila', 'Rojas', 'camila.rojas@mail.com', '987654321', 'Otros', 'Hola, quisiera saber si también hacen informes de avalúo para seguros.', 'respondido'),
+(2, 'Jorge', 'Paredes', 'jorge.paredes@mail.com', '965432187', 'Tasacion de bienes raices', 'Necesito una tasación urgente para una propiedad en Ñuñoa, ¿cuánto demoran?', 'leido'),
+(3, 'María', 'Torres', 'maria.torres@mail.com', '912345678', 'Ambos servicios', 'Estoy buscando tasar una propiedad y también un vehículo, ¿ustedes pueden hacerlo?', 'respondido'),
+(4, 'Luis', 'González', 'luis.gonzalez@mail.com', '923456789', 'Tasacion de bienes raices', '¿Realizan tasaciones para propiedades rurales? Tengo un terreno en Melipilla.', 'respondido'),
+(5, 'Fernanda', 'Vega', 'fernanda.vega@mail.com', '934567891', 'Otros', '¿Atienden los fines de semana? Me gustaría agendar una consulta.', 'pendiente');
 
 CREATE TABLE curriculum (
     id INT PRIMARY KEY,
@@ -69,9 +70,9 @@ CREATE TABLE usuarios_admin (
 );
 
 INSERT INTO usuarios_admin (id, nombre, apellido, email, password, rol, activo) VALUES 
-(1,'Nombre 1','Apellido 1','Email1@prueba.com','1111','Admin','true'),
-(2,'Nombre 2','Apellido 2','Email2@prueba.com','2222','Admin','true'),
-(3,'Nombre 3','Apellido 3','Email3@prueba.com','3333','Admin','false');
+(1,'Jaime','Farias','Email1@prueba.com','1111','Admin','true'),
+(2,'Federico','Mendez','Email2@prueba.com','2222','Admin','true'),
+(3,'Berta','Vega','Email3@prueba.com','3333','Admin','false');
 
 CREATE TABLE respuestas (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -84,5 +85,6 @@ CREATE TABLE respuestas (
 );
 
 INSERT INTO respuestas (mensaje_id, usuario_admin_id, respuesta) VALUES
-(1, 2, 'Gracias por contactarnos. Hemos recibido tu solicitud y te responderemos pronto msg1.'),
-(3, 1, 'Gracias por contactarnos. Hemos recibido tu solicitud y te responderemos pronto msg3.');
+(1, 2, 'Hola Camila, sí, realizamos informes de avalúo para seguros. Podemos coordinar una reunión para revisar los antecedentes.'),
+(3, 1, 'Hola María, efectivamente realizamos tasaciones tanto de bienes raíces como de vehículos. Te contactaremos para solicitar más detalles.'),
+(4, 2, 'Hola Luis, sí realizamos tasaciones de terrenos rurales, incluyendo zonas como Melipilla. Te contactaremos para coordinar una visita.');
