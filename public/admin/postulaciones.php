@@ -73,39 +73,44 @@ require_once __DIR__ . '/../../includes/Controller/mensajesController.php';
       padding: 2px 6px;
       margin-left: 8px;
     }
-
+    
+    .resumen-box {
+      text-align: right;
+    }
     .reply {
-      background: #f4f7fb;
-      border-radius: 12px;
-      padding: 10px;
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      margin-top: 12px;
+    margin-top: 10px;
+    }
+
+    .reply-box {
+        background-color: #f8f9fa; /* fondo gris claro */
+        border: 1px solid #dee2e6; /* borde sutil */
+        border-radius: 0.5rem; /* bordes redondeados */
+        padding: 1rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* sombra suave */
+        max-width: 100%;
     }
 
     .reply-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
     }
 
     .reply-name {
-      font-weight: 500;
+        font-weight: 600;
+        color: #0d6efd; /* color primario */
     }
 
     .rol {
-      font-size: 12px;
-      color: #888;
-      margin-left: 8px;
+        font-size: 0.875rem;
+        color: #6c757d; /* texto gris */
+        margin-left: 0.5rem;
     }
 
     .reply-text {
-      font-size: 14px;
-    }
-
-    .resumen-box {
-      text-align: right;
+        white-space: pre-wrap; /* respeta saltos de línea */
+        color: #343a40;
     }
   </style>
 </head>
