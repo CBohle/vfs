@@ -112,10 +112,10 @@ require_once __DIR__ . '/../../includes/Controller/mensajesController.php';
     <!-- Encabezado -->
     <div class="d-flex justify-content-between align-items-end flex-wrap mb-3">
       <h3 class="fw-bold text-dark mb-0">Mensajes de Contacto</h3>
-      <div class="card shadow-sm border-0 rounded-4 p-2 text-center" style="width: 120px;">
-        <button class="btn btn-outline-danger btn-sm w-100">
-          <h4 class="mb-1 fw-semibold"><span id="mensajesPorResponder">15/50</span></h4>
-          <p class="text-muted mb-0 small">Por responder</p>
+      <div class="card shadow-sm border-0 rounded-4 p-2 text-center" style="width: 150px;">
+        <button class="btn btn-outline-danger btn-sm" onclick="filtrar_mensajes('pendiente', 'Todos', 'DESC')">
+          <h4 class="mb-1 fw-semibold"><span id="mensajesPorResponder"><?= $pendientes_mensajes ?> de <?= $total_mensajes ?></span></h4>
+          <p class="text-muted mb-0 small">Mensajes pendientes</p>
         </button>
       </div>
     </div>
@@ -132,7 +132,7 @@ require_once __DIR__ . '/../../includes/Controller/mensajesController.php';
       <form class="row gy-2 gx-3 align-items-center">
         <div class="col-auto">
           <select class="form-select form-select-sm" id="filtro_estado" name="filtro_estado" aria-label="Estado">
-            <option value="Todos" selected disabled>Estado</option>
+            <option value="Todos" hidden selected>Estado</option>
             <option value="pendiente">Pendiente</option>
             <option value="leido">Leído</option>
             <option value="respondido">Respondido</option>
@@ -141,7 +141,7 @@ require_once __DIR__ . '/../../includes/Controller/mensajesController.php';
         </div>
         <div class="col-auto">
           <select class="form-select form-select-sm" aria-label="floating select example" id="filtro_servicio" name="filtro_servicio">
-            <option value="Todos" selected disabled>Servicio</option>
+            <option value="Todos" hidden selected>Servicio</option>
             <option value="Tasacion de bienes raices">Tasacion de bienes raices</option>
             <option value="Ambos">Ambos servicios</option>
             <option value="Otros">Otros servicios</option>
@@ -149,7 +149,7 @@ require_once __DIR__ . '/../../includes/Controller/mensajesController.php';
         </div>
         <div class="col-auto">
           <select class="form-select form-select-sm" aria-label="Default select example" id="filtro_orden" name="filtro_orden">
-            <option value="Todos" selected disabled>Ordenar</option>
+            <option value="Todos" hidden selected>Ordenar</option>
             <option value="DESC">Más Reciente</option>
             <option value="ASC">Más Antiguo</option>
           </select>
@@ -165,58 +165,42 @@ require_once __DIR__ . '/../../includes/Controller/mensajesController.php';
     <!-- Mensajes -->
     <div class="card shadow-sm border-0 rounded-4 mb-3">
       <div class="card-body" id="resultado_filtro_mensaje">
-        <?php if (empty($mensajes)): ?>
-          <div class="text-muted">No hay mensajes.</div>
-        <?php else: ?>
-          <?php include 'mensajesLista.php'; ?>
-        <?php endif; ?>
+        <?php include 'mensajesLista.php'; ?>
       </div>
     </div>
-            <script>
-              function filtrar_mensajes(estado, servicio, orden) {
-                var parametros = {
-                  "buscar": 1,
-                  "estado": estado,
-                  "servicio": servicio,
-                  "orden": orden
-                };
-                $.ajax({
-                  data: parametros,
-                  url: 'mensajesFiltro.php',
-                  type: 'POST',
-                  timeout: 10000,
-                  beforeSend: function() {
-                    $("#resultado_filtro_mensaje").html("Procesando, espere por favor...");
-                  },
-                  success: function(data) {
-                    $("#resultado_filtro_mensaje").html(data);
-                  },
-                  error: function(data, error) {
-                    console.log('ERROR');
-                    document.getElementById("resultado_filtro_mensaje").innerHTML = "Error";
-                  }
-                });
-              }
-            </script>
-            <script>
-              function resetearFiltros() {
-                $('#filtro_estado').val('Todos');
-                $('#filtro_servicio').val('Todos');
-                $('#filtro_orden').val('Todos');
-                filtrar_mensajes('Todos', 'Todos', 'Todos');
-              }
-            </script>
-            <script>
-              document.addEventListener('DOMContentLoaded', function () {
-                window.toggleReplyForm = function (id) {
-                  const form = document.getElementById('reply-form-' + id);
-                  if (form) {
-                    form.classList.toggle('d-none');
-                  }
-                };
-              });
-            </script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      function filtrar_mensajes(estado, servicio, orden) {
+        var parametros = {
+          "buscar": 1,
+          "estado": estado,
+          "servicio": servicio,
+          "orden": orden
+        };
+        $.ajax({
+          data: parametros,
+          url: 'mensajesLista.php',
+          type: 'POST',
+          timeout: 10000,
+          beforeSend: function() {
+            $("#resultado_filtro_mensaje").html("Procesando, espere por favor...");
+          },
+          success: function(data) {
+            $("#resultado_filtro_mensaje").html(data);
+          },
+          error: function() {
+            $("#resultado_filtro_mensaje").html("Error al cargar los mensajes.");
+          }
+        });
+      }
+
+      function resetearFiltros() {
+        $('#filtro_estado').val('Todos');
+        $('#filtro_servicio').val('Todos');
+        $('#filtro_orden').val('DESC');
+        filtrar_mensajes('Todos', 'Todos', 'DESC');
+      }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

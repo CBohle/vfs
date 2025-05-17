@@ -70,9 +70,9 @@ CREATE TABLE usuarios_admin (
 );
 
 INSERT INTO usuarios_admin (id, nombre, apellido, email, password, rol, activo) VALUES 
-(1,'Nombre 1','Apellido 1','Email1@prueba.com','1111','Admin','true'),
-(2,'Nombre 2','Apellido 2','Email2@prueba.com','2222','Admin','true'),
-(3,'Nombre 3','Apellido 3','Email3@prueba.com','3333','Admin','false');
+(1,'Jaime','Farias','Email1@prueba.com','1111','Admin','true'),
+(2,'Federico','Mendez','Email2@prueba.com','2222','Admin','true'),
+(3,'Berta','Vega','Email3@prueba.com','3333','Admin','false');
 
 CREATE TABLE respuestas (
     id INT PRIMARY KEY AUTO_INCREMENT,

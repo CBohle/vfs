@@ -13,6 +13,16 @@
 
     $mensajes = ver_mensajes();
 
+    // Contar total de mensajes
+    $sql_total = "SELECT COUNT(*) AS total FROM mensajes WHERE nombre != ''";
+    $result_total = mysqli_query($conexion, $sql_total);
+    $total_mensajes = ($fila = mysqli_fetch_assoc($result_total)) ? $fila['total'] : 0;
+
+    // Contar mensajes pendientes
+    $sql_pendientes = "SELECT COUNT(*) AS pendientes FROM mensajes WHERE estado = 'pendiente'";
+    $result_pendientes = mysqli_query($conexion, $sql_pendientes);
+    $pendientes_mensajes = ($fila = mysqli_fetch_assoc($result_pendientes)) ? $fila['pendientes'] : 0;
+
     function actualizar_estado($id, $nuevoEstado) {
         global $conexion;
         $id = mysqli_real_escape_string($conexion, $id);
