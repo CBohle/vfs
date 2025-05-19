@@ -300,37 +300,64 @@
         </div>
         <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
             <div class="col-lg-6">
-                <!-- INICIO FORMULARIO DE CONTACTO -->
-                <form id="contactoForm" novalidate>
-                    <!-- Campo 1: Nombre-->
+                <!-- INICIO FORMULARIO DE CONTACTO CON VALIDACIONES POR CAMPO -->
+                <form id="contactoForm" class="novalidate">
+                    <!-- Campo 1: Nombre OK-->
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="nombre" name="nombre" type="text" placeholder="Ingrese su nombre" required />
+                        <input
+                            class="form-control"
+                            id="nombre"
+                            name="nombre"
+                            type="text"
+                            placeholder="Ingrese su nombre"
+                            required
+                            minlength="2"
+                            maxlength="50"
+                            pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" />
                         <label for="nombre">Nombre</label>
-                        <div class="invalid-feedback" id="nombre-error"></div>
+                        <div class="invalid-feedback" id="nombre-error">
+                            El nombre debe tener solo letras, entre 2 y 50 caracteres.
+                        </div>
                     </div>
-
-                    <!-- Campo 2: Apellido-->
+                    <!-- Opción 2 apellido OK-->
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="apellido" name="apellido" type="text" placeholder="Ingrese su apellido" required minlength="2" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" />
+                        <input
+                            class="form-control"
+                            id="apellido"
+                            name="apellido"
+                            type="text"
+                            placeholder="Ingrese su apellido"
+                            required
+                            minlength="2"
+                            maxlength="50"
+                            pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" />
                         <label for="apellido">Apellido</label>
-                        <div class="invalid-feedback">El apellido es obligatorio, debe tener al menos 2 letras y no contener números ni símbolos.</div>
+                        <div class="invalid-feedback" id="apellido-error">
+                            El apellido debe tener solo letras, entre 2 y 50 caracteres.
+                        </div>
                     </div>
-
-                    <!-- Campo 3: Mail-->
+                    <!-- Campo 3: Mail OK-->
                     <div class="form-floating mb-3">
                         <input name="email" class="form-control" id="email" type="email" placeholder="name@example.com" required />
                         <label for="email">Correo</label>
                         <div class="invalid-feedback">Ingrese un correo válido.</div>
                     </div>
 
-                    <!-- Campo 4: Teléfono-->
+                    <!-- Campo 4: Teléfono OK-->
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="phone" name="phone" type="tel" placeholder="56912345678" required pattern="^\+?[\d\s\-()]{8,15}$" />
-                        <label for="phone">Teléfono de contacto</label>
-                        <div class="invalid-feedback">El número es obligatorio y solo debe contener dígitos o símbolos válidos (+, -, espacios).</div>
+                        <input 
+                            class="form-control" 
+                            id="telefono" 
+                            name="telefono" 
+                            type="tel" 
+                            placeholder="56912345678" 
+                            required
+                            required pattern="^\d{8,15}$" />
+                        <label for="telefono">Teléfono de contacto</label>
+                        <div class="invalid-feedback">El número es obligatorio y solo debe contener dígitos (sin símbolos ni espacios).</div>
                     </div>
 
-                    <!-- Elección de servicio -->
+                    <!-- Elección de servicio OK-->
                     <div class="form-group mb-3">
                         <label for="servicio">¿Qué servicio necesita?</label>
                         <select id="servicio" name="servicio" class="form-control" required>
@@ -341,12 +368,11 @@
                         </select>
                         <div class="invalid-feedback">El servicio es obligatorio.</div>
                     </div>
-
-                    <!-- Mensaje -->
+                    <!-- Mensaje OK-->
                     <div class="form-floating mb-3">
                         <textarea name="mensaje" class="form-control" id="mensaje" placeholder="Ingrese su mensaje" style="height: 10rem" required minlength="20" maxlength="1000"></textarea>
                         <label for="mensaje">Mensaje</label>
-                        <div class="invalid-feedback" id="mensajeError">El mensaje debe tener entre 20 y 1000 caracteres.</div>
+                        <div class="invalid-feedback" id="mensajeError">El mensaje es obligatorio y debe tener entre 20 y 1000 caracteres.</div>
                     </div>
 
                     <!-- Respuesta recepción exitosa -->
@@ -367,7 +393,7 @@
                     </div>
 
                     <!-- reCAPTCHA -->
-                    <div class="g-recaptcha mb-3 mt-3" data-sitekey="6LdyYy0rAAAAAH9kSCDWmq8Rkp0vZRQX3oFSZcpr"></div>
+                    <!-- <div class="g-recaptcha mb-3 mt-3" data-sitekey="6LdyYy0rAAAAAH9kSCDWmq8Rkp0vZRQX3oFSZcpr"></div> -->
                 </form>
                 <!-- FIN FORMULARIO DE CONTACTO -->
             </div>
@@ -379,90 +405,43 @@
 <!-- INCLUDE FOOTER-->
 <?php include_once __DIR__ . '/../includes/footer.php'; ?>
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<script>
+    const form = document.getElementById('contactoForm');
+    const inputs = form.querySelectorAll('input, textarea, select');
+
+    // Validación al enviar
+    form.addEventListener('submit', function(event) {
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        form.classList.add('was-validated');
+    });
+
+    // Validación campo por campo al salir (blur) o escribir (input)
+    inputs.forEach(input => {
+        input.addEventListener('input', () => {
+            validateField(input);
+        });
+
+        input.addEventListener('blur', () => {
+            validateField(input);
+        });
+    });
+
+    function validateField(input) {
+        if (input.checkValidity()) {
+            input.classList.remove('is-invalid');
+            input.classList.add('is-valid');
+        } else {
+            input.classList.remove('is-valid');
+            input.classList.add('is-invalid');
+        }
+    }
+</script>
+
 </body>
 
 </html>
-
-<!-- Campo 5: Tipo de activo -->
-<!-- <div class="form-floating mb-3">
-                        <select class="form-select" id="activo" data-sb-validations="required">
-                            <option value="" disabled selected>Seleccione su tipo de activo</option>
-                            <option value="1">Casa</option>
-                            <option value="2">Departamento</option>
-                            <option value="3">Terreno urbano</option>
-                            <option value="4">Bodega</option>
-                            <option value="5">Oficina</option>
-                            <option value="6">Local comercial</option>
-                            <option value="7">Estacionamiento</option>
-                            <option value="8">Industria</option>
-                            <option value="9">Terreno desarrollable</option>
-                            <option value="10">Uso específico (Hotel, escuela, hospital, etc.)</option>
-                            <option value="11">Parcela agroresidencial</option>
-                            <option value="12">Agrícola</option>
-                            <option value="13">Otro</option>
-                        </select>
-                        <div class="invalid-feedback" data-sb-feedback="activo:required">El tipo de activo es obligatorio.</div>
-                    </div> -->
-<!-- Campo 6: Rol-->
-<!-- <div class="form-floating mb-3">
-                        <input class="form-control" id="rol" type="text" placeholder="12345-6" />
-                        <label for="phone">Rol de la propiedad</label>
-                    </div> -->
-<!-- Campo 7: Dirección de la propiedad-->
-<!-- <div class="form-floating mb-3">
-                        <input class="form-control" id="direccion" type="text" placeholder="Ingrese la dirección..." data-sb-validations="required" />
-                        <label for="direccion">Dirección de la propiedad</label>
-                        <div class="invalid-feedback" data-sb-feedback="direccion:required">La dirección es obligatoria.</div>
-                    </div> -->
-<!-- Campo 8: Región de la propiedad-->
-<!-- <div class="form-floating mb-3">
-                        <select class="form-select" id="region" data-sb-validations="required">
-                            <option value="" disabled selected>Seleccione su región</option>
-                            <option value="XV">Región de Arica y Parinacota (XV)</option>
-                            <option value="I">Región de Tarapacá (I)</option>
-                            <option value="II">Región de Antofagasta (II)</option>
-                            <option value="III">Región de Atacama (III)</option>
-                            <option value="IV">Región de Coquimbo (IV)</option>
-                            <option value="V">Región de Valparaíso (V)</option>
-                            <option value="RM">Región Metropolitana de Santiago (RM)</option>
-                            <option value="VI">Región del Libertador General Bernardo O'Higgins (VI)</option>
-                            <option value="VII">Región del Maule (VII)</option>
-                            <option value="XVI">Región de Ñuble (XVI)</option>
-                            <option value="VIII">Región del Biobío (VIII)</option>
-                            <option value="IX">Región de La Araucanía (IX)</option>
-                            <option value="XIV">Región de Los Ríos (XIV)</option>
-                            <option value="X">Región de Los Lagos (X)</option>
-                            <option value="XI">Región de Aysén del General Carlos Ibáñez del Campo (XI)</option>
-                            <option value="XII">Región de Magallanes y de la Antártica Chilena (XII)</option>
-                        </select>
-                        <div class="invalid-feedback" data-sb-feedback="region:required">La región es obligatoria.</div>
-                    </div> -->
-<!-- Campo 9: Comuna -->
-<!-- <div class="form-floating mb-3">
-                        <input class="form-control" id="comuna" type="text" placeholder="Ingrese la comuna..." data-sb-validations="required" />
-                        <label for="comuna">Comuna</label>
-                        <div class="invalid-feedback" data-sb-feedback="comuna:required">La comuna es obligatoria.</div>
-                    </div> -->
-
-<!-- Campo 10: Cantidad de propiedades a tasar -->
-<!-- <label>¿Desea tasar más de una propiedad?</label><br>
-                    <input type="radio" id="una" name="cantidad_propiedades" value="una" required>
-                    <label for="una">No</label><br>
-
-                    <input type="radio" id="mas" name="cantidad_propiedades" value="mas">
-                    <label for="mas">Sí</label> -->
-
-<!-- PENDIENTE Campo 11: CHECKBOX DE: PERSONA JURIDICA (EMPRESA) Opciones de si y no
-                    <div class="form-group">
-                        <label for="tasar-mas">¿Es persona jurídica?</label><br>
-                        <input type="radio" id="tasar-si" name="tasar-mas" value="si" required>
-                        <label for="tasar-si">Sí</label><br>
-                        <input type="radio" id="tasar-no" name="tasar-mas" value="no" required>
-                        <label for="tasar-no">No</label>
-                    </div>
-                    Empresa: CONDICIONAL PARA LOS QUE SEAN PERSONA JURÍDICA (EMPRESA)
-                    <div class="form-floating mb-3">
-                        <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
-                        <label for="name">Empresa</label>
-                        <div class="invalid-feedback" data-sb-feedback="name:required">El nombre de la empresa es obligatorio. Si es persona natural indíquelo.</div>
-                    </div>-->
