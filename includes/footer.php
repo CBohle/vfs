@@ -49,17 +49,6 @@ $base_url = $is_landing ? '' : '/public/index.php'; // Ajusta esta ruta si cambi
 <script src="/assets/js/scripts.js"></script>
 <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
 
-<!-- VALIDACIONES FORMULARIO DE CONTACTO - INDEX -->
-<script>
-    document.getElementById('contactoForm').addEventListener('submit', function(event) {
-        const form = event.target;
-        const mensaje = form.mensaje;
-        const servicio = form.servicio;
-        let valid = true;       
-
-    });
-</script>
-
 <!-- Script para el campo adicional, del campo 13, de Formulario de postulación -->
 <script>
     function mostrarCampoEspecificar() {
