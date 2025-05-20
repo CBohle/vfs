@@ -37,6 +37,7 @@
         $sql = 'SELECT
                     mensajes.*, 
                     respuestas.*,
+                    mensajes.id AS mensaje_id,
                     usuarios_admin.nombre AS admin_nombre,
                     usuarios_admin.apellido AS admin_apellido,
                     usuarios_admin.email AS admin_email,
