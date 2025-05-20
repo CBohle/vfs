@@ -1,7 +1,6 @@
 <?php
 require_once '../../includes/auth.php';
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -19,6 +18,11 @@ require_once '../../includes/auth.php';
         .dashboard-box {
             margin-top: 50px;
         }
+        .badge {
+            font-size: 0.75rem;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
     </style>
 </head>
 <body>
@@ -29,11 +33,27 @@ require_once '../../includes/auth.php';
         <a class="navbar-brand" href="#">VFS - Admin</a>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link active" data-section="inicio">Inicio</a></li>
-                <li class="nav-item"><a class="nav-link" data-section="mensajes">Mensajes</a></li>
-                <li class="nav-item"><a class="nav-link" data-section="postulaciones">Postulaciones</a></li>
-                <li class="nav-item"><a class="nav-link" data-section="clientes">Clientes</a></li>
-                <li class="nav-item"><a class="nav-link" href="../../logout.php">Cerrar sesión</a></li>
+                <li class="nav-item">
+                    <a class="nav-link active" data-section="inicio">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-section="mensajes">
+                        Mensajes
+                        <span id="badge-mensajes" class="badge bg-danger d-none"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-section="postulaciones">
+                        Postulaciones
+                        <span id="badge-postulaciones" class="badge bg-danger d-none"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-section="clientes">Clientes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../../logout.php">Cerrar sesión</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -47,9 +67,10 @@ require_once '../../includes/auth.php';
     </div>
 </div>
 
-<!-- Script para carga dinámica -->
+<!-- Script para carga dinámica + notificaciones -->
 <script>
 $(document).ready(function () {
+    // Carga de secciones
     $('.nav-link[data-section]').click(function (e) {
         e.preventDefault();
 
@@ -59,16 +80,35 @@ $(document).ready(function () {
         $(this).addClass('active');
 
         if (section === 'inicio') {
-            $('#contenido-dinamico').html(`
-                <div class="text-center text-muted">
-                    <h4>Bienvenido al panel de administración</h4>
-                    <p>Selecciona una sección del menú para comenzar.</p>
-                </div>
-            `);
+            $('#contenido-dinamico').load('inicioResumen.php');
         } else {
             $('#contenido-dinamico').load(section + '.php');
         }
     });
+
+    // Notificaciones
+    function actualizarNotificaciones() {
+        $.ajax({
+            url: 'notificaciones.php',
+            type: 'GET',
+            success: function(data) {
+                if (data.mensajes > 0) {
+                    $('#badge-mensajes').text(data.mensajes).removeClass('d-none');
+                } else {
+                    $('#badge-mensajes').addClass('d-none');
+                }
+
+                if (data.postulaciones > 0) {
+                    $('#badge-postulaciones').text(data.postulaciones).removeClass('d-none');
+                } else {
+                    $('#badge-postulaciones').addClass('d-none');
+                }
+            }
+        });
+    }
+
+    actualizarNotificaciones();
+    setInterval(actualizarNotificaciones, 30000); // cada 30 segundos
 });
 </script>
 
