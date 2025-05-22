@@ -1,8 +1,12 @@
 <?php
-// Detectar si estamos en la landing o no
+// Incluye config.php que determina la BASE_URL
+require_once __DIR__ . '/../includes/config.php';
+
+//Detectar si estamos en la landing o no
 $is_landing = basename($_SERVER['PHP_SELF']) === 'index.php';
-$base_url = $is_landing ? '' : '/public/index.php'; // Ajusta esta ruta si cambia
+$base_url = $is_landing ? '' : BASE_URL . 'index.php';
 ?>
+
 
 <footer class="bg-light py-5">
     <div class="container px-4 px-lg-5">
@@ -10,7 +14,7 @@ $base_url = $is_landing ? '' : '/public/index.php'; // Ajusta esta ruta si cambi
             <!-- COLUMNA IZQUIERDA: IDENTIFICACIÓN -->
             <div class="col-12 col-md-4 mb-4">
                 <a href="#top">
-                    <img src="../assets/images/logo/LogoVFS2.png" alt="Logo de la empresa" style="max-width: 150px;">
+                    <img src="<?= BASE_URL ?>assets/images/logo/LogoVFS2.png" alt="Logo de la empresa" style="max-width: 150px;">                    
                 </a>
                 <br>
                 <p class="mb-0">Calle Ejemplo 123</p>
@@ -24,6 +28,7 @@ $base_url = $is_landing ? '' : '/public/index.php'; // Ajusta esta ruta si cambi
                     <li><a href="<?= $base_url ?>#contacto">Formulario de contacto</a></li>
                     <li><a href="<?= $base_url ?>#servicios">Nuestros servicios</a></li>
                 </ul>
+                
             </div>
             <!-- COLUMNA DERECHA: CONTACTO-->
             <div class="col-12 col-md-4 mb-4">
@@ -46,53 +51,11 @@ $base_url = $is_landing ? '' : '/public/index.php'; // Ajusta esta ruta si cambi
 <!-- SimpleLightbox plugin JS-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.js"></script>
 <!-- Core theme JS-->
-<script src="/assets/js/scripts.js"></script>
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-<!-- * *                               SB Forms JS                               * *-->
-<!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<script src="<?= BASE_URL ?>assets/js/scripts.js"></script>
 <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
-<script>
-    document.getElementById('contactoForm').addEventListener('submit', function(event) {
-        const form = event.target;
-        const mensaje = form.mensaje;
-        const servicio = form.servicio;
-        let valid = true;
 
-        // Validación NOMBRE
-        const nombre = form.nombre.value.trim();
-        const nombreInput = form.nombre;
-        const nombreError = document.getElementById('nombre-error');
-
-        if (nombre === "") {
-            nombreError.textContent = "El nombre es obligatorio.";
-            nombreInput.classList.add("is-invalid");
-            valid = false;
-        } else if (nombre.length < 2) {
-            nombreError.textContent = "El nombre debe tener al menos 2 carácteres.";
-            nombreInput.classList.add("is-invalid");
-            valid = false;
-        } else if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(nombre)) {
-            nombreError.textContent = "El nombre no debe contener números ni símbolos.";
-            nombreInput.classList.add("is-invalid");
-            valid = false;
-        } else {
-            nombreInput.classList.remove("is-invalid");
-        }
-
-        // Puedes replicar el mismo patrón para:
-        // - apellido → form.apellido.value, id="apellido-error"
-        // - mensaje → validar longitud mínima y máxima con mensajes distintos
-        // - teléfono → patrón y contenido válido
-        // - servicio → si está vacío
-
-        if (!valid) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-    });
-</script>
-<!-- Script para el campo adicional, del campo 13, de Formulario de postulación -->
+<!-- VALIDACIONES FORMULARIO DE POSTULACIONES -->
+<!-- Script para el campo adicional, del campo 13 -->
 <script>
     function mostrarCampoEspecificar() {
         const seleccion = document.getElementById("formacion_tasacion").value;
@@ -109,31 +72,3 @@ $base_url = $is_landing ? '' : '/public/index.php'; // Ajusta esta ruta si cambi
         }
     }
 </script>
-<!-- // Validación personalizada para mensaje
-if (mensaje.value.length < 20) {
-    mensaje.classList.add('is-invalid');
-    document.getElementById('mensajeError').textContent="El mensaje debe tener al menos 20 caracteres." ;
-    valid=false;
-    } else if (mensaje.value.length> 1000) {
-    mensaje.classList.add('is-invalid');
-    document.getElementById('mensajeError').textContent = "El mensaje no puede superar los 1000 caracteres.";
-    valid = false;
-    } else {
-    mensaje.classList.remove('is-invalid');
-    }
-
-    // Validación del campo servicio (select)
-    if (!servicio.value) {
-    servicio.classList.add('is-invalid');
-    valid = false;
-    } else {
-    servicio.classList.remove('is-invalid');
-    }
-
-    if (!form.checkValidity() || !valid) {
-    event.preventDefault();
-    event.stopPropagation();
-    form.classList.add('was-validated');
-    }
-    <!-- });
-    </script> --> -->
