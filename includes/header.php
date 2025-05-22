@@ -48,7 +48,7 @@ $base_url = $is_landing ? '' : BASE_URL . 'index.php';
 
                 <!-- BOTONES (TRABAJA EN VFS/INICIA SESIÓN) -->
                 <div class="d-flex flex-column flex-lg-row gap-2">
-                    <a href="<?= BASE_URL ?>postulaciones.php" class="btn btn-primary text-center" style="min-width: 160px;">Trabaja en VFS</a>
+                    <a href="<?= BASE_URL ?>postular.php" class="btn btn-primary text-center" style="min-width: 160px;">Trabaja en VFS</a>
                     <a href="<?= BASE_URL ?>admin/login.php" class="btn btn-primary text-center" style="min-width: 160px;">Iniciar sesión</a>
                 </div>
             </div>
