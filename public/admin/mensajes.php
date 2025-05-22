@@ -256,7 +256,6 @@ $pendientes_mensajes = obtener_mensajes_pendientes();
                                 if (type === 'display') {
                                     return `<div class="truncado-3-lineas">${data}</div>`;
                                 }
-                                // Para export, copy, etc. (mostrar el mensaje completo)
                                 return data;
                             }
                         },

@@ -5,67 +5,44 @@ ini_set('display_errors', 0);
 require_once __DIR__ . '/../../includes/db.php';
 require_once __DIR__ . '/../../includes/Controller/mensajesController.php';
 
-global $conexion;
-
-//eliminar mensaje segun id tabla
-if (isset($_POST['accion']) && $_POST['accion'] === 'eliminar' && isset($_POST['id'])) {
-    $id = intval($_POST['id']);
-    $sql = "UPDATE mensajes SET estado = 'eliminado' WHERE id = ?";
-    $stmt = $conexion->prepare($sql);
-    $stmt->bind_param('i', $id);
-    if ($stmt->execute()) {
-        echo json_encode(['success' => true]);
-    } else {
-        echo json_encode(['success' => false]);
-    }
-    exit;
-}
-
-if (isset($_POST['accion']) && $_POST['accion'] === 'recuperar' && isset($_POST['id'])) {
-    $id = intval($_POST['id']);
-    $sql = "UPDATE mensajes SET estado = 'pendiente' WHERE id = ?";
-    $stmt = $conexion->prepare($sql);
-    $stmt->bind_param('i', $id);
-    if ($stmt->execute()) {
-        echo json_encode(['success' => true]);
-    } else {
-        echo json_encode(['success' => false]);
-    }
-    exit;
-}
-
-if ($_POST['accion'] === 'importante' && isset($_POST['mensaje_id'], $_POST['importante'])) {
-    $id = intval($_POST['mensaje_id']);
-    $importante = intval($_POST['importante']);
-    $stmt = $conexion->prepare("UPDATE mensajes SET importante = ? WHERE id = ?");
-    $stmt->bind_param("ii", $importante, $id);
-    if ($stmt->execute()) {
-        echo json_encode(['success' => true]);
-    } else {
-        echo json_encode(['success' => false]);
-    }
-    exit;
-}
-
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     echo json_encode(["error" => "Método no permitido"]);
     exit;
 }
 
+// Eliminar mensaje
+if (isset($_POST['accion']) && $_POST['accion'] === 'eliminar' && isset($_POST['id'])) {
+    $id = intval($_POST['id']);
+    if (actualizar_estado($id, 'eliminado')) {
+        echo json_encode(['success' => true]);
+    } else {
+        echo json_encode(['success' => false]);
+    }
+    exit;
+}
 
+// Marcar como importante
+if ($_POST['accion'] === 'importante' && isset($_POST['mensaje_id'], $_POST['importante'])) {
+    $id = intval($_POST['mensaje_id']);
+    $importante = intval($_POST['importante']);
+    if (actualizar_importante($id, $importante)) {
+        echo json_encode(['success' => true]);
+    } else {
+        echo json_encode(['success' => false]);
+    }
+    exit;
+}
 
-$columns = [
-    'importante',
-    'id',
-    'servicio',
-    'nombre',
-    'email',
-    'mensaje',
-    'estado',
-    'fecha_creacion'
-];
+// Recuperar mensaje y actualizar estado basado en la respuesta
+if (isset($_POST['accion']) && $_POST['accion'] === 'recuperar' && isset($_POST['id'])) {
+    $id = intval($_POST['id']);
+    echo actualizar_estado_mensaje($id);
+    exit;
+}
 
+// Consulta con filtros (no se modifica mucho aquí)
+$columns = ['importante', 'id', 'servicio', 'nombre', 'email', 'mensaje', 'estado', 'fecha_creacion'];
 $draw = intval($_POST['draw'] ?? 0);
 $start = intval($_POST['start'] ?? 0);
 $length = intval($_POST['length'] ?? 10);

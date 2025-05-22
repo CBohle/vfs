@@ -20,11 +20,11 @@ CREATE TABLE mensajes (
 );
 
 INSERT INTO mensajes (nombre, apellido, email, telefono, servicio, mensaje, importante, estado) VALUES 
-('Camila', 'Rojas', 'camila.rojas@mail.com', '987654321', 'Otros', 'Hola, quisiera saber si también hacen informes de avalúo para seguros.', FALSE, 'respondido'),
-('Jorge', 'Paredes', 'jorge.paredes@mail.com', '965432187', 'Tasacion de bienes raices', 'Necesito una tasación urgente para una propiedad en Ñuñoa, ¿cuánto demoran?', FALSE, 'leido'),
-('María', 'Torres', 'maria.torres@mail.com', '912345678', 'Ambos servicios', 'Estoy buscando tasar una propiedad y también un vehículo, ¿ustedes pueden hacerlo?', FALSE, 'respondido'),
-('Luis', 'González', 'luis.gonzalez@mail.com', '923456789', 'Tasacion de bienes raices', '¿Realizan tasaciones para propiedades rurales? Tengo un terreno en Melipilla.', TRUE, 'respondido'),
-('Fernanda', 'Vega', 'fernanda.vega@mail.com', '934567891', 'Otros', '¿Atienden los fines de semana? Me gustaría agendar una consulta.', FALSE,'pendiente');
+('Camila', 'Rojas', 'camila.rojas@mail.com', '987654321', 'Otros', 'Hola, quisiera saber si también hacen informes de avalúo para seguros.',FALSE, 'respondido'),
+('Jorge', 'Paredes', 'jorge.paredes@mail.com', '965432187', 'Tasacion de bienes raices', 'Necesito una tasación urgente para una propiedad en Ñuñoa, ¿cuánto demoran?',FALSE, 'leido'),
+('María', 'Torres', 'maria.torres@mail.com', '912345678', 'Ambos servicios', 'Estoy buscando tasar una propiedad y también un vehículo, ¿ustedes pueden hacerlo?',FALSE, 'respondido'),
+('Luis', 'González', 'luis.gonzalez@mail.com', '923456789', 'Tasacion de bienes raices', '¿Realizan tasaciones para propiedades rurales? Tengo un terreno en Melipilla.',TRUE, 'respondido'),
+('Fernanda', 'Vega', 'fernanda.vega@mail.com', '934567891', 'Otros', '¿Atienden los fines de semana? Me gustaría agendar una consulta.',FALSE,'pendiente');
 
 CREATE TABLE curriculum (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -71,9 +71,9 @@ CREATE TABLE usuarios_admin (
 );
 
 INSERT INTO usuarios_admin (nombre, apellido, email, password, rol, activo) VALUES 
-('Jaime','Farias','Email1@prueba.com','1111','Admin','true'),
-('Federico','Mendez','Email2@prueba.com','2222','Admin','true'),
-('Berta','Vega','Email3@prueba.com','3333','Admin','false');
+('Jaime','Farias','Email1@prueba.com','1111','Admin',TRUE),
+('Federico','Mendez','Email2@prueba.com','2222','Admin',TRUE),
+('Berta','Vega','Email3@prueba.com','3333','Admin',FALSE);
 
 CREATE TABLE respuestas (
     id INT PRIMARY KEY AUTO_INCREMENT,
