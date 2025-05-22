@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../../includes/auth.php';
 // require_once __DIR__ . '/../../includes/db.php'; // ← Activa cuando uses base de datos real
+require_once __DIR__ . '/../../includes/config.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'], $_POST['estado'])) {
     $id = $_POST['id'];

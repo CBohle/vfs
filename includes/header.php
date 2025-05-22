@@ -1,17 +1,21 @@
 <?php
-// Detectar si estamos en la landing o no
+// Incluye config.php que determina la BASE_URL
+require_once __DIR__ . '/../includes/config.php';
+
+//Detectar si estamos en la landing o no
 $is_landing = basename($_SERVER['PHP_SELF']) === 'index.php';
-$base_url = $is_landing ? '' : '/public/index.php'; // Ajusta esta ruta si cambia
+$base_url = $is_landing ? '' : BASE_URL . 'index.php';
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>VFS</title>
     <!-- Bootstrap y estilos -->
-    <link href="/assets/css/styles.css" rel="stylesheet" />
+    <link href="<?= BASE_URL ?>assets/css/styles.css" rel="stylesheet" />
     <!-- Íconos Bootstrap Icons (opcional) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
 </head>
@@ -21,8 +25,8 @@ $base_url = $is_landing ? '' : '/public/index.php'; // Ajusta esta ruta si cambi
     <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
         <div class="container px-4 px-lg-5">
             <!-- LOGO -->
-            <a class="navbar-brand me-4" href="<?= $is_landing ? '#page-top' : '/public/index.php' ?>">
-                <img src="../assets/images/logo/LogoVFS2.png" alt="Logo de la empresa" style="height: 50px;">
+            <a class="navbar-brand me-4" href="<?= $is_landing ? '#page-top' : BASE_URL . '/index.php' ?>">
+                <img src="<?= BASE_URL ?>assets/images/logo/LogoVFS2.png" alt="Logo de la empresa" style="height: 50px;">
             </a>
 
             <!-- BOTÓN MENÚ COLAPSABLE -->
@@ -41,10 +45,11 @@ $base_url = $is_landing ? '' : '/public/index.php'; // Ajusta esta ruta si cambi
                     <li class="nav-item"><a class="nav-link" href="<?= $base_url ?>#contacto">Contacto</a></li>
                 </ul>
 
+
                 <!-- BOTONES (TRABAJA EN VFS/INICIA SESIÓN) -->
                 <div class="d-flex flex-column flex-lg-row gap-2">
-                    <a href="postulaciones.php" class="btn btn-primary text-center" style="min-width: 160px;">Trabaja en VFS</a>
-                    <a href="login.html" class="btn btn-primary text-center" style="min-width: 160px;">Iniciar sesión</a>
+                    <a href="<?= BASE_URL ?>postulaciones.php" class="btn btn-primary text-center" style="min-width: 160px;">Trabaja en VFS</a>
+                    <a href="<?= BASE_URL ?>admin/login.php" class="btn btn-primary text-center" style="min-width: 160px;">Iniciar sesión</a>
                 </div>
             </div>
         </div>

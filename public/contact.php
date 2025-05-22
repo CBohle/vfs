@@ -1,5 +1,8 @@
+
 <?php
 // require_once '../includes/db.php'; // ← Activar cuando se defina la conexión $conn
+
+require_once __DIR__ . '/../includes/config.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validación reCAPTCHA
@@ -61,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
   <meta charset="UTF-8">
   <title>Contacto - Empresa</title>
-  <link href="/assets/css/styles.css" rel="stylesheet">
+  <link href="<?= BASE_URL ?>assets/css/styles.css" rel="stylesheet">
 </head>
 <body>
   <div class="container" style="padding: 50px; max-width: 600px; margin: auto;">
@@ -74,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endif; ?>
 
     <br>
-    <a href="index.php" style="text-decoration: none; color: #007bff;">← Volver al inicio</a>
+    <a href="<?= BASE_URL ?>index.php" style="text-decoration: none; color: #007bff;">← Volver al inicio</a>
   </div>
 </body>
 </html>
