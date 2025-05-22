@@ -34,6 +34,19 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'recuperar' && isset($_POST[
     exit;
 }
 
+if ($_POST['accion'] === 'importante' && isset($_POST['mensaje_id'], $_POST['importante'])) {
+    $id = intval($_POST['mensaje_id']);
+    $importante = intval($_POST['importante']);
+    $stmt = $conexion->prepare("UPDATE mensajes SET importante = ? WHERE id = ?");
+    $stmt->bind_param("ii", $importante, $id);
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true]);
+    } else {
+        echo json_encode(['success' => false]);
+    }
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     echo json_encode(["error" => "Método no permitido"]);
