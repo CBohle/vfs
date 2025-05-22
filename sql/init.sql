@@ -15,15 +15,16 @@ CREATE TABLE mensajes (
     mensaje TEXT NOT NULL,
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     fecha_modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    importante BOOLEAN NOT NULL DEFAULT FALSE,
     estado ENUM('pendiente', 'leido', 'respondido', 'eliminado') NOT NULL DEFAULT 'pendiente'
 );
 
-INSERT INTO mensajes (id, nombre, apellido, email, telefono, servicio, mensaje, estado) VALUES 
-(1, 'Camila', 'Rojas', 'camila.rojas@mail.com', '987654321', 'Otros', 'Hola, quisiera saber si también hacen informes de avalúo para seguros.', 'respondido'),
-(2, 'Jorge', 'Paredes', 'jorge.paredes@mail.com', '965432187', 'Tasacion de bienes raices', 'Necesito una tasación urgente para una propiedad en Ñuñoa, ¿cuánto demoran?', 'leido'),
-(3, 'María', 'Torres', 'maria.torres@mail.com', '912345678', 'Ambos servicios', 'Estoy buscando tasar una propiedad y también un vehículo, ¿ustedes pueden hacerlo?', 'respondido'),
-(4, 'Luis', 'González', 'luis.gonzalez@mail.com', '923456789', 'Tasacion de bienes raices', '¿Realizan tasaciones para propiedades rurales? Tengo un terreno en Melipilla.', 'respondido'),
-(5, 'Fernanda', 'Vega', 'fernanda.vega@mail.com', '934567891', 'Otros', '¿Atienden los fines de semana? Me gustaría agendar una consulta.', 'pendiente');
+INSERT INTO mensajes (id, nombre, apellido, email, telefono, servicio, mensaje, importante, estado) VALUES 
+(1, 'Camila', 'Rojas', 'camila.rojas@mail.com', '987654321', 'Otros', 'Hola, quisiera saber si también hacen informes de avalúo para seguros.', FALSE, 'respondido'),
+(2, 'Jorge', 'Paredes', 'jorge.paredes@mail.com', '965432187', 'Tasacion de bienes raices', 'Necesito una tasación urgente para una propiedad en Ñuñoa, ¿cuánto demoran?', FALSE, 'leido'),
+(3, 'María', 'Torres', 'maria.torres@mail.com', '912345678', 'Ambos servicios', 'Estoy buscando tasar una propiedad y también un vehículo, ¿ustedes pueden hacerlo?', FALSE, 'respondido'),
+(4, 'Luis', 'González', 'luis.gonzalez@mail.com', '923456789', 'Tasacion de bienes raices', '¿Realizan tasaciones para propiedades rurales? Tengo un terreno en Melipilla.', TRUE, 'respondido'),
+(5, 'Fernanda', 'Vega', 'fernanda.vega@mail.com', '934567891', 'Otros', '¿Atienden los fines de semana? Me gustaría agendar una consulta.', FALSE,'pendiente');
 
 CREATE TABLE curriculum (
     id INT PRIMARY KEY AUTO_INCREMENT,

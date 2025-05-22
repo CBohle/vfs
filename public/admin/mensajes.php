@@ -232,8 +232,9 @@ $pendientes_mensajes = obtener_mensajes_pendientes();
                             orderable: true,
                             searchable: false,
                             className: 'text-center',
-                            render: function(data) {
-                                return `<i class="bi ${data == 1 ? 'bi-star-fill text-warning' : 'bi-star text-muted'}"></i>`;
+                            render: function(data, type, row) {
+                                const icon = data == 1 ? 'bi-star-fill text-warning' : 'bi-star text-muted';
+                                return `<i class="bi ${icon} marcarImportante" data-id="${row.id}" data-valor="${data}" style="cursor:pointer;"></i>`;
                             }
                         },
                         {
@@ -410,6 +411,23 @@ $pendientes_mensajes = obtener_mensajes_pendientes();
             }
             $(document).ready(function() {
                 inicializarTablaMensajes();
+            });
+            $(document).on('click', '.marcarImportante', function() {
+                const id = $(this).data('id');
+                const valorActual = $(this).data('valor');
+                const nuevoValor = valorActual == 1 ? 0 : 1;
+
+                $.post('mensajesAjax.php', {
+                    accion: 'importante',
+                    mensaje_id: id,
+                    importante: nuevoValor
+                }, function(response) {
+                    if (response.success) {
+                        tabla.ajax.reload(null, false); // recarga sin perder la página actual
+                    } else {
+                        alert('No se pudo actualizar el estado de importancia.');
+                    }
+                }, 'json');
             });
         </script>
 </body>
