@@ -6,7 +6,7 @@ FLUSH PRIVILEGES;
 USE bd_test_vfs;
 
 CREATE TABLE mensajes (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(50) NOT NULL,
     apellido VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL,
@@ -26,7 +26,7 @@ INSERT INTO mensajes (id, nombre, apellido, email, telefono, servicio, mensaje, 
 (5, 'Fernanda', 'Vega', 'fernanda.vega@mail.com', '934567891', 'Otros', '¿Atienden los fines de semana? Me gustaría agendar una consulta.', 'pendiente');
 
 CREATE TABLE curriculum (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(50) NOT NULL,
     apellido VARCHAR(50) NOT NULL,
     fecha_nacimiento DATE NOT NULL,
