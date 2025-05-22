@@ -2,6 +2,13 @@
     https://startbootstrap.com/template/creative
     Licencia MIT -->
 <!-- Vista pública del landing -->
+<!-- Creative - Start Bootstrap Theme
+    https://startbootstrap.com/template/creative
+    Licencia MIT -->
+<!-- Vista pública del landing -->
+<?php
+require_once __DIR__ . '/../includes/config.php';
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -12,7 +19,7 @@
     <meta name="author" content="" />
     <title>Postula</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>assets/favicon.ico" />
     <!-- Bootstrap Icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Google fonts-->
@@ -21,7 +28,7 @@
     <!-- SimpleLightbox plugin CSS-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="/assets/css/styles.css" rel="stylesheet" />
+    <link href="<?= BASE_URL ?>assets/css/styles.css" rel="stylesheet" />
 </head>
 
 <!-- INCLUDE HEADER -->
@@ -39,10 +46,10 @@
         </div>
         <div class="accordion" id="postulacionAccordion">
 
-            <!-- INICIO FORMULARIO DE POSTULACIÓN-->
-            <form id="postulacionForm" action="/ruta/donde/se/enviará/el/archivo" method="post" enctype="multipart/form-data">
+            <!-- INICIO FORMULARIO DE POSTULACIÓN -->
+            <form id="postulacionForm" action="<?= BASE_URL ?>/ruta/donde/se/enviará/el/archivo" method="post" enctype="multipart/form-data">
 
-                <!-- DATOS PERSONALES (Nombre/Apellido/Nacimiento/Rut)-->
+                <!-- DATOS PERSONALES (Campo 1-4)(Nombre/Apellido/Nacimiento/Rut)-->
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingOne">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
@@ -79,7 +86,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- DATOS DE CONTACTO (Correo/Teléfono/Dirección/Comuna/Región-->
+                <!-- DATOS DE CONTACTO (Campo 5-9)(Correo/Teléfono/Dirección/Comuna/Región-->
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingTwo">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseOne">
@@ -140,7 +147,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- ESTUDIOS Y EXPERIENCIA (Estudios/Institución/AñoTitulación/4 preguntas) -->
+                <!-- ESTUDIOS Y EXPERIENCIA (Campo 10-15)(Estudios/Institución/AñoTitulación/4 preguntas) -->
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingThree">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseOne">
@@ -216,7 +223,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- DISPONIBILIDAD Y COBERTURA (3 preguntas)-->
+                <!-- DISPONIBILIDAD Y COBERTURA (Campo 16-18)(3 preguntas)-->
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingFour">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseOne">
@@ -258,7 +265,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- CURRICULUM VITAE -->
+                <!-- CURRICULUM VITAE (Campo 19)(CV)-->
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingFive">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseOne">

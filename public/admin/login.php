@@ -1,6 +1,7 @@
 <?php
 // Login con validación por base de datos (comentado)
 // require_once __DIR__ . '/../../includes/db.php';
+require_once __DIR__ . '/../../includes/config.php';
 
 session_start();
 

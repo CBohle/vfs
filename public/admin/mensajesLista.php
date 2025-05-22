@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../../includes/db.php';
 require_once __DIR__ . '/../../includes/Controller/mensajesController.php';
-
+require_once __DIR__ . '/../../includes/config.php';
 // Leer filtros recibidos por POST, o valores por defecto si no están
 $estado = $_POST['estado'] ?? 'Todos';
 $servicio = $_POST['servicio'] ?? 'Todos';
