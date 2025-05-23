@@ -2,6 +2,9 @@
     https://startbootstrap.com/template/creative
     Licencia MIT -->
 <!-- Vista pública del landing -->
+<?php
+require_once __DIR__ . '/../includes/config.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,7 +15,7 @@
     <meta name="author" content="" />
     <title>VFS</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>assets/favicon.ico" />
     <!-- Bootstrap Icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Google fonts-->
@@ -21,8 +24,7 @@
     <!-- SimpleLightbox plugin CSS-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="../assets/css/styles.css" rel="stylesheet" />
-
+    <link href="<?= BASE_URL ?>assets/css/styles.css" rel="stylesheet" />
 </head>
 
 <!-- INCLUDE HEADER  -->
@@ -44,6 +46,7 @@
     </div>
 </header>
 <!-- FIN MASTHEAD -->
+
 
 <!-- INICIO SECCIÓN QUIÉNES SOMOS-->
 <section class="page-section bg-primary" id="nosotros">
@@ -68,9 +71,9 @@
         <div class="row g-0">
             <div class="col-lg-6 col-sm-6">
                 <a class="servicios-box"
-                    href="../assets/images/servicios/fullsize/1.jpg"
+                    href="<?= BASE_URL ?>assets/images/servicios/fullsize/1.jpg"
                     title="Tasación de bienes raíces asasasasasasasasasasaasaosasUasasasasasa">
-                    <img class="img-fluid" src="../assets/images/servicios/thumbnails/1.jpg" alt="..." />
+                    <img class="img-fluid" src="<?= BASE_URL ?>assets/images/servicios/thumbnails/1.jpg" alt="Tasación de bienes raíces" />
                     <div class="servicios-box-caption">
                         <div class="project-category text-white-50">Tasación</div>
                         <div class="project-name">Tasación de bienes raíces</div>
@@ -78,54 +81,19 @@
                 </a>
             </div>
             <div class="col-lg-6 col-sm-6 pe-4">
-                <a class="servicios-box" href="../assets/images/servicios/fullsize/2.jpg" title="Project Name">
-                    <img class="img-fluid" src="../assets/images/servicios/thumbnails/2.jpg" alt="..." />
+                <a class="servicios-box" href="<?= BASE_URL ?>assets/images/servicios/fullsize/2.jpg" title="Consultoría inmobiliaria">
+                    <img class="img-fluid" src="<?= BASE_URL ?>assets/images/servicios/thumbnails/2.jpg" alt="Consultoría inmobiliaria" />
                     <div class="servicios-box-caption">
                         <div class="project-category text-white-50">Consultoría</div>
                         <div class="project-name">Consultoría inmobiliaria</div>
                     </div>
                 </a>
             </div>
-            <!-- <div class="col-lg-4 col-sm-6">
-                    <a class="servicios-box" href="../assets/images/servicios/fullsize/3.jpg" title="Project Name">
-                        <img class="img-fluid" src="../assets/images/servicios/thumbnails/3.jpg" alt="..." />
-                        <div class="servicios-box-caption">
-                            <div class="project-category text-white-50">Category</div>
-                            <div class="project-name">Project Name</div>
-                        </div>
-                    </a>
-                </div> -->
-            <!-- <div class="col-lg-4 col-sm-6">
-                    <a class="servicios-box" href="../assets/images/servicios/fullsize/4.jpg" title="Project Name">
-                        <img class="img-fluid" src="../assets/images/servicios/thumbnails/4.jpg" alt="..." />
-                        <div class="servicios-box-caption">
-                            <div class="project-category text-white-50">Category</div>
-                            <div class="project-name">Project Name</div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <a class="servicios-box" href="../assets/images/servicios/fullsize/5.jpg" title="Project Name">
-                        <img class="img-fluid" src="../assets/images/servicios/thumbnails/5.jpg" alt="..." />
-                        <div class="servicios-box-caption">
-                            <div class="project-category text-white-50">Category</div>
-                            <div class="project-name">Project Name</div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <a class="servicios-box" href="../assets/images/servicios/fullsize/6.jpg" title="Project Name">
-                        <img class="img-fluid" src="../assets/images/servicios/thumbnails/6.jpg" alt="..." />
-                        <div class="servicios-box-caption p-3">
-                            <div class="project-category text-white-50">Category</div>
-                            <div class="project-name">Project Name</div>
-                        </div>
-                    </a>
-                </div> -->
         </div>
     </div>
 </div>
 <!-- FIN SECCIÓN SERVICIOS-->
+
 
 <!-- LLAMADA A LA ACCIÓN-->
 <section class="page-section bg-dark text-white">
@@ -347,7 +315,6 @@
                         <label for="email">Correo</label>
                         <div class="invalid-feedback">Ingrese un correo válido.</div>
                     </div>
-
                     <!-- Campo 4: Teléfono OK-->
                     <div class="form-floating mb-3">
                         <input 
@@ -356,12 +323,11 @@
                             name="telefono" 
                             type="tel" 
                             placeholder="56912345678" 
-                            required
-                            required pattern="^\d{8,15}$" />
+                            required 
+                            pattern="^\d{8,15}$" />
                         <label for="telefono">Teléfono de contacto</label>
                         <div class="invalid-feedback">El número es obligatorio y solo debe contener dígitos (sin símbolos ni espacios).</div>
                     </div>
-
                     <!-- Elección de servicio OK-->
                     <div class="form-group mb-3">
                         <label for="servicio">¿Qué servicio necesita?</label>
@@ -379,19 +345,16 @@
                         <label for="mensaje">Mensaje</label>
                         <div class="invalid-feedback" id="mensajeError">El mensaje es obligatorio y debe tener entre 20 y 1000 caracteres.</div>
                     </div>
-
                     <!-- Respuesta recepción exitosa -->
                     <div class="d-none" id="submitSuccessMessage">
                         <div class="text-center mb-3">
                             <div class="fw-bolder">Su mensaje ha sido recibido con éxito.</div>
                         </div>
                     </div>
-
                     <!-- Respuesta error envío -->
                     <div class="d-none" id="submitErrorMessage">
                         <div class="text-center text-danger mb-3">Error al enviar el mensaje.</div>
                     </div>
-
                     <!-- Botón enviar -->
                     <div class="d-grid">
                         <button class="btn btn-primary btn-xl" id="submitButton" type="submit">Enviar</button>
