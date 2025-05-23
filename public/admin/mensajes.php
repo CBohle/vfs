@@ -1,28 +1,25 @@
 <?php
 require_once __DIR__ . '/../../includes/auth.php';
-// require_once __DIR__ . '/../../includes/db.php'; // ← Activa cuando uses base de datos real
+require_once __DIR__ . '/../../includes/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'], $_POST['estado'])) {
-    $id = $_POST['id'];
-    $nuevoEstado = $_POST['estado'];
-
-    // Consulta real:
-    /*
-    $stmt = $conn->prepare("UPDATE mensajes SET estado = ? WHERE id = ?");
-    $stmt->bind_param("si", $nuevoEstado, $id);
-    $stmt->execute();
-    $stmt->close();
-    */
-    // Si se envía por AJAX no redirijas.
+    $id = mysqli_real_escape_string($conexion, $_POST['id']);
+    $estado = mysqli_real_escape_string($conexion, $_POST['estado']);
+    mysqli_query($conexion, "UPDATE mensajes SET estado = '$estado' WHERE id = $id");
+    echo json_encode(['status' => 'ok']);
     exit;
 }
 
-// Simulación de mensajes (reemplazar por BD)
-$mensajes = [
-    ["id" => 1, "nombre" => "Juan Pérez", "email" => "juan@mail.com", "fecha" => "2025-05-03", "mensaje" => "Hola, quiero más info", "estado" => "pendiente"],
-    ["id" => 2, "nombre" => "Ana López", "email" => "ana@mail.com", "fecha" => "2025-05-02", "mensaje" => "Consulta sobre servicios", "estado" => "leído"],
-    ["id" => 3, "nombre" => "Carlos Rojas", "email" => "carlos@mail.com", "fecha" => "2025-05-01", "mensaje" => "Quiero agendar", "estado" => "respondido"]
-];
+$sql = "SELECT id, CONCAT(nombre, ' ', apellido) AS nombre, email, mensaje, estado, fecha_creacion AS fecha
+        FROM mensajes
+        WHERE estado != 'eliminado'
+        ORDER BY fecha_creacion DESC";
+$resultado = mysqli_query($conexion, $sql);
+
+$mensajes = [];
+while ($fila = mysqli_fetch_assoc($resultado)) {
+    $mensajes[] = $fila;
+}
 ?>
 
 <h4 class="mb-4 text-muted">Mensajes de Contacto</h4>
@@ -48,22 +45,16 @@ $mensajes = [
                     <td><?= htmlspecialchars($msg['email']) ?></td>
                     <td><?= htmlspecialchars($msg['mensaje']) ?></td>
                     <td>
-                        <span class="badge
-                            <?= $msg['estado'] === 'respondido' ? 'bg-success' :
-                                 ($msg['estado'] === 'leído' ? 'bg-warning text-dark' : 'bg-secondary') ?>">
+                        <span class="badge estado-badge <?= getBadgeClass($msg['estado']) ?>" data-id="<?= $msg['id'] ?>">
                             <?= ucfirst($msg['estado']) ?>
                         </span>
                     </td>
                     <td>
-                        <form method="POST" class="d-flex gap-2 align-items-center">
-                            <input type="hidden" name="id" value="<?= $msg['id'] ?>">
-                            <select name="estado" class="form-select form-select-sm">
-                                <option value="pendiente" <?= $msg['estado'] === 'pendiente' ? 'selected' : '' ?>>Pendiente</option>
-                                <option value="leído" <?= $msg['estado'] === 'leído' ? 'selected' : '' ?>>Leído</option>
-                                <option value="respondido" <?= $msg['estado'] === 'respondido' ? 'selected' : '' ?>>Respondido</option>
-                            </select>
-                            <button type="submit" class="btn btn-sm btn-outline-dark">Guardar</button>
-                        </form>
+                        <select class="form-select form-select-sm estado-selector" data-id="<?= $msg['id'] ?>">
+                            <option value="pendiente" <?= $msg['estado'] === 'pendiente' ? 'selected' : '' ?>>Pendiente</option>
+                            <option value="leído" <?= $msg['estado'] === 'leído' ? 'selected' : '' ?>>Leído</option>
+                            <option value="respondido" <?= $msg['estado'] === 'respondido' ? 'selected' : '' ?>>Respondido</option>
+                        </select>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -74,3 +65,44 @@ $mensajes = [
         </table>
     </div>
 </div>
+
+<script>
+document.querySelectorAll('.estado-selector').forEach(select => {
+    select.addEventListener('change', () => {
+        const id = select.dataset.id;
+        const estado = select.value;
+
+        fetch('mensajes.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `id=${id}&estado=${estado}`
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'ok') {
+                const badge = document.querySelector(`.estado-badge[data-id="${id}"]`);
+                badge.className = 'badge estado-badge ' + getBadgeClassJS(estado);
+                badge.textContent = estado.charAt(0).toUpperCase() + estado.slice(1);
+            }
+        });
+    });
+});
+
+function getBadgeClassJS(estado) {
+    if (estado === 'respondido') return 'bg-success';
+    if (estado === 'leído') return 'bg-warning text-dark';
+    if (estado === 'pendiente') return 'bg-secondary';
+    return 'bg-light';
+}
+</script>
+
+<?php
+function getBadgeClass($estado) {
+    return match ($estado) {
+        'respondido' => 'bg-success',
+        'leído' => 'bg-warning text-dark',
+        'pendiente' => 'bg-secondary',
+        default => 'bg-light',
+    };
+}
+?>

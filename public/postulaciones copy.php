@@ -40,7 +40,7 @@
         <div class="accordion" id="postulacionAccordion">
 
             <!-- INICIO FORMULARIO DE POSTULACIÓN-->
-            <form id="postulacionForm" action="../includes/Controller/procesar_postulacion.php" method="post" enctype="multipart/form-data">
+            <form id="postulacionForm" action="../includes/Controller/procesar_postulaciones.php" method="post" enctype="multipart/form-data">
 
 
                 <!-- DATOS PERSONALES (Nombre/Apellido/Nacimiento/Rut)-->
@@ -293,7 +293,7 @@
                 <!-- Botón enviar-->
                 <div class="d-grid">
                     <br>
-                    <button class="btn btn-primary btn-xl" id="submitButton" type="submit">Enviar</button>
+                    <button class="btn btn-primary btn-xl disabled" id="submitButton" type="submit">Enviar</button>
                 </div>
             </form>
             <!-- FIN FORMULARIO DE POSTULACIÓN-->
