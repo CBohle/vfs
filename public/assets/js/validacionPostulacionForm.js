@@ -199,58 +199,8 @@ document.addEventListener("DOMContentLoaded", function () {
     campoAno.addEventListener("blur", () => validarAnoTitulacion(campoAno));
     campoCV.addEventListener("blur", () => validarArchivoCV(campoCV));
     campoCV.addEventListener("change", () => validarArchivoCV(campoCV));
+
     
-    // FUNCIÓN PARA ACTIVAR EL BOTÓN LUEGO VERIFICAR TODOS LOS CAMPOS 
-    function verificarFormularioCompleto() {
-        let valido = true;
-
-        // Validar campos de texto
-        camposTexto.forEach(({ id, min, max, soloLetras, label }) => {
-            const input = document.getElementById(id);
-            if (!validarCampoTexto(input, min, max, soloLetras, label)) valido = false;
-        });
-
-        // Validar selects
-        selects.forEach(({ id, mensaje }) => {
-            const campo = document.getElementById(id);
-            if (!validarSelectObligatorio(campo, mensaje)) valido = false;
-        });
-
-        // Validar campos individuales
-        if (!validarEmail(campoEmail)) valido = false;
-        if (!validarTelefono(campoTelefono)) valido = false;
-        if (!validarFecha(campoFecha)) valido = false;
-        if (!validarRutCampo(campoRut)) valido = false;
-        if (!validarAnoTitulacion(campoAno)) valido = false;
-        if (!validarArchivoCV(campoCV)) valido = false;
-
-        // Activar o desactivar el botón
-        if (valido) {
-            submitButton.classList.remove("disabled");
-            submitButton.disabled = false;
-        } else {
-            submitButton.classList.add("disabled");
-            submitButton.disabled = true;
-        }
-    }
-
-    // LISTENERS EN TODOS LOS CAMPOS PARA REVISAR AUTOMÁTICAMENTE
-    const inputsValidables = [
-        ...camposTexto.map(({ id }) => document.getElementById(id)),
-        campoEmail, campoTelefono, campoFecha, campoRut, campoAno, campoCV,
-        ...selects.map(({ id }) => document.getElementById(id))
-    ];
-
-    inputsValidables.forEach(input => {
-        input.addEventListener("input", verificarFormularioCompleto);
-        input.addEventListener("change", verificarFormularioCompleto);
-        input.addEventListener("blur", verificarFormularioCompleto);
-    });
-
-    // Comprobar al cargar por si hay campos ya llenos
-    verificarFormularioCompleto();
-
-
     // Validación al enviar
     form.addEventListener("submit", function (e) {
         let valido = true;
