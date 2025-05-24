@@ -2,19 +2,19 @@
 // Incluye config.php que determina la BASE_URL
 require_once __DIR__ . '/../includes/config.php';
 
-//Detectar si estamos en la landing o no
+// DETECTAR SI ESTÁ EN LA LANDING O NO, PARA REDIRECCIONAR
 $is_landing = basename($_SERVER['PHP_SELF']) === 'index.php';
 $base_url = $is_landing ? '' : BASE_URL . 'index.php';
 ?>
 
-
+<!-- ESTRUCTURA DEL FOOTER -->
 <footer class="bg-light py-5">
     <div class="container px-4 px-lg-5">
         <div class="row text-center text-md-start">
             <!-- COLUMNA IZQUIERDA: IDENTIFICACIÓN -->
             <div class="col-12 col-md-4 mb-4">
                 <a href="#top">
-                    <img src="<?= BASE_URL ?>assets/images/logo/LogoVFS2.png" alt="Logo de la empresa" style="max-width: 150px;">                    
+                    <img src="<?= BASE_URL ?>assets/images/logo/LogoVFS2.png" alt="Logo de la empresa" style="max-width: 150px;">
                 </a>
                 <br>
                 <p class="mb-0">Calle Ejemplo 123</p>
@@ -28,7 +28,7 @@ $base_url = $is_landing ? '' : BASE_URL . 'index.php';
                     <li><a href="<?= $base_url ?>#contacto">Formulario de contacto</a></li>
                     <li><a href="<?= $base_url ?>#servicios">Nuestros servicios</a></li>
                 </ul>
-                
+
             </div>
             <!-- COLUMNA DERECHA: CONTACTO-->
             <div class="col-12 col-md-4 mb-4">
@@ -54,8 +54,7 @@ $base_url = $is_landing ? '' : BASE_URL . 'index.php';
 <script src="<?= BASE_URL ?>assets/js/scripts.js"></script>
 <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
 
-<!-- VALIDACIONES FORMULARIO DE POSTULACIONES -->
-<!-- Script para el campo adicional, del campo 13 -->
+<!-- DESPLIEGUE DEL CAMPO ADICIONAL 13.1 EN EL FORMULARIO DE POSTULACIÓN -->
 <script>
     function mostrarCampoEspecificar() {
         const seleccion = document.getElementById("formacion_tasacion").value;
@@ -64,11 +63,35 @@ $base_url = $is_landing ? '' : BASE_URL . 'index.php';
 
         if (seleccion === "Sí") {
             campoEspecificar.style.display = "block";
-            inputEspecificar.setAttribute("data-sb-validations", "required");
+            inputEspecificar.setAttribute("", "required");
         } else {
             campoEspecificar.style.display = "none";
             inputEspecificar.removeAttribute("data-sb-validations");
             inputEspecificar.value = "";
         }
     }
+</script>
+
+<!-- VALIDACIÓN FORMULARIO DE POSTULACION -->
+<?php if (basename($_SERVER['PHP_SELF']) === 'postular.php') : ?>
+    <script src="<?= BASE_URL ?>assets/js/validacionPostulacionForm.js"></script>
+<?php endif; ?>
+
+<!-- ACTIVACIÓN DEL BOTÓN ENVIAR EN FORMULARIO DE CONTACTO -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('contactoForm');
+        const submitButtonContacto = document.getElementById('submitButtonContacto');
+
+        // Función para verificar la validez total del formulario
+        const checkFormValidity = () => {
+            submitButtonContacto.disabled = !form.checkValidity();
+        };
+
+        // Escucha eventos de entrada en todos los campos
+        form.addEventListener('input', checkFormValidity);
+
+        // Ejecuta la función al cargar, por si hay campos ya completados
+        checkFormValidity();
+    });
 </script>
