@@ -48,8 +48,8 @@ require_once __DIR__ . '/../includes/config.php';
 
             <!-- INICIO FORMULARIO DE POSTULACIÓN -->
             <form id="postulacionForm" action="<?= BASE_URL ?>/ruta/donde/se/enviará/el/archivo" method="post" enctype="multipart/form-data">
-
-                <!-- DATOS PERSONALES (Campo 1-4)(Nombre/Apellido/Nacimiento/Rut)-->
+            
+            <!-- DATOS PERSONALES (Campo 1-4)(Nombre/Apellido/Nacimiento/Rut)-->
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingOne">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
@@ -60,22 +60,22 @@ require_once __DIR__ . '/../includes/config.php';
                         <div class="accordion-body">
                             <!-- Campo 1: Nombre-->
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="nombre" name="nombre" type="text" placeholder="Ingrese su nombre..."/>
+                                <input class="form-control" id="nombre" name="nombre" type="text" placeholder="Ingrese su nombre..." />
                                 <label for="nombre">Nombre</label>
                             </div>
                             <!-- Campo 2: Apellido-->
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="apellido" name="apellido" type="text" placeholder="Ingrese su apellido..."/>
+                                <input class="form-control" id="apellido" name="apellido" type="text" placeholder="Ingrese su apellido..." />
                                 <label for="apellido">Apellido</label>
                             </div>
                             <!-- Campo 3: Fecha de nacimiento -->
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" type="date" placeholder="Ingrese su fecha de nacimiento..."/>
+                                <input class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" type="date" placeholder="Ingrese su fecha de nacimiento..." />
                                 <label for="fecha_nacimiento">Fecha de nacimiento</label>
                             </div>
                             <!-- Campo 4: Rut -->
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="rut" name="rut" type="text" placeholder="Ingrese su RUT"/>
+                                <input class="form-control" id="rut" name="rut" type="text" placeholder="Ingrese su RUT" />
                                 <label for="rut">RUT</label>
                             </div>
                         </div>
@@ -112,7 +112,7 @@ require_once __DIR__ . '/../includes/config.php';
                             </div>
                             <!-- Campo 9: Región -->
                             <div class="form-floating mb-3">
-                                <select class="form-select custom-floating-select" id="region" name="region" aria-label="Seleccione una región" >
+                                <select class="form-select custom-floating-select" id="region" name="region" aria-label="Seleccione una región">
                                     <option value="" selected disabled>Seleccione una región</option>
                                     <option value="Arica y Parinacota">Arica y Parinacota</option>
                                     <option value="Tarapacá">Tarapacá</option>
@@ -147,7 +147,7 @@ require_once __DIR__ . '/../includes/config.php';
                         <div class="accordion-body">
                             <!-- Campo 10: Estudios -->
                             <div class="form-floating mb-3">
-                                <select class="form-select custom-floating-select" id="estudios" name="estudios" aria-label="Seleccione su carrera" >
+                                <select class="form-select custom-floating-select" id="estudios" name="estudios" aria-label="Seleccione su carrera">
                                     <option value="" selected disabled>Seleccione su carrera</option>
                                     <option value="Arquitecto">Arquitecto</option>
                                     <option value="CCivil">Constructor Civil</option>
@@ -185,7 +185,7 @@ require_once __DIR__ . '/../includes/config.php';
                             </div>
                             <!-- Campo 14: Años de experiencia -->
                             <div class="form-floating mb-3">
-                                <select class="form-select custom-floating-select" id="ano_experiencia" name="ano_experiencia" aria-label="Años de experiencia" >
+                                <select class="form-select custom-floating-select" id="ano_experiencia" name="ano_experiencia" aria-label="Años de experiencia">
                                     <option value="" selected disabled>Indique sus años de experiencia como tasador</option>
                                     <option value="Sin experiencia">Sin experiencia</option>
                                     <option value="Menos de 1 año">Menos de 1 año</option>
@@ -214,7 +214,7 @@ require_once __DIR__ . '/../includes/config.php';
                         <div class="accordion-body">
                             <!-- Pregunta 16: Disponibilidad en otras comunas dentro de su región -->
                             <div class="form-floating mb-3">
-                                <select class="form-select custom-floating-select" id="disponibilidad_comunal" name="disponibilidad_comunal" aria-label="Disponibilidad en otras comunas dentro de su región" >
+                                <select class="form-select custom-floating-select" id="disponibilidad_comunal" name="disponibilidad_comunal" aria-label="Disponibilidad en otras comunas dentro de su región">
                                     <option value="" selected disabled>Seleccione una opción</option>
                                     <option value="Sí">Sí</option>
                                     <option value="No">No</option>
@@ -223,7 +223,7 @@ require_once __DIR__ . '/../includes/config.php';
                             </div>
                             <!-- Pregunta 17: Disponibilidad para trasladarse a otras regiones -->
                             <div class="form-floating mb-3">
-                                <select class="form-select custom-floating-select" id="disponibilidad_regional" name="disponibilidad_regional" aria-label="Disponibilidad para trasladarse a otras regiones" >
+                                <select class="form-select custom-floating-select" id="disponibilidad_regional" name="disponibilidad_regional" aria-label="Disponibilidad para trasladarse a otras regiones">
                                     <option value="" selected disabled>Seleccione una opción</option>
                                     <option value="Sí">Sí</option>
                                     <option value="No">No</option>
@@ -232,7 +232,7 @@ require_once __DIR__ . '/../includes/config.php';
                             </div>
                             <!-- Pregunta 18: Movilización propia -->
                             <div class="form-floating mb-3">
-                                <select class="form-select custom-floating-select" id="movilizacion" name="movilizacion" aria-label="Movilización propia" >
+                                <select class="form-select custom-floating-select" id="movilizacion" name="movilizacion" aria-label="Movilización propia">
                                     <option value="" selected disabled>Seleccione una opción</option>
                                     <option value="Sí">Sí</option>
                                     <option value="No">No</option>
@@ -254,7 +254,7 @@ require_once __DIR__ . '/../includes/config.php';
                             <!-- Campo 19: CV -->
                             <div class="mb-3">
                                 <label for="cv" class="form-label">Cargar CV (PDF, Word)</label>
-                                <input class="form-control" id="cv" type="file" name="cv" accept=".doc,.docx,.pdf"  />
+                                <input class="form-control" id="cv" type="file" name="cv" accept=".doc,.docx,.pdf" />
                                 <small class="form-text text-muted">Máximo 2 MB.</small>
                             </div>
 
@@ -272,10 +272,9 @@ require_once __DIR__ . '/../includes/config.php';
                 <div class="d-none" id="submitErrorMessage">
                     <div class="text-center text-danger mb-3">Error al enviar el mensaje.</div>
                 </div>
-                <!-- Botón enviar-->
+                <!-- Botón enviar -->
                 <div class="d-grid">
-                    <br>
-                    <button class="btn btn-primary btn-xl disabled" id="submitButton" type="submit">Enviar</button>
+                    <button class="btn btn-primary btn-xl" id="submitButton" type="submit" disabled>Enviar</button>
                 </div>
             </form>
             <!-- FIN FORMULARIO DE POSTULACIÓN-->

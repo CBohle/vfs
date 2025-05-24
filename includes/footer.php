@@ -54,13 +54,8 @@ $base_url = $is_landing ? '' : BASE_URL . 'index.php';
 <script src="<?= BASE_URL ?>assets/js/scripts.js"></script>
 <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
 
-<!-- VALIDACION FORMULARIO DE POSTULACION -->
-<?php if (basename($_SERVER['PHP_SELF']) === 'postular.php') : ?>
-    <script src="<?= BASE_URL ?>assets/js/validacionPostulacionForm.js"></script>
-<?php endif; ?>
-
+<!-- DESPLIEGUE DEL CAMPO ADICIONAL 13.1 EN EL FORMULARIO DE POSTULACIÓN -->
 <script>
-    // Despliegue del campo 13.1 en caso que sea "Si" la respuesta del capmo 13
     function mostrarCampoEspecificar() {
         const seleccion = document.getElementById("formacion_tasacion").value;
         const campoEspecificar = document.getElementById("campo_especificar");
@@ -68,11 +63,35 @@ $base_url = $is_landing ? '' : BASE_URL . 'index.php';
 
         if (seleccion === "Sí") {
             campoEspecificar.style.display = "block";
-            inputEspecificar.setAttribute("data-sb-validations", "required");
+            inputEspecificar.setAttribute("", "required");
         } else {
             campoEspecificar.style.display = "none";
             inputEspecificar.removeAttribute("data-sb-validations");
             inputEspecificar.value = "";
         }
     }
+</script>
+
+<!-- VALIDACIÓN FORMULARIO DE POSTULACION -->
+<?php if (basename($_SERVER['PHP_SELF']) === 'postular.php') : ?>
+    <script src="<?= BASE_URL ?>assets/js/validacionPostulacionForm.js"></script>
+<?php endif; ?>
+
+<!-- ACTIVACIÓN DEL BOTÓN ENVIAR EN FORMULARIO DE CONTACTO -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('contactoForm');
+        const submitButtonContacto = document.getElementById('submitButtonContacto');
+
+        // Función para verificar la validez total del formulario
+        const checkFormValidity = () => {
+            submitButtonContacto.disabled = !form.checkValidity();
+        };
+
+        // Escucha eventos de entrada en todos los campos
+        form.addEventListener('input', checkFormValidity);
+
+        // Ejecuta la función al cargar, por si hay campos ya completados
+        checkFormValidity();
+    });
 </script>

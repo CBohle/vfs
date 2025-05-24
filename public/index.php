@@ -312,13 +312,13 @@ require_once __DIR__ . '/../includes/config.php';
                     </div>
                     <!-- Campo 4: Teléfono OK-->
                     <div class="form-floating mb-3">
-                        <input 
-                            class="form-control" 
-                            id="telefono" 
-                            name="telefono" 
-                            type="tel" 
-                            placeholder="56912345678" 
-                            required 
+                        <input
+                            class="form-control"
+                            id="telefono"
+                            name="telefono"
+                            type="tel"
+                            placeholder="56912345678"
+                            required
                             pattern="^\d{8,15}$" />
                         <label for="telefono">Teléfono de contacto</label>
                         <div class="invalid-feedback">El número es obligatorio y solo debe contener dígitos (sin símbolos ni espacios).</div>
@@ -352,7 +352,7 @@ require_once __DIR__ . '/../includes/config.php';
                     </div>
                     <!-- Botón enviar -->
                     <div class="d-grid">
-                        <button class="btn btn-primary btn-xl" id="submitButton" type="submit">Enviar</button>
+                        <button class="btn btn-primary btn-xl" id="submitButtonContacto" type="submit" disabled>Enviar</button>
                     </div>
 
                     <!-- reCAPTCHA -->
