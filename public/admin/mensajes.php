@@ -56,17 +56,24 @@ $pendientes_mensajes = obtener_mensajes_pendientes();
             font-size: 1.0rem;
         }
         #contenido-dinamico {
+            width: 100%;
+            max-width: 1700px; /* Limita el ancho en desktop */
+            padding: 1rem;
             margin-top: 3px;
-            padding-top: 3px;
             margin-bottom: 3px;
+            padding-top: 3px;
             padding-bottom: 3px;
+        }
+        .table-responsive {
+            overflow-x: auto;
+            max-width: 100%;
         }
     </style>
 </head>
 
 <body class="bg-light">
-
-    <div class="container-xxl px-4 py-4" id ="contenido-dinamico">
+    <div class="container-fluid px-3 py-2">
+        <div id="contenido-dinamico" class="mx-auto w-100" style="max-width: 100%;">
         <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
             <h2 class="mb-0">Mensajes de Contacto</h2>
             <!-- Botones de exportación -->
@@ -145,7 +152,6 @@ $pendientes_mensajes = obtener_mensajes_pendientes();
                         </button>
                     </div>
                 </form>
-
             </div>
         </div>
         <div class="card-body">
@@ -179,13 +185,21 @@ $pendientes_mensajes = obtener_mensajes_pendientes();
                 </section>
             </div>
         </div>
-
+    </div>
+    </div>
         <!-- Modal para Ver Mensaje -->
         <div class="modal fade" id="modalVerMensaje" tabindex="-1" aria-labelledby="modalVerMensajeLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="modalVerMensajeLabel">Detalle del Mensaje</h5>
+                        <button
+                                id="btnImportante"
+                                class="btn <?= $btnClase ?> btn-sm w-100 d-flex justify-content-center align-items-center"
+                                onclick="toggleImportante(<?= $msg['id'] ?>, <?= $esImportante ?>)">
+                                <i id="iconoImportante" class="bi <?= $iconoClase ?> me-2"></i>
+                                <span id="textoImportante"><?= $textoImportante ?></span>
+                            </button>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                     </div>
                     <div class="modal-body" id="contenidoModalMensaje">

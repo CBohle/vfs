@@ -94,4 +94,16 @@ function actualizar_estado_postulacion($id)
         return json_encode(['success' => false]);
     }
 }
+function formatear_telefono($numero) {
+    $numero = preg_replace('/\D/', '', $numero); // quita espacios, guiones, paréntesis, etc.
+
+    if (strlen($numero) === 11) {
+        return substr($numero, 0, 3) . ' ' . substr($numero, 3, 4) . ' ' . substr($numero, 7);
+    } elseif (strlen($numero) === 9) {
+        return substr($numero, 0, 1) . ' ' . substr($numero, 1, 4) . ' ' . substr($numero, 5);
+    } elseif (strlen($numero) === 8) {
+        return substr($numero, 0, 4) . ' ' . substr($numero, 4);
+    }
+    return $numero;
+}
 ?>
