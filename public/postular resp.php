@@ -60,23 +60,28 @@ require_once __DIR__ . '/../includes/config.php';
                         <div class="accordion-body">
                             <!-- Campo 1: Nombre-->
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="nombre" name="nombre" type="text" placeholder="Ingrese su nombre..."/>
+                                <input class="form-control" id="nombre" name="nombre" type="text" placeholder="Ingrese su nombre..." data-sb-validations="required" />
                                 <label for="nombre">Nombre</label>
+                                <div class="invalid-feedback" data-sb-feedback="nombre:required">El nombre es obligatorio.</div>
                             </div>
                             <!-- Campo 2: Apellido-->
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="apellido" name="apellido" type="text" placeholder="Ingrese su apellido..."/>
+                                <input class="form-control" id="apellido" name="apellido" type="text" placeholder="Ingrese su apellido..." data-sb-validations="required" />
                                 <label for="apellido">Apellido</label>
+                                <div class="invalid-feedback" data-sb-feedback="apellido:required">El apellido es obligatorio.</div>
                             </div>
                             <!-- Campo 3: Fecha de nacimiento -->
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" type="date" placeholder="Ingrese su fecha de nacimiento..."/>
+                                <input class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" type="date" placeholder="Ingrese su fecha de nacimiento..." data-sb-validations="required" />
                                 <label for="fecha_nacimiento">Fecha de nacimiento</label>
+                                <div class="invalid-feedback" data-sb-feedback="fecha_nacimiento:required">La fecha de nacimiento es obligatoria.</div>
                             </div>
                             <!-- Campo 4: Rut -->
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="rut" name="rut" type="text" placeholder="Ingrese su RUT"/>
+                                <input class="form-control" id="rut" name="rut" type="text" placeholder="Ingrese su RUT" data-sb-validations="required,rut" />
                                 <label for="rut">RUT</label>
+                                <div class="invalid-feedback" data-sb-feedback="rut:required">El RUT es obligatorio.</div>
+                                <div class="invalid-feedback" data-sb-feedback="rut:rut">El RUT ingresado no es válido.</div>
                             </div>
                         </div>
                     </div>
@@ -92,27 +97,32 @@ require_once __DIR__ . '/../includes/config.php';
                         <div class="accordion-body">
                             <!-- Campo 5: Correo-->
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="email" name="email" type="email" placeholder="name@example.com" />
+                                <input class="form-control" id="email" name="email" type="email" placeholder="name@example.com" data-sb-validations="required,email" />
                                 <label for="email">Correo</label>
+                                <div class="invalid-feedback" data-sb-feedback="email:required">El mail es obligatorio.</div>
+                                <div class="invalid-feedback" data-sb-feedback="email:email">El mail ingresado no es válido.</div>
                             </div>
                             <!-- Campo 6: Teléfono-->
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="telefono" name="telefono" type="tel" placeholder="(123) 456-7890" />
+                                <input class="form-control" id="telefono" name="telefono" type="tel" placeholder="(123) 456-7890" data-sb-validations="required" />
                                 <label for="telefono">Teléfono de contacto</label>
+                                <div class="invalid-feedback" data-sb-feedback="telefono:required">El número de teléfono es obligatorio.</div>
                             </div>
                             <!-- Campo 7: Dirección -->
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="direccion" name="direccion" type="text" placeholder="Ingrese su dirección..." />
+                                <input class="form-control" id="direccion" name="direccion" type="text" placeholder="Ingrese su dirección..." data-sb-validations="required" />
                                 <label for="direccion">Dirección</label>
+                                <div class="invalid-feedback" data-sb-feedback="direccion:required">La dirección es obligatoria.</div>
                             </div>
                             <!-- Campo 8: Comuna -->
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="comuna" name="comuna" type="text" placeholder="Ingrese la comuna..." />
+                                <input class="form-control" id="comuna" name="comuna" type="text" placeholder="Ingrese la comuna..." data-sb-validations="required" />
                                 <label for="comuna">Comuna</label>
+                                <div class="invalid-feedback" data-sb-feedback="comuna:required">La comuna es obligatoria.</div>
                             </div>
                             <!-- Campo 9: Región -->
                             <div class="form-floating mb-3">
-                                <select class="form-select custom-floating-select" id="region" name="region" aria-label="Seleccione una región" >
+                                <select class="form-select custom-floating-select" id="region" name="region" aria-label="Seleccione una región" data-sb-validations="required">
                                     <option value="" selected disabled>Seleccione una región</option>
                                     <option value="Arica y Parinacota">Arica y Parinacota</option>
                                     <option value="Tarapacá">Tarapacá</option>
@@ -132,6 +142,7 @@ require_once __DIR__ . '/../includes/config.php';
                                     <option value="Magallanes y de la Antártica Chilena">Magallanes y de la Antártica Chilena</option>
                                 </select>
                                 <label for="region">Región</label>
+                                <div class="invalid-feedback" data-sb-feedback="region:required">La región es obligatoria.</div>
                             </div>
                         </div>
                     </div>
@@ -147,7 +158,7 @@ require_once __DIR__ . '/../includes/config.php';
                         <div class="accordion-body">
                             <!-- Campo 10: Estudios -->
                             <div class="form-floating mb-3">
-                                <select class="form-select custom-floating-select" id="estudios" name="estudios" aria-label="Seleccione su carrera" >
+                                <select class="form-select custom-floating-select" id="estudios" name="estudios" aria-label="Seleccione su carrera" data-sb-validations="required">
                                     <option value="" selected disabled>Seleccione su carrera</option>
                                     <option value="Arquitecto">Arquitecto</option>
                                     <option value="CCivil">Constructor Civil</option>
@@ -158,34 +169,41 @@ require_once __DIR__ . '/../includes/config.php';
                                     <option value="Otro">Otro</option>
                                 </select>
                                 <label for="estudios">Estudios</label>
+                                <div class="invalid-feedback" data-sb-feedback="estudios:required">Su carrera es obligatoria.</div>
                             </div>
                             <!-- Campo 11: Institución -->
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="institucion" name="institucion" type="text" placeholder="Ingrese la institución donde estudió..." />
+                                <input class="form-control" id="institucion" name="institucion" type="text" placeholder="Ingrese la institución donde estudió..." data-sb-validations="required" />
                                 <label for="institucion">Institución donde estudió</label>
+                                <div class="invalid-feedback" data-sb-feedback="institucion:required">La institución es obligatoria.</div>
                             </div>
                             <!-- Campo 12: Año de Titulación -->
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="ano_titulacion" name="ano_titulacion" type="number" placeholder="Ingrese el año de titulación" />
+                                <input class="form-control" id="ano_titulacion" name="ano_titulacion" type="number" placeholder="Ingrese el año de titulación" data-sb-validations="required,min:1950,max:2025" min="1950" max="2025" />
                                 <label for="ano_titulacion">Año de titulación</label>
+                                <div class="invalid-feedback" data-sb-feedback="ano_titulacion:required">El año de titulación es obligatorio.</div>
+                                <div class="invalid-feedback" data-sb-feedback="ano_titulacion:min">El año ingresado es muy antiguo.</div>
+                                <div class="invalid-feedback" data-sb-feedback="ano_titulacion:max">El año ingresado no puede ser mayor a 2025.</div>
                             </div>
                             <!-- Campo 13: Formación específica en tasación -->
                             <div class="form-floating mb-3">
-                                <select class="form-select custom-floating-select" id="formacion_tasacion" name="formacion_tasacion" aria-label="¿Tiene formación en tasación?" onchange="mostrarCampoEspecificar()">
+                                <select class="form-select custom-floating-select" id="formacion_tasacion" name="formacion_tasacion" aria-label="¿Tiene formación en tasación?" data-sb-validations="required" onchange="mostrarCampoEspecificar()">
                                     <option value="" selected disabled>Seleccione una opción</option>
                                     <option value="Sí">Sí</option>
                                     <option value="No">No</option>
                                 </select>
                                 <label for="formacion_tasacion">¿Cuenta con formación específica en tasación?</label>
+                                <div class="invalid-feedback" data-sb-feedback="formacion_tasacion:required">Este campo es obligatorio.</div>
                             </div>
                             <!-- Campo adicional: En caso de respode "Sí" al campo 13, se activa este campo -->
                             <div class="form-floating mb-3" id="campo_especificar" name="campo_especificar" style="display: none;">
-                                <input class="form-control" id="detalle_formacion" name="campo_especificar" type="text" placeholder="Especifique su formación en tasación" />
+                                <input class="form-control" id="detalle_formacion" name="campo_especificar" type="text" placeholder="Especifique su formación en tasación" data-sb-validations="required" />
                                 <label for="detalle_formacion">En caso de haber respondido afirmativamente, por favor especifique</label>
+                                <div class="invalid-feedback" data-sb-feedback="detalle_formacion:required">Este campo es obligatorio si respondió que sí.</div>
                             </div>
                             <!-- Campo 14: Años de experiencia -->
                             <div class="form-floating mb-3">
-                                <select class="form-select custom-floating-select" id="ano_experiencia" name="ano_experiencia" aria-label="Años de experiencia" >
+                                <select class="form-select custom-floating-select" id="ano_experiencia" name="ano_experiencia" aria-label="Años de experiencia" data-sb-validations="required">
                                     <option value="" selected disabled>Indique sus años de experiencia como tasador</option>
                                     <option value="Sin experiencia">Sin experiencia</option>
                                     <option value="Menos de 1 año">Menos de 1 año</option>
@@ -194,11 +212,13 @@ require_once __DIR__ . '/../includes/config.php';
                                     <option value="Más de 5 años">Más de 5 años</option>
                                 </select>
                                 <label for="ano_experiencia">Experiencia</label>
+                                <div class="invalid-feedback" data-sb-feedback="ano_experiencia:required">Este campo es obligatorio.</div>
                             </div>
                             <!-- Campo 15: Trabaja con otra empresa -->
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="otra_empresa" name="otra_empresa" type="text" placeholder="Ingrese el nombre de las empresas en que trabaja tasando..." />
+                                <input class="form-control" id="otra_empresa" name="otra_empresa" type="text" placeholder="Ingrese el nombre de las empresas en que trabaja tasando..." data-sb-validations="required" />
                                 <label for="otra_empresa">Empresas para las que tasa actualmente</label>
+                                <div class="invalid-feedback" data-sb-feedback="otra_empresa:required">Este campo es obligatorio.</div>
                             </div>
                         </div>
                     </div>
@@ -214,30 +234,33 @@ require_once __DIR__ . '/../includes/config.php';
                         <div class="accordion-body">
                             <!-- Pregunta 16: Disponibilidad en otras comunas dentro de su región -->
                             <div class="form-floating mb-3">
-                                <select class="form-select custom-floating-select" id="disponibilidad_comunal" name="disponibilidad_comunal" aria-label="Disponibilidad en otras comunas dentro de su región" >
+                                <select class="form-select custom-floating-select" id="disponibilidad_comunal" name="disponibilidad_comunal" aria-label="Disponibilidad en otras comunas dentro de su región" data-sb-validations="required">
                                     <option value="" selected disabled>Seleccione una opción</option>
                                     <option value="Sí">Sí</option>
                                     <option value="No">No</option>
                                 </select>
                                 <label for="disponibilidad_comunal">¿Está disponible para realizar tasaciones en otras comunas dentro de su región?</label>
+                                <div class="invalid-feedback" data-sb-feedback="disponibilidad_comunal:required">Este campo es obligatorio.</div>
                             </div>
                             <!-- Pregunta 17: Disponibilidad para trasladarse a otras regiones -->
                             <div class="form-floating mb-3">
-                                <select class="form-select custom-floating-select" id="disponibilidad_regional" name="disponibilidad_regional" aria-label="Disponibilidad para trasladarse a otras regiones" >
+                                <select class="form-select custom-floating-select" id="disponibilidad_regional" name="disponibilidad_regional" aria-label="Disponibilidad para trasladarse a otras regiones" data-sb-validations="required">
                                     <option value="" selected disabled>Seleccione una opción</option>
                                     <option value="Sí">Sí</option>
                                     <option value="No">No</option>
                                 </select>
                                 <label for="disponibilidad_regional">¿Está disponible para trasladarse a otras regiones del país para realizar tasaciones?</label>
+                                <div class="invalid-feedback" data-sb-feedback="disponibilidad_regional:required">Este campo es obligatorio.</div>
                             </div>
                             <!-- Pregunta 18: Movilización propia -->
                             <div class="form-floating mb-3">
-                                <select class="form-select custom-floating-select" id="movilizacion" name="movilizacion" aria-label="Movilización propia" >
+                                <select class="form-select custom-floating-select" id="movilizacion" name="movilizacion" aria-label="Movilización propia" data-sb-validations="required">
                                     <option value="" selected disabled>Seleccione una opción</option>
                                     <option value="Sí">Sí</option>
                                     <option value="No">No</option>
                                 </select>
                                 <label for="movilizacion">¿Cuenta con movilización propia para desplazarse a realizar tasaciones?</label>
+                                <div class="invalid-feedback" data-sb-feedback="movilizacion:required">Este campo es obligatorio.</div>
                             </div>
                         </div>
                     </div>
@@ -254,7 +277,8 @@ require_once __DIR__ . '/../includes/config.php';
                             <!-- Campo 19: CV -->
                             <div class="mb-3">
                                 <label for="cv" class="form-label">Cargar CV (PDF, Word)</label>
-                                <input class="form-control" id="cv" type="file" name="cv" accept=".doc,.docx,.pdf"  />
+                                <input class="form-control" id="cv" type="file" name="cv" accept=".doc,.docx,.pdf" data-sb-validations="required" />
+                                <div class="invalid-feedback" data-sb-feedback="cv:required">El currículum es obligatorio.</div>
                                 <small class="form-text text-muted">Máximo 2 MB.</small>
                             </div>
 

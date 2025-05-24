@@ -1,0 +1,386 @@
+document.addEventListener("DOMContentLoaded", function () {
+    // DECLARACIÓN DE CONSTANTES
+    const form = document.querySelector("form");
+    const nombre = document.getElementById("nombre");
+    const apellido = document.getElementById("apellido");
+    const fecha = document.getElementById("fecha_nacimiento");
+    const rut = document.getElementById("rut");
+    const email = document.getElementById("email");
+    const telefono = document.getElementById("telefono");
+    const direccion = document.getElementById("direccion");
+    const comuna = document.getElementById("comuna");
+    const region = document.getElementById("region");
+    const estudios = document.getElementById("estudios");
+    const institucion = document.getElementById("institucion");
+    const ano_titulacion = document.getElementById("ano_titulacion");
+    const formacion_tasacion = document.getElementById("formacion_tasacion");
+    const detalle_formacion = document.getElementById("detalle_formacion");
+    const experiencia = document.getElementById("experiencia");
+    const otra_empresa = document.getElementById("otra_empresa");
+
+    // VALIDACIONES INDIVIDUALES EN BLUR PARA QUE APAREZCA EL ERROR AL SALIR DEL CAMPO
+    nombre.addEventListener("blur", () => validarNombre(nombre));
+    apellido.addEventListener("blur", () => validarApellido(apellido));
+    fecha.addEventListener("blur", () => validarFecha(fecha));
+    rut.addEventListener("blur", () => validarRutCampo(rut));
+    email.addEventListener("blur", () => validarEmail(email));
+    telefono.addEventListener("blur", () => validarTelefono(telefono));
+    direccion.addEventListener("blur", () => validarDireccion(direccion));
+    comuna.addEventListener("blur", () => validarComuna(comuna));
+    region.addEventListener("blur", () => validarRegion(region));
+    estudios.addEventListener("blur", () => validarInstitucion(estudios));
+    institucion.addEventListener("blur", () => validarInstitucion(institucion));
+    ano_titulacion.addEventListener("blur", () => validarAnoTitulacion(ano_titulacion));
+    formacion_tasacion.addEventListener("blur", () => validarFormacionTasacion(formacion_tasacion));
+    detalle_formacion.addEventListener("blur", () => validarDetalleFormacion(detalle_formacion));
+    experiencia.addEventListener("blur", () => validarExperiencia(experiencia));
+    otra_empresa.addEventListener("blur", () => validarOtraEmpresa(otra_empresa));
+
+    // VALIDACIÓN Y MENSAJE ERROR: DATOS PERSONALES (Campo 1-4)(Nombre/Apellido/Nacimiento/Rut)
+    // Campo 1: Nombre
+    function validarNombre(input) {
+        const valor = input.value.trim();
+        limpiarError(input);
+
+        if (valor.length < 2) {
+            mostrarError(input, "El nombre debe tener al menos 2 caracteres.");
+            return false;
+        }
+        if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(valor)) {
+            mostrarError(input, "El nombre solo puede contener letras y espacios.");
+            return false;
+        }
+        if (/[<>"]/.test(valor)) {
+            mostrarError(input, 'El nombre no puede contener caracteres especiales como <, > o ".');
+            return false;
+        }
+        if (valor.length > 50) {
+            mostrarError(input, "El nombre no debe exceder los 50 caracteres.");
+            return false;
+        }
+        return true;
+    }
+    // Campo 2: Apellido
+    function validarApellido(input) {
+        const valor = input.value.trim();
+        limpiarError(input);
+
+        if (valor.length < 2) {
+            mostrarError(input, "El apellido debe tener al menos 2 caracteres.");
+            return false;
+        }
+        if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(valor)) {
+            mostrarError(input, "El apellido solo puede contener letras y espacios.");
+            return false;
+        }
+        if (/[<>"]/.test(valor)) {
+            mostrarError(input, 'El apellido no puede contener caracteres especiales como <, > o ".');
+            return false;
+        }
+        if (valor.length > 50) {
+            mostrarError(input, "El apellido no debe exceder los 50 caracteres.");
+            return false;
+        }
+        return true;
+    }
+    // Campo 3: Fecha de nacimiento
+    function validarFecha(input) {
+        limpiarError(input);
+        if (input.value === "") {
+            mostrarError(input, "La fecha de nacimiento es obligatoria.");
+            return false;
+        }
+        const fechaValor = new Date(input.value);
+        const hoy = new Date();
+        if (fechaValor > hoy) {
+            mostrarError(input, "La fecha de nacimiento no puede ser futura.");
+            return false;
+        }
+        if (fechaValor.getFullYear() < 1900) {
+            mostrarError(input, "Ingrese una fecha de nacimiento válida.");
+            return false;
+        }
+        return true;
+    }
+    // Campo 4: rut
+    function validarRutCampo(input) {
+        const valor = input.value.trim();
+        limpiarError(input);
+
+        const formatoRut = /^[0-9]{7,8}-[kK0-9]{1}$/;
+        if (!formatoRut.test(valor)) {
+            mostrarError(input, "El RUT debe tener el formato correcto, por ejemplo: 12345678-9.");
+            return false;
+        }
+        if (!validarRut(valor)) {
+            mostrarError(input, "El RUT ingresado no es válido.");
+            return false;
+        }
+        return true;
+    }
+    // Validación dígito verificador RUT
+    function validarRut(rutCompleto) {
+        rutCompleto = rutCompleto.toLowerCase();
+        const partes = rutCompleto.split("-");
+        const rut = partes[0];
+        const dv = partes[1];
+
+        let suma = 0;
+        let multiplo = 2;
+
+        for (let i = rut.length - 1; i >= 0; i--) {
+            suma += parseInt(rut.charAt(i)) * multiplo;
+            multiplo = multiplo < 7 ? multiplo + 1 : 2;
+        }
+
+        const dvEsperado = 11 - (suma % 11);
+        let dvCalculado = "";
+
+        if (dvEsperado === 11) dvCalculado = "0";
+        else if (dvEsperado === 10) dvCalculado = "k";
+        else dvCalculado = dvEsperado.toString();
+
+        return dv === dvCalculado;
+    }
+
+    // VALIDACIÓN Y MENSAJE ERROR: DATOS DE CONTACTO (Campo 5-9)(Correo/Teléfono/Dirección/Comuna/Región
+    // Campo 5: Email
+    function validarEmail(input) {
+        const valor = input.value.trim();
+        limpiarError(input);
+        if (valor === "") {
+            mostrarError(input, "El correo es obligatorio.");
+            return false;
+        }
+        // Validar formato email simple
+        const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!regexEmail.test(valor)) {
+            mostrarError(input, "El correo ingresado no es válido.");
+            return false;
+        }
+        return true;
+    }
+    // Campo 6: Teléfono
+    function validarTelefono(input) {
+        const valor = input.value.trim();
+        limpiarError(input);
+        if (valor === "") {
+            mostrarError(input, "El número de teléfono es obligatorio.");
+            return false;
+        }
+        // Solo números, espacios, paréntesis, guiones y "+"
+        const regexTelefono = /^[0-9+\s()-]{7,20}$/;
+        if (!regexTelefono.test(valor)) {
+            mostrarError(input, "El teléfono solo puede contener números, espacios, paréntesis, guiones o '+'.");
+            return false;
+        }
+        return true;
+    }
+    // Campo 7: Dirección
+    function validarDireccion(input) {
+        const valor = input.value.trim();
+        limpiarError(input);
+        if (valor === "") {
+            mostrarError(input, "La dirección es obligatoria.");
+            return false;
+        }
+        // Evitar caracteres peligrosos
+        if (/[<>"]/.test(valor)) {
+            mostrarError(input, 'La dirección no puede contener caracteres especiales como <, > o ".');
+            return false;
+        }
+        if (valor.length > 100) {
+            mostrarError(input, "La dirección no debe exceder los 100 caracteres.");
+            return false;
+        }
+        return true;
+    }
+    // Campo 8: Comuna
+    function validarComuna(input) {
+        const valor = input.value.trim();
+        limpiarError(input);
+        if (valor === "") {
+            mostrarError(input, "La comuna es obligatoria.");
+            return false;
+        }
+        // Solo letras y espacios
+        if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(valor)) {
+            mostrarError(input, "La comuna solo puede contener letras y espacios.");
+            return false;
+        }
+        if (valor.length > 50) {
+            mostrarError(input, "La comuna no debe exceder los 50 caracteres.");
+            return false;
+        }
+        return true;
+    }
+    // Campo 9: Región
+    function validarRegion(input) {
+        limpiarError(input);
+        if (!input.value) {
+            mostrarError(input, "La región es obligatoria.");
+            return false;
+        }
+        return true;
+    }
+
+    // VALIDACIÓN Y MENSAJE ERROR: ESTUDIOS Y EXPERIENCIA (Campo 10-15)(Estudios/Institución/AñoTitulación/4 preguntas)
+    // Campo 10: Estudios (select)
+    function validarEstudios(select) {
+        limpiarError(select);
+        if (!select.value) {
+            mostrarError(select, "Debe seleccionar una carrera.");
+            return false;
+        }
+        return true;
+    }
+    // Campo 11: Institución
+    function validarInstitucion(input) {
+        const valor = input.value.trim();
+        limpiarError(input);
+        if (valor === "") {
+            mostrarError(input, "La institución es obligatoria.");
+            return false;
+        }
+        if (/[<>"]/.test(valor)) {
+            mostrarError(input, 'El nombre de la institución no puede contener caracteres como <, > o "');
+            return false;
+        }
+        if (valor.length > 100) {
+            mostrarError(input, "El nombre de la institución no debe superar los 100 caracteres.");
+            return false;
+        }
+        if (valor.length < 2) {
+            mostrarError(input, "El nombre de la institución debe tener al menos 2 caracteres.");
+            return false;
+        }
+        return true;
+    }
+    // Campo 12: Año de titulación
+    function validarAnoTitulacion(input) {
+        const valor = input.value.trim();
+        limpiarError(input);
+
+        if (valor === "") {
+            mostrarError(input, "El año de titulación es obligatorio.");
+            return false;
+        }
+
+        const ano = parseInt(valor, 10);
+        if (isNaN(ano) || ano < 1950 || ano > 2025) {
+            mostrarError(input, "El año debe estar entre 1950 y 2025.");
+            return false;
+        }
+
+        return true;
+    }
+    // Campo 13: Formación en tasación (select)
+    function validarFormacionTasacion(select) {
+        limpiarError(select);
+        if (!select.value) {
+            mostrarError(select, "Debe indicar si tiene formación en tasación.");
+            return false;
+        }
+        return true;
+    }
+    // Campo adicional: Detalle formación (si respondió “Sí”)
+    function validarDetalleFormacion(input) {
+        const select = document.getElementById("formacion_tasacion");
+        const valor = input.value.trim();
+        limpiarError(input);
+        if (select.value === "Sí") {
+            if (valor === "") {
+                mostrarError(input, "Debe especificar su formación en tasación.");
+                return false;
+            }
+            if (/[<>"]/.test(valor)) {
+                mostrarError(input, 'El detalle no puede contener caracteres como <, > o "');
+                return false;
+            }
+            if (valor.length > 150) {
+                mostrarError(input, "El detalle no debe superar los 150 caracteres.");
+                return false;
+            }
+        }
+        return true;
+    }
+    // Campo 14: Años de experiencia (select)
+    function validarExperiencia(select) {
+        limpiarError(select);
+        if (!select.value) {
+            mostrarError(select, "Debe seleccionar su nivel de experiencia.");
+            return false;
+        }
+        return true;
+    }
+    // Campo 15: Otras empresas
+    function validarOtraEmpresa(input) {
+        const valor = input.value.trim();
+        limpiarError(input);
+        if (valor === "") {
+            mostrarError(input, "Este campo es obligatorio.");
+            return false;
+        }
+        if (/[<>"]/.test(valor)) {
+            mostrarError(input, 'El nombre de la empresa no puede contener caracteres como <, > o "');
+            return false;
+        }
+        if (valor.length > 100) {
+            mostrarError(input, "Este campo no debe superar los 100 caracteres.");
+            return false;
+        }
+        return true;
+    }
+
+    // Función para mostrar el mensaje de error
+    function mostrarError(input, mensaje) {
+        if (!input || !input.parentNode) return;
+        input.classList.add("is-invalid");
+        let error = input.parentNode.querySelector(".invalid-feedback");
+        if (error) {
+            // Si ya existe el mensaje, solo actualiza el texto
+            error.innerText = mensaje;
+        } else {
+            // Si no existe, lo crea
+            error = document.createElement("div");
+            error.className = "invalid-feedback";
+            error.innerText = mensaje;
+            input.parentNode.appendChild(error);
+        }
+    }
+    // Función para eliminar el error previo si existe
+    function limpiarError(input) {
+        input.classList.remove("is-invalid");
+        const error = input.parentNode.querySelector(".invalid-feedback");
+        if (error) error.remove();
+    }
+    function limpiarErrores() {
+        const inputs = document.querySelectorAll(".is-invalid");
+        inputs.forEach((input) => {
+            limpiarError(input);
+        });
+    }
+
+    // Validación al enviar formulario
+    form.addEventListener("submit", function (e) {
+        let isValid = true;
+        limpiarErrores();
+        if (!validarNombre(nombre)) isValid = false;
+        if (!validarApellido(apellido)) isValid = false;
+        if (!validarFecha(fecha)) isValid = false;
+        if (!validarRutCampo(rut)) isValid = false;
+        if (!validarEmail(email)) isValid = false;
+        if (!validarTelefono(telefono)) isValid = false;
+        if (!validarDireccion(direccion)) isValid = false;
+        if (!validarComuna(comuna)) isValid = false;
+        if (!validarRegion(region)) isValid = false;
+        if (!validarEstudios(estudios)) isValid = false;
+        if (!validarInstitucion(institucion)) isValid = false;
+        if (!validarAnoTitulacion(ano_titulacion)) isValid = false;
+        if (!validarFormacionTasacion(formacion_tasacion)) isValid = false;
+        if (!validarDetalleFormacion(detalle_formacion)) isValid = false;
+        if (!validarExperiencia(experiencia)) isValid = false;
+        if (!validarOtraEmpresa(otra_empresa)) isValid = false;
+        if (!isValid) e.preventDefault();
+    });
+});
