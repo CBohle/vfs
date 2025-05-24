@@ -18,6 +18,9 @@ $pendientes_mensajes = obtener_mensajes_pendientes();
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <style>
+        body {
+            font-size: 0.8rem;
+        }
         table.dataTable tbody tr:hover {
             background-color: #f8f9fa;
         }
@@ -32,10 +35,7 @@ $pendientes_mensajes = obtener_mensajes_pendientes();
         }
 
         .col-mensaje {
-            max-width: 300px;
-            /* o ajusta según necesidad */
-            min-width: 200px;
-            width: 100%;
+            width: 25%;
             white-space: normal;
         }
 
@@ -52,12 +52,21 @@ $pendientes_mensajes = obtener_mensajes_pendientes();
             max-height: 3.6em;
             text-align: justify;
         }
+        .navbar {
+            font-size: 1.0rem;
+        }
+        #contenido-dinamico {
+            margin-top: 3px;
+            padding-top: 3px;
+            margin-bottom: 3px;
+            padding-bottom: 3px;
+        }
     </style>
 </head>
 
 <body class="bg-light">
 
-    <div class="container-xxl px-4 py-4">
+    <div class="container-xxl px-4 py-4" id ="contenido-dinamico">
         <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
             <h2 class="mb-0">Mensajes de Contacto</h2>
             <!-- Botones de exportación -->
@@ -128,7 +137,7 @@ $pendientes_mensajes = obtener_mensajes_pendientes();
                     <!-- Grupo 3: Mensajes pendientes -->
                     <div class="form-floating align-items-center">
                         <label class="form-label d-block invisible">.</label>
-                        <button type="button" class="btn btn-warning btn-sm w-100" onclick="$('#filtro_estado').val('pendiente'); filtrar();">
+                        <button type="button" class="btn btn-warning btn-sm w-100" onclick="$('#filtro_estado').val('pendiente');$('#filtro_servicio').val('');$('#filtro_orden').val('DESC');$('#filtro_importante').val(''); filtrar();">
                             <h6 class="mb-1 fw-semibold">
                                 <span id="mensajesPorResponder"><?= $pendientes_mensajes ?> de <?= $total_mensajes ?></span>
                             </h6>

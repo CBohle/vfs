@@ -50,13 +50,16 @@ CREATE TABLE curriculum (
     archivo VARCHAR(255) NOT NULL,
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     fecha_modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    importante BOOLEAN NOT NULL DEFAULT FALSE,
     estado ENUM('pendiente', 'leido', 'respondido','eliminado') NOT NULL DEFAULT 'pendiente'
 );
 
-INSERT INTO curriculum (nombre, apellido, fecha_nacimiento, rut, email, telefono, direccion, comuna, region, estudio, institucion_educacional, ano_titulacion, formacion_tasacion,formacion_tasacion_descripcion, anos_experiencia_tasacion, empresa_tasacion, disponibilidad_comuna, disponibilidad_region, movilizacion_propia, archivo, estado) VALUES 
-('Nombre 1','Apellido 1','1999-10-21','111111-1','Email1@prueba.com','111111','direccion1','Comuna 1','region1','estudio1','institucion educacional 1','2001',TRUE,'Descripcion 1','2','empresa',TRUE, TRUE,TRUE,'Archivo 1','pendiente'),
-('Nombre 2','Apellido 2','1999-10-22','111111-2','Email2@prueba.com','111112','direccion2','Comuna 2','region2','estudio2','institucion educacional 2','2002',FALSE,'Descripcion 2','3','empresa',TRUE, TRUE,TRUE,'Archivo 2','pendiente'),
-('Nombre 3','Apellido 3','1999-10-23','111111-3','Email3@prueba.com','111113','direccion3','Comuna 3','region3','estudio3','institucion educacional 3','2003',TRUE,'Descripcion 3','4','empresa',TRUE, TRUE,TRUE,'Archivo 3','pendiente');
+INSERT INTO curriculum (nombre, apellido, fecha_nacimiento, rut, email, telefono, direccion, comuna, region, estudio, institucion_educacional, ano_titulacion, formacion_tasacion, formacion_tasacion_descripcion, anos_experiencia_tasacion, empresa_tasacion, disponibilidad_comuna, disponibilidad_region, movilizacion_propia, archivo, importante, estado) VALUES
+('Carlos', 'Pérez', '1985-04-10', '12345678-9', 'carlos.perez@example.com', '987654321', 'Calle Ficticia 123', 'Comuna Central', 'Región Metropolitana', 'Ingeniería Civil', 'Universidad Central', 2007, TRUE, 'Certificado de formación en tasación inmobiliaria', 5, 'Tasaciones Pérez Ltda', TRUE, TRUE, TRUE, 'archivo1.pdf', FALSE, 'pendiente'),
+('Ana', 'González', '1990-08-25', '23456789-0', 'ana.gonzalez@example.com', '987654322', 'Avenida Siempre Viva 456', 'Comuna Sur', 'Región del Libertador', 'Arquitectura', 'Universidad del Libertador', 2012, FALSE, '', 4, 'Inmobiliaria Sur S.A.', TRUE, TRUE, TRUE, 'archivo2.pdf', TRUE, 'leido'),
+('Luis', 'Martínez', '1992-02-15', '34567890-1', 'luis.martinez@example.com', '987654323', 'Calle Nueva 789', 'Comuna Norte', 'Región Andina', 'Tasación Inmobiliaria', 'Instituto Nacional de Tasación', 2015, TRUE, 'Curso completo en tasación de propiedades', 3, 'Tasaciones Andinas', TRUE, FALSE, TRUE, 'archivo3.pdf', FALSE, 'respondido'),
+('María', 'López', '1987-12-05', '45678901-2', 'maria.lopez@example.com', '987654324', 'Calle Real 321', 'Comuna Oeste', 'Región Centro', 'Ingeniería Comercial', 'Universidad Comercial', 2009, TRUE, 'Diplomado en Tasación de Bienes Raíces', 6, 'Inmobiliaria Comercial S.A.', TRUE, TRUE, FALSE, 'archivo4.pdf', TRUE, 'pendiente'),
+('Pedro', 'Sánchez', '1995-03-18', '56789012-3', 'pedro.sanchez@example.com', '987654325', 'Calle Falsa 654', 'Comuna Este', 'Región Norte', 'Gestión Inmobiliaria', 'Universidad Norte', 2017, FALSE, '', 2, 'Consultora Inmobiliaria', FALSE, TRUE, TRUE, 'archivo5.pdf', FALSE, 'eliminado');
 
 CREATE TABLE usuarios_admin (
     id INT PRIMARY KEY AUTO_INCREMENT,
