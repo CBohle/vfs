@@ -2,8 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector("form");
 
     // CONSTANTES
-    //Botón enviar
-    const submitButton = document.getElementById("submitButton");
+  
     // Constantes campos de texto
     const camposTexto = [
         // Campo 1 
@@ -223,7 +222,5 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!validarArchivoCV(campoCV)) valido = false;
         if (!valido) e.preventDefault();
 
-    });
-
+    });    
 });
-
