@@ -1,6 +1,8 @@
 <?php
 header('Content-Type: application/json');
-ini_set('display_errors', 0);
+ini_set('display_errors', 0);// Cambiar a 1 para ver errores en desarrollo
+ini_set('display_startup_errors', 0); // Cambiar a 1 para ver errores en desarrollo
+error_reporting(E_ALL);
 
 require_once __DIR__ . '/../../includes/db.php';
 require_once __DIR__ . '/../../includes/Controller/mensajesController.php';
@@ -41,7 +43,7 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'recuperar' && isset($_POST[
     exit;
 }
 
-// Consulta con filtros (no se modifica mucho aquí)
+// Consulta con filtros
 $columns = ['importante', 'id', 'servicio', 'nombre', 'email', 'mensaje', 'estado', 'fecha_creacion'];
 $draw = intval($_POST['draw'] ?? 0);
 $start = intval($_POST['start'] ?? 0);

@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../db.php';
+require_once __DIR__ . '/../config.php'; // Agregamos para usar BASE_URL
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Obtener datos del formulario
@@ -12,12 +13,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $direccion = trim($_POST['direccion'] ?? '');
     $comuna = trim($_POST['comuna'] ?? '');
     $region = trim($_POST['region'] ?? '');
-    $estudio = trim($_POST['estudios'] ?? '');
+    $estudio = trim($_POST['estudio'] ?? '');
     $institucion = trim($_POST['institucion'] ?? '');
     $ano_titulacion = (int)($_POST['ano_titulacion'] ?? 0);
     $formacion_tasacion = ($_POST['formacion_tasacion'] ?? '') === 'Sí' ? 1 : 0;
     $formacion_tasacion_descripcion = trim($_POST['campo_especificar'] ?? '');
-    
+
     // Mapear experiencia textual a número
     $mapa_experiencia = [
         "Sin experiencia" => 0,
@@ -52,7 +53,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die("Error: El archivo supera el límite de 2MB.");
     }
 
-    // Guardar archivo
     $nombre_cv_final = uniqid() . '.' . $cv_ext;
     $ruta_absoluta = __DIR__ . '/../../uploads/cv/' . $nombre_cv_final;
     $ruta_relativa = 'uploads/cv/' . $nombre_cv_final;
@@ -79,36 +79,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $stmt->bind_param(
         "sssssssssssisisiisss",
-        $nombre,
-        $apellido,
-        $fecha_nacimiento,
-        $rut,
-        $email,
-        $telefono,
-        $direccion,
-        $comuna,
-        $region,
-        $estudio,
-        $institucion,
-        $ano_titulacion,
-        $formacion_tasacion,
-        $formacion_tasacion_descripcion,
-        $anos_experiencia_tasacion,
-        $empresa_tasacion,
-        $disponibilidad_comuna,
-        $disponibilidad_region,
-        $movilizacion_propia,
+        $nombre, $apellido, $fecha_nacimiento, $rut, $email, $telefono,
+        $direccion, $comuna, $region, $estudio, $institucion, $ano_titulacion,
+        $formacion_tasacion, $formacion_tasacion_descripcion,
+        $anos_experiencia_tasacion, $empresa_tasacion,
+        $disponibilidad_comuna, $disponibilidad_region, $movilizacion_propia,
         $ruta_relativa
     );
 
     if ($stmt->execute()) {
         $stmt->close();
-        header('Location: ../../public/postula.php?mensaje=postulado');
+        header('Location: ' . BASE_URL . 'postular.php?mensaje=postulado'); // 🔥 Corregido con BASE_URL
         exit;
     } else {
         die("Error al guardar en la base de datos: " . $stmt->error);
     }
 } else {
-    header('Location: ../../public/postula.php?error=campos');
+    header('Location: ' . BASE_URL . 'postular.php?error=campos'); // 🔥 Corregido con BASE_URL
     exit;
 }
