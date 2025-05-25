@@ -5,7 +5,7 @@ ini_set('display_startup_errors', 0); // Cambiar a 1 para ver errores en desarro
 error_reporting(E_ALL);
 
 require_once __DIR__ . '/../../includes/db.php';
-require_once __DIR__ . '/../../includes/Controller/mensajesController.php';
+require_once __DIR__ . '/../../includes/Controller/postulacionesController.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-// Eliminar mensaje
+// Eliminar postulación
 if (isset($_POST['accion']) && $_POST['accion'] === 'eliminar' && isset($_POST['id'])) {
     $id = intval($_POST['id']);
     if (actualizar_estado($id, 'eliminado')) {
@@ -25,8 +25,8 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'eliminar' && isset($_POST['
 }
 
 // Marcar como importante
-if ($_POST['accion'] === 'importante' && isset($_POST['mensaje_id'], $_POST['importante'])) {
-    $id = intval($_POST['mensaje_id']);
+if ($_POST['accion'] === 'importante' && isset($_POST['postulacion_id'], $_POST['importante'])) {
+    $id = intval($_POST['postulacion_id']);
     $importante = intval($_POST['importante']);
     if (actualizar_importante($id, $importante)) {
         echo json_encode(['success' => true]);
@@ -36,25 +36,24 @@ if ($_POST['accion'] === 'importante' && isset($_POST['mensaje_id'], $_POST['imp
     exit;
 }
 
-// Recuperar mensaje y actualizar estado basado en la respuesta
+// Recuperar postulacion y actualizar estado basado en la respuesta
 if (isset($_POST['accion']) && $_POST['accion'] === 'recuperar' && isset($_POST['id'])) {
     $id = intval($_POST['id']);
-    echo actualizar_estado_mensaje($id);
+    echo actualizar_estado_postulacion($id);
     exit;
 }
 
 // Consulta con filtros
-$columns = ['importante', 'id', 'servicio', 'nombre', 'email', 'mensaje', 'estado', 'fecha_creacion'];
+$columns = ['importante', 'id', 'rut', 'nombre','apellido', 'email', 'estudio','ano_titulacion','anos_experiencia_tasacion','disponibilidad_comuna','disponibilidad_region','movilizacion_propia','estado','fecha_creacion'];
 $draw = intval($_POST['draw'] ?? 0);
 $start = intval($_POST['start'] ?? 0);
 $length = intval($_POST['length'] ?? 10);
 
-$orderColumnIndex = $_POST['order'][0]['column'] ?? 7;
+$orderColumnIndex = $_POST['order'][0]['column'] ?? 12;
 $orderDir = in_array(strtolower($_POST['order'][0]['dir'] ?? ''), ['asc', 'desc']) ? $_POST['order'][0]['dir'] : 'desc';
 $orderColumn = $columns[$orderColumnIndex] ?? 'fecha_creacion';
 
 $estado = $_POST['estado'] ?? '';
-$servicio = $_POST['servicio'] ?? '';
 $importante = $_POST['importante'] ?? '';
 $search = trim($_POST['search']['value'] ?? '');
 
@@ -73,13 +72,6 @@ if ($estado !== '' && $estado !== 'Todos') {
     $params[] = $estado;
 }
 
-// Filtro por servicio
-if ($servicio !== '' && $servicio !== 'Todos') {
-    $where .= " AND servicio = ?";
-    $paramTypes .= 's';
-    $params[] = $servicio;
-}
-
 // Filtro por importante
 if ($importante !== '') {
     $where .= " AND importante = ?";
@@ -88,8 +80,9 @@ if ($importante !== '') {
 }
 // Filtro de búsqueda
 if (!empty($search)) {
-    $where .= " AND (nombre LIKE ? OR email LIKE ? OR mensaje LIKE ? OR servicio LIKE ? OR estado LIKE ?)";
-    $paramTypes .= "sssss";
+    $where .= " AND (rut LIKE ? OR nombre LIKE ? OR apellido LIKE ? OR email LIKE ? OR estudio LIKE ? OR estado LIKE ?)";
+    $paramTypes .= "ssssss";
+    $params[] = "%$search%";
     $params[] = "%$search%";
     $params[] = "%$search%";
     $params[] = "%$search%";
@@ -98,7 +91,7 @@ if (!empty($search)) {
 }
 
 // --- COUNT con filtros ---
-$sqlCount = "SELECT COUNT(*) as total FROM mensajes $where";
+$sqlCount = "SELECT COUNT(*) as total FROM curriculum $where";
 $stmtCount = $conexion->prepare($sqlCount);
 if ($paramTypes) {
     $stmtCount->bind_param($paramTypes, ...$params);
@@ -112,8 +105,8 @@ $stmtCount->close();
 $secondaryOrder = ($orderColumn === 'fecha_creacion') ? ', importante DESC' : '';
 $orderClause = "ORDER BY $orderColumn $orderDir $secondaryOrder";
 
-$sqlData = "SELECT importante, id, servicio, nombre, email, mensaje, estado, fecha_creacion
-            FROM mensajes
+$sqlData = "SELECT importante, id, rut, nombre, apellido, email, estudio, ano_titulacion, anos_experiencia_tasacion, disponibilidad_comuna, disponibilidad_region, movilizacion_propia, estado, archivo, fecha_creacion
+            FROM curriculum
             $where
             $orderClause
             LIMIT ?, ?";
@@ -134,33 +127,40 @@ while ($row = $resultData->fetch_assoc()) {
     $data[] = [
         'importante' => $row['importante'],
         'id' => $row['id'],
-        'servicio' => $row['servicio'],
+        'rut' => $row['rut'],
         'nombre' => $row['nombre'],
+        'apellido' => $row['apellido'],
         'email' => $row['email'],
-        'mensaje' => $row['mensaje'],
+        'estudio' => $row['estudio'],
+        'ano_titulacion' => $row['ano_titulacion'],
+        'anos_experiencia_tasacion' => $row['anos_experiencia_tasacion'],
+        'disponibilidad_comuna' => $row['disponibilidad_comuna'],
+        'disponibilidad_region' => $row['disponibilidad_region'],
+        'movilizacion_propia' => $row['movilizacion_propia'],
         'estado' => $row['estado'],
         'fecha' => date('d-m-Y', strtotime($row['fecha_creacion'])),
+        'archivo' => $row['archivo'],
         'acciones' => ''
     ];
 }
 $stmtData->close();
 
 // --- COUNT total sin filtros ---
-$sqlTotal = "SELECT COUNT(*) as total FROM mensajes WHERE nombre != '' AND estado != 'eliminado'";
+$sqlTotal = "SELECT COUNT(*) as total FROM curriculum WHERE nombre != '' AND estado != 'eliminado'";
 $resultTotal = $conexion->query($sqlTotal);
 $totalData = ($fila = $resultTotal->fetch_assoc()) ? intval($fila['total']) : 0;
 
 // Totales adicionales
-$totalPendientes = obtener_mensajes_pendientes();
-$totalMensajes = obtener_total_mensajes();
+$totalPendientesPostulaciones = obtener_postulaciones_pendientes();
+$totalPostulaciones = obtener_total_postulaciones();
 
 $response = [
     "draw" => $draw,
     "recordsTotal" => $totalData,
     "recordsFiltered" => $totalFiltered,
     "data" => $data,
-    "totalPendientes" => $totalPendientes,
-    "totalMensajes" => $totalMensajes
+    "totalPendientesPostulaciones" => $totalPendientesPostulaciones,
+    "totalPostulaciones" => $totalPostulaciones
 ];
 
 echo json_encode($response);
