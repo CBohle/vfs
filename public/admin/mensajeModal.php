@@ -79,10 +79,11 @@ $sql = "SELECT
     respuestas.fecha_respuesta, 
     usuarios_admin.nombre AS admin_nombre, 
     usuarios_admin.apellido AS admin_apellido, 
-    usuarios_admin.rol AS admin_rol
+    roles.nombre AS rol
 FROM mensajes
 LEFT JOIN respuestas ON respuestas.mensaje_id = mensajes.id
 LEFT JOIN usuarios_admin ON usuarios_admin.id = respuestas.usuario_admin_id
+LEFT JOIN roles ON roles.id = usuarios_admin.rol_id
 WHERE mensajes.id = ?";
 $stmt = $conexion->prepare($sql);
 $stmt->bind_param("i", $id);
@@ -95,8 +96,23 @@ if (!$msg) {
     exit;
 }
 
+// Clases dinámicas
 $estadoClass = obtenerClaseEstado($msg['estado'] ?? '');
+$esImportante = $msg['importante'] ?? 0;
+$btnClase = $esImportante ? 'btn-outline-warning' : 'btn-warning';
+$iconoClase = $esImportante ? 'bi-star-fill' : 'bi-star';
+$textoImportante = $esImportante ? 'Marcar como no importante' : 'Marcar como importante';
 ?>
+<!-- Botón oculto que luego se moverá dinámicamente al header -->
+<div id="botonImportanteHTML" style="display: none;">
+    <button id="btnImportante"
+        class="btn <?= $btnClase ?> btn-sm d-flex align-items-center"
+        onclick="toggleImportante(<?= $msg['id'] ?>, <?= $esImportante ?>)">
+        <i id="iconoImportante" class="bi <?= $iconoClase ?> me-2"></i>
+        <span id="textoImportante"><?= $textoImportante ?></span>
+    </button>
+</div>
+
       <div class="card-body" id="resultado_filtro_mensaje">
         <div class="mb-3 position-relative">
             <div class="header2">
@@ -120,7 +136,7 @@ $estadoClass = obtenerClaseEstado($msg['estado'] ?? '');
                         <div class="reply-header d-flex justify-content-between align-items-center">
                             <div class="d-flex flex-wrap align-items-center gap-2">
                                 <span class="reply-name"><?= htmlspecialchars($msg['admin_nombre'] ?? '') ?> <?= htmlspecialchars($msg['admin_apellido'] ?? '') ?></span>
-                                <span class="rol"><?= htmlspecialchars($msg['admin_rol'] ?? '') ?></span>
+                                <span class="rol"><?= htmlspecialchars($msg['rol'] ?? '') ?></span>
                             </div>
                             <span class="text-muted ms-2"><?= htmlspecialchars($msg['fecha_respuesta'] ?? '') ?></span>
                         </div>
@@ -138,3 +154,39 @@ $estadoClass = obtenerClaseEstado($msg['estado'] ?? '');
         </div>
     </div>
 </div>
+
+<script>
+function toggleImportante(id, estadoActual) {
+    const nuevoValor = estadoActual === 1 ? 0 : 1;
+
+    $.post('mensajesAjax.php', {
+        accion: 'importante',
+        mensaje_id: id,
+        importante: nuevoValor
+    }, function(response) {
+        if (response.success) {
+            const boton = $('#btnImportante');
+            const icono = $('#iconoImportante');
+            const texto = $('#textoImportante');
+
+            if (nuevoValor === 1) {
+                boton.removeClass('btn-warning').addClass('btn-outline-warning');
+                icono.removeClass('bi-star').addClass('bi-star-fill');
+                texto.text('Marcar como no importante');
+            } else {
+                boton.removeClass('btn-outline-warning').addClass('btn-warning');
+                icono.removeClass('bi-star-fill').addClass('bi-star');
+                texto.text('Marcar como importante');
+            }
+
+            boton.attr('onclick', `toggleImportante(${id}, ${nuevoValor})`);
+
+            if (typeof tabla !== 'undefined' && tabla !== null) {
+                tabla.ajax.reload(null, false);
+            }
+        } else {
+            alert('No se pudo actualizar el estado de importancia.');
+        }
+    }, 'json');
+}
+</script>

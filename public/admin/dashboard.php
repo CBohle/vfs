@@ -36,6 +36,7 @@ require_once __DIR__ . '/../../includes/config.php';
                 <li class="nav-item"><a class="nav-link" data-section="mensajes">Mensajes</a></li>
                 <li class="nav-item"><a class="nav-link" data-section="postulaciones">Postulaciones</a></li>
                 <li class="nav-item"><a class="nav-link" data-section="clientes">Clientes</a></li>
+                <li class="nav-item"><a class="nav-link" data-section="usuarios">Usuarios</a></li>
                 <li class="nav-item"><a class="nav-link" href="../../logout.php">Cerrar sesión</a></li>
             </ul>
         </div>
