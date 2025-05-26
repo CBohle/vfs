@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
-ini_set('display_errors', 0);// Cambiar a 1 para ver errores en desarrollo
-ini_set('display_startup_errors', 0); // Cambiar a 1 para ver errores en desarrollo
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once __DIR__ . '/../../includes/db.php';
@@ -13,87 +13,69 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-// Eliminar postulación
-if (isset($_POST['accion']) && $_POST['accion'] === 'eliminar' && isset($_POST['id'])) {
-    $id = intval($_POST['id']);
-    if (actualizar_estado($id, 'eliminado')) {
-        echo json_encode(['success' => true]);
-    } else {
-        echo json_encode(['success' => false]);
-    }
-    exit;
-}
-
-// Marcar como importante
-if ($_POST['accion'] === 'importante' && isset($_POST['postulacion_id'], $_POST['importante'])) {
-    $id = intval($_POST['postulacion_id']);
-    $importante = intval($_POST['importante']);
-    if (actualizar_importante($id, $importante)) {
-        echo json_encode(['success' => true]);
-    } else {
-        echo json_encode(['success' => false]);
-    }
-    exit;
-}
-
-// Recuperar postulacion y actualizar estado basado en la respuesta
-if (isset($_POST['accion']) && $_POST['accion'] === 'recuperar' && isset($_POST['id'])) {
-    $id = intval($_POST['id']);
-    echo actualizar_estado_postulacion($id);
-    exit;
-}
-
-// Consulta con filtros
-$columns = ['importante', 'id', 'rut', 'nombre','apellido', 'email', 'estudio','ano_titulacion','anos_experiencia_tasacion','disponibilidad_comuna','disponibilidad_region','movilizacion_propia','estado','fecha_creacion'];
+// --- Inicializar variables ---
+$params = [];
+$paramTypes = '';
+$where = "WHERE nombre != ''";
+$columns = ['importante', 'id', 'rut', 'nombre', 'apellido', 'email', 'estudio', 'ano_titulacion', 'anos_experiencia_tasacion', 'disponibilidad_comuna', 'disponibilidad_region', 'movilizacion_propia', 'estado', 'fecha_creacion'];
 $draw = intval($_POST['draw'] ?? 0);
 $start = intval($_POST['start'] ?? 0);
 $length = intval($_POST['length'] ?? 10);
-
 $orderColumnIndex = $_POST['order'][0]['column'] ?? 12;
 $orderDir = in_array(strtolower($_POST['order'][0]['dir'] ?? ''), ['asc', 'desc']) ? $_POST['order'][0]['dir'] : 'desc';
 $orderColumn = $columns[$orderColumnIndex] ?? 'fecha_creacion';
-
 $estado = $_POST['estado'] ?? '';
 $importante = $_POST['importante'] ?? '';
 $search = trim($_POST['search']['value'] ?? '');
 
-// Construcción del WHERE con filtros y búsqueda
-$where = "WHERE nombre != ''";
-
-// Solo excluir eliminados si no estamos buscando específicamente los eliminados
+// Filtros
 if ($estado !== 'eliminado') {
     $where .= " AND estado != 'eliminado'";
 }
-
-// Filtro por estado
-if ($estado !== '' && $estado !== 'Todos') {
+if (!empty($estado) && $estado !== 'Todos') {
     $where .= " AND estado = ?";
     $paramTypes .= 's';
     $params[] = $estado;
 }
-
-// Filtro por importante
 if ($importante !== '') {
     $where .= " AND importante = ?";
     $paramTypes .= 'i';
     $params[] = intval($importante);
 }
-// Filtro de búsqueda
 if (!empty($search)) {
     $where .= " AND (rut LIKE ? OR nombre LIKE ? OR apellido LIKE ? OR email LIKE ? OR estudio LIKE ? OR estado LIKE ?)";
-    $paramTypes .= "ssssss";
-    $params[] = "%$search%";
-    $params[] = "%$search%";
-    $params[] = "%$search%";
-    $params[] = "%$search%";
-    $params[] = "%$search%";
-    $params[] = "%$search%";
+    $paramTypes .= 'ssssss';
+    $params = array_merge($params, array_fill(0, 6, "%$search%"));
 }
 
-// --- COUNT con filtros ---
+// --- Eliminar, marcar importante, recuperar ---
+if (isset($_POST['accion'])) {
+    $accion = $_POST['accion'];
+    $id = intval($_POST['id'] ?? 0);
+    if ($accion === 'eliminar' && $id) {
+        echo json_encode(['success' => actualizar_estado($id, 'eliminado')]);
+        exit;
+    }
+    if ($accion === 'importante' && isset($_POST['postulacion_id'], $_POST['importante'])) {
+        $id = intval($_POST['postulacion_id']);
+        $importante = intval($_POST['importante']);
+        echo json_encode(['success' => actualizar_importante($id, $importante)]);
+        exit;
+    }
+    if ($accion === 'recuperar' && $id) {
+        echo actualizar_estado_postulacion($id);
+        exit;
+    }
+}
+
+// --- Contar total filtrado ---
 $sqlCount = "SELECT COUNT(*) as total FROM curriculum $where";
 $stmtCount = $conexion->prepare($sqlCount);
-if ($paramTypes) {
+if (!$stmtCount) {
+    echo json_encode(['error' => 'Error en SQL COUNT: ' . $conexion->error]);
+    exit;
+}
+if (!empty($paramTypes)) {
     $stmtCount->bind_param($paramTypes, ...$params);
 }
 $stmtCount->execute();
@@ -101,24 +83,21 @@ $resultCount = $stmtCount->get_result();
 $totalFiltered = ($row = $resultCount->fetch_assoc()) ? intval($row['total']) : 0;
 $stmtCount->close();
 
-// --- SELECT con filtros, orden y paginación ---
-$secondaryOrder = ($orderColumn === 'fecha_creacion') ? ', importante DESC' : '';
-$orderClause = "ORDER BY $orderColumn $orderDir $secondaryOrder";
-
-$sqlData = "SELECT importante, id, rut, nombre, apellido, email, estudio, ano_titulacion, anos_experiencia_tasacion, disponibilidad_comuna, disponibilidad_region, movilizacion_propia, estado, archivo, fecha_creacion
-            FROM curriculum
-            $where
-            $orderClause
-            LIMIT ?, ?";
+// --- Datos filtrados ---
+$orderClause = "ORDER BY $orderColumn $orderDir, importante DESC";
+$sqlData = "SELECT importante, id, rut, nombre, apellido, email, estudio, ano_titulacion, anos_experiencia_tasacion, disponibilidad_comuna, disponibilidad_region, movilizacion_propia, estado, archivo, fecha_creacion FROM curriculum $where $orderClause LIMIT ?, ?";
 $stmtData = $conexion->prepare($sqlData);
-
-$paramsWithLimits = $params;
-$paramTypesWithLimits = $paramTypes;
-$paramsWithLimits[] = $start;
-$paramsWithLimits[] = $length;
-$paramTypesWithLimits .= 'ii';
-
-$stmtData->bind_param($paramTypesWithLimits, ...$paramsWithLimits);
+if (!$stmtData) {
+    echo json_encode(['error' => 'Error en SQL DATA: ' . $conexion->error]);
+    exit;
+}
+$paramTypesWithLimits = $paramTypes . 'ii';
+$paramsWithLimits = array_merge($params, [$start, $length]);
+if (!empty($paramTypes)) {
+    $stmtData->bind_param($paramTypesWithLimits, ...$paramsWithLimits);
+} else {
+    $stmtData->bind_param('ii', $start, $length);
+}
 $stmtData->execute();
 $resultData = $stmtData->get_result();
 
@@ -145,22 +124,21 @@ while ($row = $resultData->fetch_assoc()) {
 }
 $stmtData->close();
 
-// --- COUNT total sin filtros ---
-$sqlTotal = "SELECT COUNT(*) as total FROM curriculum WHERE nombre != '' AND estado != 'eliminado'";
-$resultTotal = $conexion->query($sqlTotal);
-$totalData = ($fila = $resultTotal->fetch_assoc()) ? intval($fila['total']) : 0;
+// --- Contar total general ---
+$totalData = $conexion->query("SELECT COUNT(*) as total FROM curriculum WHERE nombre != '' AND estado != 'eliminado'")->fetch_assoc()['total'] ?? 0;
 
-// Totales adicionales
-$totalPendientesPostulaciones = obtener_postulaciones_pendientes();
-$totalPostulaciones = obtener_total_postulaciones();
+// Totales
+$totalPendientes = obtener_postulaciones_pendientes();
+$total = obtener_total_postulaciones();
 
+// --- Respuesta ---
 $response = [
     "draw" => $draw,
     "recordsTotal" => $totalData,
     "recordsFiltered" => $totalFiltered,
     "data" => $data,
-    "totalPendientesPostulaciones" => $totalPendientesPostulaciones,
-    "totalPostulaciones" => $totalPostulaciones
+    "totalPendientesPostulaciones" => $totalPendientes,
+    "totalPostulaciones" => $total
 ];
-
 echo json_encode($response);
+?>

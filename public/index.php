@@ -545,6 +545,12 @@ require_once __DIR__ . '/../includes/config.php';
                                 <!-- reCAPTCHA -->
                                 <!-- <div class="g-recaptcha mb-3 mt-3" data-sitekey="6LdyYy0rAAAAAH9kSCDWmq8Rkp0vZRQX3oFSZcpr"></div> -->
                             </form>
+<!-- Mensaje de recepción exitosa o error -->
+                                          <?php if (isset($_GET['mensaje']) && $_GET['mensaje'] === 'enviado'): ?>
+                <div class="alert alert-success text-center">¡Tu mensaje ha sido enviado con éxito!</div>
+            <?php elseif (isset($_GET['error'])): ?>
+                <div class="alert alert-danger text-center">Por favor completa todos los campos.</div>
+            <?php endif; ?>
                             <!-- FIN FORMULARIO DE CONTACTO -->
                         </div>
                     </div>
