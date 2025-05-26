@@ -54,7 +54,7 @@ require_once __DIR__ . '/../includes/config.php';
             <div class="col-lg-6 order-lg-2">
                 <div class="p-5">
                     <!-- <img class="img-fluid " src="assets/img/01.jpg" alt="..." /> -->
-                    <img class="img-fluid rounded-circle" src="<?= BASE_URL ?>assets/images/nosotros/01.jpg" alt="Nosotros" />
+                    <img class="img-fluid rounded-circle" src="<?= BASE_URL ?>assets/images/nosotros/01.webp" alt="Nosotros" />
                 </div>
             </div>
             <div class="col-lg-6 order-lg-1">
@@ -81,7 +81,7 @@ require_once __DIR__ . '/../includes/config.php';
             <!-- Servicio 1 -->
             <div class="col-lg-6 col-sm-12 pe-4">
                 <div class="servicios-box " data-bs-toggle="modal" data-bs-target="#modalServicio1">
-                    <img class="img-fluid" src="<?= BASE_URL ?>assets/images/servicios/05.JPG" alt="Consultoría inmobiliaria" />
+                    <img class="img-fluid" src="<?= BASE_URL ?>assets/images/servicios/05.webp" alt="Consultoría inmobiliaria" />
                     <div class="servicios-box-caption">
                         <div class="project-category text-white-50">TASACIÓN DE BIENES RAÍCES</div>
                         <br>
@@ -160,7 +160,7 @@ require_once __DIR__ . '/../includes/config.php';
             <!-- Servicio 2 -->
             <div class="col-lg-6 col-sm-12 pe-4">
                 <div class="servicios-box " data-bs-toggle="modal" data-bs-target="#modalServicio2">
-                    <img class="img-fluid" src="<?= BASE_URL ?>assets/images/servicios/16.JPG" alt="Consultoría inmobiliaria" />
+                    <img class="img-fluid" src="<?= BASE_URL ?>assets/images/servicios/16.webp" alt="Consultoría inmobiliaria" />
                     <div class="servicios-box-caption">
                         <div class="project-category text-white-50">CONSULTORÍA INMOBILIARIA</div>
                         <br>
@@ -445,7 +445,7 @@ require_once __DIR__ . '/../includes/config.php';
                 <div class="p-5">
                     <div class="gx-4 gx-lg-5 justify-content-center mb-5 ">
                         <!-- <img class="img-fluid " src="assets/img/01.jpg" alt="..." /> -->
-                        <img class="img-fluid rounded" src="<?= BASE_URL ?>assets/images/contacto/01.jpg" alt="Nosotros" />
+                        <img class="img-fluid rounded" src="<?= BASE_URL ?>assets/images/contacto/01.webp" alt="Nosotros" />
                     </div>
                 </div>
             </div>
@@ -455,6 +455,12 @@ require_once __DIR__ . '/../includes/config.php';
                 <div class="p-5">
                     <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
                         <div class="">
+                            <!-- Mensaje de recepción exitosa o error -->
+                            <?php if (isset($_GET['mensaje']) && $_GET['mensaje'] === 'enviado'): ?>
+                                <div class="alert alert-success text-center">¡Tu mensaje ha sido enviado con éxito!</div>
+                            <?php elseif (isset($_GET['error'])): ?>
+                                <div class="alert alert-danger text-center">Por favor completa todos los campos.</div>
+                            <?php endif; ?>
                             <!-- INICIO FORMULARIO DE CONTACTO CON VALIDACIONES POR CAMPO -->
                             <form id="contactoForm" class="novalidate">
                                 <!-- Campo 1: Nombre OK-->
@@ -541,16 +547,10 @@ require_once __DIR__ . '/../includes/config.php';
                                 <div class="d-grid">
                                     <button class="btn btn-primary btn-xl" id="submitButtonContacto" type="submit" disabled>Enviar</button>
                                 </div>
-
                                 <!-- reCAPTCHA -->
                                 <!-- <div class="g-recaptcha mb-3 mt-3" data-sitekey="6LdyYy0rAAAAAH9kSCDWmq8Rkp0vZRQX3oFSZcpr"></div> -->
                             </form>
-<!-- Mensaje de recepción exitosa o error -->
-                                          <?php if (isset($_GET['mensaje']) && $_GET['mensaje'] === 'enviado'): ?>
-                <div class="alert alert-success text-center">¡Tu mensaje ha sido enviado con éxito!</div>
-            <?php elseif (isset($_GET['error'])): ?>
-                <div class="alert alert-danger text-center">Por favor completa todos los campos.</div>
-            <?php endif; ?>
+
                             <!-- FIN FORMULARIO DE CONTACTO -->
                         </div>
                     </div>
