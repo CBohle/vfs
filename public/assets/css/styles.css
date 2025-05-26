@@ -12949,6 +12949,11 @@ header.masthead .h1 {
   text-align: center;
 }
 
+.al-servicios{
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
 #servicios .container-fluid .servicios-box .servicios-box-caption .project-category,
 #servicios .container-sm .servicios-box .servicios-box-caption .project-category,
 #servicios .container-md .servicios-box .servicios-box-caption .project-category,
