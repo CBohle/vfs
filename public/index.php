@@ -35,11 +35,11 @@ require_once __DIR__ . '/../includes/config.php';
     <div class="container px-4 px-lg-5 h-100">
         <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
             <div class="col-lg-8 align-self-end">
-                <h1 class="text-white font-weight-bold">Profesionalismo en cada tasación</h1>
+                <h1 class="text-white">Profesionalismo en cada tasación</h1>
                 <hr class="divider" />
             </div>
             <div class="col-lg-8 align-self-baseline">
-                <p class="text-white-75 mb-5">Somos una empresa de tasación y consultoría inmobiliaria que entrega soluciones integrales y asesoría precisa para apoyar decisiones estratégicas en inversión, financiamiento y gestión de activos.</p>
+                <p class="text-white-75 mb-5 p-masthead">Somos una empresa de tasación y consultoría inmobiliaria que entrega soluciones integrales y asesoría precisa para apoyar decisiones estratégicas en inversión, financiamiento y gestión de activos.</p>
                 <a class="btn btn-primary btn-xl" href="#nosotros">¡Conocer más!</a>
             </div>
         </div>
@@ -58,11 +58,11 @@ require_once __DIR__ . '/../includes/config.php';
                 </div>
             </div>
             <div class="col-lg-6 order-lg-1">
-                <div class="p-5">
+                <div class="p-4">
                     <h2 class="display-4">Comprometidos con tu éxito</h2>
                     <br>
-                    <p>Somos una empresa especializada en tasación y consultoría inmobiliaria, comprometida con la entrega de soluciones integrales que respalden decisiones estratégicas en el ámbito inmobiliario.</p>
-                    <p>Nuestra misión es proporcionar valor agregado a nuestros clientes mediante información precisa y asesoramiento especializado, facilitando procesos de inversión, financiamiento y gestión de activos inmobiliarios.</p>
+                    <p class="p-nosotros">Somos una empresa especializada en tasación y consultoría inmobiliaria, comprometida con la entrega de soluciones integrales que respalden decisiones estratégicas en el ámbito inmobiliario.</p>
+                    <p class="p-nosotros">Nuestra misión es proporcionar valor agregado a nuestros clientes mediante información precisa y asesoramiento especializado, facilitando procesos de inversión, financiamiento y gestión de activos inmobiliarios.</p>
                     <br>
                     <a class="btn btn-primary btn-xl" href="#servicios">¡Saber más!</a>
                 </div>
@@ -109,9 +109,9 @@ require_once __DIR__ . '/../includes/config.php';
                                     <div class="carousel-item active">
                                         <div class="carousel-slide-bg carrousel-servicio1-1">
                                             <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
-                                                <h5 class="mb-3">Propiedades</h5>
+                                                <h3 class="mb-3">Propiedades</h3>
                                                 <p class="lead mb-0">
-                                                <ul class="text-start mx-auto">
+                                                <ul class="text-start mx-auto ul-servicios">
                                                     <li>Propiedades residenciales: casas, departamentos, parcelas agroresidenciales, sitios urbanos y rurales.</li>
                                                     <li>Inmuebles comerciales: oficinas y locales comerciales.</li>
                                                     <li>Activos industriales: bodegas, industrias y terrenos industriales.</li>
@@ -125,7 +125,7 @@ require_once __DIR__ . '/../includes/config.php';
                                     <div class="carousel-item">
                                         <div class="carousel-slide-bg carrousel-servicio1-2">
                                             <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
-                                                <h5 class="mb-3">Metodologías</h5>
+                                                <h3 class="mb-3">Metodologías</h3>
 
                                                 <p class="lead mb-0">
                                                     Aplicamos metodologías reconocidas internacionalmente, como el enfoque de mercado, el método de costos y el enfoque de ingresos, adaptándolas a las particularidades de cada activo y a las necesidades específicas de nuestros clientes.
@@ -137,7 +137,7 @@ require_once __DIR__ . '/../includes/config.php';
                                     <div class="carousel-item">
                                         <div class="carousel-slide-bg carrousel-servicio1-3">
                                             <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
-                                                <h5 class="mb-3">Informes</h5>
+                                                <h3 class="mb-3">Informes</h3>
                                                 <p class="lead mb-0">
                                                     Nuestros informes cumplen con estándares de entidades financieras, organismos reguladores y normativas contables internacionales (IFRS).
                                                 </p>
@@ -187,9 +187,9 @@ require_once __DIR__ . '/../includes/config.php';
                                     <div class="carousel-item active">
                                         <div class="carousel-slide-bg carrousel-servicio2-1">
                                             <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
-                                                <h5 class="mb-3">Servicios</h5>
+                                                <h3 class="mb-3">Servicios</h3>
                                                 <p class="lead mb-0">
-                                                <ul class="text-start mx-auto">
+                                                <ul class="text-start mx-auto ul-servicios">
                                                     <li>Estudios de mercado</li>
                                                     <li>Análisis de viabilidad</li>
                                                     <li>Asesoramiento estratégico</li>
@@ -203,7 +203,7 @@ require_once __DIR__ . '/../includes/config.php';
                                     <div class="carousel-item">
                                         <div class="carousel-slide-bg carrousel-servicio2-2">
                                             <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
-                                                <h5 class="mb-3">Estudios de mercado</h5>
+                                                <h3 class="mb-3">Estudios de mercado</h3>
                                                 <p class="lead mb-0">
                                                     Análisis de oferta y demanda, identificación de tendencias y evaluación de oportunidades de inversión.
                                                 </p>
@@ -214,7 +214,7 @@ require_once __DIR__ . '/../includes/config.php';
                                     <div class="carousel-item">
                                         <div class="carousel-slide-bg carrousel-servicio2-3">
                                             <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
-                                                <h5 class="mb-3">Análisis de viabilidad</h5>
+                                                <h3 class="mb-3">Análisis de viabilidad</h3>
                                                 <p class="lead mb-0">
                                                     Evaluación técnica, legal y financiera de proyectos inmobiliarios para determinar su rentabilidad y sostenibilidad.
                                                 </p>
@@ -225,7 +225,7 @@ require_once __DIR__ . '/../includes/config.php';
                                     <div class="carousel-item">
                                         <div class="carousel-slide-bg carrousel-servicio2-4">
                                             <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
-                                                <h5 class="mb-3">Asesoramiento estratégico</h5>
+                                                <h3 class="mb-3">Asesoramiento estratégico</h3>
                                                 <p class="lead mb-0">
                                                     Diseño de estrategias de desarrollo, comercialización y posicionamiento de activos inmobiliarios.
                                                 </p>
@@ -236,7 +236,7 @@ require_once __DIR__ . '/../includes/config.php';
                                     <div class="carousel-item">
                                         <div class="carousel-slide-bg carrousel-servicio2-5">
                                             <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
-                                                <h5 class="mb-3">Gestión de activos</h5>
+                                                <h3 class="mb-3">Gestión de activos</h3>
                                                 <p class="lead mb-0">
                                                     Optimización del rendimiento de carteras inmobiliarias mediante la implementación de prácticas de gestión eficientes y sostenibles.
                                                 </p>
@@ -247,7 +247,7 @@ require_once __DIR__ . '/../includes/config.php';
                                     <div class="carousel-item">
                                         <div class="carousel-slide-bg carrousel-servicio2-6">
                                             <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
-                                                <h5 class="mb-3">Enfoque</h5>
+                                                <h3 class="mb-3">Enfoque</h3>
                                                 <p class="lead mb-0">
                                                     Nuestro enfoque se basa en la integración de datos cuantitativos y cualitativos, el uso de herramientas tecnológicas avanzadas y una comprensión profunda del entorno regulatorio y económico, lo que nos permite ofrecer soluciones personalizadas y efectivas a nuestros clientes. </p>
                                             </div>
@@ -303,8 +303,8 @@ require_once __DIR__ . '/../includes/config.php';
                 </h2>
                 <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                        <p>Ofrecemos servicios de tasación para una amplia gama de activos inmobiliarios, incluyendo:</p>
-                        <ul>
+                        <p class="p-faq">Ofrecemos servicios de tasación para una amplia gama de activos inmobiliarios, incluyendo:</p>
+                        <ul class="ul-faq">
                             <li>Casas y departamentos</li>
                             <li>Terrenos urbanos y rurales</li>
                             <li>Oficinas y locales comerciales</li>
@@ -323,8 +323,8 @@ require_once __DIR__ . '/../includes/config.php';
                 </h2>
                 <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                        <p>Para iniciar el proceso de tasación, solicitamos los siguientes datos:</p>
-                        <ul>
+                        <p class="p-faq">Para iniciar el proceso de tasación, solicitamos los siguientes datos:</p>
+                        <ul class="ul-faq">
                             <li>Nombre y apellido del propietario</li>
                             <li>Contacto (email y teléfono)</li>
                             <li>Tipo de propiedad</li>
@@ -344,8 +344,8 @@ require_once __DIR__ . '/../includes/config.php';
                 </h2>
                 <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                        <p>El plazo de entrega del informe varía según el tipo de propiedad:</p>
-                        <ul>
+                        <p class="p-faq">El plazo de entrega del informe varía según el tipo de propiedad:</p>
+                        <ul class="ul-faq">
                             <li>Casa, departamento, terreno urbano: 5 días hábiles</li>
                             <li>Propiedades comerciales o industriales: 7 a 10 días hábiles</li>
                             <li>Activos de uso específico: 10 a 15 días hábiles</li>
@@ -362,8 +362,8 @@ require_once __DIR__ . '/../includes/config.php';
                 </h2>
                 <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                        <p>Utilizamos metodologías reconocidas internacionalmente, tales como:</p>
-                        <ul>
+                        <p class="p-faq">Utilizamos metodologías reconocidas internacionalmente, tales como:</p>
+                        <ul class="ul-faq">
                             <li>Enfoque de mercado (comparación de ventas)</li>
                             <li>Método de costos (valor de reposición)</li>
                             <li>Enfoque de ingresos (capitalización de rentas)</li>
@@ -380,7 +380,7 @@ require_once __DIR__ . '/../includes/config.php';
                 </h2>
                 <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                        <p>En caso de disconformidad, el cliente puede solicitar una reconsideración. Nuestro equipo revisará el informe y, si corresponde, se realizarán los ajustes pertinentes.</p>
+                        <p class="p-faq">En caso de disconformidad, el cliente puede solicitar una reconsideración. Nuestro equipo revisará el informe y, si corresponde, se realizarán los ajustes pertinentes.</p>
                     </div>
                 </div>
             </div>
@@ -393,8 +393,8 @@ require_once __DIR__ . '/../includes/config.php';
                 </h2>
                 <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                        <p>Nuestros servicios de consultoría abordan:</p>
-                        <ul>
+                        <p class="p-faq">Nuestros servicios de consultoría abordan:</p>
+                        <ul class="ul-faq">
                             <li>Estudios de mercado y viabilidad de proyectos</li>
                             <li>Asesoramiento en inversiones y desarrollo inmobiliario</li>
                             <li>Optimización de carteras de activos</li>
@@ -412,7 +412,7 @@ require_once __DIR__ . '/../includes/config.php';
                 </h2>
                 <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                        <p>El pago puede realizarse mediante transferencia bancaria o mercado pago. Los detalles del proceso de pago se incluirán en la cotización enviada al cliente.</p>
+                        <p class="p-faq">El pago puede realizarse mediante transferencia bancaria o mercado pago. Los detalles del proceso de pago se incluirán en la cotización enviada al cliente.</p>
                     </div>
                 </div>
             </div>
@@ -425,7 +425,7 @@ require_once __DIR__ . '/../includes/config.php';
                 </h2>
                 <div id="collapseEight" class="accordion-collapse collapse" aria-labelledby="headingEight" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                        <p>Nuestros informes cumplen con las normativas IFRS y estándares nacionales, garantizando precisión, confiabilidad y validez ante instituciones financieras y reguladoras.</p>
+                        <p class="p-faq">Nuestros informes cumplen con las normativas IFRS y estándares nacionales, garantizando precisión, confiabilidad y validez ante instituciones financieras y reguladoras.</p>
                     </div>
                 </div>
             </div>
