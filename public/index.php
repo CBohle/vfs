@@ -53,7 +53,6 @@ require_once __DIR__ . '/../includes/config.php';
         <div class="row gx-5 align-items-center">
             <div class="col-lg-6 order-lg-2">
                 <div class="p-5">
-                    <!-- <img class="img-fluid " src="assets/img/01.jpg" alt="..." /> -->
                     <img class="img-fluid rounded-circle" src="<?= BASE_URL ?>assets/images/nosotros/01.webp" alt="Nosotros" />
                 </div>
             </div>
@@ -63,8 +62,7 @@ require_once __DIR__ . '/../includes/config.php';
                     <br>
                     <p class="p-nosotros">Somos una empresa especializada en tasación y consultoría inmobiliaria, comprometida con la entrega de soluciones integrales que respalden decisiones estratégicas en el ámbito inmobiliario.</p>
                     <p class="p-nosotros">Nuestra misión es proporcionar valor agregado a nuestros clientes mediante información precisa y asesoramiento especializado, facilitando procesos de inversión, financiamiento y gestión de activos inmobiliarios.</p>
-                    <br>
-                    <a class="btn btn-primary btn-xl" href="#servicios">¡Saber más!</a>
+                    <a class="btn btn-primary btn-xl" style="margin-top: 8px;" href="#servicios">¡Saber más!</a>
                 </div>
             </div>
 
@@ -303,7 +301,7 @@ require_once __DIR__ . '/../includes/config.php';
                 </h2>
                 <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                        <p class="p-faq">Ofrecemos servicios de tasación para una amplia gama de activos inmobiliarios, incluyendo:</p>
+                        <p class="p-faq-accordion">Ofrecemos servicios de tasación para una amplia gama de activos inmobiliarios, incluyendo:</p>
                         <ul class="ul-faq">
                             <li>Casas y departamentos</li>
                             <li>Terrenos urbanos y rurales</li>
@@ -323,7 +321,7 @@ require_once __DIR__ . '/../includes/config.php';
                 </h2>
                 <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                        <p class="p-faq">Para iniciar el proceso de tasación, solicitamos los siguientes datos:</p>
+                        <p class="p-faq-accordion">Para iniciar el proceso de tasación, solicitamos los siguientes datos:</p>
                         <ul class="ul-faq">
                             <li>Nombre y apellido del propietario</li>
                             <li>Contacto (email y teléfono)</li>
@@ -344,7 +342,7 @@ require_once __DIR__ . '/../includes/config.php';
                 </h2>
                 <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                        <p class="p-faq">El plazo de entrega del informe varía según el tipo de propiedad:</p>
+                        <p class="p-faq-accordion">El plazo de entrega del informe varía según el tipo de propiedad:</p>
                         <ul class="ul-faq">
                             <li>Casa, departamento, terreno urbano: 5 días hábiles</li>
                             <li>Propiedades comerciales o industriales: 7 a 10 días hábiles</li>
@@ -362,7 +360,7 @@ require_once __DIR__ . '/../includes/config.php';
                 </h2>
                 <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                        <p class="p-faq">Utilizamos metodologías reconocidas internacionalmente, tales como:</p>
+                        <p class="p-faq-accordion">Utilizamos metodologías reconocidas internacionalmente, tales como:</p>
                         <ul class="ul-faq">
                             <li>Enfoque de mercado (comparación de ventas)</li>
                             <li>Método de costos (valor de reposición)</li>
@@ -380,7 +378,7 @@ require_once __DIR__ . '/../includes/config.php';
                 </h2>
                 <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                        <p class="p-faq">En caso de disconformidad, el cliente puede solicitar una reconsideración. Nuestro equipo revisará el informe y, si corresponde, se realizarán los ajustes pertinentes.</p>
+                        <p class="p-faq-accordion">En caso de disconformidad, el cliente puede solicitar una reconsideración. Nuestro equipo revisará el informe y, si corresponde, se realizarán los ajustes pertinentes.</p>
                     </div>
                 </div>
             </div>
@@ -393,7 +391,7 @@ require_once __DIR__ . '/../includes/config.php';
                 </h2>
                 <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                        <p class="p-faq">Nuestros servicios de consultoría abordan:</p>
+                        <p class="p-faq-accordion">Nuestros servicios de consultoría abordan:</p>
                         <ul class="ul-faq">
                             <li>Estudios de mercado y viabilidad de proyectos</li>
                             <li>Asesoramiento en inversiones y desarrollo inmobiliario</li>
@@ -412,7 +410,7 @@ require_once __DIR__ . '/../includes/config.php';
                 </h2>
                 <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                        <p class="p-faq">El pago puede realizarse mediante transferencia bancaria o mercado pago. Los detalles del proceso de pago se incluirán en la cotización enviada al cliente.</p>
+                        <p class="p-faq-accordion">El pago puede realizarse mediante transferencia bancaria o mercado pago. Los detalles del proceso de pago se incluirán en la cotización enviada al cliente.</p>
                     </div>
                 </div>
             </div>
@@ -425,7 +423,7 @@ require_once __DIR__ . '/../includes/config.php';
                 </h2>
                 <div id="collapseEight" class="accordion-collapse collapse" aria-labelledby="headingEight" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                        <p class="p-faq">Nuestros informes cumplen con las normativas IFRS y estándares nacionales, garantizando precisión, confiabilidad y validez ante instituciones financieras y reguladoras.</p>
+                        <p class="p-faq-accordion">Nuestros informes cumplen con las normativas IFRS y estándares nacionales, garantizando precisión, confiabilidad y validez ante instituciones financieras y reguladoras.</p>
                     </div>
                 </div>
             </div>

@@ -169,7 +169,8 @@ h3,
 
   h3,
   .h3 {
-    font-size: 1.75rem;
+    font-size: 2.75rem;
+    font-weight: 300;
   }
 }
 
@@ -213,6 +214,13 @@ p {
   font-size: 1.2rem;
   font-weight: 300;
 }
+.p-postular {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-family: "Raleway", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 300;
+}
 
 .p-faq {
   margin-top: 0;
@@ -221,9 +229,17 @@ p {
   font-size: 1rem;
   font-weight: 300;
 }
+.p-faq-accordion {
+  margin-top: 0;
+  margin-bottom: 0.9rem;
+  font-family: "Raleway", sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+}
 .ul-faq {
   font-family: "Raleway", sans-serif;
   font-size: 0.95rem;
+  font-weight: 500;
 }
 
 .ul-servicios {

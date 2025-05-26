@@ -34,16 +34,12 @@ require_once __DIR__ . '/../includes/config.php';
 <!-- INCLUDE HEADER -->
 <?php include_once __DIR__ . '/../includes/header.php'; ?>
 <body>
-   
-<!-- INICIO SECCIÓN FORMULARIO DE POSTULACIÓN-->
 <section class="page-section bg-tertiary" id="postulacion">
     <div class="container px-4 px-lg-5">
-        <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-lg-8 col-xl-6 text-center">
-                <h2 class="mt-0">Sé parte del equipo VFS</h2>
-                <hr class="divider" />
-                <p class="text-muted mb-5">Completa el siguiente formulario para postular a ser parte del equipo VFS.</p>
-            </div>
+        <div class="row gx-4 gx-lg-5 align-items-center">
+            <h2 class="display-4 text-center">Sé parte del equipo VFS</h2>
+                <!-- <hr class="divider" /> -->
+                <p class="text-muted text-center mb-5 p-postular">Completa el siguiente formulario para postular a ser parte del equipo VFS.</p>
         </div>
         <div class="accordion" id="postulacionAccordion">
 
