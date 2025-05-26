@@ -9,9 +9,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-switch ($_POST['accion'] ?? '') {
+$accion = $_POST['accion'] ?? '';
+
+switch ($accion) {
     case 'obtenerRolPorId':
-        echo json_encode(obtenerRolPorId(intval($_POST['id'])));
+        $id = intval($_POST['id']);
+        echo json_encode(obtenerRolPorId($id));
         break;
 
     case 'guardarRol':
@@ -25,34 +28,43 @@ switch ($_POST['accion'] ?? '') {
         break;
 
     case 'toggleEstadoRol':
-        $stmt = $conexion->prepare("UPDATE roles SET activo = NOT activo WHERE id = ?");
-        $stmt->bind_param("i", $_POST['id']);
-        echo json_encode(['success' => $stmt->execute()]);
+        $id = intval($_POST['id']);
+        echo json_encode(['success' => toggleEstadoRol($id)]);
         break;
 
     case 'listarRoles':
+        echo json_encode(listarRoles($_POST));
+        break;
+
+    case 'obtenerUsuarioPorId':
+        $id = intval($_POST['id']);
+        echo json_encode(obtenerUsuarioPorId($id));
+        break;
+
+    case 'guardarUsuario':
+        $datos = [
+            'id' => $_POST['id'] ?? null,
+            'nombre' => $_POST['nombre'] ?? '',
+            'apellido' => $_POST['apellido'] ?? '',
+            'email' => $_POST['email'] ?? '',
+            'password' => $_POST['password'] ?? null,
+            'rol_id' => $_POST['rol_id'] ?? null,
+            'activo' => 1
+        ];
+        echo json_encode(['success' => guardarUsuario($datos)]);
+        break;
+
+    case 'toggleEstadoUsuario':
+        $id = intval($_POST['id']);
+        echo json_encode(['success' => toggleEstadoUsuario($id)]);
+        break;
+
+    case 'listarUsuarios':
+        echo json_encode(listarUsuarios($_POST));
+        break;
+
     default:
-        $columns = ['id', 'nombre', 'descripcion', 'activo'];
-        $start = intval($_POST['start'] ?? 0);
-        $length = intval($_POST['length'] ?? 10);
-        $orderIndex = $_POST['order'][0]['column'] ?? 0;
-        $orderDir = in_array($_POST['order'][0]['dir'] ?? '', ['asc', 'desc']) ? $_POST['order'][0]['dir'] : 'asc';
-        $orderColumn = $columns[$orderIndex] ?? 'nombre';
-
-        $where = "WHERE nombre != ''"; // Mostrar todos los roles, sin importar si están activos
-        $sqlData = "SELECT id, nombre, descripcion, activo FROM roles $where ORDER BY $orderColumn $orderDir LIMIT ?, ?";
-        $stmt = $conexion->prepare($sqlData);
-        $stmt->bind_param("ii", $start, $length);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $data = $result->fetch_all(MYSQLI_ASSOC);
-
-        $total = $conexion->query("SELECT COUNT(*) as total FROM roles WHERE nombre != ''")->fetch_assoc();
-
-        echo json_encode([
-            "draw" => intval($_POST['draw'] ?? 0),
-            "recordsTotal" => $total['total'],
-            "recordsFiltered" => $total['total'],
-            "data" => $data
-        ]);
+        echo json_encode(['error' => 'Acción no válida']);
+        break;
 }
+?>

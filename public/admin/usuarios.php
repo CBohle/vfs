@@ -53,13 +53,10 @@ $roles = obtenerRoles();
 
         table.dataTable thead th {
             background-color: #f0f2f5;
+            border-bottom: none;
             font-weight: 600;
             color: #495057;
             padding: 0.75rem;
-        }
-
-        #tablaRolesWrapper .card-body {
-            padding: 0;
         }
     </style>
 </head>
@@ -67,222 +64,381 @@ $roles = obtenerRoles();
 <body class="bg-light">
     <div class="container py-4">
         <h2 class="mb-4">Administración de Usuarios y Roles</h2>
-        <div class="row mt-3">
-            <div class="col-lg-7 mb-3">
-                <div class="card" id="tablaRolesWrapper">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <span>Roles Registrados</span>
-                        <button class="btn btn-sm btn-primary" onclick="mostrarFormularioRol()">Nuevo Rol</button>
-                    </div>
-                    <div class="card-body">
-                        <table id="tablaRoles" class="table table-hover w-100">
-                            <thead>
-                                <tr>
-                                    <th>Nombre del Rol</th>
-                                    <th>Descripción</th>
-                                    <th>Estatus</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-5 mb-3" id="formularioRolContainer" style="display: none;">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0" id="formRolTitulo">Nuevo Rol</h5>
-                        <button class="btn-close" onclick="ocultarFormularioRol()"></button>
-                    </div>
-                    <form id="formRol" class="card-body">
-                        <div class="mb-3">
-                            <label for="nombreRol" class="form-label">Nombre del Rol</label>
-                            <input type="text" class="form-control" id="nombreRol" name="nombre" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="descripcionRol" class="form-label">Descripción</label>
-                            <input type="text" class="form-control" id="descripcionRol" name="descripcion">
-                        </div>
-                        <h6>Permisos por módulo:</h6>
-                        <div class="table-responsive mb-3">
-                            <table class="table table-bordered text-center align-middle">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Módulo</th>
-                                        <th>Ver</th>
-                                        <th>Modificar</th>
-                                        <th>Crear</th>
-                                        <th>Eliminar</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach (['mensajes', 'postulaciones', 'clientes', 'usuarios', 'roles'] as $modulo): ?>
+
+        <ul class="nav nav-tabs" id="tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="roles-tab" data-bs-toggle="tab" data-bs-target="#usuarios" type="button" role="tab">Usuarios</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="usuarios-tab" data-bs-toggle="tab" data-bs-target="#roles" type="button" role="tab">Roles</button>
+            </li>
+        </ul>
+
+        <div class="tab-content pt-3">
+            <div class="tab-pane fade" id="roles" role="tabpanel">
+                <div class="row">
+                    <div class="col-lg-7 mb-3">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <span>Roles Registrados</span>
+                                <button class="btn btn-sm btn-primary" onclick="mostrarFormularioRol()">Nuevo Rol</button>
+                            </div>
+                            <div class="card-body">
+                                <table id="tablaRoles" class="table table-hover w-100">
+                                    <thead>
                                         <tr>
-                                            <td class="text-start"><?= ucfirst($modulo) ?></td>
-                                            <?php foreach (['ver', 'modificar', 'crear', 'eliminar'] as $accion): ?>
-                                                <td><input type="checkbox" class="form-check-input" name="permisos[<?= $modulo ?>][<?= $accion ?>]"></td>
-                                            <?php endforeach; ?>
+                                            <th>Nombre del Rol</th>
+                                            <th>Descripción</th>
+                                            <th>Estatus</th>
+                                            <th>Acciones</th>
                                         </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
                         </div>
-                        <input type="hidden" name="rol_id" id="rol_id">
-                        <div class="d-flex justify-content-end gap-2">
-                            <button type="button" class="btn btn-secondary" onclick="ocultarFormularioRol()">Cancelar</button>
-                            <button type="submit" class="btn btn-primary">Guardar Rol</button>
+                    </div>
+                    <div class="col-lg-5 mb-3" id="formularioRolContainer" style="display: none;">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0" id="formRolTitulo">Nuevo Rol</h5>
+                                <button class="btn-close" onclick="ocultarFormularioRol()"></button>
+                            </div>
+                            <form id="formRol" class="card-body">
+                                <div class="mb-3">
+                                    <label for="nombreRol" class="form-label">Nombre del Rol</label>
+                                    <input type="text" class="form-control" id="nombreRol" name="nombre" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="descripcionRol" class="form-label">Descripción</label>
+                                    <input type="text" class="form-control" id="descripcionRol" name="descripcion">
+                                </div>
+                                <h6>Permisos por módulo:</h6>
+                                <div class="table-responsive mb-3">
+                                    <table class="table table-bordered text-center align-middle">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Módulo</th>
+                                                <th>Ver</th>
+                                                <th>Modificar</th>
+                                                <th>Crear</th>
+                                                <th>Eliminar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach (['mensajes', 'postulaciones', 'clientes', 'usuarios', 'roles'] as $modulo): ?>
+                                                <tr>
+                                                    <td class="text-start"><?= ucfirst($modulo) ?></td>
+                                                    <?php foreach (['ver', 'modificar', 'crear', 'eliminar'] as $accion): ?>
+                                                        <td><input type="checkbox" class="form-check-input" name="permisos[<?= $modulo ?>][<?= $accion ?>]"></td>
+                                                    <?php endforeach; ?>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <input type="hidden" name="rol_id" id="rol_id">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <button type="button" class="btn btn-secondary" onclick="ocultarFormularioRol()">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary">Guardar Rol</button>
+                                </div>
+                            </form>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+            <div class="tab-pane fade show active" id="usuarios" role="tabpanel">
+                <div class="row">
+                    <div class="col-lg-7 mb-3">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <span>Usuarios Registrados</span>
+                                <button class="btn btn-sm btn-primary" onclick="mostrarFormularioUsuario()">Nuevo Usuario</button>
+                            </div>
+                            <div class="card-body">
+                                <table id="tablaUsuarios" class="table table-hover w-100">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Apellido</th>
+                                            <th>Email</th>
+                                            <th>Rol</th>
+                                            <th>Activo</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 mb-3" id="formularioUsuarioContainer" style="display: none;">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0" id="formUsuarioTitulo">Nuevo Usuario</h5>
+                                <button class="btn-close" onclick="ocultarFormularioUsuario()"></button>
+                            </div>
+                            <form id="formUsuario" class="card-body">
+                                <div class="mb-3">
+                                    <label for="nombreUsuario" class="form-label">Email del Usuario</label>
+                                    <input type="text" class="form-control" id="emailUsuario" name="nombre" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="nombreUsuario" class="form-label">Nombre del Usuario</label>
+                                    <input type="text" class="form-control" id="nombreUsuario" name="nombre" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="nombreUsuario" class="form-label">Apellido del Usuario</label>
+                                    <input type="text" class="form-control" id="apellidoUsuario" name="nombre" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="rolUsuario" class="form-label">Rol</label>
+                                    <select class="form-select" id="rolUsuario" name="rol_id" required>
+                                        <option value="" hidden>Seleccione un rol</option>
+                                        <?php foreach ($roles as $rol): ?>
+                                            <option value="<?= $rol['id'] ?>"><?= htmlspecialchars($rol['nombre']) ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="passwordUsuario" class="form-label">Contraseña</label>
+                                    <input type="text" class="form-control" id="passwordUsuario" name="password">
+                                </div>
+                                <input type="hidden" name="usuario_id" id="usuario_id">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <button type="button" class="btn btn-secondary" onclick="ocultarFormularioUsuario()">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary">Guardar Usuario</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        if (typeof tabla === 'undefined') {
-            var tabla;
-        }
+            <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+            <script>
+                if (typeof tablaRoles === 'undefined') {
+                    var tablaRoles;
+                    var tablaUsuarios;
+                }
 
-        function inicializarTablaRoles() {
-            if ($.fn.DataTable.isDataTable('#tablaRoles')) {
-                tabla.destroy();
-            }
+                function inicializarTablaRoles() {
+                    if ($.fn.DataTable.isDataTable('#tablaRoles')) tablaRoles.destroy();
 
-            tabla = $('#tablaRoles').DataTable({
-                serverSide: true,
-                ajax: {
-                    url: 'usuariosAjax.php',
-                    type: 'POST',
-                    data: {
-                        accion: 'listarRoles'
-                    },
-                    dataSrc: 'data'
-                },
-                columns: [{
-                        data: 'nombre'
-                    },
-                    {
-                        data: 'descripcion'
-                    },
-                    {
-                        data: 'activo',
-                        render: function(data, type, row) {
-                            const estadoTexto = (data == 1 || data === true) ? 'Activo' : 'Inactivo';
-                            const badgeClass = (data == 1 || data === true) ? 'bg-success' : 'bg-secondary';
-                            return `<span class="badge ${badgeClass} estado-toggle" data-id="${row.id}" style="cursor: pointer;">${estadoTexto}</span>`;
+                    tablaRoles = $('#tablaRoles').DataTable({
+                        serverSide: true,
+                        ajax: {
+                            url: 'usuariosAjax.php',
+                            type: 'POST',
+                            data: {
+                                accion: 'listarRoles'
+                            },
+                            dataSrc: 'data'
+                        },
+                        columns: [{
+                                data: 'nombre'
+                            },
+                            {
+                                data: 'descripcion'
+                            },
+                            {
+                                data: 'activo',
+                                render: (data, _, row) => {
+                                    const clase = data ? 'bg-success' : 'bg-secondary';
+                                    const texto = data ? 'Activo' : 'Inactivo';
+                                    return `<span class="badge ${clase} estado-toggle" data-id="${row.id}" style="cursor:pointer;">${texto}</span>`;
+                                }
+                            },
+                            {
+                                data: null,
+                                className: 'text-center',
+                                render: data => `<button class="btn btn-sm btn-primary" onclick="verRol(${data.id})"><i class="bi bi-eye"></i></button>`
+                            }
+                        ],
+                        dom: 't',
+                        language: {
+                            url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
                         }
-                    },
-                    {
-                        data: null,
-                        className: 'text-center',
-                        render: function(data) {
-                            return `<button class="btn btn-sm btn-primary me-1" onclick="verRol(${data.id})"><i class="bi bi-eye"></i></button>`;
+                    });
+                }
+
+                function inicializarTablaUsuarios() {
+                    if ($.fn.DataTable.isDataTable('#tablaUsuarios')) tablaUsuarios.destroy();
+
+                    tablaUsuarios = $('#tablaUsuarios').DataTable({
+                        serverSide: true,
+                        ajax: {
+                            url: 'usuariosAjax.php',
+                            type: 'POST',
+                            data: {
+                                accion: 'listarUsuarios'
+                            },
+                            dataSrc: 'data'
+                        },
+                        columns: [{
+                                data: 'nombre'
+                            },
+                            {
+                                data: 'apellido'
+                            },
+                            {
+                                data: 'email'
+                            },
+                            {
+                                data: 'rol'
+                            },
+                            {
+                                data: 'activo',
+                                render: data => data ? '<span class="badge bg-success">Activo</span>' : '<span class="badge bg-secondary">Inactivo</span>'
+                            },
+                            {
+                                data: null,
+                                className: 'text-center',
+                                render: data => `<button class="btn btn-sm btn-primary" onclick="verUsuario(${data.id})"><i class="bi bi-eye"></i></button>`
+                            }
+                        ],
+                        dom: 't',
+                        language: {
+                            url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
                         }
-                    }
-                ],
-                dom: 't',
-                language: {
-                    url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+                    });
                 }
-            });
-        }
 
-        function mostrarFormularioRol() {
-            $('#formRol')[0].reset();
-            $('#rol_id').val('');
-            $('#formRolTitulo').text('Nuevo Rol');
-            $('#formularioRolContainer').show();
-            $('#nombreRol').prop('disabled', false);
-            $('input[name^="permisos"]').prop('checked', false).prop('disabled', false);
-            $('#formRol .btn[type="submit"]').show();
-        }
+                function mostrarFormularioRol() {
+                    $('#formRol')[0].reset();
+                    $('#formRolTitulo').text('Nuevo Rol');
+                    $('#rol_id').val('');
+                    $('#formularioRolContainer').show();
+                    $('#nombreRol').prop('disabled', false);
+                    $('input[name^="permisos"]').prop('checked', false).prop('disabled', false);
+                    $('#formRol .btn[type="submit"]').show();
+                }
 
-        function ocultarFormularioRol() {
-            $('#formularioRolContainer').hide();
-        }
+                function ocultarFormularioRol() {
+                    $('#formularioRolContainer').hide();
+                }
 
-        function verRol(id) {
-            $.post('usuariosAjax.php', {
-                accion: 'obtenerRolPorId',
-                id
-            }, function(data) {
-                mostrarFormularioRol();
-                $('#formRolTitulo').text('Editar Rol');
-                $('#rol_id').val(data.id);
-                $('#nombreRol').val(data.nombre).prop('disabled', true);
-                $('#descripcionRol').val(data.descripcion).prop('disabled', false);
-                $('input[name^="permisos"]').prop('checked', false).prop('disabled', false);
-
-                if (data.permisos) {
-                    for (let modulo in data.permisos) {
-                        for (let accion in data.permisos[modulo]) {
-                            $(`input[name="permisos[${modulo}][${accion}]"]`).prop('checked', true);
+                function verRol(id) {
+                    $.post('usuariosAjax.php', {
+                        accion: 'obtenerRolPorId',
+                        id
+                    }, function(data) {
+                        mostrarFormularioRol();
+                        $('#formRolTitulo').text('Editar Rol');
+                        $('#rol_id').val(data.id);
+                        $('#nombreRol').val(data.nombre).prop('disabled', true);
+                        $('#descripcionRol').val(data.descripcion).prop('disabled', false);
+                        $('input[name^="permisos"]').prop('checked', false).prop('disabled', false);
+                        if (data.permisos) {
+                            for (let modulo in data.permisos) {
+                                for (let accion in data.permisos[modulo]) {
+                                    $(`input[name="permisos[${modulo}][${accion}]"]`).prop('checked', true);
+                                }
+                            }
                         }
-                    }
+                    }, 'json');
                 }
-            }, 'json');
-        }
 
-        $('#formRol').on('submit', function(e) {
-            e.preventDefault();
+                $('#formRol').on('submit', function(e) {
+                    e.preventDefault();
+                    const permisos = {};
+                    $('input[name^="permisos"]').each(function() {
+                        if (this.checked) {
+                            const match = this.name.match(/permisos\[(\w+)\]\[(\w+)\]/);
+                            if (match) {
+                                const [_, modulo, accion] = match;
+                                if (!permisos[modulo]) permisos[modulo] = {};
+                                permisos[modulo][accion] = true;
+                            }
+                        }
+                    });
 
-            const id = $('#rol_id').val();
-            const nombre = $('#nombreRol').val().trim();
-            const descripcion = $('#descripcionRol').val().trim();
-            const permisos = {};
+                    $.post('usuariosAjax.php', {
+                        accion: 'guardarRol',
+                        id: $('#rol_id').val(),
+                        nombre: $('#nombreRol').val().trim(),
+                        descripcion: $('#descripcionRol').val().trim(),
+                        permisos
+                    }, function(response) {
+                        if (response.success) {
+                            alert('Rol guardado correctamente');
+                            ocultarFormularioRol();
+                            tablaRoles.ajax.reload();
+                        } else {
+                            alert('Error al guardar');
+                        }
+                    }, 'json');
+                });
 
-            $('input[name^="permisos"]').each(function() {
-                if (this.checked) {
-                    const match = this.name.match(/permisos\[(\w+)\]\[(\w+)\]/);
-                    if (match) {
-                        const [_, modulo, accion] = match;
-                        if (!permisos[modulo]) permisos[modulo] = {};
-                        permisos[modulo][accion] = true;
-                    }
+                $('#tablaRoles').on('click', '.estado-toggle', function() {
+                    const id = $(this).data('id');
+                    $.post('usuariosAjax.php', {
+                        accion: 'toggleEstadoRol',
+                        id
+                    }, function(response) {
+                        if (response.success) {
+                            tablaRoles.ajax.reload(null, false);
+                        } else {
+                            alert('Error al cambiar estado');
+                        }
+                    }, 'json');
+                });
+
+                $(document).ready(function() {
+                    inicializarTablaRoles();
+                    inicializarTablaUsuarios();
+                });
+
+                function mostrarFormularioUsuario() {
+                    $('#formUsuario')[0].reset();
+                    $('#formUsuarioTitulo').text('Nuevo Usuario');
+                    $('#usuario_id').val('');
+                    $('#formularioUsuarioContainer').show();
+                    $('#emailUsuario').prop('disabled', false);
+                    $('#formUsuario .btn[type="submit"]').show();
                 }
-            });
 
-            $.post('usuariosAjax.php', {
-                accion: 'guardarRol',
-                id,
-                nombre,
-                descripcion,
-                permisos
-            }, function(response) {
-                if (response.success) {
-                    alert('Rol guardado correctamente');
-                    ocultarFormularioRol();
-                    tabla.ajax.reload();
-                } else {
-                    alert('Error al guardar');
+                function ocultarFormularioUsuario() {
+                    $('#formularioUsuarioContainer').hide();
                 }
-            }, 'json');
-        });
 
-        $(document).ready(() => {
-            inicializarTablaRoles();
-        });
-        $('#tablaRoles').on('click', '.estado-toggle', function() {
-            const span = $(this);
-            const id = span.data('id');
-
-            $.post('usuariosAjax.php', {
-                accion: 'toggleEstadoRol',
-                id: id
-            }, function(response) {
-                if (response.success) {
-                    // Recargar solo la fila si quieres eficiencia
-                    $('#tablaRoles').DataTable().ajax.reload(null, false);
-                } else {
-                    alert('No se pudo cambiar el estado');
+                function verUsuario(id) {
+                    $.post('usuariosAjax.php', {
+                        accion: 'obtenerUsuarioPorId',
+                        id
+                    }, function(data) {
+                        mostrarFormularioUsuario();
+                        $('#formUsuarioTitulo').text('Editar Usuario');
+                        $('#usuario_id').val(data.id);
+                        $('#emailUsuario').val(data.email).prop('disabled', true);
+                        $('#nombreUsuario').val(data.nombre).prop('disabled', false);
+                        $('#apellidoUsuario').val(data.apellido).prop('disabled', false);
+                        $('#rolUsuario').val(data.rol_id).prop('disabled', false);
+                    }, 'json');
                 }
-            }, 'json');
-        });
-    </script>
+                $('#formUsuario').on('submit', function(e) {
+                    e.preventDefault();
+                    $.post('usuariosAjax.php', {
+                        accion: 'guardarUsuario',
+                        id: $('#usuario_id').val(),
+                        email: $('#emailUsuario').val().trim(),
+                        nombre: $('#nombreUsuario').val().trim(),
+                        apellido: $('#apellidoUsuario').val().trim(),
+                        password: $('#passwordUsuario').val().trim(),
+                        rol_id: $('#rolUsuario').val()
+                    }, function(response) {
+                        if (response.success) {
+                            alert('Usuario guardado correctamente');
+                            ocultarFormularioUsuario();
+                            tablaUsuarios.ajax.reload();
+                        } else {
+                            alert('Error al guardar');
+                        }
+                    }, 'json');
+                });
+            </script>
 </body>
 
 </html>
