@@ -25,7 +25,7 @@ $base_url = $is_landing ? '' : BASE_URL . 'index.php';
     <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
         <div class="container px-4 px-lg-5">
             <!-- LOGO -->
-            <a class="navbar-brand me-4" href="<?= $is_landing ? '#page-top' : BASE_URL . '/index.php' ?>">
+            <a class="navbar-brand me-4" href="<?= $is_landing ? '#page-top' : BASE_URL . 'index.php' ?>">
                 <img src="<?= BASE_URL ?>assets/images/logo/LogoVFS2.png" alt="Logo de la empresa" style="height: 50px;">
             </a>
 

@@ -39,7 +39,7 @@ require_once __DIR__ . '/../includes/config.php';
                 <hr class="divider" />
             </div>
             <div class="col-lg-8 align-self-baseline">
-                <p class="text-white-75 mb-5">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem vel quam, natus iure laborum quod consequatur voluptatibus ex facere necessitatibus fugit praesentium, rem accusamus exercitationem, consequuntur deleniti. Tempore, suscipit vel?</p>
+                <p class="text-white-75 mb-5">Somos una empresa de tasación y consultoría inmobiliaria que entrega soluciones integrales y asesoría precisa para apoyar decisiones estratégicas en inversión, financiamiento y gestión de activos.</p>
                 <a class="btn btn-primary btn-xl" href="#nosotros">¡Conocer más!</a>
             </div>
         </div>
@@ -47,69 +47,246 @@ require_once __DIR__ . '/../includes/config.php';
 </header>
 <!-- FIN MASTHEAD -->
 
-
 <!-- INICIO SECCIÓN QUIÉNES SOMOS-->
-<section class="page-section bg-primary" id="nosotros">
-    <div class="container px-4 px-lg-5">
-        <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-lg-8 text-center">
-                <h2 class="text-white mt-0">Comprometidos con tu éxito</h2>
-                <hr class="divider divider-light" />
-                <p class="text-white-75 mb-4">Somos una empresa especializada en tasación y consultoría inmobiliaria, comprometida con la entrega de soluciones integrales que respalden decisiones estratégicas en el ámbito inmobiliario. Nuestra misión es proporcionar valor agregado a nuestros clientes mediante información precisa y asesoramiento especializado, facilitando procesos de inversión, financiamiento y gestión de activos inmobiliarios.</p>
-                <a class="btn btn-light btn-xl" href="#servicios">¡Comencemos!</a>
+<section id="nosotros">
+    <div class="container px-5">
+        <div class="row gx-5 align-items-center">
+            <div class="col-lg-6 order-lg-2">
+                <div class="p-5">
+                    <!-- <img class="img-fluid " src="assets/img/01.jpg" alt="..." /> -->
+                    <img class="img-fluid rounded-circle" src="<?= BASE_URL ?>assets/images/nosotros/01.jpg" alt="Nosotros" />
+                </div>
             </div>
+            <div class="col-lg-6 order-lg-1">
+                <div class="p-5">
+                    <h2 class="display-4">Comprometidos con tu éxito</h2>
+                    <p>Somos una empresa especializada en tasación y consultoría inmobiliaria, comprometida con la entrega de soluciones integrales que respalden decisiones estratégicas en el ámbito inmobiliario.</p>
+                    <p>Nuestra misión es proporcionar valor agregado a nuestros clientes mediante información precisa y asesoramiento especializado, facilitando procesos de inversión, financiamiento y gestión de activos inmobiliarios.</p>
+                    <a class="btn btn-primary btn-xl" href="#servicios">¡Saber más!</a>
+                </div>
+            </div>
+
         </div>
     </div>
 </section>
 <!-- FIN SECCIÓN QUIÉNES SOMOS-->
 
 <!-- SERVICIOS-->
-<div class="page-section3" id="servicios">
+<div class="page-section bg-dark text-white" id="servicios">
     <div class="container-fluid p-0">
-        <h2 class="text-center mt-0 page-section2">Tu socio en tasaciones</h2>
+        <h2 class="text-center mt-0">Tu socio en tasaciones</h2>
         <hr class="divider" />
+        <p class="text-muted mb-5 text-center text-white-75">Servicios</p>
         <div class="row g-0">
-            <div class="col-lg-6 col-sm-6">
-                <a class="servicios-box"
-                    href="<?= BASE_URL ?>assets/images/servicios/fullsize/1.jpg"
-                    title="Tasación de bienes raíces asasasasasasasasasasaasaosasUasasasasasa">
-                    <img class="img-fluid" src="<?= BASE_URL ?>assets/images/servicios/thumbnails/1.jpg" alt="Tasación de bienes raíces" />
+            <!-- Servicio 1 -->
+            <div class="col-lg-6 col-sm-12 pe-4">
+                <div class="servicios-box " data-bs-toggle="modal" data-bs-target="#modalServicio1">
+                    <img class="img-fluid" src="<?= BASE_URL ?>assets/images/servicios/05.JPG" alt="Consultoría inmobiliaria" />
                     <div class="servicios-box-caption">
-                        <div class="project-category text-white-50">Tasación</div>
-                        <div class="project-name">Tasación de bienes raíces</div>
+                        <div class="project-category text-white-50">TASACIÓN DE BIENES RAÍCES</div>
+                        <br>
+                        <div class="project-name">Nuestros servicios de tasación inmobiliaria están diseñados para determinar con precisión el valor de mercado de diversos tipos de propiedades.</div>
+                        <br>
+                        <p class="text-white-50 small m-0">Ver detalle</p>
                     </div>
-                </a>
+                </div>
             </div>
-            <div class="col-lg-6 col-sm-6 pe-4">
-                <a class="servicios-box" href="<?= BASE_URL ?>assets/images/servicios/fullsize/2.jpg" title="Consultoría inmobiliaria">
-                    <img class="img-fluid" src="<?= BASE_URL ?>assets/images/servicios/thumbnails/2.jpg" alt="Consultoría inmobiliaria" />
-                    <div class="servicios-box-caption">
-                        <div class="project-category text-white-50">Consultoría</div>
-                        <div class="project-name">Consultoría inmobiliaria</div>
+            <!-- Modal con Carrusel para mostrar el detalle del servicio 1 -->
+            <div class="modal fade" id="modalServicio1" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content p-0 border-0">
+                        <div class="modal-body p-0 position-relative">
+
+                            <!-- Botón de cierre -->
+                            <button type="button" class="btn-close position-absolute top-0 end-0 m-3 btn-close-white" data-bs-dismiss="modal"></button>
+
+                            <!-- Carrusel -->
+                            <div id="carouselServicio1" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    <!-- Slide 1 -->
+                                    <div class="carousel-item active">
+                                        <div class="carousel-slide-bg carrousel-servicio1-1">
+                                            <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
+                                                <h5 class="mb-3">Propiedades</h5>
+                                                <p class="lead mb-0">
+                                                <ul class="text-start mx-auto">
+                                                    <li>Propiedades residenciales: casas, departamentos, parcelas agroresidenciales, sitios urbanos y rurales.</li>
+                                                    <li>Inmuebles comerciales: oficinas y locales comerciales.</li>
+                                                    <li>Activos industriales: bodegas, industrias y terrenos industriales.</li>
+                                                    <li>Bienes especiales: hoteles, clínicas, colegios y otros inmuebles de uso específico.</li>
+                                                </ul>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Slide 2 -->
+                                    <div class="carousel-item">
+                                        <div class="carousel-slide-bg carrousel-servicio1-2">
+                                            <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
+                                                <h5 class="mb-3">Metodologías</h5>
+
+                                                <p class="lead mb-0">
+                                                    Aplicamos metodologías reconocidas internacionalmente, como el enfoque de mercado, el método de costos y el enfoque de ingresos, adaptándolas a las particularidades de cada activo y a las necesidades específicas de nuestros clientes.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Slide 3 -->
+                                    <div class="carousel-item">
+                                        <div class="carousel-slide-bg carrousel-servicio1-3">
+                                            <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
+                                                <h5 class="mb-3">Informes</h5>
+                                                <p class="lead mb-0">
+                                                    Nuestros informes cumplen con estándares de entidades financieras, organismos reguladores y normativas contables internacionales (IFRS).
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Controles Carrousel Servicio 1 -->
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselServicio1" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Anterior</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselServicio1" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Siguiente</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </a>
+                </div>
+            </div>
+            <!-- Servicio 2 -->
+            <div class="col-lg-6 col-sm-12 pe-4">
+                <div class="servicios-box " data-bs-toggle="modal" data-bs-target="#modalServicio2">
+                    <img class="img-fluid" src="<?= BASE_URL ?>assets/images/servicios/16.JPG" alt="Consultoría inmobiliaria" />
+                    <div class="servicios-box-caption">
+                        <div class="project-category text-white-50">CONSULTORÍA INMOBILIARIA</div>
+                        <br>
+                        <div class="project-name">Ofrecemos servicios de consultoría inmobiliaria orientados a maximizar el valor y la eficiencia de las inversiones y desarrollos inmobiliarios.</div>
+                        <br>
+                        <p class="text-white-50 small m-0">Ver detalle</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal con Carrusel para mostrar el detalle del servicio 2 -->
+            <div class="modal fade" id="modalServicio2" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content p-0 border-0">
+                        <div class="modal-body p-0 position-relative">
+
+                            <!-- Botón de cierre -->
+                            <button type="button" class="btn-close position-absolute top-0 end-0 m-3 btn-close-white" data-bs-dismiss="modal"></button>
+                            <!-- Carrusel -->
+                            <div id="carouselServicio2" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    <!-- Slide 1 -->
+                                    <div class="carousel-item active">
+                                        <div class="carousel-slide-bg carrousel-servicio2-1">
+                                            <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
+                                                <h5 class="mb-3">Servicios</h5>
+                                                <p class="lead mb-0">
+                                                <ul class="text-start mx-auto">
+                                                    <li>Estudios de mercado</li>
+                                                    <li>Análisis de viabilidad</li>
+                                                    <li>Asesoramiento estratégico</li>
+                                                    <li>Gestión de activos</li>
+                                                </ul>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Slide 2 -->
+                                    <div class="carousel-item">
+                                        <div class="carousel-slide-bg carrousel-servicio2-2">
+                                            <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
+                                                <h5 class="mb-3">Estudios de mercado</h5>
+                                                <p class="lead mb-0">
+                                                    Análisis de oferta y demanda, identificación de tendencias y evaluación de oportunidades de inversión.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Slide 3 -->
+                                    <div class="carousel-item">
+                                        <div class="carousel-slide-bg carrousel-servicio2-3">
+                                            <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
+                                                <h5 class="mb-3">Análisis de viabilidad</h5>
+                                                <p class="lead mb-0">
+                                                    Evaluación técnica, legal y financiera de proyectos inmobiliarios para determinar su rentabilidad y sostenibilidad.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Slide 4 -->
+                                    <div class="carousel-item">
+                                        <div class="carousel-slide-bg carrousel-servicio2-4">
+                                            <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
+                                                <h5 class="mb-3">Asesoramiento estratégico</h5>
+                                                <p class="lead mb-0">
+                                                    Diseño de estrategias de desarrollo, comercialización y posicionamiento de activos inmobiliarios.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Slide 5 -->
+                                    <div class="carousel-item">
+                                        <div class="carousel-slide-bg carrousel-servicio2-5">
+                                            <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
+                                                <h5 class="mb-3">Gestión de activos</h5>
+                                                <p class="lead mb-0">
+                                                    Optimización del rendimiento de carteras inmobiliarias mediante la implementación de prácticas de gestión eficientes y sostenibles.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Slide 6 -->
+                                    <div class="carousel-item">
+                                        <div class="carousel-slide-bg carrousel-servicio2-6">
+                                            <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
+                                                <h5 class="mb-3">Enfoque</h5>
+                                                <p class="lead mb-0">
+                                                    Nuestro enfoque se basa en la integración de datos cuantitativos y cualitativos, el uso de herramientas tecnológicas avanzadas y una comprensión profunda del entorno regulatorio y económico, lo que nos permite ofrecer soluciones personalizadas y efectivas a nuestros clientes. </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Controles Carrousel Servicio 2 -->
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselServicio2" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Anterior</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselServicio2" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Siguiente</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+</div>
 <!-- FIN SECCIÓN SERVICIOS-->
 
-
 <!-- LLAMADA A LA ACCIÓN-->
-<section class="page-section bg-dark text-white">
-    <div class="container px-4 px-lg-5 text-center">
+<section class="page-section accion">
+    <div class="container px-4 px-lg-5 text-center text-white">
         <h2 class="mb-4">¡Solicita tu tasación!</h2>
-        <a class="btn btn-light btn-xl" href="#contacto">Contáctanos</a>
+        <a class="btn btn-primary btn-xl" href="#contacto">Contáctanos</a>
     </div>
 </section>
 <!-- FIN LLAMADA A LA ACCIÓN -->
 
 <!-- INICIO SECCIÓN FAQ -->
 <section class="page-section" id="faq">
-    <div class="container px-4 px-lg-5">
+    <div class="container-fluid px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-lg-8 col-xl-6 text-center">
-                <h2 class="mt-0">Preguntas Frecuentes</h2>
+                <h2 class="text-center mt-0">Preguntas Frecuentes</h2>
                 <hr class="divider" />
                 <p class="text-muted mb-5">Resuelve tus dudas antes de contactarnos.</p>
             </div>
@@ -256,120 +433,134 @@ require_once __DIR__ . '/../includes/config.php';
 </section>
 <!-- FIN SECCIÓN FAQ -->
 
-<!-- INICIO SECCIÓN FORMULARIO DE CONTACTO-->
-<section class="page-section bg-tertiary" id="contacto">
-    <div class="container px-4 px-lg-5">
-        <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-lg-8 col-xl-6 text-center">
-                <h2 class="mt-0">Atención personalizada</h2>
-                <hr class="divider" />
-                <p class="text-muted mb-5">Para solicitudes, cotizaciones o información adicional, por favor complete el siguiente formulario.</p>
+<!-- INICIO SECCIÓN FORMULARIO DE CONTACTO -->
+<section class="page-section2 bg-tertiary" id="contacto">
+    <div class="container px-5">
+        <div class="row gx-5 align-items-center">
+            <h2 class="display-4 text-center">Atención personalizada</h2>
+            <hr class="divider" />
+            <p class="text-center">Para solicitudes, cotizaciones o información adicional, por favor complete el siguiente formulario.</p>
+            <!-- Imagen -->
+            <div class="col-lg-6 order-lg-1">
+                <div class="p-5">
+                    <div class="gx-4 gx-lg-5 justify-content-center mb-5 ">
+                        <!-- <img class="img-fluid " src="assets/img/01.jpg" alt="..." /> -->
+                        <img class="img-fluid rounded" src="<?= BASE_URL ?>assets/images/contacto/01.jpg" alt="Nosotros" />
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
-            <div class="col-lg-6">
-                <?php if (isset($_GET['mensaje']) && $_GET['mensaje'] === 'enviado'): ?>
+            <!-- Imagen -->
+            <!-- Formulario -->
+            <div class="col-lg-6 order-lg-2">
+                <div class="p-5">
+                    <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
+                        <div class="">
+                            <!-- INICIO FORMULARIO DE CONTACTO CON VALIDACIONES POR CAMPO -->
+                            <form id="contactoForm" class="novalidate">
+                                <!-- Campo 1: Nombre OK-->
+                                <div class="form-floating mb-3">
+                                    <input
+                                        class="form-control"
+                                        id="nombre"
+                                        name="nombre"
+                                        type="text"
+                                        placeholder="Ingrese su nombre"
+                                        required
+                                        minlength="2"
+                                        maxlength="50"
+                                        pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" />
+                                    <label for="nombre">Nombre</label>
+                                    <div class="invalid-feedback" id="nombre-error">
+                                        El nombre debe tener solo letras, entre 2 y 50 caracteres.
+                                    </div>
+                                </div>
+                                <!-- Opción 2 apellido OK-->
+                                <div class="form-floating mb-3">
+                                    <input
+                                        class="form-control"
+                                        id="apellido"
+                                        name="apellido"
+                                        type="text"
+                                        placeholder="Ingrese su apellido"
+                                        required
+                                        minlength="2"
+                                        maxlength="50"
+                                        pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" />
+                                    <label for="apellido">Apellido</label>
+                                    <div class="invalid-feedback" id="apellido-error">
+                                        El apellido debe tener solo letras, entre 2 y 50 caracteres.
+                                    </div>
+                                </div>
+                                <!-- Campo 3: Mail OK-->
+                                <div class="form-floating mb-3">
+                                    <input name="email" class="form-control" id="email" type="email" placeholder="name@example.com" required />
+                                    <label for="email">Correo</label>
+                                    <div class="invalid-feedback">Ingrese un correo válido.</div>
+                                </div>
+                                <!-- Campo 4: Teléfono OK-->
+                                <div class="form-floating mb-3">
+                                    <input
+                                        class="form-control"
+                                        id="telefono"
+                                        name="telefono"
+                                        type="tel"
+                                        placeholder="56912345678"
+                                        required
+                                        pattern="^\d{8,15}$" />
+                                    <label for="telefono">Teléfono de contacto</label>
+                                    <div class="invalid-feedback">El número es obligatorio y solo debe contener dígitos (sin símbolos ni espacios).</div>
+                                </div>
+                                <!-- Elección de servicio OK-->
+                                <div class="form-group mb-3">
+                                    <label for="servicio">¿Qué servicio necesita?</label>
+                                    <select id="servicio" name="servicio" class="form-control" required>
+                                        <option value="" disabled selected>Seleccione una opción</option>
+                                        <option value="tasacion">Tasación de bienes raíces</option>
+                                        <option value="consultoria">Consultoría inmobiliaria</option>
+                                        <option value="otros">Otro</option>
+                                    </select>
+                                    <div class="invalid-feedback">El servicio es obligatorio.</div>
+                                </div>
+                                <!-- Mensaje OK-->
+                                <div class="form-floating mb-3">
+                                    <textarea name="mensaje" class="form-control" id="mensaje" placeholder="Ingrese su mensaje" style="height: 10rem" required minlength="20" maxlength="1000"></textarea>
+                                    <label for="mensaje">Mensaje</label>
+                                    <div class="invalid-feedback" id="mensajeError">El mensaje es obligatorio y debe tener entre 20 y 1000 caracteres.</div>
+                                </div>
+                                <!-- Respuesta recepción exitosa -->
+                                <div class="d-none" id="submitSuccessMessage">
+                                    <div class="text-center mb-3">
+                                        <div class="fw-bolder">Su mensaje ha sido recibido con éxito.</div>
+                                    </div>
+                                </div>
+                                <!-- Respuesta error envío -->
+                                <div class="d-none" id="submitErrorMessage">
+                                    <div class="text-center text-danger mb-3">Error al enviar el mensaje.</div>
+                                </div>
+                                <!-- Botón enviar -->
+                                <div class="d-grid">
+                                    <button class="btn btn-primary btn-xl" id="submitButtonContacto" type="submit" disabled>Enviar</button>
+                                </div>
+
+                                <!-- reCAPTCHA -->
+                                <!-- <div class="g-recaptcha mb-3 mt-3" data-sitekey="6LdyYy0rAAAAAH9kSCDWmq8Rkp0vZRQX3oFSZcpr"></div> -->
+                            </form>
+<!-- Mensaje de recepción exitosa o error -->
+                                          <?php if (isset($_GET['mensaje']) && $_GET['mensaje'] === 'enviado'): ?>
                 <div class="alert alert-success text-center">¡Tu mensaje ha sido enviado con éxito!</div>
             <?php elseif (isset($_GET['error'])): ?>
                 <div class="alert alert-danger text-center">Por favor completa todos los campos.</div>
             <?php endif; ?>
-                <!-- INICIO FORMULARIO DE CONTACTO CON VALIDACIONES POR CAMPO -->
-                <form id="contactoForm" class="novalidate" action="../includes/Controller/procesar_mensaje.php" method="post">
-                    <!-- Campo 1: Nombre OK-->
-                    <div class="form-floating mb-3">
-                        <input
-                            class="form-control"
-                            id="nombre"
-                            name="nombre"
-                            type="text"
-                            placeholder="Ingrese su nombre"
-                            required
-                            minlength="2"
-                            maxlength="50"
-                            pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" />
-                        <label for="nombre">Nombre</label>
-                        <div class="invalid-feedback" id="nombre-error">
-                            El nombre debe tener solo letras, entre 2 y 50 caracteres.
+                            <!-- FIN FORMULARIO DE CONTACTO -->
                         </div>
                     </div>
-                    <!-- Opción 2 apellido OK-->
-                    <div class="form-floating mb-3">
-                        <input
-                            class="form-control"
-                            id="apellido"
-                            name="apellido"
-                            type="text"
-                            placeholder="Ingrese su apellido"
-                            required
-                            minlength="2"
-                            maxlength="50"
-                            pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" />
-                        <label for="apellido">Apellido</label>
-                        <div class="invalid-feedback" id="apellido-error">
-                            El apellido debe tener solo letras, entre 2 y 50 caracteres.
-                        </div>
-                    </div>
-                    <!-- Campo 3: Mail OK-->
-                    <div class="form-floating mb-3">
-                        <input name="email" class="form-control" id="email" type="email" placeholder="name@example.com" required />
-                        <label for="email">Correo</label>
-                        <div class="invalid-feedback">Ingrese un correo válido.</div>
-                    </div>
-                    <!-- Campo 4: Teléfono OK-->
-                    <div class="form-floating mb-3">
-                        <input
-                            class="form-control"
-                            id="telefono"
-                            name="telefono"
-                            type="tel"
-                            placeholder="56912345678"
-                            required
-                            pattern="^\d{8,15}$" />
-                        <label for="telefono">Teléfono de contacto</label>
-                        <div class="invalid-feedback">El número es obligatorio y solo debe contener dígitos (sin símbolos ni espacios).</div>
-                    </div>
-                    <!-- Elección de servicio OK-->
-                    <div class="form-group mb-3">
-                        <label for="servicio">¿Qué servicio necesita?</label>
-                        <select id="servicio" name="servicio" class="form-control" required>
-                            <option value="" disabled selected>Seleccione una opción</option>
-                            <option value="tasacion">Tasación de bienes raíces</option>
-                            <option value="consultoria">Consultoría inmobiliaria</option>
-                            <option value="otros">Otro</option>
-                        </select>
-                        <div class="invalid-feedback">El servicio es obligatorio.</div>
-                    </div>
-                    <!-- Mensaje OK-->
-                    <div class="form-floating mb-3">
-                        <textarea name="mensaje" class="form-control" id="mensaje" placeholder="Ingrese su mensaje" style="height: 10rem" required minlength="20" maxlength="1000"></textarea>
-                        <label for="mensaje">Mensaje</label>
-                        <div class="invalid-feedback" id="mensajeError">El mensaje es obligatorio y debe tener entre 20 y 1000 caracteres.</div>
-                    </div>
-                    <!-- Respuesta recepción exitosa -->
-                    <div class="d-none" id="submitSuccessMessage">
-                        <div class="text-center mb-3">
-                            <div class="fw-bolder">Su mensaje ha sido recibido con éxito.</div>
-                        </div>
-                    </div>
-                    <!-- Respuesta error envío -->
-                    <div class="d-none" id="submitErrorMessage">
-                        <div class="text-center text-danger mb-3">Error al enviar el mensaje.</div>
-                    </div>
-                    <!-- Botón enviar -->
-                    <div class="d-grid">
-                        <button class="btn btn-primary btn-xl" id="submitButtonContacto" type="submit" disabled>Enviar</button>
-                    </div>
-
-                    <!-- reCAPTCHA -->
-                    <!-- <div class="g-recaptcha mb-3 mt-3" data-sitekey="6LdyYy0rAAAAAH9kSCDWmq8Rkp0vZRQX3oFSZcpr"></div> -->
-                </form>
-                <!-- FIN FORMULARIO DE CONTACTO -->
+                </div>
             </div>
+            <!-- Fin formulario -->
         </div>
     </div>
 </section>
-<!-- FIN SECCIÓN FORMULARIO DE CONTACTO-->
-
+<!-- FIN SECCIÓN QUIÉNES SOMOS-->
 <!-- INCLUDE FOOTER-->
 <?php include_once __DIR__ . '/../includes/footer.php'; ?>
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
