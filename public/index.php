@@ -60,8 +60,10 @@ require_once __DIR__ . '/../includes/config.php';
             <div class="col-lg-6 order-lg-1">
                 <div class="p-5">
                     <h2 class="display-4">Comprometidos con tu éxito</h2>
+                    <br>
                     <p>Somos una empresa especializada en tasación y consultoría inmobiliaria, comprometida con la entrega de soluciones integrales que respalden decisiones estratégicas en el ámbito inmobiliario.</p>
                     <p>Nuestra misión es proporcionar valor agregado a nuestros clientes mediante información precisa y asesoramiento especializado, facilitando procesos de inversión, financiamiento y gestión de activos inmobiliarios.</p>
+                    <br>
                     <a class="btn btn-primary btn-xl" href="#servicios">¡Saber más!</a>
                 </div>
             </div>
@@ -462,8 +464,7 @@ require_once __DIR__ . '/../includes/config.php';
                                 <div class="alert alert-danger text-center">Por favor completa todos los campos.</div>
                             <?php endif; ?>
                             <!-- INICIO FORMULARIO DE CONTACTO CON VALIDACIONES POR CAMPO -->
-                            <form id="contactoForm" class="novalidate">
-                                <!-- Campo 1: Nombre OK-->
+                            <form id="contactoForm" class="novalidate" action="../includes/Controller/procesar_mensaje.php" method="post"> <!-- Campo 1: Nombre OK-->
                                 <div class="form-floating mb-3">
                                     <input
                                         class="form-control"
