@@ -450,17 +450,11 @@ $pendientes_postulaciones = obtener_postulaciones_pendientes();
                     $('#contenidoModalPostulacion').html('<p class="text-center text-muted">Cargando...</p>');
                     $('#modalVerPostulacion').modal('show');
 
-                    $.get('postulacionModal.php', { id: id }, function(respuesta) {
+                    $.get('postulacionModal.php', { id }, function(respuesta) {
                         $('#contenidoModalPostulacion').html(respuesta);
 
-                        // Mover el botón del contenido al header
-                        const $contenido = $('#contenidoModalPostulacion');
-                        const $boton = $contenido.find('#botonImportanteHTML');
-
-                        if ($boton.length) {
-                            $('#botonImportanteWrapper').html($boton.html());
-                            $boton.remove(); // elimina el div original oculto
-                        }
+                        const botonHTML = $('#contenidoModalPostulacion').find('#botonImportanteHTML').html();
+                        $('#botonImportanteWrapper').html(botonHTML);
                     }).fail(function() {
                         $('#contenidoModalPostulacion').html('<p class="text-danger">Error al cargar la postulación.</p>');
                     });
@@ -500,13 +494,6 @@ $pendientes_postulaciones = obtener_postulaciones_pendientes();
                             alert('No se pudo actualizar el estado de importancia.');
                         }
                     }, 'json');
-                });
-                $.get('postulacionModal.php', { id }, function(respuesta) {
-                    $('#contenidoModalPostulacion').html(respuesta);
-
-                    // Extraer y colocar el botón en el wrapper fijo
-                    const botonHTML = $('#contenidoModalPostulacion').find('#botonImportanteHTML').html();
-                    $('#botonImportanteWrapper').html(botonHTML);
                 });
             </script>
 </body>

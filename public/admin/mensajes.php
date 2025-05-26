@@ -191,17 +191,16 @@ $pendientes_mensajes = obtener_mensajes_pendientes();
         <div class="modal fade" id="modalVerMensaje" tabindex="-1" aria-labelledby="modalVerMensajeLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-scrollable">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalVerMensajeLabel">Detalle del Mensaje</h5>
-                        <button
-                                id="btnImportante"
-                                class="btn <?= $btnClase ?> btn-sm w-100 d-flex justify-content-center align-items-center"
-                                onclick="toggleImportante(<?= $msg['id'] ?>, <?= $esImportante ?>)">
-                                <i id="iconoImportante" class="bi <?= $iconoClase ?> me-2"></i>
-                                <span id="textoImportante"><?= $textoImportante ?></span>
-                            </button>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                    </div>
+                    <!-- Modal Header -->
+                    <div class="modal-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <h5 class="modal-title mb-0" id="modalVerMensajeLabel">Detalle de la Postulación</h5>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                        <div id="botonImportanteWrapper" style="min-width: 200px;"></div>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                        </div>
+                    </div>       
                     <div class="modal-body" id="contenidoModalMensaje">
                         <!-- Aquí se carga el contenido dinámico con AJAX -->
                         <p class="text-center text-muted">Cargando...</p>
@@ -385,6 +384,17 @@ $pendientes_mensajes = obtener_mensajes_pendientes();
             function verMensaje(id) {
                 alert(`Abrir modal de mensaje con ID ${id}`);
                 // Aquí puedes abrir un modal o redirigir
+                $('#contenidoModalMensaje').html('<p class="text-center text-muted">Cargando...</p>');
+                $('#modalVerMensaje').modal('show');
+
+                $.get('mensajeModal.php', { id }, function(respuesta) {
+                    $('#contenidoModalMensaje').html(respuesta);
+
+                const botonHTML = $('#contenidoModalMensaje').find('#botonImportanteHTML').html();
+                    $('#botonImportanteWrapper').html(botonHTML);
+                }).fail(function() {
+                    $('#contenidoModalMensaje').html('<p class="text-danger">Error al cargar el mensaje.</p>');
+                });    
             }
 
             function eliminarMensaje(id) {

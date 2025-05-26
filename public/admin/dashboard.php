@@ -71,6 +71,7 @@ require_once __DIR__ . '/../../includes/config.php';
                 <li class="nav-item">
                     <a class="nav-link" data-section="clientes">Clientes</a>
                 </li>
+                <li class="nav-item"><a class="nav-link" data-section="usuarios">Usuarios</a></li>
                 <li class="nav-item">
                     <a class="nav-link" href="<?= BASE_URL ?>logout.php">Cerrar sesión</a>
                 </li>

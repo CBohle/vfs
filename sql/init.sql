@@ -61,22 +61,62 @@ INSERT INTO curriculum (nombre, apellido, fecha_nacimiento, rut, email, telefono
 ('María', 'López', '1987-12-05', '45678901-2', 'maria.lopez@example.com', '987654324', 'Calle Real 321', 'Comuna Oeste', 'Región Centro', 'Ingeniería Comercial', 'Universidad Comercial', 2009, TRUE, 'Diplomado en Tasación de Bienes Raíces', 6, 'Inmobiliaria Comercial S.A.', TRUE, TRUE, FALSE, 'archivo4.pdf', TRUE, 'pendiente'),
 ('Pedro', 'Sánchez', '1995-03-18', '56789012-3', 'pedro.sanchez@example.com', '987654325', 'Calle Falsa 654', 'Comuna Este', 'Región Norte', 'Gestión Inmobiliaria', 'Universidad Norte', 2017, FALSE, '', 2, 'Consultora Inmobiliaria', FALSE, TRUE, TRUE, 'archivo5.pdf', FALSE, 'eliminado');
 
+CREATE TABLE roles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    descripcion VARCHAR(255),
+    activo BOOLEAN NOT NULL DEFAULT TRUE
+);
+INSERT INTO roles (nombre, descripcion, activo) VALUES
+('admin', 'Acceso completo a todas las funcionalidades', TRUE),
+('rrhh', 'Visualiza y edita postulaciones', TRUE),
+('ejecutivo', 'Gestiona mensajes y clientes', TRUE),
+('practicante', 'Visualiza mensajes y clientes', FALSE);
+
+CREATE TABLE permisos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    rol_id INT NOT NULL,
+    modulo VARCHAR(50) NOT NULL,
+    accion VARCHAR(50) NOT NULL,
+    FOREIGN KEY (rol_id) REFERENCES roles(id)
+);
+
+INSERT INTO permisos (rol_id, modulo, accion) VALUES
+(1, 'mensajes', 'ver'), (1, 'mensajes', 'modificar'), (1, 'mensajes', 'crear'), (1, 'mensajes', 'eliminar'),
+(1, 'postulaciones', 'ver'), (1, 'postulaciones', 'modificar'), (1, 'postulaciones', 'crear'), (1, 'postulaciones', 'eliminar'),
+(1, 'clientes', 'ver'), (1, 'clientes', 'modificar'), (1, 'clientes', 'crear'), (1, 'clientes', 'eliminar'),
+(1, 'usuarios', 'ver'), (1, 'usuarios', 'modificar'), (1, 'usuarios', 'crear'), (1, 'usuarios', 'eliminar'),
+(1, 'roles', 'ver'), (1, 'roles', 'modificar'), (1, 'roles', 'crear'), (1, 'roles', 'eliminar');
+
+INSERT INTO permisos (rol_id, modulo, accion) VALUES
+(2, 'postulaciones', 'ver'),
+(2, 'postulaciones', 'modificar');
+
+INSERT INTO permisos (rol_id, modulo, accion) VALUES
+(3, 'mensajes', 'ver'), (3, 'mensajes', 'modificar'), (3, 'mensajes', 'eliminar'),
+(3, 'clientes', 'ver'), (3, 'clientes', 'modificar');
+
+INSERT INTO permisos (rol_id, modulo, accion) VALUES
+(4, 'mensajes', 'ver'),
+(4, 'clientes', 'ver');
+
 CREATE TABLE usuarios_admin (
-    id INT PRIMARY KEY AUTO_INCREMENT,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
     apellido VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
-    password VARCHAR(20) NOT NULL,
-    rol ENUM('admin', 'usuario') NOT NULL DEFAULT 'usuario',
+    password VARCHAR(255) NOT NULL,
+    rol_id INT NOT NULL,
     activo BOOLEAN NOT NULL DEFAULT TRUE,
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
-    fecha_modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
+    fecha_modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (rol_id) REFERENCES roles(id)
+);  
 
-INSERT INTO usuarios_admin (nombre, apellido, email, password, rol, activo) VALUES 
-('Jaime','Farias','Email1@prueba.com','1111','Admin',TRUE),
-('Federico','Mendez','Email2@prueba.com','2222','Admin',TRUE),
-('Berta','Vega','Email3@prueba.com','3333','Admin',FALSE);
+INSERT INTO usuarios_admin (nombre, apellido, email, password, rol_id, activo) VALUES
+('Jaime', 'Farias', 'email1@prueba.com', '1234', 1, TRUE),
+('Federico', 'Mendez', 'email2@prueba.com', '1234', 1, TRUE),
+('Berta', 'Vega', 'email3@prueba.com', '1234', 1, FALSE);
 
 CREATE TABLE respuestas (
     id INT PRIMARY KEY AUTO_INCREMENT,
