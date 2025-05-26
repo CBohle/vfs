@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../includes/db.php'; // ← Activa cuando uses base de datos real
+require_once __DIR__ . '/../../includes/db.php';
 
 // Función general para actualizar cualquier campo de postulacion
 function actualizar_campo_postulacion($campo, $valor, $id)
@@ -24,18 +24,12 @@ function actualizar_importante($id, $importante)
 function ver_postulaciones()
 {
     global $conexion;
-    $sql = 'SELECT
-                curriculum.*
-            FROM curriculum
-            WHERE curriculum.estado != "eliminado"
-            ORDER BY curriculum.fecha_creacion DESC, curriculum.id ASC';
-    
+    $sql = 'SELECT curriculum.* FROM curriculum WHERE curriculum.estado != "eliminado" ORDER BY curriculum.fecha_creacion DESC, curriculum.id ASC';
     $resultado = mysqli_query($conexion, $sql);
     $filas = [];
     while ($fila = mysqli_fetch_assoc($resultado)) {
         $filas[] = $fila;
     }
-
     return $filas;
 }
 
@@ -44,19 +38,21 @@ function obtenerClaseEstado($estado)
     $estado = strtolower($estado);
     return match ($estado) {
         'respondido' => 'bg-success text-light',
-        'pendiente' => 'bg-warning text-light',
+        'pendiente' => 'bg-warning text-dark',
         'leido' => 'bg-primary text-light',
         'eliminado' => 'bg-secondary text-light',
         default => 'bg-secondary',
     };
 }
+
 function obtener_total_postulaciones()
 {
     global $conexion;
     $sql = "SELECT COUNT(*) AS total FROM curriculum WHERE nombre != '' AND estado != 'eliminado'";
     $result = mysqli_query($conexion, $sql);
     return ($fila = mysqli_fetch_assoc($result)) ? $fila['total'] : 0;
-}                               
+}
+
 function obtener_postulaciones_pendientes()
 {
     global $conexion;
@@ -64,39 +60,29 @@ function obtener_postulaciones_pendientes()
     $result = mysqli_query($conexion, $sql);
     return ($fila = mysqli_fetch_assoc($result)) ? $fila['pendientes'] : 0;
 }
-// Función para actualizar el estado de la postulacion según si tiene respuesta
+
+// Actualizar el estado de la postulacion
 function actualizar_estado_postulacion($id)
 {
     global $conexion;
-    
-    /*VALIDAR SI SE DARA RESPUESTA POR EL DASHBOARD
-    // Consulta para verificar si la postulacion tiene respuesta
-    $sql = "SELECT respuestas.respuesta FROM mensajes 
-            LEFT JOIN respuestas ON respuestas.mensaje_id = mensajes.id
-            WHERE mensajes.id = ?";
-    $stmt = $conexion->prepare($sql);
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $msg = $result->fetch_assoc();
-    // Determina el nuevo estado basado en si hay respuesta
-    $nuevo_estado = ($msg['respuesta'] !== null) ? 'respondido' : 'pendiente';
-    */
 
-    // Actualiza el estado de la postulacion
-    $nuevo_estado = 'pendiente'; /* Borrar si se valida la respuesta en dashboard*/
+    // Aquí puedes agregar lógica adicional si quieres validar si tiene respuesta antes de actualizar.
+    $nuevo_estado = 'pendiente'; // Cambiar a 'respondido' si implementas la lógica
+
     $sql_update = "UPDATE curriculum SET estado = ? WHERE id = ?";
     $stmt_update = $conexion->prepare($sql_update);
     $stmt_update->bind_param('si', $nuevo_estado, $id);
     if ($stmt_update->execute()) {
         return json_encode(['success' => true, 'nuevo_estado' => $nuevo_estado]);
     } else {
-        return json_encode(['success' => false]);
+        return json_encode(['success' => false, 'error' => $conexion->error]);
     }
 }
-function formatear_telefono($numero) {
-    $numero = preg_replace('/\D/', '', $numero); // quita espacios, guiones, paréntesis, etc.
 
+// Formatear número telefónico
+function formatear_telefono($numero)
+{
+    $numero = preg_replace('/\D/', '', $numero); // quita espacios, guiones, paréntesis, etc.
     if (strlen($numero) === 11) {
         return substr($numero, 0, 3) . ' ' . substr($numero, 3, 4) . ' ' . substr($numero, 7);
     } elseif (strlen($numero) === 9) {

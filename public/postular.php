@@ -33,7 +33,8 @@ require_once __DIR__ . '/../includes/config.php';
 
 <!-- INCLUDE HEADER -->
 <?php include_once __DIR__ . '/../includes/header.php'; ?>
-
+<body>
+   
 <!-- INICIO SECCIÓN FORMULARIO DE POSTULACIÓN-->
 <section class="page-section bg-tertiary" id="postulacion">
     <div class="container px-4 px-lg-5">
@@ -47,7 +48,8 @@ require_once __DIR__ . '/../includes/config.php';
         <div class="accordion" id="postulacionAccordion">
 
             <!-- INICIO FORMULARIO DE POSTULACIÓN -->
-            <form id="postulacionForm" action="<?= BASE_URL ?>/ruta/donde/se/enviará/el/archivo" method="post" enctype="multipart/form-data">
+            <form id="postulacionForm" action="<?= BASE_URL ?>../includes/Controller/procesar_postulacion.php" method="post" enctype="multipart/form-data">
+
             
             <!-- DATOS PERSONALES (Campo 1-4)(Nombre/Apellido/Nacimiento/Rut)-->
                 <div class="accordion-item">
@@ -283,6 +285,14 @@ require_once __DIR__ . '/../includes/config.php';
     </div>
     </div>
 </section>
+  <?php include_once __DIR__ . '/../includes/header.php'; ?>
+    <?php
+    if (isset($_GET['mensaje']) && $_GET['mensaje'] === 'postulado') {
+        echo '<div class="alert alert-success text-center" role="alert">
+                ¡Su postulación ha sido enviada correctamente!
+              </div>';
+    }
+    ?>
 <!-- FIN SECCIÓN FORMULARIO DE POSTULACIÓN-->
 
 <!-- INCLUDE FOOTER-->

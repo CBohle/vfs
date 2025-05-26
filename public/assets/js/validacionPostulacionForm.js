@@ -2,7 +2,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector("form");
 
     // CONSTANTES
-  
+    // Otras constantes
+    const camposTocados = {};
+
     // Constantes campos de texto
     const camposTexto = [
         // Campo 1 
@@ -16,9 +18,9 @@ document.addEventListener("DOMContentLoaded", function () {
         // Campo 11
         { id: "institucion", min: 2, max: 100, soloLetras: false, label: "La institución" },
         // Campo 15
-        { id: "otra_empresa", min: 1, max: 100, soloLetras: false, label: "Este campo" },
+        { id: "otra_empresa", min: 2, max: 100, soloLetras: false, label: "Este campo" },
         // Campo adicional 13.1
-        { id: "detalle_formacion", min: 1, max: 100, soloLetras: false, label: "Este campo" }
+        { id: "detalle_formacion", min: 2, max: 100, soloLetras: false, label: "Este campo" }
     ];
     // Constantes campos select
     const selects = [
@@ -182,25 +184,90 @@ document.addEventListener("DOMContentLoaded", function () {
     // Campos de texto
     camposTexto.forEach(({ id, min, max, soloLetras, label }) => {
         const input = document.getElementById(id);
-        input.addEventListener("blur", () => validarCampoTexto(input, min, max, soloLetras, label));
+        input.addEventListener("blur", () => {
+            camposTocados[input.id] = true;
+            validarCampoTexto(input, min, max, soloLetras, label);
+            revisarEstadoFormulario();
+        });
     });
     // Campos select
     selects.forEach(({ id, mensaje }) => {
         const campo = document.getElementById(id);
-        campo.addEventListener("blur", () => validarSelectObligatorio(campo, mensaje));
-        campo.addEventListener("change", () => validarSelectObligatorio(campo, mensaje));
+        campo.addEventListener("blur", () => {
+            camposTocados[campo.id] = true;
+            validarSelectObligatorio(campo, mensaje);
+            revisarEstadoFormulario();
+        });
+        campo.addEventListener("change", () => {
+            camposTocados[campo.id] = true;
+            validarSelectObligatorio(campo, mensaje);
+            revisarEstadoFormulario();
+        });
     });
     // Otros campos
-    campoEmail.addEventListener("blur", () => validarEmail(campoEmail));
-    campoTelefono.addEventListener("blur", () => validarTelefono(campoTelefono));
-    campoFecha.addEventListener("blur", () => validarFecha(campoFecha));
-    campoRut.addEventListener("blur", () => validarRutCampo(campoRut));
-    campoAno.addEventListener("blur", () => validarAnoTitulacion(campoAno));
-    campoCV.addEventListener("blur", () => validarArchivoCV(campoCV));
-    campoCV.addEventListener("change", () => validarArchivoCV(campoCV));
+    campoEmail.addEventListener("blur", () => {
+        camposTocados[campoEmail.id] = true;
+        validarEmail(campoEmail);
+        revisarEstadoFormulario();
+    });
+    campoTelefono.addEventListener("blur", () => {
+        camposTocados[campoTelefono.id] = true;
+        validarTelefono(campoTelefono);
+        revisarEstadoFormulario();
+    });
+    campoFecha.addEventListener("blur", () => {
+        camposTocados[campoFecha.id] = true;
+        validarFecha(campoFecha);
+        revisarEstadoFormulario();
+    });
+    campoRut.addEventListener("blur", () => {
+        camposTocados[campoRut.id] = true;
+        validarRutCampo(campoRut);
+        revisarEstadoFormulario();
+    });
+    campoAno.addEventListener("blur", () => {
+        camposTocados[campoAno.id] = true;
+        validarAnoTitulacion(campoAno);
+        revisarEstadoFormulario();
+    });
+    campoCV.addEventListener("blur", () => {
+        camposTocados[campoCV.id] = true;
+        validarArchivoCV(campoCV);
+        revisarEstadoFormulario();
+    });
+    campoCV.addEventListener("change", () => {
+        camposTocados[campoCV.id] = true;
+        validarArchivoCV(campoCV);
+        revisarEstadoFormulario();
+    });
 
-    
-    // Validación al enviar
+    // FUNCIÓN PARA REVISAR QUE TODOS LOS CAMPOS ESTÉN VÁLIDOS, Y LUEGO ACTIVAR EL BOTÓN
+    function revisarEstadoFormulario() {
+        const formularioValido = esFormularioValido();
+        const boton = document.querySelector('#submitButton'); // o el ID que uses
+        boton.disabled = !formularioValido;
+    }
+    const camposObligatorios = [
+        'nombre', 'apellido', 'direccion', 'comuna', 'institucion', 'otra_empresa', 'estudios', 'region', 'formacion_tasacion', 'ano_experiencia', 'disponibilidad_comunal', 'disponibilidad_regional', 'movilizacion', 'fecha_nacimiento', 'rut', 'email', 'telefono', 'ano_titulacion', 'cv'
+    ];
+    function esFormularioValido() {
+        // Verificar que todos los campos obligatorios estén tocados
+        for (const campoId of camposObligatorios) {
+            if (!camposTocados[campoId]) {
+                return false;
+            }
+        }
+        // Verificar que todos los campos obligatorios estén sin errores y completos
+        for (const campoId of camposObligatorios) {
+            const campo = document.getElementById(campoId);
+            if (!campo) continue;
+            if (campo.classList.contains('is-invalid')) return false;
+            if (!campo.value) return false;
+        }
+        return true;
+    }
+
+    // VALIDACIÓN AL ENVIAR
     form.addEventListener("submit", function (e) {
         let valido = true;
         // Validación campo de texto
@@ -221,6 +288,5 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!validarAnoTitulacion(campoAno)) valido = false;
         if (!validarArchivoCV(campoCV)) valido = false;
         if (!valido) e.preventDefault();
-
-    });    
+    });
 });

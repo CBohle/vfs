@@ -18,6 +18,10 @@ $base_url = $is_landing ? '' : BASE_URL . 'index.php';
     <link href="<?= BASE_URL ?>assets/css/styles.css" rel="stylesheet" />
     <!-- Íconos Bootstrap Icons (opcional) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Fuentes de texto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lora:ital,wght@0,400..700;1,400..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 
 <body id="page-top">
@@ -25,7 +29,7 @@ $base_url = $is_landing ? '' : BASE_URL . 'index.php';
     <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
         <div class="container px-4 px-lg-5">
             <!-- LOGO -->
-            <a class="navbar-brand me-4" href="<?= $is_landing ? '#page-top' : BASE_URL . '/index.php' ?>">
+            <a class="navbar-brand me-4" href="<?= $is_landing ? '#page-top' : BASE_URL . 'index.php' ?>">
                 <img src="<?= BASE_URL ?>assets/images/logo/LogoVFS2.png" alt="Logo de la empresa" style="height: 50px;">
             </a>
 

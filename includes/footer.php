@@ -52,7 +52,16 @@ $base_url = $is_landing ? '' : BASE_URL . 'index.php';
 <script src="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.js"></script>
 <!-- Core theme JS-->
 <script src="<?= BASE_URL ?>assets/js/scripts.js"></script>
-<script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+<!-- Incluye sb-form-latest.js si es que está en index.php que es donde se usan validaciones nativas -->
+<?php
+$pagina_actual = basename($_SERVER['PHP_SELF']);
+
+if ($pagina_actual === 'index.php') {
+    echo '<script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>';
+}
+?>
+
+
 
 <!-- DESPLIEGUE DEL CAMPO ADICIONAL 13.1 EN EL FORMULARIO DE POSTULACIÓN -->
 <script>
@@ -80,18 +89,28 @@ $base_url = $is_landing ? '' : BASE_URL . 'index.php';
 <!-- ACTIVACIÓN DEL BOTÓN ENVIAR EN FORMULARIO DE CONTACTO -->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const form = document.getElementById('contactoForm');
+        const contactoForm = document.getElementById('contactoForm');
         const submitButtonContacto = document.getElementById('submitButtonContacto');
 
-        // Función para verificar la validez total del formulario
-        const checkFormValidity = () => {
-            submitButtonContacto.disabled = !form.checkValidity();
-        };
+        if (contactoForm && submitButtonContacto) {
+            const checkContactoFormValidity = () => {
+                submitButtonContacto.disabled = !contactoForm.checkValidity();
+            };
 
-        // Escucha eventos de entrada en todos los campos
-        form.addEventListener('input', checkFormValidity);
+            contactoForm.addEventListener('input', checkContactoFormValidity);
+            checkContactoFormValidity();
+        }
 
-        // Ejecuta la función al cargar, por si hay campos ya completados
-        checkFormValidity();
+        // const postulacionForm = document.getElementById('postulacionForm');
+        // const submitButtonPostulacion = document.getElementById('submitButtonPostulacion');
+
+        // if (postulacionForm && submitButtonPostulacion) {
+        //     const checkPostulacionFormValidity = () => {
+        //         submitButtonPostulacion.disabled = !postulacionForm.checkValidity();
+        //     };
+
+        //     postulacionForm.addEventListener('input', checkPostulacionFormValidity);
+        //     checkPostulacionFormValidity();
+        // }
     });
 </script>
