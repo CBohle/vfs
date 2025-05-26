@@ -268,8 +268,13 @@ require_once __DIR__ . '/../includes/config.php';
         </div>
         <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
             <div class="col-lg-6">
+                <?php if (isset($_GET['mensaje']) && $_GET['mensaje'] === 'enviado'): ?>
+                <div class="alert alert-success text-center">¡Tu mensaje ha sido enviado con éxito!</div>
+            <?php elseif (isset($_GET['error'])): ?>
+                <div class="alert alert-danger text-center">Por favor completa todos los campos.</div>
+            <?php endif; ?>
                 <!-- INICIO FORMULARIO DE CONTACTO CON VALIDACIONES POR CAMPO -->
-                <form id="contactoForm" class="novalidate">
+                <form id="contactoForm" class="novalidate" action="../includes/Controller/procesar_mensaje.php" method="post">
                     <!-- Campo 1: Nombre OK-->
                     <div class="form-floating mb-3">
                         <input
