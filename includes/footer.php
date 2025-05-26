@@ -27,6 +27,9 @@ $base_url = $is_landing ? '' : BASE_URL . 'index.php';
                     <li><a href="<?= $base_url ?>#faq">Preguntas frecuentes</a></li>
                     <li><a href="<?= $base_url ?>#contacto">Formulario de contacto</a></li>
                     <li><a href="<?= $base_url ?>#servicios">Nuestros servicios</a></li>
+                    <br>
+                    <li><a href="<?= BASE_URL ?>admin/login.php">Panel de administración</a></li>
+                    <li><a href="<?= BASE_URL ?>postular.php">Trabaja en VFS</a></li>
                 </ul>
 
             </div>
