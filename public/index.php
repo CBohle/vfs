@@ -75,7 +75,7 @@ require_once __DIR__ . '/../includes/config.php';
 <div class="page-section bg-dark text-white" id="servicios">
     <div class="container-fluid p-0">
         <h2 class="text-center mt-0">Tu socio en tasaciones</h2>
-        <hr class="divider" />
+        <hr class="divider"/>
         <p class="text-muted mb-5 text-center text-white-75">Servicios</p>
         <div class="row g-0">
             <!-- Servicio 1 -->
