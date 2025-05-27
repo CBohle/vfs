@@ -1,4 +1,5 @@
 <?php
+
 // Login con validación por base de datos (comentado)
 // require_once __DIR__ . '/../../includes/db.php';
 require_once __DIR__ . '/../../includes/config.php';
@@ -48,51 +49,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Login - Admin</title>
+    <!-- Bootstrap y estilos -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f3f4f6;
-            font-family: "Segoe UI", sans-serif;
-        }
-        .login-box {
-            background-color: #fff;
-            padding: 40px 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-top: 100px;
-        }
-        h2 {
-            font-weight: 500;
-            margin-bottom: 30px;
-        }
-    </style>
+    <link href="<?= BASE_URL ?>admin/adminlte/css/stylesAdmin.css" rel="stylesheet" />
+    <!-- Fuentes de texto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lora:ital,wght@0,400..700;1,400..700&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    <div class="container d-flex justify-content-center">
-        <div class="login-box col-md-6 col-lg-4">
-            <h2 class="text-center">Panel de administración</h2>
-
-            <?php if (isset($error)): ?>
-                <div class="alert alert-danger" role="alert"><?= $error ?></div>
-            <?php endif; ?>
-
-            <form method="POST" action="">
-                <div class="mb-3">
-                    <label for="usuario" class="form-label">Usuario</label>
-                    <input type="text" name="usuario" class="form-control" required>
+    <div class="container-fluid">
+        <div class="row justify-content-center ">
+            <!-- Recuadro bienvenida -->
+            <div class="ed-login  col-md-6 col-lg-6 order-lg-1">
+                <img src="<?= BASE_URL ?>assets/images/logo/LogoVFS2.png" alt="Logo VFS" class="img-fluid d-block mx-auto margin-bottom:40px" style="max-width: 50px;">
+                <div>
+                    <h1 class="text-center">¡Bienvenido!</h1>
+                    <h3 class="text-center">Inicia sesión para acceder al Panel de Administración VFS</h3>
                 </div>
-                <div class="mb-4">
-                    <label for="clave" class="form-label">Contraseña</label>
-                    <input type="password" name="clave" class="form-control" required>
-                </div>
-                <div class="d-grid">
-                    <button type="submit" class="btn btn-dark">Entrar</button>
-                </div>
-            </form>
+            </div>
+            <!-- Recuadro login -->
+            <div class="login-box col-md-6 col-lg-4 text-white order-lg-1">
+                <h2 class="text-center">Login</h2>
+                <hr class="divider" />
+                <p class="text-center">Panel de administración</p>
+                <?php if (isset($error)): ?>
+                    <div class="alert alert-danger" role="alert"><?= $error ?></div>
+                <?php endif; ?>
+                <form method="POST" action="">
+                    <div class="mb-3">
+                        <label for="usuario" class="form-label text-white">Usuario</label>
+                        <input type="text" name="usuario" class="form-control" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="clave" class="form-label text-white">Contraseña</label>
+                        <input type="password" name="clave" class="form-control" required>
+                    </div>
+                    <br>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-secondary">Entrar</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </body>
+
 </html>
