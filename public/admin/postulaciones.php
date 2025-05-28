@@ -19,7 +19,7 @@ $pendientes_postulaciones = obtener_postulaciones_pendientes();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         body {
-            font-size: 0.8rem;
+            font-size: 1rem;
         }
 
         table.dataTable tbody tr:hover {
@@ -57,15 +57,18 @@ $pendientes_postulaciones = obtener_postulaciones_pendientes();
         .navbar {
             font-size: 1.0rem;
         }
+
         #contenido-dinamico {
             width: 100%;
-            max-width: 1700px; /* Limita el ancho en desktop */
+            max-width: 1700px;
+            /* Limita el ancho en desktop */
             padding: 1rem;
             margin-top: 3px;
             margin-bottom: 3px;
             padding-top: 3px;
             padding-bottom: 3px;
         }
+
         .table-responsive {
             overflow-x: auto;
             max-width: 100%;
@@ -81,7 +84,7 @@ $pendientes_postulaciones = obtener_postulaciones_pendientes();
                 <!-- Botones de exportación -->
                 <div id="exportButtons" class="d-flex gap-1"></div>
             </div>
-
+            <!-- Filtros -->
             <div class="card mb-4">
                 <div class="card-header">
                     <h5 class="mb-0">Filtros</h5>
@@ -133,7 +136,6 @@ $pendientes_postulaciones = obtener_postulaciones_pendientes();
                             <input type="text" class="form-floating form-control form-control-sm" id="filtro_busqueda" placeholder="Buscar palabra clave">
                             <label for="filtro_busqueda">Buscar palabra clave</label>
                         </div>
-
                         <!-- Grupo 3: Postulaciones pendientes -->
                         <div class="form-floating align-items-center">
                             <label class="form-label d-block invisible">.</label>
@@ -145,9 +147,9 @@ $pendientes_postulaciones = obtener_postulaciones_pendientes();
                             </button>
                         </div>
                     </form>
-
                 </div>
             </div>
+            <!-- Tabla clientes -->
             <div class="card-body">
                 <div class="row gy-2 gx-3 align-items-end justify-content-between flex-wrap">
                     <section id="tabla-postulaciones">
@@ -188,182 +190,182 @@ $pendientes_postulaciones = obtener_postulaciones_pendientes();
             </div>
         </div>
     </div>
-
-            <!-- Modal para Ver Postulacion -->
-            <div class="modal fade" id="modalVerPostulacion" tabindex="-1" aria-labelledby="modalVerPostulacionLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-scrollable">
-                    <div class="modal-content">
-                        <!-- Modal Header -->
-                        <div class="modal-header d-flex justify-content-between align-items-center flex-wrap gap-2">
-                            <div class="d-flex align-items-center gap-2 flex-wrap">
-                                <h5 class="modal-title mb-0" id="modalVerPostulacionLabel">Detalle de la Postulación</h5>
-                            </div>
-                            <div class="d-flex align-items-center gap-2">
-                                <div id="botonImportanteWrapper" style="min-width: 200px;"></div>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                            </div>
-                        </div>
-                        <!-- Modal Body -->
-                        <div class="modal-body" id="contenidoModalPostulacion">
-                            <p class="text-center text-muted">Cargando...</p>
-                        </div>
+    <!-- Modal para Ver Postulacion -->
+    <div class="modal fade" id="modalVerPostulacion" tabindex="-1" aria-labelledby="modalVerPostulacionLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                        <h5 class="modal-title mb-0" id="modalVerPostulacionLabel">Detalle de la Postulación</h5>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <div id="botonImportanteWrapper" style="min-width: 200px;"></div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                     </div>
                 </div>
+                <!-- Modal Body -->
+                <div class="modal-body" id="contenidoModalPostulacion">
+                    <p class="text-center text-muted">Cargando...</p>
+                </div>
             </div>
-            <!-- Scripts -->
-            <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-            <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-            <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
-            <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
-            <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js"></script>
-            <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        </div>
+    </div>
 
-            <script>
-                window.tabla = window.tabla || null;
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-                function inicializarTablaPostulaciones() {
-                    if ($.fn.DataTable.isDataTable('#tablaPostulaciones')) {
-                        tabla.clear().destroy();
+    <script>
+        window.tabla = window.tabla || null;
+
+        function inicializarTablaPostulaciones() {
+            if ($.fn.DataTable.isDataTable('#tablaPostulaciones')) {
+                tabla.clear().destroy();
+            }
+
+            tabla = $('#tablaPostulaciones').DataTable({
+                responsive: false,
+                scrollX: true,
+                processing: true,
+                serverSide: true,
+                destroy: true,
+                ajax: {
+                    url: 'postulacionesAjax.php',
+                    type: 'POST',
+                    data: function(d) {
+                        d.estado = $('#filtro_estado').val();
+                        d.orden = $('#filtro_orden').val();
+                        d.importante = $('#filtro_importante').val();
+                        d.search.value = $('#filtro_busqueda').val(); // 🔍 filtro personalizado
+                    },
+                    dataSrc: function(json) {
+                        if (json.totalPendientesPostulaciones !== undefined && json.totalPostulaciones !== undefined) {
+                            $('#PostulacionesPorResponder').text(json.totalPendientesPostulaciones + ' de ' + json.totalPostulaciones);
+                        }
+                        return json.data;
                     }
-
-                    tabla = $('#tablaPostulaciones').DataTable({
-                        responsive: false,
-                        scrollX: true,
-                        processing: true,
-                        serverSide: true,
-                        destroy: true,
-                        ajax: {
-                            url: 'postulacionesAjax.php',
-                            type: 'POST',
-                            data: function(d) {
-                                d.estado = $('#filtro_estado').val();
-                                d.orden = $('#filtro_orden').val();
-                                d.importante = $('#filtro_importante').val();
-                                d.search.value = $('#filtro_busqueda').val(); // 🔍 filtro personalizado
-                            },
-                            dataSrc: function(json) {
-                                if (json.totalPendientesPostulaciones !== undefined && json.totalPostulaciones !== undefined) {
-                                    $('#PostulacionesPorResponder').text(json.totalPendientesPostulaciones + ' de ' + json.totalPostulaciones);
-                                }
-                                return json.data;
+                },
+                columns: [{
+                        data: 'importante',
+                        orderable: true,
+                        searchable: false,
+                        className: 'text-center',
+                        render: function(data, type, row) {
+                            const icon = data == 1 ? 'bi-star-fill text-warning' : 'bi-star text-muted';
+                            return `<i class="bi ${icon} marcarImportante" data-id="${row.id}" data-valor="${data}" style="cursor:pointer;"></i>`;
+                        }
+                    },
+                    {
+                        data: 'id'
+                    },
+                    {
+                        data: 'rut'
+                    },
+                    {
+                        data: 'nombre'
+                    },
+                    {
+                        data: 'apellido'
+                    },
+                    {
+                        data: 'estudio'
+                    },
+                    {
+                        data: 'ano_titulacion',
+                        className: 'text-center'
+                    },
+                    {
+                        data: 'formacion_tasacion',
+                        className: 'text-center',
+                        render: function(data) {
+                            return data == 1 ?
+                                '<i class="bi bi-check-circle-fill text-success fs-5"></i>' :
+                                '<i class="bi bi-x-circle-fill text-danger fs-5"></i>';
+                        }
+                    },
+                    {
+                        data: 'anos_experiencia_tasacion',
+                        className: 'text-center'
+                    },
+                    {
+                        data: 'disponibilidad_comuna',
+                        className: 'text-center',
+                        render: function(data) {
+                            return data == 1 ?
+                                '<i class="bi bi-check-circle-fill text-success fs-5"></i>' :
+                                '<i class="bi bi-x-circle-fill text-danger fs-5"></i>';
+                        }
+                    },
+                    {
+                        data: 'disponibilidad_region',
+                        className: 'text-center',
+                        render: function(data) {
+                            return data == 1 ?
+                                '<i class="bi bi-check-circle-fill text-success fs-5"></i>' :
+                                '<i class="bi bi-x-circle-fill text-danger fs-5"></i>';
+                        }
+                    },
+                    {
+                        data: 'movilizacion_propia',
+                        className: 'text-center',
+                        render: function(data) {
+                            return data == 1 ?
+                                '<i class="bi bi-check-circle-fill text-success fs-5"></i>' :
+                                '<i class="bi bi-x-circle-fill text-danger fs-5"></i>';
+                        }
+                    },
+                    {
+                        data: 'estado',
+                        render: function(data) {
+                            let clase = 'badge ';
+                            switch (data.toLowerCase()) {
+                                case 'respondido':
+                                    clase += 'bg-success';
+                                    break;
+                                case 'leido':
+                                    clase += 'bg-primary';
+                                    break;
+                                case 'pendiente':
+                                    clase += 'bg-warning text-dark';
+                                    break;
+                                case 'eliminado':
+                                    clase += 'bg-secondary';
+                                    break;
+                                default:
+                                    clase += 'bg-light text-dark';
                             }
-                        },
-                        columns: [{
-                                data: 'importante',
-                                orderable: true,
-                                searchable: false,
-                                className: 'text-center',
-                                render: function(data, type, row) {
-                                    const icon = data == 1 ? 'bi-star-fill text-warning' : 'bi-star text-muted';
-                                    return `<i class="bi ${icon} marcarImportante" data-id="${row.id}" data-valor="${data}" style="cursor:pointer;"></i>`;
-                                }
-                            },
-                            {
-                                data: 'id'
-                            },
-                            {
-                                data: 'rut'
-                            },
-                            {
-                                data: 'nombre'
-                            },
-                            {
-                                data: 'apellido'
-                            },
-                            {
-                                data: 'estudio'
-                            },
-                            {
-                                data: 'ano_titulacion',
-                                className: 'text-center'
-                            },
-                            {
-                                data: 'formacion_tasacion',
-                                className: 'text-center',
-                                render: function(data) {
-                                    return data == 1
-                                        ? '<i class="bi bi-check-circle-fill text-success fs-5"></i>'
-                                        : '<i class="bi bi-x-circle-fill text-danger fs-5"></i>';
-                                }
-                            },
-                            {
-                                data: 'anos_experiencia_tasacion',
-                                className: 'text-center'
-                            },
-                            {
-                                data: 'disponibilidad_comuna',
-                                className: 'text-center',
-                                render: function(data) {
-                                    return data == 1
-                                        ? '<i class="bi bi-check-circle-fill text-success fs-5"></i>'
-                                        : '<i class="bi bi-x-circle-fill text-danger fs-5"></i>';
-                                }
-                            },
-                            {
-                                data: 'disponibilidad_region',
-                                className: 'text-center',
-                                render: function(data) {
-                                    return data == 1
-                                        ? '<i class="bi bi-check-circle-fill text-success fs-5"></i>'
-                                        : '<i class="bi bi-x-circle-fill text-danger fs-5"></i>';
-                                }
-                            },
-                            {
-                                data: 'movilizacion_propia',
-                                className: 'text-center',
-                                render: function(data) {
-                                    return data == 1
-                                        ? '<i class="bi bi-check-circle-fill text-success fs-5"></i>'
-                                        : '<i class="bi bi-x-circle-fill text-danger fs-5"></i>';
-                                }
-                            },
-                            {
-                                data: 'estado',
-                                render: function(data) {
-                                    let clase = 'badge ';
-                                    switch (data.toLowerCase()) {
-                                        case 'respondido':
-                                            clase += 'bg-success';
-                                            break;
-                                        case 'leido':
-                                            clase += 'bg-primary';
-                                            break;
-                                        case 'pendiente':
-                                            clase += 'bg-warning text-dark';
-                                            break;
-                                        case 'eliminado':
-                                            clase += 'bg-secondary';
-                                            break;
-                                        default:
-                                            clase += 'bg-light text-dark';
-                                    }
-                                    return `<span class="${clase}">${data.charAt(0).toUpperCase() + data.slice(1)}</span>`;
-                                }
-                            },
-                            {
-                                data: 'fecha'
-                            },
-                            {
-                                data: 'archivo',
-                                className: 'text-center',
-                                render: function(data, type, row) {
-                                    if (data) {
-                                        return `<a href="${data}" target="_blank" class="btn btn-sm btn-secondary"><i class="bi bi-file-earmark-pdf"></i></a>`;
-                                    } else {
-                                        return '<span class="text-muted">Vacio</span>';
-                                    }
-                                }
-                            },
-                            {
-                                data: null,
-                                orderable: false,
-                                searchable: false,
-                                className: 'text-center',
-                                render: function(data, type, row) {
-                                    if (row.estado.toLowerCase() === 'eliminado') {
-                                        return `
+                            return `<span class="${clase}">${data.charAt(0).toUpperCase() + data.slice(1)}</span>`;
+                        }
+                    },
+                    {
+                        data: 'fecha'
+                    },
+                    {
+                        data: 'archivo',
+                        className: 'text-center',
+                        render: function(data, type, row) {
+                            if (data) {
+                                return `<a href="${data}" target="_blank" class="btn btn-sm btn-secondary"><i class="bi bi-file-earmark-pdf"></i></a>`;
+                            } else {
+                                return '<span class="text-muted">Vacio</span>';
+                            }
+                        }
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        searchable: false,
+                        className: 'text-center',
+                        render: function(data, type, row) {
+                            if (row.estado.toLowerCase() === 'eliminado') {
+                                return `
                     <button class="btn btn-sm btn-primary me-1" title="Ver" onclick="verPostulacion(${row.id})">
                         <i class="bi bi-eye"></i>
                     </button>
@@ -371,8 +373,8 @@ $pendientes_postulaciones = obtener_postulaciones_pendientes();
                         <i class="bi bi-arrow-counterclockwise"></i>
                     </button>
                     `;
-                                    } else {
-                                        return `
+                            } else {
+                                return `
                     <button class="btn btn-sm btn-primary me-1" title="Ver" onclick="verPostulacion(${row.id})">
                         <i class="bi bi-eye"></i>
                     </button>
@@ -380,122 +382,129 @@ $pendientes_postulaciones = obtener_postulaciones_pendientes();
                         <i class="bi bi-trash"></i>
                     </button>
                     `;
-                                    }
-                                },
                             }
-                        ],
-                        order: [
-                            [0, 'desc'],
-                            [13, 'desc']
-                        ],
-                        language: {
-                            url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
                         },
-                        dom: '<"d-flex justify-content-end mb-2"l>Bfrtip',
-                        lengthMenu: [10, 30, 50, 100],
-                        buttons: [{
-                                extend: 'copy',
-                                text: '<i class="bi bi-clipboard me-1"></i> Copiar',
-                                className: 'btn btn-primary btn-sm me-2'
-                            },
-                            {
-                                extend: 'excel',
-                                text: '<i class="bi bi-file-earmark-excel me-1"></i> Excel',
-                                className: 'btn btn-success btn-sm'
-                            }
-                        ],
-                        initComplete: function() {
-                            $('#loaderTabla').hide();
-                            $('#tablaPostulaciones thead').show();
-                            $('#tablaPostulaciones_wrapper').show();
-                            tabla.columns.adjust().draw();
-                            tabla.buttons().container().appendTo('#exportButtons');
-                        }
-                    });
-                }
-
-                // Evento para búsqueda en tiempo real
-                $(document).on('keyup', '#filtro_busqueda', function() {
-                    if (tabla) tabla.draw(); // Redibuja tabla con nuevo filtro
-                });
-
-                function filtrar() {
-                    inicializarTablaPostulaciones();
-                }
-
-                function resetearFiltros() {
-                    $('#filtro_estado').val('');
-                    $('#filtro_orden').val('DESC');
-                    $('#filtro_importante').val('');
-                    $('#filtro_busqueda').val('');
-                    inicializarTablaPostulaciones();
-                }
-                function eliminarPostulacion(id) {
-                    if (confirm("¿Estás seguro de que deseas eliminar esta postulacion?")) {
-                        $.post('postulacionesAjax.php', {
-                            accion: 'eliminar',
-                            id: id
-                        }, function(response) {
-                            if (response.success) {
-                                alert("Postulacion eliminada correctamente.");
-                                tabla.ajax.reload(null, false); // solo recarga datos sin redireccionar
-                            } else {
-                                alert("Hubo un error al intentar eliminar la postulacion.");
-                            }
-                        }, 'json');
                     }
-                }
-
-                function verPostulacion(id) {
-                    $('#contenidoModalPostulacion').html('<p class="text-center text-muted">Cargando...</p>');
-                    $('#modalVerPostulacion').modal('show');
-
-                    $.get('postulacionModal.php', { id }, function(respuesta) {
-                        $('#contenidoModalPostulacion').html(respuesta);
-
-                        const botonHTML = $('#contenidoModalPostulacion').find('#botonImportanteHTML').html();
-                        $('#botonImportanteWrapper').html(botonHTML);
-                    }).fail(function() {
-                        $('#contenidoModalPostulacion').html('<p class="text-danger">Error al cargar la postulación.</p>');
-                    });
-                }
-
-                function recuperarPostulacion(id) {
-                    if (confirm("¿Deseas recuperar esta postulacion?")) {
-                        $.post('postulacionesAjax.php', {
-                            accion: 'recuperar',
-                            id: id
-                        }, function(response) {
-                            if (response.success) {
-                                tabla.ajax.reload(null, false);
-                                alert('Postulacion recuperada con éxito.');
-                            } else {
-                                alert('No se pudo recuperar la postulacion.');
-                            }
-                        }, 'json');
+                ],
+                order: [
+                    [0, 'desc'],
+                    [13, 'desc']
+                ],
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+                },
+                dom: '<"d-flex justify-content-end mb-2"l>Bfrtip',
+                lengthMenu: [10, 30, 50, 100],
+                buttons: [{
+                        extend: 'copy',
+                        text: '<i class="bi bi-clipboard me-1"></i> Copiar',
+                        className: 'btn btn-primary btn-sm me-2'
+                    },
+                    {
+                        extend: 'excel',
+                        text: '<i class="bi bi-file-earmark-excel me-1"></i> Excel',
+                        className: 'btn btn-success btn-sm'
                     }
+                ],
+                initComplete: function() {
+                    $('#loaderTabla').hide();
+                    $('#tablaPostulaciones thead').show();
+                    $('#tablaPostulaciones_wrapper').show();
+                    tabla.columns.adjust().draw();
+                    tabla.buttons().container().appendTo('#exportButtons');
                 }
-                $(document).ready(function() {
-                    inicializarTablaPostulaciones();
-                });
-                $(document).on('click', '.marcarImportante', function() {
-                    const id = $(this).data('id');
-                    const valorActual = $(this).data('valor');
-                    const nuevoValor = valorActual == 1 ? 0 : 1;
+            });
+        }
 
-                    $.post('postulacionesAjax.php', {
-                        accion: 'importante',
-                        postulacion_id: id,
-                        importante: nuevoValor
-                    }, function(response) {
-                        if (response.success) {
-                            tabla.ajax.reload(null, false); // recarga sin perder la página actual
-                        } else {
-                            alert('No se pudo actualizar el estado de importancia.');
-                        }
-                    }, 'json');
-                });
-            </script>
+        // Evento para búsqueda en tiempo real
+        $(document).on('keyup', '#filtro_busqueda', function() {
+            if (tabla) tabla.draw(); // Redibuja tabla con nuevo filtro
+        });
+
+        function filtrar() {
+            inicializarTablaPostulaciones();
+        }
+
+        function resetearFiltros() {
+            $('#filtro_estado').val('');
+            $('#filtro_orden').val('DESC');
+            $('#filtro_importante').val('');
+            $('#filtro_busqueda').val('');
+            inicializarTablaPostulaciones();
+        }
+
+        function eliminarPostulacion(id) {
+            if (confirm("¿Estás seguro de que deseas eliminar esta postulacion?")) {
+                $.post('postulacionesAjax.php', {
+                    accion: 'eliminar',
+                    id: id
+                }, function(response) {
+                    if (response.success) {
+                        alert("Postulacion eliminada correctamente.");
+                        tabla.ajax.reload(null, false); // solo recarga datos sin redireccionar
+                    } else {
+                        alert("Hubo un error al intentar eliminar la postulacion.");
+                    }
+                }, 'json');
+            }
+        }
+
+        function verPostulacion(id) {
+            $('#contenidoModalPostulacion').html('<p class="text-center text-muted">Cargando...</p>');
+            $('#modalVerPostulacion').modal('show');
+
+            $.get('postulacionModal.php', {
+                id
+            }, function(respuesta) {
+                $('#contenidoModalPostulacion').html(respuesta);
+
+                const botonHTML = $('#contenidoModalPostulacion').find('#botonImportanteHTML').html();
+                $('#botonImportanteWrapper').html(botonHTML);
+            }).fail(function() {
+                $('#contenidoModalPostulacion').html('<p class="text-danger">Error al cargar la postulación.</p>');
+            });
+        }
+
+        function recuperarPostulacion(id) {
+            if (confirm("¿Deseas recuperar esta postulacion?")) {
+                $.post('postulacionesAjax.php', {
+                    accion: 'recuperar',
+                    id: id
+                }, function(response) {
+                    if (response.success) {
+                        tabla.ajax.reload(null, false);
+                        alert('Postulacion recuperada con éxito.');
+                    } else {
+                        alert('No se pudo recuperar la postulacion.');
+                    }
+                }, 'json');
+            }
+        }
+        $(document).ready(function() {
+            inicializarTablaPostulaciones();
+        });
+        $(document).on('click', '.marcarImportante', function() {
+            const id = $(this).data('id');
+            const valorActual = $(this).data('valor');
+            const nuevoValor = valorActual == 1 ? 0 : 1;
+
+            $.post('postulacionesAjax.php', {
+                accion: 'importante',
+                postulacion_id: id,
+                importante: nuevoValor
+            }, function(response) {
+                if (response.success) {
+                    tabla.ajax.reload(null, false); // recarga sin perder la página actual
+                } else {
+                    alert('No se pudo actualizar el estado de importancia.');
+                }
+            }, 'json');
+        });
+    </script>
+    <!-- Footer -->
+    <?php
+    require_once __DIR__ . '/includes/footerAdmin.php';
+    ?>
 </body>
 
 </html>

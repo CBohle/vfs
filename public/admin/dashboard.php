@@ -1,3 +1,4 @@
+<!-- ESTRUCTURA GENERAL DEL DASHBOARD: NAV Y SIDEBAR -->
 <?php
 require_once '../../includes/auth.php';
 require_once __DIR__ . '/../../includes/config.php';
@@ -25,77 +26,85 @@ require_once __DIR__ . '/../../includes/config.php';
 </head>
 
 <body>
-
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-text navbar-blue fixed-top">
         <div class="container-fluid px-4">
+            <!-- Logo -->
             <div class="d-flex align-items-center">
                 <img src="<?= BASE_URL ?>assets/images/logo/LogoVFS2.png" alt="Logo VFS" class="img-fluid me-2 logo" style="max-height: 40px;">
-                <h4 class="text-blue m-0">Panel de Administración</h4>
             </div>
-
-            <div>
-                <a class="nav-link" href="<?= BASE_URL ?>logout.php">
-                    <i class="bi bi-arrow-bar-left fs-6" style="margin-right: 5px"></i>
-                    Cerrar sesión</a>
+            <!-- Título central -->
+            <div class="d-flex align-items-center">
+                <h4 class="m-0">Panel de Administración</h4>
             </div>
+            <!-- Botón hamburguesa -->
+            <button class="btn btn-outline me-3" id="toggleSidebar">
+                <i class="bi bi-list"></i>
+            </button>
         </div>
-
     </nav>
 
-    <!-- Contenido principal con Sidebar y contenido dinámico -->
-    <div class="content-wrapper mt-5">
+    <div class="wrapper bg-light">
         <!-- Sidebar -->
-        <div class="sidebar sidebar-text" id="sidebar">
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link active" data-section="inicio">
-                        <i class="bi bi-house fs-6" style="margin-right: 5px"></i>
-                        Dashboard
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-section="mensajes">
-                        <i class="bi bi-chat-square-text fs-6" style="margin-right: 5px"></i>
-                        Mensajes <span id="badge-mensajes" class="badge bg-danger d-none"></span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-section="postulaciones">
-                        <!-- <i class="bi bi-bag-check fs-6" style="margin-right: 5px"></i> -->
-                        <!-- <i class="bi bi-collection fs-6" style="margin-right: 5px"></i> -->
-                        <i class="bi bi-bookmark-check fs-6" style="margin-right: 5px"></i>
-                        Postulaciones <span id="badge-postulaciones" class="badge bg-danger d-none"></span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-section="clientes">
-                        <i class="bi bi-people-fill fs-6" style="margin-right: 5px"></i>
-                        Clientes
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-section="usuarios">
-                        <i class="bi bi-person-vcard fs-6" style="margin-right: 5px"></i>
-                        Usuarios
-                    </a>
-                </li>
-            </ul>
+        <div class="sidebar" id="sidebar">
+            <!-- Sidebar -->
+            <div class="sidebar sidebar-text" id="sidebar">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-section="inicio">
+                            <i class="bi bi-house fs-6" style="margin-right: 5px"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-section="mensajes">
+                            <i class="bi bi-chat-square-text fs-6" style="margin-right: 5px"></i>
+                            Mensajes <span id="badge-mensajes" class="badge bg-danger d-none"></span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-section="postulaciones">
+                            <!-- <i class="bi bi-bag-check fs-6" style="margin-right: 5px"></i> -->
+                            <!-- <i class="bi bi-collection fs-6" style="margin-right: 5px"></i> -->
+                            <i class="bi bi-bookmark-check fs-6" style="margin-right: 5px"></i>
+                            Postulaciones <span id="badge-postulaciones" class="badge bg-danger d-none"></span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-section="clientes">
+                            <i class="bi bi-people-fill fs-6" style="margin-right: 5px"></i>
+                            Clientes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-section="usuarios">
+                            <i class="bi bi-person-vcard fs-6" style="margin-right: 5px"></i>
+                            Usuarios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= BASE_URL ?>logout.php">
+                            <i class="bi bi-arrow-bar-left fs-6" style="margin-right: 5px"></i>
+                            Cerrar sesión
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
-
         <!-- Contenido dinámico -->
         <div class="main-content" id="contenido-dinamico">
-            <div class="text-center text-muted">
-                <h4>Bienvenido al panel de administración</h4>
-                <p>Selecciona una sección del menú para comenzar.</p>
+            <div class="main-content" id="contenido-dinamico">
+                <div class="text-center text-muted">
+                    <h4>Bienvenido al panel de administración</h4>
+                    <p>Selecciona una sección del menú para comenzar.</p>
+                </div>
             </div>
         </div>
     </div>
 
+
     <!-- Footer -->
-    <!-- <footer>
-    © 2024 VFS. Todos los derechos reservados.
-</footer> -->
+
 
     <!-- Scripts de DataTables -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
@@ -158,6 +167,35 @@ require_once __DIR__ . '/../../includes/config.php';
             setInterval(actualizarNotificaciones, 30000); // cada 30 segundos
         });
     </script>
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const toggleBtn = document.getElementById('toggleSidebar');
+
+        function handleResize() {
+            if (window.innerWidth <= 768) {
+                sidebar.classList.remove('hidden');
+                sidebar.classList.remove('collapsed');
+                sidebar.classList.remove('show'); // Oculto por defecto
+            } else {
+                sidebar.classList.remove('show');
+                sidebar.classList.remove('hidden'); // Mostrado por defecto
+            }
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                // En pantallas pequeñas, togglear clase show
+                sidebar.classList.toggle('show');
+            } else {
+                // En pantallas grandes, togglear clase hidden
+                sidebar.classList.toggle('hidden');
+            }
+        });
+
+        window.addEventListener('resize', handleResize);
+        handleResize();
+    </script>
+
 
 </body>
 

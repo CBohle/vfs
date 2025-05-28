@@ -15,7 +15,7 @@ $roles = obtenerRoles();
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <style>
         body {
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
 
         .card {
@@ -439,6 +439,10 @@ $roles = obtenerRoles();
                     }, 'json');
                 });
             </script>
+            <!-- Footer -->
+            <?php
+            require_once __DIR__ . '/includes/footerAdmin.php';
+            ?>
 </body>
 
 </html>
