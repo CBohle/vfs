@@ -149,7 +149,7 @@ $pendientes_postulaciones = obtener_postulaciones_pendientes();
                     </form>
                 </div>
             </div>
-            <!-- Tabla clientes -->
+            <!-- Tabla postulaciones -->
             <div class="card-body">
                 <div class="row gy-2 gx-3 align-items-end justify-content-between flex-wrap">
                     <section id="tabla-postulaciones">

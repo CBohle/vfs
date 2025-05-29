@@ -83,7 +83,7 @@ $roles = obtenerRoles();
                                 <span>Roles Registrados</span>
                                 <button class="btn btn-sm btn-primary" onclick="mostrarFormularioRol()">Nuevo Rol</button>
                             </div>
-                            <div class="card-body">
+                            <div class="table-responsive">
                                 <table id="tablaRoles" class="table table-hover w-100">
                                     <thead>
                                         <tr>
@@ -155,7 +155,7 @@ $roles = obtenerRoles();
                                 <span>Usuarios Registrados</span>
                                 <button class="btn btn-sm btn-primary" onclick="mostrarFormularioUsuario()">Nuevo Usuario</button>
                             </div>
-                            <div class="card-body">
+                            <div class="table-responsive">
                                 <table id="tablaUsuarios" class="table table-hover w-100">
                                     <thead>
                                         <tr>
