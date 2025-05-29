@@ -1,11 +1,10 @@
 <?php
 require_once __DIR__ . '/../../includes/db.php';
 
-// Función general para actualizar cualquier campo de postulacion
-function actualizar_campo_postulacion($campo, $valor, $id)
+function actualizar_campo_cliente($campo, $valor, $id)
 {
     global $conexion;
-    $sql = "UPDATE curriculum SET $campo = ? WHERE id = ?";
+    $sql = "UPDATE clientes SET $campo = ? WHERE id = ?";
     $stmt = $conexion->prepare($sql);
     $stmt->bind_param('si', $valor, $id);
     return $stmt->execute();
@@ -13,18 +12,18 @@ function actualizar_campo_postulacion($campo, $valor, $id)
 
 function actualizar_estado($id, $nuevoEstado)
 {
-    return actualizar_campo_postulacion('estado', $nuevoEstado, $id);
+    return actualizar_campo_cliente('estado', $nuevoEstado, $id);
 }
 
 function actualizar_importante($id, $importante)
 {
-    return actualizar_campo_postulacion('importante', $importante, $id);
+    return actualizar_campo_cliente('importante', $importante, $id);
 }
 
-function ver_postulaciones()
+function ver_clientes()
 {
     global $conexion;
-    $sql = 'SELECT curriculum.* FROM curriculum WHERE curriculum.estado != "eliminado" ORDER BY curriculum.fecha_creacion DESC, curriculum.id ASC';
+    $sql = 'SELECT clientes.* FROM clientes WHERE clientes.estado != "eliminado" ORDER BY clientes.fecha_creacion DESC, clientes.id ASC';
     $resultado = mysqli_query($conexion, $sql);
     $filas = [];
     while ($fila = mysqli_fetch_assoc($resultado)) {
@@ -37,37 +36,18 @@ function obtenerClaseEstado($estado)
 {
     $estado = strtolower($estado);
     return match ($estado) {
-        'respondido' => 'bg-success text-light',
-        'pendiente' => 'bg-warning text-dark',
-        'leido' => 'bg-primary text-light',
-        'eliminado' => 'bg-secondary text-light',
-        default => 'bg-secondary',
+        'activo' => 'bg-success text-light',
+        'inactivo' => 'bg-warning text-dark',
+        'eliminado' => 'bg-secondary text-light'
     };
 }
 
-function obtener_total_postulaciones()
+function actualizar_estado_cliente($id)
 {
     global $conexion;
-    $sql = "SELECT COUNT(*) AS total FROM curriculum WHERE nombre != '' AND estado != 'eliminado'";
-    $result = mysqli_query($conexion, $sql);
-    return ($fila = mysqli_fetch_assoc($result)) ? $fila['total'] : 0;
-}
+    $nuevo_estado = 'activo'; 
 
-function obtener_postulaciones_pendientes()
-{
-    global $conexion;
-    $sql = "SELECT COUNT(*) AS pendientes FROM curriculum WHERE estado = 'pendiente'";
-    $result = mysqli_query($conexion, $sql);
-    return ($fila = mysqli_fetch_assoc($result)) ? $fila['pendientes'] : 0;
-}
-
-// Actualizar el estado de la postulacion
-function actualizar_estado_postulacion($id)
-{
-    global $conexion;
-    $nuevo_estado = 'pendiente'; 
-
-    $sql_update = "UPDATE curriculum SET estado = ? WHERE id = ?";
+    $sql_update = "UPDATE clientes SET estado = ? WHERE id = ?";
     $stmt_update = $conexion->prepare($sql_update);
     $stmt_update->bind_param('si', $nuevo_estado, $id);
     if ($stmt_update->execute()) {
