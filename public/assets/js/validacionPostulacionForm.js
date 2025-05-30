@@ -143,13 +143,11 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!archivo) return mostrarError(input, "Debe adjuntar su Currículum Vitae.");
 
         const tiposPermitidos = [
-            "application/pdf",
-            "application/msword",
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            "application/pdf"
         ];
 
         if (!tiposPermitidos.includes(archivo.type)) {
-            return mostrarError(input, "Solo se permiten archivos PDF o Word (.doc, .docx).");
+            return mostrarError(input, "Solo se permiten archivos PDF.");
         }
 
         const maxSizeBytes = 2 * 1024 * 1024; // 2 MB
