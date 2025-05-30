@@ -107,15 +107,13 @@ $promedio_formateado = $promedio_minutos > 60
     </style>
 </head>
 
-<body>
-    <div class="container-fluid px-3 py-2" id="layoutSidenav_content">
-        <div class="container-fluid px-3 py-2">
-            <!-- Título de la sección -->
-            <div id="contenido-dinamico" class="mx-auto w-100" style="max-width: 100%;">
-                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-                    <h2 class="mb-0">Dashboard</h2>
-                </div>
+<body class="bg-light">
+    <div class="container-fluid px-3 py-2">
+        <div id="contenido-dinamico" class="mx-auto w-100" style="max-width: 100%;">
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                <h2 class="mb-0">Dashboard</h2>
             </div>
+
             <!-- Pendientes -->
             <div class="mb-4">
                 <div class="secc-title">
@@ -163,7 +161,6 @@ $promedio_formateado = $promedio_minutos > 60
                     </div>
                 </div>
             </div>
-
         </div>
         <!-- Footer -->
         <?php
