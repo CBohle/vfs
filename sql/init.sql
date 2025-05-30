@@ -135,22 +135,24 @@ INSERT INTO respuestas (mensaje_id, usuario_admin_id, respuesta) VALUES
 
 CREATE TABLE clientes (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    tipo_persona ENUM('natural', 'juridica') NOT NULL,
+    tipo_persona ENUM('Natural', 'Juridica') NOT NULL,
     nombre_empresa VARCHAR(100),
     nombre_contacto VARCHAR(50) NOT NULL,
     apellido_contacto VARCHAR(50) NOT NULL,
     email_contacto VARCHAR(100) NOT NULL,
     telefono_contacto VARCHAR(20),
     tipo_activos VARCHAR(50) NOT NULL,
+    detalle_activos VARCHAR(50) NOT NULL,
     notas TEXT,
     usuario_admin_id INT NOT NULL,
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     fecha_modificacion DATETIME DEFAULT CURRENT_TIMESTAMP,
-    activo BOOLEAN NOT NULL DEFAULT TRUE,
+    estado ENUM('Activo', 'Inactivo','Eliminado') NOT NULL DEFAULT 'activo',
+    importante BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (usuario_admin_id) REFERENCES usuarios_admin(id) ON DELETE CASCADE
 );
 
-INSERT INTO clientes (tipo_persona, nombre_empresa, nombre_contacto, apellido_contacto, email_contacto, telefono_contacto, tipo_activos, notas,usuario_admin_id) VALUES
-('natural', NULL, 'Carlos', 'Muñoz', 'carlos.munoz@mail.com', '912345678', 'Bienes raíces', 'Cliente interesado en tasaciones para propiedades residenciales.', 1),
-('juridica', 'Constructora Andes Ltda.', 'Laura', 'Reyes', 'laura.reyes@andesltda.cl', '922334455', 'Terrenos y maquinaria', 'Requieren tasaciones trimestrales para informes contables.', 2),
-('juridica', 'Inversiones Sur S.A.', 'Felipe', 'González', 'felipe.gonzalez@invsur.cl', '933221100', 'Departamentos', 'Solicitan evaluación de 3 propiedades nuevas en Valdivia.', 1);
+INSERT INTO clientes (tipo_persona, nombre_empresa, nombre_contacto, apellido_contacto, email_contacto, telefono_contacto, tipo_activos,detalle_activos, notas,usuario_admin_id,estado) VALUES
+('Natural', 'No aplica', 'Carlos', 'Muñoz', 'carlos.munoz@mail.com', '912345678', 'Propiedad Residencial', 'Casa','Cliente interesado en tasaciones para propiedades residenciales.', 1, 'activo'),
+('Juridica', 'Constructora Andes Ltda.', 'Laura', 'Reyes', 'laura.reyes@andesltda.cl', '922334455', 'Activo Industrial','Terreno Industrial', 'Requieren tasaciones trimestrales para informes contables.', 2, 'inactivo'),
+('Juridica', 'Inversiones Sur S.A.', 'Felipe', 'González', 'felipe.gonzalez@invsur.cl', '933221100', 'Propiedad Residencial','Departamento', 'Solicitan evaluación de 3 propiedades nuevas en Valdivia.', 1, 'activo');
