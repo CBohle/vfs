@@ -48,9 +48,9 @@ require_once __DIR__ . '/../includes/config.php';
 <!-- FIN MASTHEAD -->
 
 <!-- INICIO SECCIÓN QUIÉNES SOMOS-->
-<section id="nosotros">
+<section class="page-section" id="nosotros">
     <div class="container px-5">
-        <div class="row gx-5 align-items-center mt-5">
+        <div class="row gx-5 align-items-center">
             <div class="col-lg-6 order-lg-2">
                 <div class="p-5">
                     <img class="img-fluid rounded-circle" src="<?= BASE_URL ?>assets/images/nosotros/01.webp" alt="Nosotros" />
@@ -273,7 +273,7 @@ require_once __DIR__ . '/../includes/config.php';
 <!-- FIN SECCIÓN SERVICIOS-->
 
 <!-- LLAMADA A LA ACCIÓN-->
-<section class="page-section accion">
+<section class="page-section accion" id="llamadaAccion">
     <div class="container px-4 px-lg-5 text-center text-white">
         <h2 class="mb-4">¡Solicita tu tasación!</h2>
         <a class="btn btn-primary btn-xl" href="#contacto">Contáctanos</a>
@@ -434,7 +434,7 @@ require_once __DIR__ . '/../includes/config.php';
 <!-- FIN SECCIÓN FAQ -->
 
 <!-- INICIO SECCIÓN FORMULARIO DE CONTACTO -->
-<section class="page-section2 bg-tertiary pb-100" id="contacto">
+<section class="page-section bg-tertiary" id="contacto">
     <div class="container px-5 ">
         <!-- Encabezado de sección -->
         <div class="text-center">

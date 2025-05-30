@@ -13,8 +13,6 @@ document.addEventListener("DOMContentLoaded", function () {
         { id: "apellido", min: 2, max: 50, soloLetras: true, label: "El apellido" },
         // Campo 7
         { id: "direccion", min: 2, max: 100, soloLetras: false, label: "La dirección" },
-        // Campo 8
-        { id: "comuna", min: 2, max: 50, soloLetras: true, label: "La comuna" },
         // Campo 11
         { id: "institucion", min: 2, max: 100, soloLetras: false, label: "La institución" },
         // Campo 15
@@ -24,8 +22,10 @@ document.addEventListener("DOMContentLoaded", function () {
     ];
     // Constantes campos select
     const selects = [
-        // Campo 9
+        // Campo 8
         { id: "region", mensaje: "La región es obligatoria." },
+        // Campo 9
+        { id: "comuna", mensaje: "La comuna es obligatoria."  },
         // Campo 10
         { id: "estudios", mensaje: "Debe seleccionar una carrera." },
         // Campo 13
@@ -287,4 +287,46 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!validarArchivoCV(campoCV)) valido = false;
         if (!valido) e.preventDefault();
     });
+
+
+
 });
+    // COMUNAS PARA CAMPO SELECT
+    const regionesYComunas = {
+        xv: ["Arica", "Camarones", "Putre", "General Lagos"],
+        i: ["Alto Hospicio, Iquique","Huara", "Camiña", "Colchane", "Pica", "Pozo Almonte"],
+        ii: ["Tocopilla", "María Elena", "Calama", "Ollagüe", "San Pedro de Atacama", "Antofagasta", "Mejillones", "Sierra Gorda", "Taltal"],
+        iii: ["Chañaral", "Diego de Almagro", "Copiapó", "Caldera", "Tierra Amarilla", "Vallenar", "Freirina", "Huasco", "Alto del Carmen"],
+        iv: ["La Serena", "La Higuera", "Coquimbo", "Andacollo", "Vicuña", "Paihuano", "Ovalle", "Río Hurtado", "Monte Patria", "Combarbalá", "Punitaqui", "Illapel", "Salamanca", "Los Vilos", "Canela"],
+        v: ["La ligua", "Petorca", "Cabildo", "Zapallar", "Papudo", "Los Andes", "San Esteban", "Calle Larga", "Rinconada", "San Felipe", "Putaendo", "Santa María", "Panquehue", "Llaillay", "Catemu", "Quillota", "La Cruz", "Calera", "Nogales", "Hijuelas", "Olmué", "Valparaíso", "Viña del Mar", "Quintero", "Puchuncaví", "Quilpué", "Villa Alemana", "Casablanca", "Concón", "Juan Fernández", "San Antonio", "Cartagena", "El Tabo", "El Quisco", "Algarrobo", "Santo Domingo", "Isla de Pascua"],
+        rm: ["Santiago", "Independencia", "Conchalí", "Huechuraba", "Recoleta", "Providencia", "Vitacura", "Lo Barnechea", "Las Condes", "Ñuñoa", "La Reina", "Macul", "Peñalolén", "La Florida", "San Joaquín", "La Granja", "La Pintana", "San Ramón", "San Miguel", "La Cisterna", "El Bosque", "Pedro Aguirre Cerda", "Lo Espejo", "Estación Central", "Cerrillos", "Maipú", "Quinta Normal", "Lo Prado", "Pudahuel", "Cerro Navia", "Renca", "Quilicura", "Colina", "Lampa", "Tiltil", "Puente Alto", "San José de Maipo", "Pirque", "San Bernardo", "Buin", "Paine", "Calera de Tango", "Melipilla", "María Pinto", "Curacaví", "Alhué", "San Pedro", "Talagante", "Peñaflor", "Isla de Maipo", "El Monte", "Padre Hurtado"],
+        vi: ["Rancagua", "Graneros", "Mostazal", "Codegua", "Machalí", "Olivar", "Requinoa", "Rengo", "Malloa", "Quinta de Tilcoco", "San Vicente", "Pichidegua", "Peumo", "Coltauco", "Coinco", "Doñihue", "Las Cabras", "San Fernando", "Chimbarongo", "Placilla", "Nancagua", "Chépica", "Santa Cruz", "Lolol", "Pumanque", "Palmilla", "Peralillo", "Pichilemu", "Navidad", "Litueche", "La Estrella", "Marchihue", "Paredones"],
+        vii: ["Curicó", "Teno", "Romeral", "Molina", "Sagrada Familia", "Hualañé", "Licantén", "Vichuquén", "Rauco", "Talca", "Pelarco", "Río Claro", "San Clemente", "Maule", "San Rafael", "Empedrado", "Pencahue", "Constitución", "Curepto", "Linares", "Yerbas Buenas", "Colbún", "Longaví", "Parral", "Retiro", "Villa Alegre", "San Javier", "Cauquenes", "Pelluhue", "Chanco"],
+        viii: ["Alto Biobío", "Los Ángeles", "Cabrero", "Tucapel", "Antuco", "Quilleco", "Santa Bárbara", "Quilaco", "Mulchén", "Negrete", "Nacimiento", "Laja", "San Rosendo", "Yumbel", "Concepción", "Talcahuano", "Penco", "Tomé", "Florida", "Hualpén", "Hualqui", "Santa Juana", "Lota", "Coronel", "San Pedro de la Paz", "Chiguayante", "Lebu", "Arauco", "Curanilahue", "Los Alamos", "Cañete", "Contulmo", "Tirua"],
+        xvi: ["Bulnes", "Chillán", "Chillán Viejo", "Cobquecura", "Coelemu", "Coihueco", "El Carmen", "Ninhue", "Ñiquén", "Pemuco", "Pinto", "Portezuelo", "Quillón", "Quirihue", "Ránquil", "San Carlos", "San Fabián", "San Ignacio",  "San Nicolás",  "Treguaco", "Yungay"],
+        ix: ["Angol", "Renaico", "Collipulli", "Lonquimay", "Curacautín", "Ercilla", "Victoria", "Traiguén", "Lumaco", "Purén", "Los Sauces", "Temúco", "Lautaro", "Pequenco", "Vilcún", "Cholchol", "Cunco", "Melipeuco", "Curarrehue", "Pucón", "Villarrica", "Freire", "Pitrufquén", "Gorbea", "Loncoche", "Toltén", "Teodoro Schmidt", "Saavedra", "Carahue", "Nueva Imperial", "Galvarino", "Padre las Casas"],
+        xiv: ["Valdivia", "Mariquina", "Lanco", "Máfil", "Corral", "Los Lagos", "Panguipulli", "Paillaco", "La Unión", "Futrono", "Río Bueno", "Lago Ranco"],
+        x: ["Osorno", "San Pablo", "Puyehue", "Puerto Octay", "Purranque", "Río Negro", "San Juan de la Costa", "Puerto Montt", "Puerto Varas", "cochamó", "Calbuco", "Maullín", "Los Muermos", "Fresia", "Llanquihue", "Frutillar", "Castro", "Ancud", "Quemchi", "Dalcahue", "Curaco de Vélez", "Quinchao", "Puqueldón", "Chonchi", "Queilén", "Quellón", "Chaitén", "Hualaihué", "Futaleufú", "Palena"],
+        xi: ["Coyhaique", "Lago Verde", "Aysén", "Cisnes", "Guaitecas", "Chile Chico", "Ró Ibáñez", "Cochrane", "O'Higgins", "Tortel"],
+        xii: ["Natales", "Torres del Paine", "Punta Arenas", "Río Verde", "Laguna Blanca", "San Gregorio", "Porvenir", "Primavera", "Timaukel", "Cabo de Hornos", "Antártica"]
+    };
+    document.addEventListener("DOMContentLoaded", function () {
+        const regionSelect = document.getElementById("region");
+        const comunaSelect = document.getElementById("comuna");
+
+        regionSelect.addEventListener("change", function () {
+            const region = this.value;
+
+            // Limpiar comuna
+            comunaSelect.innerHTML = '<option value="" disabled selected>Seleccione una comuna</option>';
+
+            if (region && regionesYComunas[region]) {
+                regionesYComunas[region].forEach(comuna => {
+                    const option = document.createElement("option");
+                    option.value = comuna;
+                    option.textContent = comuna;
+                    comunaSelect.appendChild(option);
+                });
+            }
+        });
+    });
