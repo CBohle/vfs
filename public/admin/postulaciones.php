@@ -169,7 +169,6 @@ $pendientes_postulaciones = obtener_postulaciones_pendientes();
                                                 <th>Nombre</th>
                                                 <th>Apellido</th>
                                                 <th>Estudio</th>
-                                                <th>Año<br>Titulacion</th>
                                                 <th>Formación<br>Tasación</th>
                                                 <th>Años<br>Experiencia</th>
                                                 <th>Disponibilidad<br>Comuna</th>
@@ -276,10 +275,6 @@ $pendientes_postulaciones = obtener_postulaciones_pendientes();
                     },
                     {
                         data: 'estudio'
-                    },
-                    {
-                        data: 'ano_titulacion',
-                        className: 'text-center'
                     },
                     {
                         data: 'formacion_tasacion',

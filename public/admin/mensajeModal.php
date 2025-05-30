@@ -145,10 +145,10 @@ $textoImportante = $esImportante ? 'Marcar como no importante' : 'Marcar como im
                 </div>
             <?php elseif ($msg['estado'] !== 'eliminado'): ?>
                 <!-- Mostrar formulario solo si no está eliminado -->
-                <form class="mt-3" method="POST" action="responder.php">
-                    <input type="hidden" name="mensaje_id" value="<?= $msg['id'] ?>">
-                    <textarea name="respuesta" class="form-control mb-2" required placeholder="Escribe tu respuesta..."></textarea>
-                    <button type="submit" class="btn btn-primary btn-sm">Enviar respuesta</button>
+                <form id="formRespuesta" class="mt-3">
+                  <input type="hidden" name="mensaje_id" value="<?= $msg['id'] ?>">
+                  <textarea name="respuesta" class="form-control mb-2" required placeholder="Escribe tu respuesta..."></textarea>
+                  <button type="submit" class="btn btn-primary btn-sm">Enviar respuesta</button>
                 </form>
             <?php endif; ?>
         </div>
@@ -189,4 +189,52 @@ function toggleImportante(id, estadoActual) {
         }
     }, 'json');
 }
+$('#formRespuesta').on('submit', function(e) {
+    e.preventDefault();
+
+    const formData = $(this).serialize();
+    const id = $('input[name="mensaje_id"]').val();
+
+    $.post('mensajesAjax.php', formData, function(respuesta) {
+        if (respuesta.success) {
+            // Eliminar el formulario de respuesta
+            $('#formRespuesta').remove();
+
+            // Crear el bloque de respuesta HTML
+            const replyHTML = `
+                <div class="reply">
+                    <div class="reply-box" style="width: 100%; position: relative;">
+                        <div class="reply-header d-flex justify-content-between align-items-center">
+                            <div class="d-flex flex-wrap align-items-center gap-2">
+                                <span class="reply-name">${respuesta.admin_nombre} ${respuesta.admin_apellido}</span>
+                                <span class="rol">${respuesta.rol}</span>
+                            </div>
+                            <span class="text-muted ms-2">${respuesta.fecha}</span>
+                        </div>
+                        <span class="reply-text">${respuesta.respuesta}</span>
+                    </div>
+                </div>
+            `;
+
+            // Insertar el bloque de respuesta justo después del encabezado del mensaje
+            $('#resultado_filtro_mensaje').append(replyHTML);
+
+            // Opcional: mostrar mensaje de éxito
+            $('#resultado_filtro_mensaje').prepend(`
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    Respuesta enviada correctamente.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                </div>
+            `);
+
+            // Recargar tabla sin perder estado
+            if (typeof tabla !== 'undefined') {
+                tabla.ajax.reload(null, false);
+            }
+
+        } else {
+            alert('No se pudo guardar la respuesta.');
+        }
+    }, 'json');
+});
 </script>
