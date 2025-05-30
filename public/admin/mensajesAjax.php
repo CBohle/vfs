@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-ini_set('display_errors', 0);// Cambiar a 1 para ver errores en desarrollo
+ini_set('display_errors', 0); // Cambiar a 1 para ver errores en desarrollo
 ini_set('display_startup_errors', 0); // Cambiar a 1 para ver errores en desarrollo
 error_reporting(E_ALL);
 
@@ -43,6 +43,47 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'recuperar' && isset($_POST[
     exit;
 }
 
+// Guardar respuesta a un mensaje
+if (isset($_POST['mensaje_id'], $_POST['respuesta']) && empty($_POST['accion'])) {
+    $mensaje_id = intval($_POST['mensaje_id']);
+    $respuesta = trim($_POST['respuesta']);
+
+    $usuario_admin_id = 1; // reemplazar con el ID del usuario admin actual, una vez implementado el login real
+
+    //Guardar respuesta en la base de datos
+    $stmt = $conexion->prepare("INSERT INTO respuestas (mensaje_id, usuario_admin_id, respuesta) VALUES (?, ?, ?)");
+    $stmt->bind_param("iis", $mensaje_id, $usuario_admin_id, $respuesta);
+    $resultado = $stmt->execute(); 
+
+    if ($resultado) {
+        // Actualizar el estado del mensaje a 'respondido'
+        $conexion->query("UPDATE mensajes SET estado = 'respondido' WHERE id = $mensaje_id");
+
+        // Obtener los datos del usuario admin que respondió
+        $stmt = $conexion->prepare("
+            SELECT ua.nombre, ua.apellido, r.nombre AS rol
+            FROM usuarios_admin ua
+            JOIN roles r ON ua.rol_id = r.id
+            WHERE ua.id = ?
+        ");
+        $stmt->bind_param("i", $usuario_admin_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $admin = $result->fetch_assoc();
+
+        echo json_encode([
+            'success' => true,
+            'respuesta' => $respuesta,
+            'fecha' => date('d-m-Y H:i'),
+            'admin_nombre' => $admin['nombre'] ?? '',
+            'admin_apellido' => $admin['apellido'] ?? '',
+            'rol' => $admin['rol'] ?? ''
+        ]);
+    } else {
+        echo json_encode(['success' => false, 'error' => 'Error al insertar respuesta']);
+    }
+    exit;
+}
 // Consulta con filtros
 $columns = ['importante', 'id', 'servicio', 'nombre', 'email', 'mensaje', 'estado', 'fecha_creacion'];
 $draw = intval($_POST['draw'] ?? 0);

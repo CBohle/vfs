@@ -383,6 +383,7 @@ $pendientes_mensajes = obtener_mensajes_pendientes();
             $('#filtro_servicio').val('');
             $('#filtro_orden').val('DESC');
             $('#filtro_busqueda').val('');
+            $('#filtro_importante').val('');
             inicializarTablaMensajes();
         }
 
