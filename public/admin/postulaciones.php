@@ -211,6 +211,26 @@ $pendientes_postulaciones = obtener_postulaciones_pendientes();
         </div>
     </div>
 
+    <!-- Modal para ver PDF con descarga -->
+    <div class="modal fade" id="modalPDF" tabindex="-1" aria-labelledby="modalPDFLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header d-flex justify-content-between align-items-center">
+                    <h5 class="modal-title mb-0" id="modalPDFLabel">Vista previa del archivo</h5>
+                    <div class="d-flex gap-2">
+                        <a id="btnDescargarPDF" href="#" download class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-download me-1"></i> Descargar
+                        </a>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                </div>
+                <div class="modal-body" style="height: 80vh;">
+                    <iframe id="iframePDF" src="" width="100%" height="100%" style="border: none;"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
@@ -347,7 +367,7 @@ $pendientes_postulaciones = obtener_postulaciones_pendientes();
                         className: 'text-center',
                         render: function(data, type, row) {
                             if (data) {
-                                return `<a href="${data}" target="_blank" class="btn btn-sm btn-secondary"><i class="bi bi-file-earmark-pdf"></i></a>`;
+                                return `<button class="btn btn-sm btn-secondary" onclick="verPDF('/vfs/${data}')"><i class="bi bi-file-earmark-pdf"></i></button>`;
                             } else {
                                 return '<span class="text-muted">Vacio</span>';
                             }
@@ -475,6 +495,13 @@ $pendientes_postulaciones = obtener_postulaciones_pendientes();
                 }, 'json');
             }
         }
+
+        function verPDF(rutaArchivo) {
+            $('#iframePDF').attr('src', rutaArchivo);
+            $('#btnDescargarPDF').attr('href', rutaArchivo);
+            $('#modalPDF').modal('show');
+        }
+
         $(document).ready(function() {
             inicializarTablaPostulaciones();
         });

@@ -159,10 +159,9 @@ $textoImportante = $esImportante ? 'Marcar como no importante' : 'Marcar como im
         <div class="seccion-postulacion">
             <h5><i class="bi bi-info-circle me-2"></i>Otros Detalles</h5>
             <div class="row">
-                <div class="col-md-6 fila-dato"><span class="dato-label">Archivo:</span> <a href="<?= htmlspecialchars($msg['archivo']) ?>" target="_blank">Ver documento</a></div>
-                <div class="col-md-6 fila-dato"><span class="dato-label">Estado:</span> <span class="badge <?= $estadoClass ?>"><?= htmlspecialchars($msg['estado']) ?></span></div>
                 <div class="col-md-6 fila-dato"><span class="dato-label">Fecha de Creación:</span> <?= htmlspecialchars($msg['fecha_creacion']) ?></div>
                 <div class="col-md-6 fila-dato"><span class="dato-label">Última Modificación:</span> <?= htmlspecialchars($msg['fecha_modificacion']) ?></div>
+                <div class="col-md-6 fila-dato"><span class="dato-label">Estado:</span> <span class="badge <?= $estadoClass ?>"><?= htmlspecialchars($msg['estado']) ?></span></div>
             </div>
         </div>
     </div>
