@@ -54,5 +54,5 @@ window.addEventListener('DOMContentLoaded', event => {
     // Activate SimpleLightbox plugin for services items
     new SimpleLightbox({
         elements: '#servicios a.servicios-box',
-    });
+    });    
 });
