@@ -251,11 +251,10 @@ require_once __DIR__ . '/../includes/config.php';
                         <div class="accordion-body">
                             <!-- Campo 19: CV -->
                             <div class="mb-3">
-                                <label for="cv" class="form-label">Cargar CV (PDF, Word)</label>
-                                <input class="form-control" id="cv" type="file" name="cv" accept=".doc,.docx,.pdf" />
+                                <label for="cv" class="form-label">Cargar CV (PDF)</label>
+                                <input class="form-control" id="cv" type="file" name="cv" accept=".pdf" />
                                 <small class="form-text text-muted">Máximo 2 MB.</small>
                             </div>
-
                         </div>
                     </div>
                 </div>

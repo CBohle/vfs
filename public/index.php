@@ -50,14 +50,14 @@ require_once __DIR__ . '/../includes/config.php';
 <!-- INICIO SECCIÓN QUIÉNES SOMOS-->
 <section id="nosotros">
     <div class="container px-5">
-        <div class="row gx-5 align-items-center">
+        <div class="row gx-5 align-items-center mt-5">
             <div class="col-lg-6 order-lg-2">
                 <div class="p-5">
                     <img class="img-fluid rounded-circle" src="<?= BASE_URL ?>assets/images/nosotros/01.webp" alt="Nosotros" />
                 </div>
             </div>
             <div class="col-lg-6 order-lg-1">
-                <div class="p-4">
+                <div class="pb-100">
                     <h2 class="display-4">Comprometidos con tu éxito</h2>
                     <br>
                     <p class="p-nosotros">Somos una empresa especializada en tasación y consultoría inmobiliaria, comprometida con la entrega de soluciones integrales que respalden decisiones estratégicas en el ámbito inmobiliario.</p>
@@ -75,7 +75,7 @@ require_once __DIR__ . '/../includes/config.php';
 <div class="page-section bg-dark text-white" id="servicios">
     <div class="container-fluid p-0">
         <h2 class="text-center mt-0">Tu socio en tasaciones</h2>
-        <hr class="divider"/>
+        <hr class="divider" />
         <p class="text-muted mb-5 text-center text-white-75">Servicios</p>
         <div class="row g-0">
             <!-- Servicio 1 -->
@@ -434,26 +434,28 @@ require_once __DIR__ . '/../includes/config.php';
 <!-- FIN SECCIÓN FAQ -->
 
 <!-- INICIO SECCIÓN FORMULARIO DE CONTACTO -->
-<section class="page-section2 bg-tertiary" id="contacto">
-    <div class="container px-5">
-        <div class="row gx-5 align-items-center">
+<section class="page-section2 bg-tertiary pb-100" id="contacto">
+    <div class="container px-5 ">
+        <!-- Encabezado de sección -->
+        <div class="text-center">
             <h2 class="display-4 text-center">Atención personalizada</h2>
             <hr class="divider" />
             <p class="text-center">Para solicitudes, cotizaciones o información adicional, por favor complete el siguiente formulario.</p>
+        </div>
+        <div class="row gx-5 mt-5">
             <!-- Imagen -->
-            <div class="col-lg-6 order-lg-1">
-                <div class="p-5">
-                    <div class="gx-4 gx-lg-5 justify-content-center mb-5 ">
-                        <!-- <img class="img-fluid " src="assets/img/01.jpg" alt="..." /> -->
+            <div class="col-lg-6 order-lg-1 mb-5">
+                <div class="">
+                    <div class="gx-4 gx-lg-5 justify-content-center">
                         <img class="img-fluid rounded" src="<?= BASE_URL ?>assets/images/contacto/01.webp" alt="Nosotros" />
                     </div>
                 </div>
             </div>
-            <!-- Imagen -->
+            <!-- Fin Imagen -->
             <!-- Formulario -->
-            <div class="col-lg-6 order-lg-2">
-                <div class="p-5">
-                    <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
+            <div class="col-lg-6 order-lg-2 mb-5">
+                <div class="">
+                    <div class="row gx-4 gx-lg-5 justify-content-center ">
                         <div class="">
                             <!-- Mensaje de recepción exitosa o error -->
                             <?php if (isset($_GET['mensaje']) && $_GET['mensaje'] === 'enviado'): ?>
@@ -462,7 +464,8 @@ require_once __DIR__ . '/../includes/config.php';
                                 <div class="alert alert-danger text-center">Por favor completa todos los campos.</div>
                             <?php endif; ?>
                             <!-- INICIO FORMULARIO DE CONTACTO CON VALIDACIONES POR CAMPO -->
-                            <form id="contactoForm" class="novalidate" action="../includes/Controller/procesar_mensaje.php" method="post"> <!-- Campo 1: Nombre OK-->
+                            <form id="contactoForm" class="novalidate" action="../includes/Controller/procesar_mensaje.php" method="post">
+                                <!-- Campo 1: Nombre OK-->
                                 <div class="form-floating mb-3">
                                     <input
                                         class="form-control"
@@ -517,7 +520,7 @@ require_once __DIR__ . '/../includes/config.php';
                                 </div>
                                 <!-- Elección de servicio OK-->
                                 <div class="form-group mb-3">
-                                    <label for="servicio">¿Qué servicio necesita?</label>
+                                    <label for="servicio" style="margin-bottom:6px">¿Qué servicio necesita?</label>
                                     <select id="servicio" name="servicio" class="form-control" required>
                                         <option value="" disabled selected>Seleccione una opción</option>
                                         <option value="tasacion">Tasación de bienes raíces</option>
@@ -559,7 +562,8 @@ require_once __DIR__ . '/../includes/config.php';
         </div>
     </div>
 </section>
-<!-- FIN SECCIÓN QUIÉNES SOMOS-->
+<!-- FIN SECCIÓN FORMULARIO DE CONTACTO -->
+
 <!-- INCLUDE FOOTER-->
 <?php include_once __DIR__ . '/../includes/footer.php'; ?>
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
