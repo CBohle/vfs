@@ -110,60 +110,62 @@ $promedio_formateado = $promedio_minutos > 60
 <body class="bg-light">
     <div class="container-fluid px-3 py-2">
         <div id="contenido-dinamico" class="mx-auto w-100" style="max-width: 100%;">
+            <!-- Contenido     -->
+            <!-- Encabezado     -->
             <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
                 <h2 class="mb-0">Dashboard</h2>
             </div>
-
-            <!-- Pendientes -->
-            <div class="mb-4">
-                <div class="secc-title">
+            <!-- Pendientes y datos -->
+            <div style="margin-bottom: 40px;">
+                <!-- Pendientes -->
+                <div class="secc-title row">
                     <h5>Pendientes</h5>
                 </div>
-                <div class="d-flex flex-wrap gap-3">
-                    <!-- Alerta de mensajes pendientes -->
-                    <div class="card bg-warning-subtle" style="width: 18rem;">
-                        <div class="card-header">Mensajes</div>
-                        <div class="card-body">
-                            📬 Tienes <strong><?= $mensajes_pendientes ?></strong> mensajes <strong>pendientes</strong> por revisar.
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <div class="card bg-warning-subtle h-100">
+                            <div class="card-header">Mensajes</div>
+                            <div class="card-body">
+                                📬 Tienes <strong><?= $mensajes_pendientes ?></strong> mensajes <strong>pendientes</strong> por revisar.
+                            </div>
                         </div>
                     </div>
-
-                    <!-- Alerta de postulaciones pendientes -->
-                    <div class="card bg-danger-subtle" style="width: 18rem;">
-                        <div class="card-header">Postulaciones</div>
-                        <div class="card-body">
-                            📄 Hay <strong><?= $postulaciones_pendientes ?></strong> <strong>postulaciones nuevas</strong> sin procesar.
+                    <div class="col-md-6">
+                        <div class="card bg-danger-subtle h-100">
+                            <div class="card-header">Postulaciones</div>
+                            <div class="card-body">
+                                📄 Hay <strong><?= $postulaciones_pendientes ?></strong> <strong>postulaciones nuevas</strong> sin procesar.
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Datos -->
-            <div>
-                <div class="secc-title">
+                <!-- Datos -->
+                <div class="secc-title row">
                     <h5>Datos</h5>
                 </div>
-                <div class="d-flex flex-wrap gap-3">
-                    <!-- Clientes registrados -->
-                    <div class="card bg-success-subtle" style="width: 18rem;">
-                        <div class="card-header">Clientes registrados</div>
-                        <div class="card-body">
-                            👥 Hay <strong><?= $total_clientes ?></strong> <strong>clientes</strong> registrados en la base de datos.
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <div class="card bg-secondary-subtle h-100">
+                            <div class="card-header">Tiempo de respuesta</div>
+                            <div class="card-body">
+                                ⏱️ El tiempo <strong>promedio de respuesta</strong> es de <strong><?= $promedio_formateado ?></strong>.
+                            </div>
                         </div>
                     </div>
-                    <!-- Repetido para ejemplo -->
-                    <!-- Tiempo promedio de respuesta -->
-                    <div class="card bg-secondary-subtle mb-3" style="max-width: 18rem;">
-                        <div class="card-header">Tiempo de respuesta</div>
-                        <div class="card-body">
-                            ⏱️ El tiempo <strong>promedio de respuesta </strong>es de <strong><?= $promedio_formateado ?></strong>.
+                    <div class="col-md-6">
+                        <div class="card bg-success-subtle h-100">
+                            <div class="card-header">Clientes registrados</div>
+                            <div class="card-body">
+                                👥 Hay <strong><?= $total_clientes ?></strong> <strong>clientes</strong> registrados en la base de datos.
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- Footer -->
-        <?php
-        require_once __DIR__ . '/includes/footerAdmin.php';
-        ?>
+            <!-- Fin contenido -->
+            <!-- Footer -->
+            <?php
+            require_once __DIR__ . '/includes/footerAdmin.php';
+            ?>
+            <!-- Fin Footer -->
 </body>
