@@ -424,7 +424,16 @@ $pendientes_mensajes = obtener_mensajes_pendientes();
         function verMensaje(id) {
             $('#contenidoModalMensaje').html('<p class="text-center text-muted">Cargando...</p>');
             $('#modalVerMensaje').modal('show');
-
+            // Marcar como leído
+            $.post('mensajesAjax.php', {
+                accion: 'marcarLeido',
+                id: id
+            }, function(response) {
+                if (response.success && typeof tabla !== 'undefined') {
+                    tabla.ajax.reload(null, false);
+                }
+            }, 'json');
+            // Cargar contenido del modal
             $.get('mensajeModal.php', {
                 id: id
             }, function(respuesta) {

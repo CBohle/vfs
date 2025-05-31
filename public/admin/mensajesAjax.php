@@ -84,6 +84,17 @@ if (isset($_POST['mensaje_id'], $_POST['respuesta']) && empty($_POST['accion']))
     }
     exit;
 }
+if ($_POST['accion'] === 'marcarLeido' && isset($_POST['id'])) {
+    $id = intval($_POST['id']);
+
+    // Solo cambiar si está en estado 'pendiente'
+    $stmt = $conexion->prepare("UPDATE mensajes SET estado = 'leido' WHERE id = ? AND estado = 'pendiente'");
+    $stmt->bind_param("i", $id);
+    $resultado = $stmt->execute();
+
+    echo json_encode(['success' => $resultado]);
+    exit;
+}
 // Consulta con filtros
 $columns = ['importante', 'id', 'servicio', 'nombre', 'email', 'mensaje', 'estado', 'fecha_creacion'];
 $draw = intval($_POST['draw'] ?? 0);

@@ -467,7 +467,16 @@ $pendientes_postulaciones = obtener_postulaciones_pendientes();
         function verPostulacion(id) {
             $('#contenidoModalPostulacion').html('<p class="text-center text-muted">Cargando...</p>');
             $('#modalVerPostulacion').modal('show');
-
+            // Marcar como leído
+            $.post('postulacionesAjax.php', {
+                accion: 'marcarLeido',
+                id: id
+            }, function(response) {
+                if (response.success && typeof tabla !== 'undefined') {
+                    tabla.ajax.reload(null, false);
+                }
+            }, 'json');
+            // Cargar contenido del modal
             $.get('postulacionModal.php', {
                 id
             }, function(respuesta) {

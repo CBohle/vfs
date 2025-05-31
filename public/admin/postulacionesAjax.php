@@ -66,6 +66,17 @@ if (isset($_POST['accion'])) {
         echo actualizar_estado_postulacion($id);
         exit;
     }
+    if ($_POST['accion'] === 'marcarLeido' && isset($_POST['id'])) {
+        $id = intval($_POST['id']);
+
+        // Solo cambiar si está en estado 'pendiente'
+        $stmt = $conexion->prepare("UPDATE curriculum SET estado = 'leido' WHERE id = ? AND estado = 'pendiente'");
+        $stmt->bind_param("i", $id);
+        $resultado = $stmt->execute();
+
+        echo json_encode(['success' => $resultado]);
+        exit;
+    }
 }
 
 // --- Contar total filtrado ---
@@ -141,4 +152,3 @@ $response = [
     "totalPostulaciones" => $total
 ];
 echo json_encode($response);
-?>
