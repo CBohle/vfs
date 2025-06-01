@@ -568,41 +568,61 @@ require_once __DIR__ . '/../includes/config.php';
 <?php include_once __DIR__ . '/../includes/footer.php'; ?>
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
-    const form = document.getElementById('contactoForm');
-    const inputs = form.querySelectorAll('input, textarea, select');
+$(document).ready(function() {
+    const form = $('#contactoForm');
 
-    // Validación al enviar
-    form.addEventListener('submit', function(event) {
-        if (!form.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-
-        form.classList.add('was-validated');
-    });
-
-    // Validación campo por campo al salir (blur) o escribir (input)
-    inputs.forEach(input => {
-        input.addEventListener('input', () => {
-            validateField(input);
-        });
-
-        input.addEventListener('blur', () => {
-            validateField(input);
-        });
-    });
-
-    function validateField(input) {
-        if (input.checkValidity()) {
-            input.classList.remove('is-invalid');
-            input.classList.add('is-valid');
+    // Validación por campo
+    form.find('input, textarea, select').on('input blur', function() {
+        if (this.checkValidity()) {
+            $(this).removeClass('is-invalid').addClass('is-valid');
         } else {
-            input.classList.remove('is-valid');
-            input.classList.add('is-invalid');
+            $(this).removeClass('is-valid').addClass('is-invalid');
         }
-    }
+    });
+
+    // Envío por AJAX
+    form.on('submit', function(e) {
+        e.preventDefault(); // Evita el comportamiento normal (recargar)
+
+        if (!this.checkValidity()) {
+            this.classList.add('was-validated');
+            return;
+        }
+
+        var formData = new FormData(this);
+
+        $.ajax({
+            type: 'POST',
+            url: '../includes/Controller/procesar_mensaje.php',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                try {
+                    var jsonResponse = typeof response === 'string' ? JSON.parse(response) : response;
+                    if (jsonResponse.success) {
+                        alert("¡Tu mensaje ha sido enviado con éxito!");
+                        form[0].reset();
+                        form.removeClass('was-validated');
+                        form.find('input, textarea, select').removeClass('is-valid is-invalid');
+                    } else {
+                        alert("Error: " + (jsonResponse.error || "Hubo un problema al enviar el mensaje."));
+                    }
+                } catch (err) {
+                    alert("Hubo un error inesperado en la respuesta del servidor.");
+                }
+            },
+            error: function() {
+                alert("Error al conectar con el servidor.");
+            }
+        });
+    });
+});
 </script>
+
+
 
 </body>
 
