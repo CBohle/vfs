@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__ . '/../db.php';
 
+// Configura la respuesta como JSON
+header('Content-Type: application/json');
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre   = trim($_POST['nombre'] ?? '');
     $apellido = trim($_POST['apellido'] ?? '');
@@ -10,24 +13,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $mensaje  = trim($_POST['mensaje'] ?? '');
 
     if ($nombre && $apellido && $email && $telefono && $servicio && $mensaje) {
-        $estado = 'pendiente'; // Estado por defecto
+        $estado = 'pendiente';
 
         $stmt = $conexion->prepare("INSERT INTO mensajes (nombre, apellido, email, telefono, servicio, mensaje, estado) VALUES (?, ?, ?, ?, ?, ?, ?)");
         if ($stmt === false) {
-            die('Error al preparar la consulta: ' . $conexion->error);
+            echo json_encode(['success' => false, 'error' => 'Error al preparar la consulta: ' . $conexion->error]);
+            exit;
         }
 
         $stmt->bind_param("sssssss", $nombre, $apellido, $email, $telefono, $servicio, $mensaje, $estado);
 
         if (!$stmt->execute()) {
-            die('Error al ejecutar la consulta: ' . $stmt->error);
+            echo json_encode(['success' => false, 'error' => 'Error al ejecutar la consulta: ' . $stmt->error]);
+            $stmt->close();
+            exit;
         }
 
         $stmt->close();
-        header('Location: ../../public/index.php?mensaje=enviado');
+        echo json_encode(['success' => true]);
         exit;
     } else {
-        header('Location: ../../public/index.php?error=campos');
+        echo json_encode(['success' => false, 'error' => 'Todos los campos son obligatorios.']);
         exit;
     }
+} else {
+    echo json_encode(['success' => false, 'error' => 'Método no permitido.']);
+    exit;
 }
+?>

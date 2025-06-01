@@ -298,6 +298,44 @@ require_once __DIR__ . '/../includes/config.php';
 
     <!-- INCLUDE FOOTER-->
     <?php include_once __DIR__ . '/../includes/footer.php'; ?>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#postulacionForm').on('submit', function(e) {
+        e.preventDefault(); // Evitar comportamiento por defecto
+
+        if (!this.checkValidity()) {
+            this.classList.add('was-validated');
+            return;
+        }
+
+        var formData = new FormData(this);
+
+        $.ajax({
+            type: 'POST',
+            url: '<?= BASE_URL ?>../includes/Controller/procesar_postulacion.php', // Ruta PHP
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (response.success) {
+                    alert("¡Su postulación ha sido enviada correctamente!");
+                    $('#postulacionForm')[0].reset();
+                    $('#postulacionForm').removeClass('was-validated');
+                } else {
+                    alert("Error: " + (response.error || "Hubo un problema al enviar la postulación."));
+                }
+            },
+            error: function() {
+                alert("Hubo un error al procesar la solicitud.");
+            }
+        });
+    });
+});
+</script>
+
+
 </body>
 
 </html>
