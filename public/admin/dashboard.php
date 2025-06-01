@@ -23,6 +23,9 @@ require_once __DIR__ . '/../../includes/config.php';
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <!-- Libreria íconos -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script>
+        const BASE_ADMIN_URL = "<?= BASE_ADMIN_URL ?>";
+    </script>
 </head>
 
 <body>
@@ -51,7 +54,7 @@ require_once __DIR__ . '/../../includes/config.php';
             <div class="sidebar sidebar-text" id="sidebar">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" data-section="inicio">
+                        <a class="nav-link active" data-section="inicioResumen">
                             <i class="bi bi-house fs-6" style="margin-right: 5px"></i>
                             Dashboard
                         </a>
@@ -92,14 +95,7 @@ require_once __DIR__ . '/../../includes/config.php';
             </div>
         </div>
         <!-- Contenido dinámico -->
-        <div class="main-content" id="contenido-dinamico">
-            <div class="main-content" id="contenido-dinamico">
-                <div class="text-center text-muted">
-                    <h4>Bienvenido al panel de administración</h4>
-                    <p>Selecciona una sección del menú para comenzar.</p>
-                </div>
-            </div>
-        </div>
+        <div class="main-content" id="contenido-dinamico"></div>
     </div>
 
 
@@ -126,16 +122,25 @@ require_once __DIR__ . '/../../includes/config.php';
                 const section = $(this).data('section');
                 $('.nav-link').removeClass('active');
                 $(this).addClass('active');
-                if (section === 'inicio') {
-                    $('#contenido-dinamico').load('inicioResumen.php');
-                } else {
-                    $('#contenido-dinamico').load(section + '.php');
-                }
 
-                // Ocultar sidebar en móvil al hacer clic
-                if (window.innerWidth <= 768) {
-                    $('#sidebar').removeClass('show');
-                }
+                $('#contenido-dinamico').empty();
+
+                $('#contenido-dinamico').load(section + '.php', function() {
+                    if (section === 'mensajes') {
+                        // Elimina script previo si existe
+                        $('script[src*="mensajes.js"]').remove();
+
+                        // Crea y vuelve a insertar el script
+                        const script = document.createElement('script');
+                        script.src = BASE_ADMIN_URL + 'adminlte/assets/js/mensajes.js?v=' + new Date().getTime();
+                        script.onload = function() {
+                            if (typeof cargarVistaMensajes === 'function') {
+                                cargarVistaMensajes();
+                            }
+                        };
+                        document.body.appendChild(script);
+                    }
+                });
             });
 
             // Botón para mostrar/ocultar sidebar en móvil

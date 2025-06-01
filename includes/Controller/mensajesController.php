@@ -83,7 +83,7 @@ function obtener_total_mensajes()
 function obtener_mensajes_pendientes()
 {
     global $conexion;
-    $sql = "SELECT COUNT(*) AS pendientes FROM mensajes WHERE estado = 'pendiente'";
+    $sql = "SELECT COUNT(*) AS pendientes FROM mensajes WHERE estado IN ('pendiente', 'leido')";
     $result = mysqli_query($conexion, $sql);
     return ($fila = mysqli_fetch_assoc($result)) ? $fila['pendientes'] : 0;
 }

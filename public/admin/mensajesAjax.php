@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
-ini_set('display_errors', 0); // Cambiar a 1 para ver errores en desarrollo
-ini_set('display_startup_errors', 0); // Cambiar a 1 para ver errores en desarrollo
+ini_set('display_errors', 1); // Cambiar a 1 para ver errores en desarrollo
+ini_set('display_startup_errors', 1); // Cambiar a 1 para ver errores en desarrollo
 error_reporting(E_ALL);
 
 require_once __DIR__ . '/../../includes/db.php';
@@ -25,7 +25,7 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'eliminar' && isset($_POST['
 }
 
 // Marcar como importante
-if ($_POST['accion'] === 'importante' && isset($_POST['mensaje_id'], $_POST['importante'])) {
+if (isset($_POST['accion']) && $_POST['accion'] === 'importante' && isset($_POST['mensaje_id'], $_POST['importante'])) {
     $id = intval($_POST['mensaje_id']);
     $importante = intval($_POST['importante']);
     if (actualizar_importante($id, $importante)) {
@@ -84,7 +84,7 @@ if (isset($_POST['mensaje_id'], $_POST['respuesta']) && empty($_POST['accion']))
     }
     exit;
 }
-if ($_POST['accion'] === 'marcarLeido' && isset($_POST['id'])) {
+if (isset($_POST['accion']) && $_POST['accion'] === 'marcarLeido' && isset($_POST['id'])) {
     $id = intval($_POST['id']);
 
     // Solo cambiar si está en estado 'pendiente'
@@ -110,6 +110,9 @@ $servicio = $_POST['servicio'] ?? '';
 $importante = $_POST['importante'] ?? '';
 $search = trim($_POST['search']['value'] ?? '');
 
+$paramTypes = '';
+$params = [];
+
 // Construcción del WHERE con filtros y búsqueda
 $where = "WHERE nombre != ''";
 
@@ -119,7 +122,13 @@ if ($estado !== 'eliminado') {
 }
 
 // Filtro por estado
-if ($estado !== '' && $estado !== 'Todos') {
+if (isset($_POST['estadoMultiple']) && is_array($_POST['estadoMultiple']) && count($_POST['estadoMultiple']) > 0) {
+    $estados = $_POST['estadoMultiple'];
+    $placeholders = implode(',', array_fill(0, count($estados), '?'));
+    $where .= " AND estado IN ($placeholders)";
+    $paramTypes .= str_repeat('s', count($estados));
+    $params = array_merge($params, $estados);
+} elseif ($estado !== '') {
     $where .= " AND estado = ?";
     $paramTypes .= 's';
     $params[] = $estado;
@@ -184,6 +193,7 @@ $resultData = $stmtData->get_result();
 $data = [];
 while ($row = $resultData->fetch_assoc()) {
     $data[] = [
+        'DT_RowId' => 'row_' . $row['id'],
         'importante' => $row['importante'],
         'id' => $row['id'],
         'servicio' => $row['servicio'],
