@@ -45,8 +45,6 @@ require_once __DIR__ . '/../../includes/config.php';
     </nav>
 
     <div class="wrapper bg-light">
-        <!-- Sidebar -->
-        <div class="sidebar" id="sidebar">
             <!-- Sidebar -->
             <div class="sidebar sidebar-text" id="sidebar">
                 <ul class="nav flex-column">
@@ -93,7 +91,7 @@ require_once __DIR__ . '/../../includes/config.php';
                     </li>
                 </ul>
             </div>
-        </div>
+        
         <!-- Contenido dinámico -->
         <div class="main-content" id="contenido-dinamico">
             <div class="main-content" id="contenido-dinamico">
@@ -142,9 +140,9 @@ require_once __DIR__ . '/../../includes/config.php';
             });
 
             // Botón para mostrar/ocultar sidebar en móvil
-            $('#toggleSidebar').click(function() {
-                $('#sidebar').toggleClass('show');
-            });
+            // $('#toggleSidebar').click(function() {
+                // $('#sidebar').toggleClass('show');
+            // });
 
             // Notificaciones
             function actualizarNotificaciones() {
@@ -170,6 +168,7 @@ require_once __DIR__ . '/../../includes/config.php';
             setInterval(actualizarNotificaciones, 30000); // cada 30 segundos
         });
     </script>
+    <!-- Boton hamburguesa -->
     <script>
         const sidebar = document.getElementById('sidebar');
         const toggleBtn = document.getElementById('toggleSidebar');
