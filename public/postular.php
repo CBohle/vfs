@@ -2,10 +2,6 @@
     https://startbootstrap.com/template/creative
     Licencia MIT -->
 <!-- Vista pública del landing -->
-<!-- Creative - Start Bootstrap Theme
-    https://startbootstrap.com/template/creative
-    Licencia MIT -->
-<!-- Vista pública del landing -->
 <?php
 require_once __DIR__ . '/../includes/config.php';
 ?>
@@ -20,14 +16,14 @@ require_once __DIR__ . '/../includes/config.php';
     <title>Postular</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>assets/favicon.ico" />
-    <!-- Bootstrap Icons-->
+    <!-- Iconos Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-    <!-- Google fonts-->
+    <!-- Fuentes de Google-->
     <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
     <!-- SimpleLightbox plugin CSS-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet" />
-    <!-- Core theme CSS (includes Bootstrap)-->
+    <!-- Archivo CSS de estilos-->
     <link href="<?= BASE_URL ?>assets/css/styles.css" rel="stylesheet" />
     <!-- SweetAlert-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -38,19 +34,15 @@ require_once __DIR__ . '/../includes/config.php';
 
 <body>
     <section class="page-section bg-tertiary" id="postulacion">
-    <!-- Encabezado de sección  -->
-    <div class="container px-4 px-lg-5">
+        <!-- Encabezado de sección  -->
+        <div class="container px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 align-items-center">
                 <h2 class="display-4 text-center">Sé parte del equipo VFS</h2>
-                <!-- <hr class="divider" /> -->
                 <p class="text-muted text-center mb-5 p-postular">Completa el siguiente formulario para postular a ser parte del equipo VFS.</p>
             </div>
             <div class="accordion" id="postulacionAccordion">
-
                 <!-- INICIO FORMULARIO DE POSTULACIÓN -->
                 <form id="postulacionForm" action="<?= BASE_URL ?>../includes/Controller/procesar_postulacion.php" method="post" enctype="multipart/form-data">
-
-
                     <!-- DATOS PERSONALES (Campo 1-4)(Nombre/Apellido/Nacimiento/Rut)-->
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingOne">
@@ -275,10 +267,8 @@ require_once __DIR__ . '/../includes/config.php';
                 <!-- FIN FORMULARIO DE POSTULACIÓN-->
             </div>
         </div>
-        </div>
-        </div>
     </section>
-    <?php include_once __DIR__ . '/../includes/header.php'; ?>
+    <!-- FIN SECCIÓN FORMULARIO DE POSTULACIÓN-->
     <?php
     if (isset($_GET['mensaje']) && $_GET['mensaje'] === 'postulado') {
         echo '<div class="alert alert-success text-center" role="alert">
@@ -286,7 +276,6 @@ require_once __DIR__ . '/../includes/config.php';
               </div>';
     }
     ?>
-    <!-- FIN SECCIÓN FORMULARIO DE POSTULACIÓN-->
 
     <!-- INCLUDE FOOTER-->
     <?php include_once __DIR__ . '/../includes/footer.php'; ?>
