@@ -1,9 +1,10 @@
 <?php
 require_once __DIR__ . '/../../includes/db.php';
 require_once __DIR__ . '/../../includes/Controller/postulacionesController.php';
-
+require_once __DIR__ . '/../../includes/auth.php';
 $total_postulaciones = obtener_total_postulaciones();
 $pendientes_postulaciones = obtener_postulaciones_pendientes();
+requiereRol([1, 2]);
 ?>
 
 <!DOCTYPE html>
@@ -169,7 +170,6 @@ $pendientes_postulaciones = obtener_postulaciones_pendientes();
                                                 <th>Nombre</th>
                                                 <th>Apellido</th>
                                                 <th>Estudio</th>
-                                                <th>Año<br>Titulacion</th>
                                                 <th>Formación<br>Tasación</th>
                                                 <th>Años<br>Experiencia</th>
                                                 <th>Disponibilidad<br>Comuna</th>
@@ -207,6 +207,26 @@ $pendientes_postulaciones = obtener_postulaciones_pendientes();
                 <!-- Modal Body -->
                 <div class="modal-body" id="contenidoModalPostulacion">
                     <p class="text-center text-muted">Cargando...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para ver PDF con descarga -->
+    <div class="modal fade" id="modalPDF" tabindex="-1" aria-labelledby="modalPDFLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header d-flex justify-content-between align-items-center">
+                    <h5 class="modal-title mb-0" id="modalPDFLabel">Vista previa del archivo</h5>
+                    <div class="d-flex gap-2">
+                        <a id="btnDescargarPDF" href="#" download class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-download me-1"></i> Descargar
+                        </a>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                </div>
+                <div class="modal-body" style="height: 80vh;">
+                    <iframe id="iframePDF" src="" width="100%" height="100%" style="border: none;"></iframe>
                 </div>
             </div>
         </div>
@@ -276,10 +296,6 @@ $pendientes_postulaciones = obtener_postulaciones_pendientes();
                     },
                     {
                         data: 'estudio'
-                    },
-                    {
-                        data: 'ano_titulacion',
-                        className: 'text-center'
                     },
                     {
                         data: 'formacion_tasacion',
@@ -352,7 +368,7 @@ $pendientes_postulaciones = obtener_postulaciones_pendientes();
                         className: 'text-center',
                         render: function(data, type, row) {
                             if (data) {
-                                return `<a href="${data}" target="_blank" class="btn btn-sm btn-secondary"><i class="bi bi-file-earmark-pdf"></i></a>`;
+                                return `<button class="btn btn-sm btn-secondary" onclick="verPDF('/vfs/${data}')"><i class="bi bi-file-earmark-pdf"></i></button>`;
                             } else {
                                 return '<span class="text-muted">Vacio</span>';
                             }
@@ -480,6 +496,13 @@ $pendientes_postulaciones = obtener_postulaciones_pendientes();
                 }, 'json');
             }
         }
+
+        function verPDF(rutaArchivo) {
+            $('#iframePDF').attr('src', rutaArchivo);
+            $('#btnDescargarPDF').attr('href', rutaArchivo);
+            $('#modalPDF').modal('show');
+        }
+
         $(document).ready(function() {
             inicializarTablaPostulaciones();
         });

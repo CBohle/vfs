@@ -25,6 +25,8 @@ require_once __DIR__ . '/../includes/config.php';
     <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet" />
     <!-- Hoja de estilos CSS-->
     <link href="<?= BASE_URL ?>assets/css/styles.css" rel="stylesheet" />
+     <!--SweetAlert2 CSS-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 
 <!-- INCLUDE HEADER  -->
@@ -460,14 +462,18 @@ require_once __DIR__ . '/../includes/config.php';
                     <div class="row gx-4 gx-lg-5 justify-content-center ">
                         <div class="">
                             <!-- Mensaje de recepción exitosa o error -->
-                            <?php if (isset($_GET['mensaje']) && $_GET['mensaje'] === 'enviado'): ?>
-                                <div class="alert alert-success text-center">¡Tu mensaje ha sido enviado con éxito!</div>
-                            <?php elseif (isset($_GET['error'])): ?>
-                                <div class="alert alert-danger text-center">Por favor completa todos los campos.</div>
-                            <?php endif; ?>
+                           <div id="mensajeAlerta" class="alert d-none alert-dismissible fade show" role="alert">
+                                <span id="mensajeTexto"></span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                            </div>
                             <!-- INICIO FORMULARIO DE CONTACTO CON VALIDACIONES POR CAMPO -->
+<<<<<<< HEAD
                             <form id="contactoForm" class="novalidate" action="../includes/Controller/procesar_mensaje.php" method="post">
                                 <!-- Campo 1: Nombre-->
+=======
+                            <form id="contactoForm" class="novalidate" method="post">
+                                <!-- Campo 1: Nombre OK-->
+>>>>>>> origin/main
                                 <div class="form-floating mb-3">
                                     <input
                                         class="form-control"
@@ -568,41 +574,76 @@ require_once __DIR__ . '/../includes/config.php';
 <?php include_once __DIR__ . '/../includes/footer.php'; ?>
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    const form = document.getElementById('contactoForm');
-    const inputs = form.querySelectorAll('input, textarea, select');
+$(document).ready(function() {
+    const form = $('#contactoForm');
 
-    // Validación al enviar
-    form.addEventListener('submit', function(event) {
-        if (!form.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-
-        form.classList.add('was-validated');
-    });
-
-    // Validación campo por campo al salir (blur) o escribir (input)
-    inputs.forEach(input => {
-        input.addEventListener('input', () => {
-            validateField(input);
-        });
-
-        input.addEventListener('blur', () => {
-            validateField(input);
-        });
-    });
-
-    function validateField(input) {
-        if (input.checkValidity()) {
-            input.classList.remove('is-invalid');
-            input.classList.add('is-valid');
+    // Validación por campo
+    form.find('input, textarea, select').on('input blur', function() {
+        if (this.checkValidity()) {
+            $(this).removeClass('is-invalid').addClass('is-valid');
         } else {
-            input.classList.remove('is-valid');
-            input.classList.add('is-invalid');
+            $(this).removeClass('is-valid').addClass('is-invalid');
         }
+    });
+
+    // Envío por AJAX
+    form.on('submit', function(e) {
+        e.preventDefault(); // Evita el comportamiento normal
+
+        if (!this.checkValidity()) {
+            this.classList.add('was-validated');
+            return;
+        }
+
+        const formData = new FormData(this);
+
+        $.ajax({
+            type: 'POST',
+            url: '../includes/Controller/procesar_mensaje.php',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                try {
+                    const jsonResponse = typeof response === 'string' ? JSON.parse(response) : response;
+                    if (jsonResponse.success) {
+                        mostrarAlerta("¡Tu mensaje ha sido enviado con éxito!", "success");
+                        form[0].reset();
+                        form.removeClass('was-validated');
+                        form.find('input, textarea, select').removeClass('is-valid is-invalid');
+                    } else {
+                        mostrarAlerta("Error: " + (jsonResponse.error || "Hubo un problema al enviar el mensaje."), "danger");
+                    }
+                } catch (err) {
+                    mostrarAlerta("Hubo un error inesperado en la respuesta del servidor.", "warning");
+                }
+            },
+            error: function() {
+                mostrarAlerta("Error al conectar con el servidor.", "danger");
+            }
+        });
+    });
+
+    // Mostrar alertas bonitas de Bootstrap
+   function mostrarAlerta(mensaje, tipo) {
+    Swal.fire({
+        title: tipo === 'success' ? '¡Éxito!' : 'Atención',
+        text: mensaje,
+        icon: tipo, // 'success', 'error', 'warning', etc.
+        confirmButtonText: 'Cerrar',
+        customClass: {
+            popup: 'rounded-4 shadow-lg'
+        }
+    });
     }
+
+});
 </script>
+
+
 
 </body>
 

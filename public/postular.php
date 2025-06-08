@@ -25,6 +25,8 @@ require_once __DIR__ . '/../includes/config.php';
     <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet" />
     <!-- Archivo CSS de estilos-->
     <link href="<?= BASE_URL ?>assets/css/styles.css" rel="stylesheet" />
+    <!-- SweetAlert-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 
 <!-- INCLUDE HEADER -->
@@ -256,17 +258,7 @@ require_once __DIR__ . '/../includes/config.php';
                             </div>
                         </div>
                     </div>
-
-                    <!-- Respuesta recepción exitosa del formulario-->
-                    <div class="d-none" id="submitSuccessMessage">
-                        <div class="text-center mb-3">
-                            <div class="fw-bolder">Su mensaje ha sido recibido con éxito.</div>
-                        </div>
-                    </div>
-                    <!-- Respuesta error en el envío del formulario -->
-                    <div class="d-none" id="submitErrorMessage">
-                        <div class="text-center text-danger mb-3">Error al enviar el mensaje.</div>
-                    </div>
+                    
                     <!-- Botón enviar -->
                     <div class="d-grid">
                         <button class="btn btn-primary btn-xl" id="submitButton" type="submit" disabled>Enviar</button>
@@ -287,6 +279,81 @@ require_once __DIR__ . '/../includes/config.php';
 
     <!-- INCLUDE FOOTER-->
     <?php include_once __DIR__ . '/../includes/footer.php'; ?>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+$(document).ready(function () {
+    $('#postulacionForm').on('submit', function (e) {
+        e.preventDefault();
+
+        const form = this;
+
+        if (!form.checkValidity()) {
+            form.classList.add('was-validated');
+            return;
+        }
+
+        const formData = new FormData(form);
+
+        $.ajax({
+            type: 'POST',
+            url: '<?= BASE_URL ?>../includes/Controller/procesar_postulacion.php',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                try {
+                    const jsonResponse = typeof response === 'string' ? JSON.parse(response) : response;
+
+                    if (jsonResponse.success) {
+                        Swal.fire({
+                            title: '¡Postulación enviada!',
+                            text: 'Gracias por postular, revisaremos tu información.',
+                            icon: 'success',
+                            confirmButtonText: 'Cerrar',
+                            customClass: {
+                                popup: 'rounded-4 shadow-lg'
+                            }
+                        });
+
+                        form.reset();
+                        form.classList.remove('was-validated');
+                        $(form).find('input, textarea, select').removeClass('is-valid is-invalid');
+                    } else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: jsonResponse.error || 'Hubo un problema al enviar la postulación.',
+                            icon: 'error',
+                            confirmButtonText: 'Cerrar'
+                        });
+                    }
+                } catch (err) {
+                    Swal.fire({
+                        title: 'Error inesperado',
+                        text: 'La respuesta del servidor no fue válida.',
+                        icon: 'warning',
+                        confirmButtonText: 'Cerrar'
+                    });
+                }
+            },
+            error: function () {
+                Swal.fire({
+                    title: 'Error de conexión',
+                    text: 'No se pudo conectar con el servidor.',
+                    icon: 'error',
+                    confirmButtonText: 'Cerrar'
+                });
+            }
+        });
+    });
+});
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 </body>
 
 </html>
