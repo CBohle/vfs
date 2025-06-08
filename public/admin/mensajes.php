@@ -1,9 +1,10 @@
 <?php
 require_once __DIR__ . '/../../includes/db.php';
 require_once __DIR__ . '/../../includes/Controller/mensajesController.php';
-
+require_once __DIR__ . '/../../includes/auth.php';
 $total_mensajes = obtener_total_mensajes();
 $pendientes_mensajes = obtener_mensajes_pendientes();
+requiereRol([1, 3, 4]);
 ?>
 
 <!DOCTYPE html>
@@ -318,26 +319,31 @@ $pendientes_mensajes = obtener_mensajes_pendientes();
                         searchable: false,
                         className: 'text-center',
                         render: function(data, type, row) {
+                        const verBtn = `
+                            <button class="btn btn-sm btn-primary me-1" title="Ver" onclick="verMensaje(${row.id})">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        `;
+
+                        <?php if ($_SESSION['rol_id'] === 4): ?>
+                            // Practicante solo ve
+                            return verBtn;
+                        <?php else: ?>
                             if (row.estado.toLowerCase() === 'eliminado') {
-                                return `
-                    <button class="btn btn-sm btn-primary me-1" title="Ver" onclick="verMensaje(${row.id})">
-                        <i class="bi bi-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-success" title="Recuperar" onclick="recuperarMensaje(${row.id})">
-                        <i class="bi bi-arrow-counterclockwise"></i>
-                    </button>
-                    `;
+                                return verBtn + `
+                                    <button class="btn btn-sm btn-success" title="Recuperar" onclick="recuperarMensaje(${row.id})">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                    </button>
+                                `;
                             } else {
-                                return `
-                    <button class="btn btn-sm btn-primary me-1" title="Ver" onclick="verMensaje(${row.id})">
-                        <i class="bi bi-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger" title="Eliminar" onclick="eliminarMensaje(${row.id})">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                    `;
+                                return verBtn + `
+                                    <button class="btn btn-sm btn-danger" title="Eliminar" onclick="eliminarMensaje(${row.id})">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                `;
                             }
-                        },
+                        <?php endif; ?>
+                    },
                     }
                 ],
                 order: [

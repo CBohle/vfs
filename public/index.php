@@ -25,6 +25,8 @@ require_once __DIR__ . '/../includes/config.php';
     <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="<?= BASE_URL ?>assets/css/styles.css" rel="stylesheet" />
+     <!--SweetAlert2 CSS-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 
 <!-- INCLUDE HEADER  -->
@@ -458,13 +460,12 @@ require_once __DIR__ . '/../includes/config.php';
                     <div class="row gx-4 gx-lg-5 justify-content-center ">
                         <div class="">
                             <!-- Mensaje de recepción exitosa o error -->
-                            <?php if (isset($_GET['mensaje']) && $_GET['mensaje'] === 'enviado'): ?>
-                                <div class="alert alert-success text-center">¡Tu mensaje ha sido enviado con éxito!</div>
-                            <?php elseif (isset($_GET['error'])): ?>
-                                <div class="alert alert-danger text-center">Por favor completa todos los campos.</div>
-                            <?php endif; ?>
+                           <div id="mensajeAlerta" class="alert d-none alert-dismissible fade show" role="alert">
+                                <span id="mensajeTexto"></span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                            </div>
                             <!-- INICIO FORMULARIO DE CONTACTO CON VALIDACIONES POR CAMPO -->
-                            <form id="contactoForm" class="novalidate" action="../includes/Controller/procesar_mensaje.php" method="post">
+                            <form id="contactoForm" class="novalidate" method="post">
                                 <!-- Campo 1: Nombre OK-->
                                 <div class="form-floating mb-3">
                                     <input
@@ -569,6 +570,7 @@ require_once __DIR__ . '/../includes/config.php';
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 $(document).ready(function() {
     const form = $('#contactoForm');
@@ -584,14 +586,14 @@ $(document).ready(function() {
 
     // Envío por AJAX
     form.on('submit', function(e) {
-        e.preventDefault(); // Evita el comportamiento normal (recargar)
+        e.preventDefault(); // Evita el comportamiento normal
 
         if (!this.checkValidity()) {
             this.classList.add('was-validated');
             return;
         }
 
-        var formData = new FormData(this);
+        const formData = new FormData(this);
 
         $.ajax({
             type: 'POST',
@@ -601,24 +603,38 @@ $(document).ready(function() {
             contentType: false,
             success: function(response) {
                 try {
-                    var jsonResponse = typeof response === 'string' ? JSON.parse(response) : response;
+                    const jsonResponse = typeof response === 'string' ? JSON.parse(response) : response;
                     if (jsonResponse.success) {
-                        alert("¡Tu mensaje ha sido enviado con éxito!");
+                        mostrarAlerta("¡Tu mensaje ha sido enviado con éxito!", "success");
                         form[0].reset();
                         form.removeClass('was-validated');
                         form.find('input, textarea, select').removeClass('is-valid is-invalid');
                     } else {
-                        alert("Error: " + (jsonResponse.error || "Hubo un problema al enviar el mensaje."));
+                        mostrarAlerta("Error: " + (jsonResponse.error || "Hubo un problema al enviar el mensaje."), "danger");
                     }
                 } catch (err) {
-                    alert("Hubo un error inesperado en la respuesta del servidor.");
+                    mostrarAlerta("Hubo un error inesperado en la respuesta del servidor.", "warning");
                 }
             },
             error: function() {
-                alert("Error al conectar con el servidor.");
+                mostrarAlerta("Error al conectar con el servidor.", "danger");
             }
         });
     });
+
+    // Mostrar alertas bonitas de Bootstrap
+   function mostrarAlerta(mensaje, tipo) {
+    Swal.fire({
+        title: tipo === 'success' ? '¡Éxito!' : 'Atención',
+        text: mensaje,
+        icon: tipo, // 'success', 'error', 'warning', etc.
+        confirmButtonText: 'Cerrar',
+        customClass: {
+            popup: 'rounded-4 shadow-lg'
+        }
+    });
+    }
+
 });
 </script>
 

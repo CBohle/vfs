@@ -62,26 +62,29 @@ require_once __DIR__ . '/../../includes/config.php';
                             Mensajes <span id="badge-mensajes" class="badge bg-danger d-none"></span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-section="postulaciones">
-                            <!-- <i class="bi bi-bag-check fs-6" style="margin-right: 5px"></i> -->
-                            <!-- <i class="bi bi-collection fs-6" style="margin-right: 5px"></i> -->
-                            <i class="bi bi-bookmark-check fs-6" style="margin-right: 5px"></i>
-                            Postulaciones <span id="badge-postulaciones" class="badge bg-danger d-none"></span>
-                        </a>
-                    </li>
+                  <?php if (in_array($_SESSION['rol_id'], [1, 2])): ?>
+    <li class="nav-item">
+        <a class="nav-link" data-section="postulaciones">
+            <i class="bi bi-bookmark-check fs-6" style="margin-right: 5px"></i>
+            Postulaciones <span id="badge-postulaciones" class="badge bg-danger d-none"></span>
+        </a>
+    </li>
+<?php endif; ?>
+
                     <li class="nav-item">
                         <a class="nav-link" data-section="clientes">
                             <i class="bi bi-people-fill fs-6" style="margin-right: 5px"></i>
                             Clientes
                         </a>
                     </li>
+                    <?php if ($_SESSION['rol_id'] === 1): ?>
                     <li class="nav-item">
                         <a class="nav-link" data-section="usuarios">
                             <i class="bi bi-person-vcard fs-6" style="margin-right: 5px"></i>
                             Usuarios
                         </a>
                     </li>
+                    <?php endif; ?>
                     <li class="nav-item">
                         <a class="nav-link" href="<?= BASE_URL ?>logout.php">
                             <i class="bi bi-arrow-bar-left fs-6" style="margin-right: 5px"></i>
