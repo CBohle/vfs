@@ -467,10 +467,8 @@ require_once __DIR__ . '/../includes/config.php';
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
                             </div>
                             <!-- INICIO FORMULARIO DE CONTACTO CON VALIDACIONES POR CAMPO -->
-                            <form id="contactoForm" class="novalidate" action="../includes/Controller/procesar_mensaje.php" method="post">
-                                <!-- Campo 1: Nombre-->
                             <form id="contactoForm" class="novalidate" method="post">
-                                <!-- Campo 1: Nombre OK-->
+                                <!-- Campo 1: Nombre-->
                                 <div class="form-floating mb-3">
                                     <input
                                         class="form-control"
