@@ -1,4 +1,6 @@
 <?php
+session_start();
+$rol_id = $_SESSION['rol_id'] ?? null;
 require_once __DIR__ . '/../../includes/db.php';
 require_once __DIR__ . '/../../includes/Controller/mensajesController.php';
 
@@ -145,11 +147,17 @@ $textoImportante = $esImportante ? 'Marcar como no importante' : 'Marcar como im
                 </div>
             <?php elseif ($msg['estado'] !== 'eliminado'): ?>
                 <!-- Mostrar formulario solo si no está eliminado -->
-                <form id="formRespuesta" class="mt-3">
-                  <input type="hidden" name="mensaje_id" value="<?= $msg['id'] ?>">
-                  <textarea name="respuesta" class="form-control mb-2" required placeholder="Escribe tu respuesta..."></textarea>
-                  <button type="submit" class="btn btn-primary btn-sm">Enviar respuesta</button>
-                </form>
+               <?php if ($rol_id == 4): ?>
+                    <div class="mt-3 alert alert-warning">
+                        No tienes permisos para responder mensajes.
+                    </div>
+                <?php else: ?>
+                    <form id="formRespuesta" class="mt-3">
+                    <input type="hidden" name="mensaje_id" value="<?= $msg['id'] ?>">
+                    <textarea name="respuesta" class="form-control mb-2" required placeholder="Escribe tu respuesta..."></textarea>
+                    <button type="submit" class="btn btn-primary btn-sm">Enviar respuesta</button>
+                    </form>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
     </div>

@@ -1,9 +1,10 @@
 <?php
 require_once __DIR__ . '/../../includes/db.php';
 require_once __DIR__ . '/../../includes/Controller/postulacionesController.php';
-
+require_once __DIR__ . '/../../includes/auth.php';
 $total_postulaciones = obtener_total_postulaciones();
 $pendientes_postulaciones = obtener_postulaciones_pendientes();
+requiereRol([1, 2]);
 ?>
 
 <!DOCTYPE html>

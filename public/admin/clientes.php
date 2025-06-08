@@ -1,11 +1,13 @@
 <?php
 require_once __DIR__ . '/../../includes/db.php';
 require_once __DIR__ . '/../../includes/Controller/clientesController.php';
+require_once __DIR__ . '/../../includes/auth.php';
 /* Verifica si el usuario tiene permisos de administrador
 if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'admin') {
     header('Location: /admin/login.php');
     exit;
 } */
+requiereRol([1, 3, 4]);
 ?>
 
 <!DOCTYPE html>

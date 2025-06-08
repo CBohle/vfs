@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (!$activo) {
             $error = "Cuenta inactiva. Contacta al administrador.";
-        } elseif ($clave === $password_hash) { // Comparación directa (texto plano)
+        } elseif ($clave === $password_hash || password_verify($clave, $password_hash)) {
             $_SESSION['admin_logged_in'] = true;
             $_SESSION['usuario_id'] = $id;
             $_SESSION['rol_id'] = $rol_id;
