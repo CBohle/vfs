@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $params = [];
 $paramTypes = '';
 $where = "WHERE nombre != ''";
-$columns = ['importante', 'id', 'rut', 'nombre', 'apellido', 'email', 'estudio', 'ano_titulacion', 'anos_experiencia_tasacion', 'disponibilidad_comuna', 'disponibilidad_region', 'movilizacion_propia', 'estado', 'fecha_creacion'];
+$columns = ['importante', 'id', 'rut', 'nombre', 'apellido', 'email', 'estudios', 'ano_titulacion', 'anos_experiencia_tasacion', 'disponibilidad_comuna', 'disponibilidad_region', 'movilizacion_propia', 'estado', 'fecha_creacion'];
 $draw = intval($_POST['draw'] ?? 0);
 $start = intval($_POST['start'] ?? 0);
 $length = intval($_POST['length'] ?? 10);
@@ -43,7 +43,7 @@ if ($importante !== '') {
     $params[] = intval($importante);
 }
 if (!empty($search)) {
-    $where .= " AND (rut LIKE ? OR nombre LIKE ? OR apellido LIKE ? OR email LIKE ? OR estudio LIKE ? OR estado LIKE ?)";
+    $where .= " AND (rut LIKE ? OR nombre LIKE ? OR apellido LIKE ? OR email LIKE ? OR estudios LIKE ? OR estado LIKE ?)";
     $paramTypes .= 'ssssss';
     $params = array_merge($params, array_fill(0, 6, "%$search%"));
 }
@@ -85,7 +85,7 @@ $stmtCount->close();
 
 // --- Datos filtrados ---
 $orderClause = "ORDER BY $orderColumn $orderDir, importante DESC";
-$sqlData = "SELECT importante, id, rut, nombre, apellido, email, estudio, ano_titulacion, anos_experiencia_tasacion, disponibilidad_comuna, disponibilidad_region, movilizacion_propia, estado, archivo, fecha_creacion FROM curriculum $where $orderClause LIMIT ?, ?";
+$sqlData = "SELECT importante, id, rut, nombre, apellido, email, estudios, ano_titulacion, anos_experiencia_tasacion, disponibilidad_comuna, disponibilidad_region, movilizacion_propia, estado, archivo, fecha_creacion FROM curriculum $where $orderClause LIMIT ?, ?";
 $stmtData = $conexion->prepare($sqlData);
 if (!$stmtData) {
     echo json_encode(['error' => 'Error en SQL DATA: ' . $conexion->error]);
@@ -110,7 +110,7 @@ while ($row = $resultData->fetch_assoc()) {
         'nombre' => $row['nombre'],
         'apellido' => $row['apellido'],
         'email' => $row['email'],
-        'estudio' => $row['estudio'],
+        'estudios' => $row['estudios'],
         'ano_titulacion' => $row['ano_titulacion'],
         'anos_experiencia_tasacion' => $row['anos_experiencia_tasacion'],
         'disponibilidad_comuna' => $row['disponibilidad_comuna'],

@@ -169,7 +169,7 @@ requiereRol([1, 2]);
                                                 <th>Rut</th>
                                                 <th>Nombre</th>
                                                 <th>Apellido</th>
-                                                <th>Estudio</th>
+                                                <th>Estudios</th>
                                                 <th>Formación<br>Tasación</th>
                                                 <th>Años<br>Experiencia</th>
                                                 <th>Disponibilidad<br>Comuna</th>
@@ -295,7 +295,7 @@ requiereRol([1, 2]);
                         data: 'apellido'
                     },
                     {
-                        data: 'estudio'
+                        data: 'estudios'
                     },
                     {
                         data: 'formacion_tasacion',
