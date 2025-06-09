@@ -24,17 +24,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $direccion = trim($_POST['direccion'] ?? '');
     $comuna = trim($_POST['comuna'] ?? '');
     $region = trim($_POST['region'] ?? '');
-    $estudio = trim($_POST['estudio'] ?? '');
+    $estudios = trim($_POST['estudios'] ?? '');
     $institucion = trim($_POST['institucion'] ?? '');
     $ano_titulacion = (int)($_POST['ano_titulacion'] ?? 0);
     $formacion_tasacion = ($_POST['formacion_tasacion'] ?? '') === 'Sí' ? 1 : 0;
-    $formacion_tasacion_descripcion = trim($_POST['campo_especificar'] ?? '');
+    $detalle_formacion = trim($_POST['campo_especificar'] ?? '');
     $mapa_experiencia = [
         "Sin experiencia" => 0, "Menos de 1 año" => 0,
         "1 a 3 años" => 2, "3 a 5 años" => 4, "Más de 5 años" => 5
     ];
     $anos_experiencia_tasacion = $mapa_experiencia[$_POST['ano_experiencia']] ?? 0;
-    $empresa_tasacion = trim($_POST['otra_empresa'] ?? '');
+    $otra_empresa = trim($_POST['otra_empresa'] ?? '');
     $disponibilidad_comuna = ($_POST['disponibilidad_comunal'] ?? '') === 'Sí' ? 1 : 0;
     $disponibilidad_region = ($_POST['disponibilidad_regional'] ?? '') === 'Sí' ? 1 : 0;
     $movilizacion_propia = ($_POST['movilizacion'] ?? '') === 'Sí' ? 1 : 0;
@@ -70,9 +70,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $conexion->prepare("
         INSERT INTO curriculum (
             nombre, apellido, fecha_nacimiento, rut, email, telefono,
-            direccion, comuna, region, estudio, institucion_educacional,
+            direccion, comuna, region, estudios, institucion_educacional,
             ano_titulacion, formacion_tasacion, formacion_tasacion_descripcion,
-            anos_experiencia_tasacion, empresa_tasacion,
+            anos_experiencia_tasacion, otra_empresa,
             disponibilidad_comuna, disponibilidad_region, movilizacion_propia,
             archivo
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -86,9 +86,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param(
         "sssssssssssisisiisss",
         $nombre, $apellido, $fecha_nacimiento, $rut, $email, $telefono,
-        $direccion, $comuna, $region, $estudio, $institucion, $ano_titulacion,
+        $direccion, $comuna, $region, $estudios, $institucion, $ano_titulacion,
         $formacion_tasacion, $formacion_tasacion_descripcion,
-        $anos_experiencia_tasacion, $empresa_tasacion,
+        $anos_experiencia_tasacion, $otra_empresa,
         $disponibilidad_comuna, $disponibilidad_region, $movilizacion_propia,
         $ruta_relativa
     );

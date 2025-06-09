@@ -37,13 +37,13 @@ CREATE TABLE curriculum (
     direccion VARCHAR(255) NOT NULL,
     comuna VARCHAR(50) NOT NULL,
     region VARCHAR(50) NOT NULL,
-    estudio VARCHAR(50) NOT NULL,
+    estudios VARCHAR(50) NOT NULL,
     institucion_educacional VARCHAR(100) NOT NULL,
     ano_titulacion INT NOT NULL,
     formacion_tasacion BOOLEAN NOT NULL DEFAULT FALSE,
-    formacion_tasacion_descripcion TEXT,
+    detalle_formacion TEXT,
     anos_experiencia_tasacion INT NOT NULL DEFAULT 0,
-    empresa_tasacion VARCHAR(100) NOT NULL,
+    otra_empresa VARCHAR(100) NOT NULL,
     disponibilidad_comuna BOOLEAN NOT NULL DEFAULT FALSE,
     disponibilidad_region BOOLEAN NOT NULL DEFAULT FALSE,
     movilizacion_propia BOOLEAN NOT NULL DEFAULT FALSE,
@@ -54,7 +54,7 @@ CREATE TABLE curriculum (
     estado ENUM('pendiente', 'leido', 'respondido','eliminado') NOT NULL DEFAULT 'pendiente'
 );
 
-INSERT INTO curriculum (nombre, apellido, fecha_nacimiento, rut, email, telefono, direccion, comuna, region, estudio, institucion_educacional, ano_titulacion, formacion_tasacion, formacion_tasacion_descripcion, anos_experiencia_tasacion, empresa_tasacion, disponibilidad_comuna, disponibilidad_region, movilizacion_propia, archivo, importante, estado) VALUES
+INSERT INTO curriculum (nombre, apellido, fecha_nacimiento, rut, email, telefono, direccion, comuna, region, estudios, institucion_educacional, ano_titulacion, formacion_tasacion, detalle_formacion, anos_experiencia_tasacion, otra_empresa, disponibilidad_comuna, disponibilidad_region, movilizacion_propia, archivo, importante, estado) VALUES
 ('Carlos', 'Pérez', '1985-04-10', '12345678-9', 'carlos.perez@example.com', '987654321', 'Calle Ficticia 123', 'Comuna Central', 'Región Metropolitana', 'Ingeniería Civil', 'Universidad Central', 2007, TRUE, 'Certificado de formación en tasación inmobiliaria', 5, 'Tasaciones Pérez Ltda', TRUE, TRUE, TRUE, 'archivo1.pdf', FALSE, 'pendiente'),
 ('Ana', 'González', '1990-08-25', '23456789-0', 'ana.gonzalez@example.com', '987654322', 'Avenida Siempre Viva 456', 'Comuna Sur', 'Región del Libertador', 'Arquitectura', 'Universidad del Libertador', 2012, FALSE, '', 4, 'Inmobiliaria Sur S.A.', TRUE, TRUE, TRUE, 'archivo2.pdf', TRUE, 'leido'),
 ('Luis', 'Martínez', '1992-02-15', '34567890-1', 'luis.martinez@example.com', '987654323', 'Calle Nueva 789', 'Comuna Norte', 'Región Andina', 'Tasación Inmobiliaria', 'Instituto Nacional de Tasación', 2015, TRUE, 'Curso completo en tasación de propiedades', 3, 'Tasaciones Andinas', TRUE, FALSE, TRUE, 'archivo3.pdf', FALSE, 'respondido'),
