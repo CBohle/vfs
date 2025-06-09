@@ -71,7 +71,8 @@ INSERT INTO roles (nombre, descripcion, activo) VALUES
 ('admin', 'Acceso completo a todas las funcionalidades', TRUE),
 ('rrhh', 'Visualiza y edita postulaciones', TRUE),
 ('ejecutivo', 'Gestiona mensajes y clientes', TRUE),
-('practicante', 'Visualiza mensajes y clientes', FALSE);
+('practicante', 'Visualiza mensajes y clientes', TRUE);
+('user', 'Gestiona mensajes, postulaciones y clientes', TRUE);
 
 CREATE TABLE permisos (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -99,6 +100,11 @@ INSERT INTO permisos (rol_id, modulo, accion) VALUES
 INSERT INTO permisos (rol_id, modulo, accion) VALUES
 (4, 'mensajes', 'ver'),
 (4, 'clientes', 'ver');
+
+INSERT INTO permisos (rol_id, modulo, accion) VALUES
+(5, 'mensajes', 'ver'), (5, 'mensajes', 'modificar'), (5, 'mensajes', 'crear'), (5, 'mensajes', 'eliminar'),
+(5, 'postulaciones', 'ver'), (5, 'postulaciones', 'modificar'), (5, 'postulaciones', 'crear'), (5, 'postulaciones', 'eliminar'),
+(5, 'clientes', 'ver'), (5, 'clientes', 'modificar'), (5, 'clientes', 'crear'), (5, 'clientes', 'eliminar');
 
 CREATE TABLE usuarios_admin (
     id INT AUTO_INCREMENT PRIMARY KEY,
