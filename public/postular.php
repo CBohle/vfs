@@ -258,7 +258,8 @@ require_once __DIR__ . '/../includes/config.php';
                             </div>
                         </div>
                     </div>
-                    
+                    <!-- reCAPTCHA -->
+                    <div class="g-recaptcha mb-3 mt-3" data-sitekey="6LdyYy0rAAAAAH9kSCDWmq8Rkp0vZRQX3oFSZcpr"></div>
                     <!-- Botón enviar -->
                     <div class="d-grid">
                         <button class="btn btn-primary btn-xl" id="submitButton" type="submit" disabled>Enviar</button>
@@ -279,79 +280,80 @@ require_once __DIR__ . '/../includes/config.php';
 
     <!-- INCLUDE FOOTER-->
     <?php include_once __DIR__ . '/../includes/footer.php'; ?>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-<script>
-$(document).ready(function () {
-    $('#postulacionForm').on('submit', function (e) {
-        e.preventDefault();
+    <script>
+        $(document).ready(function() {
+            $('#postulacionForm').on('submit', function(e) {
+                e.preventDefault();
 
-        const form = this;
+                const form = this;
 
-        if (!form.checkValidity()) {
-            form.classList.add('was-validated');
-            return;
-        }
+                if (!form.checkValidity()) {
+                    form.classList.add('was-validated');
+                    return;
+                }
 
-        const formData = new FormData(form);
+                const formData = new FormData(form);
 
-        $.ajax({
-            type: 'POST',
-            url: '<?= BASE_URL ?>../includes/Controller/procesar_postulacion.php',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                try {
-                    const jsonResponse = typeof response === 'string' ? JSON.parse(response) : response;
+                $.ajax({
+                    type: 'POST',
+                    url: '<?= BASE_URL ?>../includes/Controller/procesar_postulacion.php',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        try {
+                            const jsonResponse = typeof response === 'string' ? JSON.parse(response) : response;
 
-                    if (jsonResponse.success) {
-                        Swal.fire({
-                            title: '¡Postulación enviada!',
-                            text: 'Gracias por postular, revisaremos tu información.',
-                            icon: 'success',
-                            confirmButtonText: 'Cerrar',
-                            customClass: {
-                                popup: 'rounded-4 shadow-lg'
+                            if (jsonResponse.success) {
+                                Swal.fire({
+                                    title: '¡Postulación enviada!',
+                                    text: 'Gracias por postular, revisaremos tu información.',
+                                    icon: 'success',
+                                    confirmButtonText: 'Cerrar',
+                                    customClass: {
+                                        popup: 'rounded-4 shadow-lg'
+                                    }
+                                });
+
+                                form.reset();
+                                form.classList.remove('was-validated');
+                                $(form).find('input, textarea, select').removeClass('is-valid is-invalid');
+                            } else {
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: jsonResponse.error || 'Hubo un problema al enviar la postulación.',
+                                    icon: 'error',
+                                    confirmButtonText: 'Cerrar'
+                                });
                             }
-                        });
-
-                        form.reset();
-                        form.classList.remove('was-validated');
-                        $(form).find('input, textarea, select').removeClass('is-valid is-invalid');
-                    } else {
+                        } catch (err) {
+                            Swal.fire({
+                                title: 'Error inesperado',
+                                text: 'La respuesta del servidor no fue válida.',
+                                icon: 'warning',
+                                confirmButtonText: 'Cerrar'
+                            });
+                        }
+                    },
+                    error: function() {
                         Swal.fire({
-                            title: 'Error',
-                            text: jsonResponse.error || 'Hubo un problema al enviar la postulación.',
+                            title: 'Error de conexión',
+                            text: 'No se pudo conectar con el servidor.',
                             icon: 'error',
                             confirmButtonText: 'Cerrar'
                         });
                     }
-                } catch (err) {
-                    Swal.fire({
-                        title: 'Error inesperado',
-                        text: 'La respuesta del servidor no fue válida.',
-                        icon: 'warning',
-                        confirmButtonText: 'Cerrar'
-                    });
-                }
-            },
-            error: function () {
-                Swal.fire({
-                    title: 'Error de conexión',
-                    text: 'No se pudo conectar con el servidor.',
-                    icon: 'error',
-                    confirmButtonText: 'Cerrar'
                 });
-            }
+            });
         });
-    });
-});
-</script>
+    </script>
 
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 </body>
