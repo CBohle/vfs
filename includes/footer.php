@@ -17,8 +17,8 @@ $base_url = $is_landing ? '' : BASE_URL . 'index.php';
                     <img src="<?= BASE_URL ?>assets/images/logo/LogoVFS2.png" alt="Logo de la empresa" style="max-width: 150px;">
                 </a>
                 <br>
-                <p class="mb-0">Calle Ejemplo 123</p>
-                <p class="mb-0">Ciudad, País</p>
+                <p class="mb-0">Los Militares 5620, Of. 905, Las Condes.</p>
+                <p class="mb-0">Santiago, Chile</p>
             </div>
             <!-- COLUMNA CENTRO: NAVEGAR POR LA PÁGINA -->
             <div class="col-12 col-md-4 mb-4">
@@ -35,7 +35,7 @@ $base_url = $is_landing ? '' : BASE_URL . 'index.php';
             <div class="col-12 col-md-4 mb-4">
                 <h5>Contacto</h5>
                 <ul class="list-unstyled">
-                    <li class="bi-phone"><a href="tel:+1234567890"> +1 234 567 890</a></li>
+                    <li class="bi-phone"><a href="tel:+1234567890">+56 985487027</a></li>
                     <li class="bi-envelope"><a href="mailto:contacto@empresa.com"> contacto@vfs.cl</a></li>
                 </ul>
                 <a href="<?= $base_url ?>#contacto" class="btn btn-primary mt-2">Contáctanos</a>
