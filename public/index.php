@@ -553,7 +553,7 @@ require_once __DIR__ . '/../includes/config.php';
                                     <button class="btn btn-primary btn-xl" id="submitButtonContacto" type="submit" disabled>Enviar</button>
                                 </div>
                                 <!-- reCAPTCHA -->
-                                <!-- <div class="g-recaptcha mb-3 mt-3" data-sitekey="6LdyYy0rAAAAAH9kSCDWmq8Rkp0vZRQX3oFSZcpr"></div> -->
+                                <div class="g-recaptcha mb-3 mt-3" data-sitekey="6LdyYy0rAAAAAH9kSCDWmq8Rkp0vZRQX3oFSZcpr"></div>
                             </form>
                             <!-- FIN FORMULARIO DE CONTACTO -->
                         </div>
