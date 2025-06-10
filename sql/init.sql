@@ -1,9 +1,9 @@
--- CREATE DATABASE bd_test_vfs;
--- CREATE USER 'usuario_test_vfs'@'localhost' IDENTIFIED BY 'ipssgrupo4';
--- GRANT ALL PRIVILEGES ON bd_test_vfs . * TO 'usuario_test_vfs'@'localhost';
--- FLUSH PRIVILEGES;
+CREATE DATABASE vfscl_bd;
+CREATE USER 'vfscl_user_bd'@'localhost' IDENTIFIED BY 'BzV4!oRV)s66r8';
+GRANT ALL PRIVILEGES ON vfscl_bd . * TO 'vfscl_user_bd'@'localhost';
+FLUSH PRIVILEGES;
 
--- USE bd_test_vfs;
+USE vfscl_bd;
 
 CREATE TABLE mensajes (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -73,8 +73,8 @@ CREATE TABLE usuarios_admin (
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     fecha_modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     reset_token VARCHAR(255), 
-    token_expira DATETIME;
-    FOREIGN KEY (rol_id) REFERENCES roles(id),
+    token_expira DATETIME,
+    FOREIGN KEY (rol_id) REFERENCES roles(id)
 );  
 
 CREATE TABLE respuestas (
