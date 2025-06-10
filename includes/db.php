@@ -1,9 +1,9 @@
 <?php
     //Conexión a DB
     $server = 'localhost';
-    $user = 'usuario_test_vfs';
-    $password = 'ipssgrupo4';
-    $database = 'bd_test_vfs';
+    $user = 'vfscl_user_bd';
+    $password = 'BzV4!oRV)s66r8';
+    $database = 'vfscl_bd';
 
     $conexion = mysqli_connect($server,$user,$password,$database);
     if (!$conexion) {
@@ -13,7 +13,7 @@
 
 <?php
 try {
-    $pdo = new PDO("mysql:host=localhost;dbname=bd_test_vfs;charset=utf8", "usuario_test_vfs", "ipssgrupo4");
+    $pdo = new PDO("mysql:host=localhost;dbname=vfscl_bd;charset=utf8", "vfscl_user_bd", "BzV4!oRV)s66r8");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("Error en la conexión: " . $e->getMessage());
