@@ -1,0 +1,14 @@
+# Ignorar credenciales y configuraciones privadas
+.env
+
+# Ignorar dependencias de Composer
+/vendor/
+
+# Ignorar archivos temporales
+*.log
+*.tmp
+
+# Ignorar cachés de editores
+.vscode/
+.idea/
+.DS_Store

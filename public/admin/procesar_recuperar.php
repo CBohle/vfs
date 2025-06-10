@@ -6,6 +6,7 @@ use PHPMailer\PHPMailer\Exception;
 require '../../vendor/autoload.php';
 require_once __DIR__ . '/../../includes/config.php';
 require_once __DIR__ . '/../../includes/db.php';
+require_once __DIR__ . '/../../includes/mailer.php';
 
 //Detectar si estamos en la landing o no
 $is_landing = basename($_SERVER['PHP_SELF']) === 'index.php';
@@ -28,33 +29,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $enlace = "http://localhost/vfs/public/admin/restablecer.php?token=$token";
 
         // Enviar email con PHPMailer
-        $mail = new PHPMailer(true);
-        try {
-            $mail->isSMTP();
-            $mail->Host = 'mail.vfs.cl';
-            $mail->SMTPAuth = true;
-            $mail->Username = 'soporte@vfs.cl';
-            $mail->Password = 'SoporteVFS1234.';
-            $mail->SMTPSecure = 'ssl'; // o 'ssl' si usas puerto 465
-            $mail->Port = 465; // o 465
+        $asunto = 'Recuperación de contraseña';
+        $contenidoHTML = "Haz clic en el siguiente enlace para restablecer tu contraseña:<br><a href='$enlace'>$enlace</a>";
 
-            $mail->setFrom('soporte@vfs.cl', 'Soporte VFS');
-            $mail->addAddress($email);
+        $resultado = enviarCorreo($email, $asunto, $contenidoHTML, 'soporte');
 
-            $mail->isHTML(true);
-            $mail->Subject = 'Recuperación de contraseña';
-            $mail->Body = "Haz clic en el siguiente enlace para restablecer tu contraseña:<br><a href='$enlace'>$enlace</a>";
-
-            $mail->send();
+        if ($resultado === true) {
             $mensaje = "Si el correo está registrado, recibirás un enlace.";
-        } catch (Exception $e) {
-            $mensaje = "Error al enviar el correo: {$mail->ErrorInfo}";
+        } else {
+            $mensaje = "Error al enviar el correo: $resultado";
         }
-    } else {
-        $mensaje = "Si el correo está registrado, recibirás un enlace.";
     }
 }
 ?>
+
 <!-- VISTA DE LA PÁGINA -->
 <!DOCTYPE html>
 <html lang="es">
