@@ -116,8 +116,11 @@ CREATE TABLE usuarios_admin (
     activo BOOLEAN NOT NULL DEFAULT TRUE,
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     fecha_modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (rol_id) REFERENCES roles(id)
+    reset_token VARCHAR(255), 
+    token_expira DATETIME;
+    FOREIGN KEY (rol_id) REFERENCES roles(id),
 );  
+
 
 INSERT INTO usuarios_admin (nombre, apellido, email, password, rol_id, activo) VALUES
 ('Jaime', 'Farias', 'email1@prueba.com', '1234', 1, TRUE),

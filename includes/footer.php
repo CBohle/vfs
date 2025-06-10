@@ -36,7 +36,7 @@ $base_url = $is_landing ? '' : BASE_URL . 'index.php';
             <div class="col-12 col-md-4 mb-4">
                 <h5>Contacto</h5>
                 <ul class="list-unstyled">
-                    <li class="bi-phone"><a href="tel:+1234567890">+56 985487027</a></li>
+                    <li class="bi-phone"><a href="tel:+1234567890">+56 997956894</a></li>
                     <li class="bi-envelope"><a href="mailto:contacto@empresa.com"> contacto@vfs.cl</a></li>
                 </ul>
                 <a href="<?= $base_url ?>#contacto" class="btn btn-primary mt-2">Contáctanos</a>

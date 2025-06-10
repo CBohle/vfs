@@ -1,6 +1,10 @@
 <?php
 require_once __DIR__ . '/../../includes/config.php';
-require_once __DIR__ . '/../../includes/db.php'; // Asegúrate de incluir la conexión
+require_once __DIR__ . '/../../includes/db.php'; 
+
+//Detectar si estamos en la landing o no
+$is_landing = basename($_SERVER['PHP_SELF']) === 'index.php';
+$base_url = $is_landing ? '' : BASE_URL . 'index.php';
 
 session_start();
 
@@ -38,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Login - Admin</title>
@@ -45,20 +50,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="<?= BASE_URL ?>admin/adminlte/css/stylesLogin.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
+
 <body class="body-login">
+    <!-- LOGO -->
+    <div style=" text-align: center; margin-bottom: 30px;">           
+        <a href="<?= $is_landing ? '#page-top' : BASE_URL . 'index.php' ?>">
+            <img src="<?= BASE_URL ?>assets/images/logo/LogoVFS2.png" alt="Logo de la empresa" style="height: 70px;">
+        </a>
+    </div>
     <div class="container-fluid">
         <div class="row justify-content-center">
+            <!-- Bloque izquierdo -->
             <div class="ed-login col-md-6 col-lg-6 order-lg-1">
-                <img src="<?= BASE_URL ?>assets/images/logo/LogoVFS2.png" alt="Logo VFS" class="img-fluid d-block mx-auto" style="max-width: 50px;">
                 <div>
-                    <h1 class="text-center">¡Bienvenido!</h1>
+                    <h1 class="text-center" style="margin-top: 100px;">¡Bienvenido!</h1>
                     <h3 class="text-center">Inicia sesión para acceder al Panel de Administración VFS</h3>
                 </div>
             </div>
+            <!-- Bloque derecho -->
             <div class="login-box col-md-6 col-lg-4 text-white order-lg-1">
                 <h2 class="text-center">Login</h2>
                 <hr class="divider" />
-                <p class="text-center">Panel de administración</p>
+                <!-- <p class="text-center">Panel de administración</p> -->
                 <?php if (isset($error)): ?>
                     <div class="alert alert-danger" role="alert"><?= $error ?></div>
                 <?php endif; ?>
@@ -75,9 +88,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="d-grid">
                         <button type="submit" class="btn btn-secondary">Entrar</button>
                     </div>
+                    <br>
+                    <p><a href="recuperar.php">¿Olvidaste tu contraseña?</a></p>
                 </form>
             </div>
         </div>
     </div>
 </body>
+
 </html>
