@@ -198,6 +198,11 @@ h6,
   font-size: 1rem;
 }
 
+.h7 {
+    font-weight: 400;
+    font-size: 1.0rem;
+  }
+
 p {
   margin-top: 0;
   margin-bottom: 1rem;
