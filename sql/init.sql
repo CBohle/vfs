@@ -54,6 +54,13 @@ CREATE TABLE roles (
     activo BOOLEAN NOT NULL DEFAULT TRUE
 );
 
+INSERT INTO roles (nombre, descripcion, activo) VALUES
+('admin', 'Acceso completo a todas las funcionalidades', TRUE),
+('rrhh', 'Visualiza y edita postulaciones', TRUE),
+('ejecutivo', 'Gestiona mensajes y clientes', TRUE),
+('practicante', 'Visualiza mensajes y clientes', TRUE),
+('user', 'Gestiona mensajes, postulaciones y clientes', TRUE);
+
 CREATE TABLE permisos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     rol_id INT NOT NULL,
@@ -61,6 +68,29 @@ CREATE TABLE permisos (
     accion VARCHAR(50) NOT NULL,
     FOREIGN KEY (rol_id) REFERENCES roles(id)
 );
+INSERT INTO permisos (rol_id, modulo, accion) VALUES
+(1, 'mensajes', 'ver'), (1, 'mensajes', 'modificar'), (1, 'mensajes', 'crear'), (1, 'mensajes', 'eliminar'),
+(1, 'postulaciones', 'ver'), (1, 'postulaciones', 'modificar'), (1, 'postulaciones', 'crear'), (1, 'postulaciones', 'eliminar'),
+(1, 'clientes', 'ver'), (1, 'clientes', 'modificar'), (1, 'clientes', 'crear'), (1, 'clientes', 'eliminar'),
+(1, 'usuarios', 'ver'), (1, 'usuarios', 'modificar'), (1, 'usuarios', 'crear'), (1, 'usuarios', 'eliminar'),
+(1, 'roles', 'ver'), (1, 'roles', 'modificar'), (1, 'roles', 'crear'), (1, 'roles', 'eliminar');
+
+INSERT INTO permisos (rol_id, modulo, accion) VALUES
+(2, 'postulaciones', 'ver'),
+(2, 'postulaciones', 'modificar');
+
+INSERT INTO permisos (rol_id, modulo, accion) VALUES
+(3, 'mensajes', 'ver'), (3, 'mensajes', 'modificar'), (3, 'mensajes', 'eliminar'),
+(3, 'clientes', 'ver'), (3, 'clientes', 'modificar');
+
+INSERT INTO permisos (rol_id, modulo, accion) VALUES
+(4, 'mensajes', 'ver'),
+(4, 'clientes', 'ver');
+
+INSERT INTO permisos (rol_id, modulo, accion) VALUES
+(5, 'mensajes', 'ver'), (5, 'mensajes', 'modificar'), (5, 'mensajes', 'crear'), (5, 'mensajes', 'eliminar'),
+(5, 'postulaciones', 'ver'), (5, 'postulaciones', 'modificar'), (5, 'postulaciones', 'crear'), (5, 'postulaciones', 'eliminar'),
+(5, 'clientes', 'ver'), (5, 'clientes', 'modificar'), (5, 'clientes', 'crear'), (5, 'clientes', 'eliminar');
 
 CREATE TABLE usuarios_admin (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -76,6 +106,11 @@ CREATE TABLE usuarios_admin (
     token_expira DATETIME,
     FOREIGN KEY (rol_id) REFERENCES roles(id)
 );  
+
+INSERT INTO usuarios_admin (nombre, apellido, email, password, rol_id, activo) VALUES
+('David', 'Figueroa', 'david.figueroa@vfs.cl', 'DavidFigueroa1234.', 1, TRUE),
+('Diego', 'Valdés', 'diego.valdes@vfs.cl', 'DiegoValdes1234.', 5, TRUE),
+('Óscar', 'Silva', 'oscar.silva@vfs.cl', 'OscarSilva1234.', 5, TRUE);
 
 CREATE TABLE respuestas (
     id INT PRIMARY KEY AUTO_INCREMENT,
