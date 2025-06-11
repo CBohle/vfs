@@ -114,17 +114,17 @@ $textoImportante = $esImportante ? 'Marcar como no importante' : 'Marcar como im
     <div class="col-md-6 d-flex flex-column gap-1">
         <div class="seccion-postulacion h-100">
             <h5><i class="bi bi-mortarboard me-2"></i>Formación Académica</h5>
-            <div class="fila-dato"><span class="dato-label">Estudio:</span> <?= htmlspecialchars($msg['estudio']) ?></div>
+            <div class="fila-dato"><span class="dato-label">Estudios:</span> <?= htmlspecialchars($msg['estudios']) ?></div>
             <div class="fila-dato"><span class="dato-label">Institución:</span> <?= htmlspecialchars($msg['institucion_educacional']) ?></div>
             <div class="fila-dato"><span class="dato-label">Año Titulación:</span> <?= htmlspecialchars($msg['ano_titulacion']) ?></div>
             <div class="fila-dato">
                 <span class="dato-label">Formación en Tasación:</span>
                 <?= $msg['formacion_tasacion'] ? '<i class="bi bi-check-circle-fill text-success ms-1"></i>' : '<i class="bi bi-x-circle-fill text-danger ms-1"></i>' ?>
             </div>
-            <?php if ($msg['formacion_tasacion_descripcion']): ?>
+            <?php if ($msg['detalle_formacion']): ?>
                 <div class="bg-white border rounded p-2 ms-3 mt-2">
                     <span class="dato-label small">Descripción de la formación:</span><br>
-                    <span class="dato-valor small"><?= nl2br(htmlspecialchars($msg['formacion_tasacion_descripcion'])) ?></span>
+                    <span class="dato-valor small"><?= nl2br(htmlspecialchars($msg['detalle_formacion'])) ?></span>
                 </div>
             <?php endif; ?>
         </div>
@@ -132,7 +132,7 @@ $textoImportante = $esImportante ? 'Marcar como no importante' : 'Marcar como im
         <div class="seccion-postulacion h-100">
             <h5><i class="bi bi-briefcase me-2"></i>Experiencia</h5>
             <div class="fila-dato mt-3"><span class="dato-label">Años de Experiencia:</span> <?= htmlspecialchars($msg['anos_experiencia_tasacion']) ?></div>
-            <div class="fila-dato"><span class="dato-label">Empresa de Tasación:</span> <?= htmlspecialchars($msg['empresa_tasacion']) ?></div>
+            <div class="fila-dato"><span class="dato-label">Empresa de Tasación:</span> <?= htmlspecialchars($msg['otra_empresa']) ?></div>
         </div>
 
         <div class="seccion-postulacion h-100">

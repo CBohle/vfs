@@ -1,4 +1,5 @@
 <?php
+session_start();
 header('Content-Type: application/json');
 ini_set('display_errors', 1); // Cambiar a 1 para ver errores en desarrollo
 ini_set('display_startup_errors', 1); // Cambiar a 1 para ver errores en desarrollo
@@ -6,6 +7,10 @@ error_reporting(E_ALL);
 
 require_once __DIR__ . '/../../includes/db.php';
 require_once __DIR__ . '/../../includes/Controller/mensajesController.php';
+require_once __DIR__ . '/../../vendor/autoload.php'; // Asegúrate de que exista
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -15,6 +20,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 // Eliminar mensaje
 if (isset($_POST['accion']) && $_POST['accion'] === 'eliminar' && isset($_POST['id'])) {
+    if ($_SESSION['rol_id'] == 4) {
+        echo json_encode(['success' => false, 'error' => 'Sin permisos para eliminar']);
+        exit;
+    }
     $id = intval($_POST['id']);
     if (actualizar_estado($id, 'eliminado')) {
         echo json_encode(['success' => true]);
@@ -24,8 +33,13 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'eliminar' && isset($_POST['
     exit;
 }
 
+
 // Marcar como importante
 if (isset($_POST['accion']) && $_POST['accion'] === 'importante' && isset($_POST['mensaje_id'], $_POST['importante'])) {
+    if ($_SESSION['rol_id'] == 4) {
+        echo json_encode(['success' => false, 'error' => 'Sin permisos para marcar como importante']);
+        exit;
+    }
     $id = intval($_POST['mensaje_id']);
     $importante = intval($_POST['importante']);
     if (actualizar_importante($id, $importante)) {
@@ -36,30 +50,41 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'importante' && isset($_POST
     exit;
 }
 
+
 // Recuperar mensaje y actualizar estado basado en la respuesta
 if (isset($_POST['accion']) && $_POST['accion'] === 'recuperar' && isset($_POST['id'])) {
+    if ($_SESSION['rol_id'] == 4) {
+        echo json_encode(['success' => false, 'error' => 'Sin permisos para recuperar']);
+        exit;
+    }
     $id = intval($_POST['id']);
     echo actualizar_estado_mensaje($id);
     exit;
 }
 
+
 // Guardar respuesta a un mensaje
 if (isset($_POST['mensaje_id'], $_POST['respuesta']) && empty($_POST['accion'])) {
     $mensaje_id = intval($_POST['mensaje_id']);
     $respuesta = trim($_POST['respuesta']);
+    $usuario_admin_id = $_SESSION['usuario_id'] ?? 0;
 
-    $usuario_admin_id = 1; // reemplazar con el ID del usuario admin actual, una vez implementado el login real
+    // Obtener datos del cliente
+    $stmt = $conexion->prepare("SELECT email, nombre, apellido FROM mensajes WHERE id = ?");
+    $stmt->bind_param("i", $mensaje_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $cliente = $result->fetch_assoc();
 
-    //Guardar respuesta en la base de datos
+    // Guardar respuesta
     $stmt = $conexion->prepare("INSERT INTO respuestas (mensaje_id, usuario_admin_id, respuesta) VALUES (?, ?, ?)");
     $stmt->bind_param("iis", $mensaje_id, $usuario_admin_id, $respuesta);
-    $resultado = $stmt->execute(); 
+    $resultado = $stmt->execute();
 
     if ($resultado) {
-        // Actualizar el estado del mensaje a 'respondido'
         $conexion->query("UPDATE mensajes SET estado = 'respondido' WHERE id = $mensaje_id");
 
-        // Obtener los datos del usuario admin que respondió
+        // Datos del admin
         $stmt = $conexion->prepare("
             SELECT ua.nombre, ua.apellido, r.nombre AS rol
             FROM usuarios_admin ua
@@ -70,6 +95,32 @@ if (isset($_POST['mensaje_id'], $_POST['respuesta']) && empty($_POST['accion']))
         $stmt->execute();
         $result = $stmt->get_result();
         $admin = $result->fetch_assoc();
+
+        // Enviar correo
+        try {
+            $mail = new PHPMailer(true);
+            $mail->isSMTP();
+            $mail->Host = 'mail.vfs.cl'; // Cambia por smtp.hostingblue si lo usas
+            $mail->SMTPAuth = true;
+            $mail->Username = 'contacto@vfs.cl';
+            $mail->Password = 'ContactoVFS1234.';
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = 465;
+
+            $mail->setFrom('contacto@vfs.cl', 'VFS-Admin');
+            $mail->addAddress($cliente['email'], $cliente['nombre'] . ' ' . $cliente['apellido']);
+            $mail->Subject = 'Respuesta a tu consulta en VFS';
+            $mail->Body = "Hola {$cliente['nombre']},\n\nEsta es nuestra respuesta a tu consulta:\n\n$respuesta\n\nGracias por contactarnos.";
+
+            $mail->send();
+        } catch (Exception $e) {
+             error_log("ERROR SMTP: " . $mail->ErrorInfo); // Se registra en error_log
+            echo json_encode([
+                'success' => false,
+                'error' => 'Error al enviar correo: ' . $mail->ErrorInfo
+            ]);
+            exit;
+        }
 
         echo json_encode([
             'success' => true,

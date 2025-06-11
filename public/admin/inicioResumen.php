@@ -123,7 +123,7 @@ $promedio_formateado = $promedio_minutos > 60
                 </div>
                 <div class="row g-3 mb-4">
                     <div class="col-md-6">
-                        <div class="card bg-warning-subtle h-100">
+                        <div class="card bg-warning-subtle h-100" id="verMensajes" style="cursor: pointer;">
                             <div class="card-header">Mensajes</div>
                             <div class="card-body">
                                 📬 Tienes <strong><?= $mensajes_pendientes ?></strong> mensajes <strong>pendientes</strong> por revisar.
@@ -131,7 +131,7 @@ $promedio_formateado = $promedio_minutos > 60
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="card bg-danger-subtle h-100">
+                        <div class="card bg-danger-subtle h-100" id="verPostulaciones" style="cursor: pointer;">
                             <div class="card-header">Postulaciones</div>
                             <div class="card-body">
                                 📄 Hay <strong><?= $postulaciones_pendientes ?></strong> <strong>postulaciones nuevas</strong> sin procesar.
@@ -168,4 +168,20 @@ $promedio_formateado = $promedio_minutos > 60
             require_once __DIR__ . '/includes/footerAdmin.php';
             ?>
             <!-- Fin Footer -->
+            <!-- Script para mostrar el contenido dinámico de Mensajes -->
+            <script>
+                $(document).ready(function() {
+                    $('#verMensajes').click(function() {
+                        $('#contenido-dinamico').load('mensajes.php');
+                    });
+                });
+            </script>
+            <!-- Script para mostrar el contenido dinámico de Postulaciones -->
+            <script>
+                $(document).ready(function() {
+                    $('#verPostulaciones').click(function() {
+                        $('#contenido-dinamico').load('postulaciones.php');
+                    });
+                });
+            </script>
 </body>

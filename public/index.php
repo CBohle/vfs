@@ -16,15 +16,17 @@ require_once __DIR__ . '/../includes/config.php';
     <title>VFS</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>assets/favicon.ico" />
-    <!-- Bootstrap Icons-->
+    <!-- Iconos de Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-    <!-- Google fonts-->
+    <!-- Fuentes de Google-->
     <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
     <!-- SimpleLightbox plugin CSS-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet" />
-    <!-- Core theme CSS (includes Bootstrap)-->
+    <!-- Hoja de estilos CSS-->
     <link href="<?= BASE_URL ?>assets/css/styles.css" rel="stylesheet" />
+     <!--SweetAlert2 CSS-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 
 <!-- INCLUDE HEADER  -->
@@ -74,6 +76,7 @@ require_once __DIR__ . '/../includes/config.php';
 <!-- SERVICIOS-->
 <div class="page-section bg-dark text-white" id="servicios">
     <div class="container-fluid p-0">
+        <!-- Encabezado de sección -->
         <h2 class="text-center mt-0">Tu socio en tasaciones</h2>
         <hr class="divider" />
         <p class="text-muted mb-5 text-center text-white-75">Servicios</p>
@@ -284,6 +287,7 @@ require_once __DIR__ . '/../includes/config.php';
 <!-- INICIO SECCIÓN FAQ -->
 <section class="page-section" id="faq">
     <div class="container-fluid px-4 px-lg-5">
+        <!-- Encabezado de sección -->
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-lg-8 col-xl-6 text-center">
                 <h2 class="text-center mt-0">Preguntas Frecuentes</h2>
@@ -458,14 +462,13 @@ require_once __DIR__ . '/../includes/config.php';
                     <div class="row gx-4 gx-lg-5 justify-content-center ">
                         <div class="">
                             <!-- Mensaje de recepción exitosa o error -->
-                            <?php if (isset($_GET['mensaje']) && $_GET['mensaje'] === 'enviado'): ?>
-                                <div class="alert alert-success text-center">¡Tu mensaje ha sido enviado con éxito!</div>
-                            <?php elseif (isset($_GET['error'])): ?>
-                                <div class="alert alert-danger text-center">Por favor completa todos los campos.</div>
-                            <?php endif; ?>
+                           <div id="mensajeAlerta" class="alert d-none alert-dismissible fade show" role="alert">
+                                <span id="mensajeTexto"></span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                            </div>
                             <!-- INICIO FORMULARIO DE CONTACTO CON VALIDACIONES POR CAMPO -->
-                            <form id="contactoForm" class="novalidate" action="../includes/Controller/procesar_mensaje.php" method="post">
-                                <!-- Campo 1: Nombre OK-->
+                            <form id="contactoForm" class="novalidate" method="post">
+                                <!-- Campo 1: Nombre-->
                                 <div class="form-floating mb-3">
                                     <input
                                         class="form-control"
@@ -482,7 +485,7 @@ require_once __DIR__ . '/../includes/config.php';
                                         El nombre debe tener solo letras, entre 2 y 50 caracteres.
                                     </div>
                                 </div>
-                                <!-- Opción 2 apellido OK-->
+                                <!-- Opción 2 apellido-->
                                 <div class="form-floating mb-3">
                                     <input
                                         class="form-control"
@@ -499,13 +502,13 @@ require_once __DIR__ . '/../includes/config.php';
                                         El apellido debe tener solo letras, entre 2 y 50 caracteres.
                                     </div>
                                 </div>
-                                <!-- Campo 3: Mail OK-->
+                                <!-- Campo 3: Mail-->
                                 <div class="form-floating mb-3">
                                     <input name="email" class="form-control" id="email" type="email" placeholder="name@example.com" required />
                                     <label for="email">Correo</label>
                                     <div class="invalid-feedback">Ingrese un correo válido.</div>
                                 </div>
-                                <!-- Campo 4: Teléfono OK-->
+                                <!-- Campo 4: Teléfono-->
                                 <div class="form-floating mb-3">
                                     <input
                                         class="form-control"
@@ -518,7 +521,7 @@ require_once __DIR__ . '/../includes/config.php';
                                     <label for="telefono">Teléfono de contacto</label>
                                     <div class="invalid-feedback">El número es obligatorio y solo debe contener dígitos (sin símbolos ni espacios).</div>
                                 </div>
-                                <!-- Elección de servicio OK-->
+                                <!-- Elección de servicio-->
                                 <div class="form-group mb-3">
                                     <label for="servicio" style="margin-bottom:6px">¿Qué servicio necesita?</label>
                                     <select id="servicio" name="servicio" class="form-control" required>
@@ -529,7 +532,7 @@ require_once __DIR__ . '/../includes/config.php';
                                     </select>
                                     <div class="invalid-feedback">El servicio es obligatorio.</div>
                                 </div>
-                                <!-- Mensaje OK-->
+                                <!-- Mensaje-->
                                 <div class="form-floating mb-3">
                                     <textarea name="mensaje" class="form-control" id="mensaje" placeholder="Ingrese su mensaje" style="height: 10rem" required minlength="20" maxlength="1000"></textarea>
                                     <label for="mensaje">Mensaje</label>
@@ -550,15 +553,13 @@ require_once __DIR__ . '/../includes/config.php';
                                     <button class="btn btn-primary btn-xl" id="submitButtonContacto" type="submit" disabled>Enviar</button>
                                 </div>
                                 <!-- reCAPTCHA -->
-                                <!-- <div class="g-recaptcha mb-3 mt-3" data-sitekey="6LdyYy0rAAAAAH9kSCDWmq8Rkp0vZRQX3oFSZcpr"></div> -->
+                                <div class="g-recaptcha mb-3 mt-3" data-sitekey="6LdyYy0rAAAAAH9kSCDWmq8Rkp0vZRQX3oFSZcpr"></div>
                             </form>
-
                             <!-- FIN FORMULARIO DE CONTACTO -->
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Fin formulario -->
         </div>
     </div>
 </section>
@@ -568,41 +569,76 @@ require_once __DIR__ . '/../includes/config.php';
 <?php include_once __DIR__ . '/../includes/footer.php'; ?>
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    const form = document.getElementById('contactoForm');
-    const inputs = form.querySelectorAll('input, textarea, select');
+$(document).ready(function() {
+    const form = $('#contactoForm');
 
-    // Validación al enviar
-    form.addEventListener('submit', function(event) {
-        if (!form.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-
-        form.classList.add('was-validated');
-    });
-
-    // Validación campo por campo al salir (blur) o escribir (input)
-    inputs.forEach(input => {
-        input.addEventListener('input', () => {
-            validateField(input);
-        });
-
-        input.addEventListener('blur', () => {
-            validateField(input);
-        });
-    });
-
-    function validateField(input) {
-        if (input.checkValidity()) {
-            input.classList.remove('is-invalid');
-            input.classList.add('is-valid');
+    // Validación por campo
+    form.find('input, textarea, select').on('input blur', function() {
+        if (this.checkValidity()) {
+            $(this).removeClass('is-invalid').addClass('is-valid');
         } else {
-            input.classList.remove('is-valid');
-            input.classList.add('is-invalid');
+            $(this).removeClass('is-valid').addClass('is-invalid');
         }
+    });
+
+    // Envío por AJAX
+    form.on('submit', function(e) {
+        e.preventDefault(); // Evita el comportamiento normal
+
+        if (!this.checkValidity()) {
+            this.classList.add('was-validated');
+            return;
+        }
+
+        const formData = new FormData(this);
+
+        $.ajax({
+            type: 'POST',
+            url: '../includes/Controller/procesar_mensaje.php',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                try {
+                    const jsonResponse = typeof response === 'string' ? JSON.parse(response) : response;
+                    if (jsonResponse.success) {
+                        mostrarAlerta("¡Tu mensaje ha sido enviado con éxito!", "success");
+                        form[0].reset();
+                        form.removeClass('was-validated');
+                        form.find('input, textarea, select').removeClass('is-valid is-invalid');
+                    } else {
+                        mostrarAlerta("Error: " + (jsonResponse.error || "Hubo un problema al enviar el mensaje."), "danger");
+                    }
+                } catch (err) {
+                    mostrarAlerta("Hubo un error inesperado en la respuesta del servidor.", "warning");
+                }
+            },
+            error: function() {
+                mostrarAlerta("Error al conectar con el servidor.", "danger");
+            }
+        });
+    });
+
+    // Mostrar alertas bonitas de Bootstrap
+   function mostrarAlerta(mensaje, tipo) {
+    Swal.fire({
+        title: tipo === 'success' ? '¡Éxito!' : 'Atención',
+        text: mensaje,
+        icon: tipo, // 'success', 'error', 'warning', etc.
+        confirmButtonText: 'Cerrar',
+        customClass: {
+            popup: 'rounded-4 shadow-lg'
+        }
+    });
     }
+
+});
 </script>
+
+
 
 </body>
 

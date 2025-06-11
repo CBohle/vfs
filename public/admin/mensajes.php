@@ -1,9 +1,10 @@
 <?php
 require_once __DIR__ . '/../../includes/db.php';
 require_once __DIR__ . '/../../includes/Controller/mensajesController.php';
-
+require_once __DIR__ . '/../../includes/auth.php';
 $total_mensajes = obtener_total_mensajes();
 $pendientes_mensajes = obtener_mensajes_pendientes();
+requiereRol([1, 3, 4]);
 ?>
 
 <!DOCTYPE html>
@@ -233,7 +234,256 @@ $pendientes_mensajes = obtener_mensajes_pendientes();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        
+        window.tabla = window.tabla || null;
+
+        function inicializarTablaMensajes() {
+            if ($.fn.DataTable.isDataTable('#tablaMensajes')) {
+                tabla.clear().destroy();
+            }
+
+            tabla = $('#tablaMensajes').DataTable({
+                responsive: false,
+                scrollX: true,
+                processing: true,
+                serverSide: true,
+                destroy: true,
+                ajax: {
+                    url: 'mensajesAjax.php',
+                    type: 'POST',
+                    data: function(d) {
+                        d.estado = $('#filtro_estado').val();
+                        d.servicio = $('#filtro_servicio').val();
+                        d.orden = $('#filtro_orden').val();
+                        d.importante = $('#filtro_importante').val();
+                        d.search.value = $('#filtro_busqueda').val(); // 🔍 filtro personalizado
+                    },
+                    dataSrc: function(json) {
+                        if (json.totalPendientes !== undefined && json.totalMensajes !== undefined) {
+                            $('#mensajesPorResponder').text(json.totalPendientes + ' de ' + json.totalMensajes);
+                        }
+                        return json.data;
+                    }
+                },
+                columns: [{
+                        data: 'importante',
+                        orderable: true,
+                        searchable: false,
+                        className: 'text-center',
+                        render: function(data, type, row) {
+                            const icon = data == 1 ? 'bi-star-fill text-warning' : 'bi-star text-muted';
+                            return `<i class="bi ${icon} marcarImportante" data-id="${row.id}" data-valor="${data}" style="cursor:pointer;"></i>`;
+                        }
+                    },
+                    {
+                        data: 'id'
+                    },
+                    {
+                        data: 'servicio'
+                    },
+                    {
+                        data: 'nombre'
+                    },
+                    {
+                        data: 'email'
+                    },
+                    {
+                        data: 'mensaje',
+                        className: 'col-mensaje',
+                        render: function(data, type, row) {
+                            if (type === 'display') {
+                                return `<div class="truncado-3-lineas">${data}</div>`;
+                            }
+                            return data;
+                        }
+                    },
+                    {
+                        data: 'estado',
+                        render: function(data) {
+                            let clase = 'badge ';
+                            switch (data.toLowerCase()) {
+                                case 'respondido':
+                                    clase += 'bg-success';
+                                    break;
+                                case 'leido':
+                                    clase += 'bg-primary';
+                                    break;
+                                case 'pendiente':
+                                    clase += 'bg-warning text-dark';
+                                    break;
+                                case 'eliminado':
+                                    clase += 'bg-secondary';
+                                    break;
+                                default:
+                                    clase += 'bg-light text-dark';
+                            }
+                            return `<span class="${clase}">${data.charAt(0).toUpperCase() + data.slice(1)}</span>`;
+                        }
+                    },
+                    {
+                        data: 'fecha'
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        searchable: false,
+                        className: 'text-center',
+                        render: function(data, type, row) {
+                        const verBtn = `
+                            <button class="btn btn-sm btn-primary me-1" title="Ver" onclick="verMensaje(${row.id})">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        `;
+
+                        <?php if ($_SESSION['rol_id'] === 4): ?>
+                            // Practicante solo ve
+                            return verBtn;
+                        <?php else: ?>
+                            if (row.estado.toLowerCase() === 'eliminado') {
+                                return verBtn + `
+                                    <button class="btn btn-sm btn-success" title="Recuperar" onclick="recuperarMensaje(${row.id})">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                    </button>
+                                `;
+                            } else {
+                                return verBtn + `
+                                    <button class="btn btn-sm btn-danger" title="Eliminar" onclick="eliminarMensaje(${row.id})">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                `;
+                            }
+                        <?php endif; ?>
+                    },
+                    }
+                ],
+                order: [
+                    [0, 'desc'],
+                    [7, 'desc']
+                ],
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+                },
+                dom: '<"d-flex justify-content-end mb-2"l>Bfrtip',
+                lengthMenu: [10, 30, 50, 100],
+                buttons: [{
+                        extend: 'copy',
+                        text: '<i class="bi bi-clipboard me-1"></i> Copiar',
+                        className: 'btn btn-primary btn-sm me-2'
+                    },
+                    {
+                        extend: 'excel',
+                        text: '<i class="bi bi-file-earmark-excel me-1"></i> Excel',
+                        className: 'btn btn-success btn-sm'
+                    }
+                ],
+                initComplete: function() {
+                    $('#loaderTabla').hide();
+                    $('#tablaMensajes').css('visibility', 'visible');
+                    tabla.columns.adjust().draw();
+                    tabla.buttons().container().appendTo('#exportButtons');
+                }
+            });
+        }
+
+        // Evento para búsqueda en tiempo real
+        $(document).on('keyup', '#filtro_busqueda', function() {
+            if (tabla) tabla.draw(); // Redibuja tabla con nuevo filtro
+        });
+
+        function filtrar() {
+            inicializarTablaMensajes();
+        }
+
+        function resetearFiltros() {
+            $('#filtro_estado').val('');
+            $('#filtro_servicio').val('');
+            $('#filtro_orden').val('DESC');
+            $('#filtro_busqueda').val('');
+            $('#filtro_importante').val('');
+            inicializarTablaMensajes();
+        }
+
+        function verMensaje(id) {
+            alert(`Abrir modal de mensaje con ID ${id}`);
+            // Aquí puedes abrir un modal o redirigir
+            $('#contenidoModalMensaje').html('<p class="text-center text-muted">Cargando...</p>');
+            $('#modalVerMensaje').modal('show');
+
+            $.get('mensajeModal.php', {
+                id
+            }, function(respuesta) {
+                $('#contenidoModalMensaje').html(respuesta);
+
+                const botonHTML = $('#contenidoModalMensaje').find('#botonImportanteHTML').html();
+                $('#botonImportanteWrapper').html(botonHTML);
+            }).fail(function() {
+                $('#contenidoModalMensaje').html('<p class="text-danger">Error al cargar el mensaje.</p>');
+            });
+        }
+
+        function eliminarMensaje(id) {
+            if (confirm("¿Estás seguro de que deseas eliminar este mensaje?")) {
+                $.post('mensajesAjax.php', {
+                    accion: 'eliminar',
+                    id: id
+                }, function(response) {
+                    if (response.success) {
+                        alert("Mensaje eliminado correctamente.");
+                        tabla.ajax.reload(null, false); // solo recarga datos sin redireccionar
+                    } else {
+                        alert("Hubo un error al intentar eliminar el mensaje.");
+                    }
+                }, 'json');
+            }
+        }
+
+        function verMensaje(id) {
+            $('#contenidoModalMensaje').html('<p class="text-center text-muted">Cargando...</p>');
+            $('#modalVerMensaje').modal('show');
+
+            $.get('mensajeModal.php', {
+                id: id
+            }, function(respuesta) {
+                $('#contenidoModalMensaje').html(respuesta);
+            }).fail(function() {
+                $('#contenidoModalMensaje').html('<p class="text-danger">Error al cargar el mensaje.</p>');
+            });
+        }
+
+        function recuperarMensaje(id) {
+            if (confirm("¿Deseas recuperar este mensaje?")) {
+                $.post('mensajesAjax.php', {
+                    accion: 'recuperar',
+                    id: id
+                }, function(response) {
+                    if (response.success) {
+                        tabla.ajax.reload(null, false);
+                        alert('Mensaje recuperado con éxito.');
+                    } else {
+                        alert('No se pudo recuperar el mensaje.');
+                    }
+                }, 'json');
+            }
+        }
+        $(document).ready(function() {
+            inicializarTablaMensajes();
+        });
+        $(document).on('click', '.marcarImportante', function() {
+            const id = $(this).data('id');
+            const valorActual = $(this).data('valor');
+            const nuevoValor = valorActual == 1 ? 0 : 1;
+
+            $.post('mensajesAjax.php', {
+                accion: 'importante',
+                mensaje_id: id,
+                importante: nuevoValor
+            }, function(response) {
+                if (response.success) {
+                    tabla.ajax.reload(null, false); // recarga sin perder la página actual
+                } else {
+                    alert('No se pudo actualizar el estado de importancia.');
+                }
+            }, 'json');
+        });
     </script>
     <!-- Footer -->
     <?php
