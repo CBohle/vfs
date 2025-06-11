@@ -85,7 +85,29 @@ $stmtCount->close();
 
 // --- Datos filtrados ---
 $orderClause = "ORDER BY $orderColumn $orderDir, importante DESC";
-$sqlData = "SELECT importante, id, tipo_persona, nombre_empresa, nombre_contacto, apellido_contacto, email_contacto, telefono_contacto, tipo_activos, detalle_activos, estado, fecha_creacion FROM clientes $where $orderClause LIMIT ?, ?";
+$sqlData = "SELECT 
+        c.importante,
+        c.id,
+        c.tipo_persona,
+        c.nombre_empresa,
+        c.nombre_contacto,
+        c.apellido_contacto,
+        c.email_contacto,
+        c.telefono_contacto,
+        c.tipo_activos,
+        c.detalle_activos,
+        c.estado,
+        c.fecha_creacion,
+        c.fecha_modificacion,
+        c.notas,
+        u.nombre AS nombre_usuario,
+        u.apellido AS apellido_usuario,
+        u.email AS email_usuario
+    FROM clientes c
+    LEFT JOIN usuarios_admin u ON u.id = c.usuario_admin_id
+    $where
+    $orderClause
+    LIMIT ?, ?";
 $stmtData = $conexion->prepare($sqlData);
 if (!$stmtData) {
     echo json_encode(['error' => 'Error en SQL DATA: ' . $conexion->error]);
@@ -105,6 +127,7 @@ $data = [];
 while ($row = $resultData->fetch_assoc()) {
     $data[] = [
         'importante' => $row['importante'],
+        'importante_texto' => ($row['importante'] ?? 0) == 1 ? 'Sí' : 'No',
         'id' => $row['id'],
         'tipo_persona' => $row['tipo_persona'],
         'nombre_empresa' => $row['nombre_empresa'],
@@ -116,6 +139,10 @@ while ($row = $resultData->fetch_assoc()) {
         'detalle_activos' => $row['detalle_activos'],
         'estado' => $row['estado'],
         'fecha' => date('d-m-Y', strtotime($row['fecha_creacion'])),
+        'fecha_modificacion' => date('d-m-Y', strtotime($row['fecha_modificacion'])),
+        'email_usuario_creador' => $row['email_usuario'],
+        'nombre_usuario_creador' => $row['nombre_usuario'] . ' ' . $row['apellido_usuario'],
+        'notas' => $row['notas'],
         'acciones' => ''
     ];
 }

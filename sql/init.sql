@@ -51,7 +51,7 @@ CREATE TABLE curriculum (
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     fecha_modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     importante BOOLEAN NOT NULL DEFAULT FALSE,
-    estado ENUM('pendiente', 'leido', 'respondido','eliminado') NOT NULL DEFAULT 'pendiente'
+    estado ENUM('pendiente', 'leido','eliminado') NOT NULL DEFAULT 'pendiente'
 );
 
 INSERT INTO curriculum (nombre, apellido, fecha_nacimiento, rut, email, telefono, direccion, comuna, region, estudio, institucion_educacional, ano_titulacion, formacion_tasacion, formacion_tasacion_descripcion, anos_experiencia_tasacion, empresa_tasacion, disponibilidad_comuna, disponibilidad_region, movilizacion_propia, archivo, importante, estado) VALUES

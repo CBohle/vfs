@@ -140,6 +140,19 @@ require_once __DIR__ . '/../../includes/config.php';
                         };
                         document.body.appendChild(script);
                     }
+                    if (section === 'postulaciones') {
+                        $('script[src*="postulaciones.js"]').remove();
+
+                        const script = document.createElement('script');
+                        script.src = BASE_ADMIN_URL + 'adminlte/assets/js/postulaciones.js?v=' + new Date().getTime();
+                        script.onload = function() {
+                            delete window.estadoFiltroPostulaciones; // Si tienes un filtro similar
+                            if (typeof cargarVistaPostulaciones === 'function') {
+                                cargarVistaPostulaciones();
+                            }
+                        };
+                        document.body.appendChild(script);
+                    }
                 });
             });
 

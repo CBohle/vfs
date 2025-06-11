@@ -35,10 +35,24 @@
             return `<i class="bi ${icon} marcarImportante" data-id="${row.id}" data-valor="${data}" style="cursor:pointer;"></i>`;
           },
         },
+        {
+          data: "importante_texto",
+          visible: false,
+          render: function (data) {
+            return data;
+          }
+        },
         { data: "id" },
         { data: "servicio" },
         { data: "nombre" },
         { data: "email" },
+        {
+          data: "telefono",
+          visible: false,
+          render: function (data) {
+            return data;
+          }
+        },
         {
           data: "mensaje",
           className: "col-mensaje",
@@ -47,6 +61,34 @@
               ? `<div class="truncado-3-lineas">${data}</div>`
               : data;
           },
+        },
+        {
+          data: "respuesta",
+          visible: false,
+          render: function (data) {
+            return data;
+          }
+        },
+        {
+          data: "fecha_respuesta",
+          visible: false,
+          render: function (data) {
+            return data;
+          }
+        },
+        {
+          data: "admin",
+          visible: false,
+          render: function (data) {
+            return data;
+          }
+        },
+        {
+          data: "rol",
+          visible: false,
+          render: function (data) {
+            return data;
+          }
         },
         {
           data: "estado",
@@ -114,11 +156,27 @@
           extend: "copy",
           text: '<i class="bi bi-clipboard me-1"></i> Copiar',
           className: "btn btn-primary btn-sm me-2",
+          exportOptions: {
+            columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],  // Seleccion de columnas a copiar
+            format: {
+              body: function (data, row, column, node) {
+                return typeof data === 'string' ? data.replace(/<.*?>/g, '') : data;
+              }
+            }
+          }
         },
         {
           extend: "excel",
           text: '<i class="bi bi-file-earmark-excel me-1"></i> Excel',
           className: "btn btn-success btn-sm",
+          exportOptions: {
+            columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], // Seleccion de columnas a copiar
+            format: {
+              body: function (data, row, column, node) {
+                return typeof data === 'string' ? data.replace(/<.*?>/g, '') : data;
+              }
+            }
+          }
         },
       ],
       initComplete: function () {

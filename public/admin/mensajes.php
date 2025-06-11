@@ -37,7 +37,9 @@ $pendientes_mensajes = obtener_mensajes_pendientes();
 
         .col-mensaje {
             width: 25%;
+            max-width: 300px;
             white-space: normal;
+            word-break: break-word;
         }
 
         .truncado-3-lineas {
@@ -52,6 +54,7 @@ $pendientes_mensajes = obtener_mensajes_pendientes();
             line-height: 1.2em;
             max-height: 3.6em;
             text-align: justify;
+            word-break: break-word;
         }
 
         .navbar {
@@ -173,11 +176,17 @@ $pendientes_mensajes = obtener_mensajes_pendientes();
                                         <thead class="table-light">
                                             <tr>
                                                 <th class="text-center">★</th>
+                                                <th class="d-none">Importante</th> <!-- columna oculta -->
                                                 <th>ID</th>
                                                 <th>Servicio</th>
                                                 <th>Nombre</th>
                                                 <th>Email</th>
+                                                <th class="d-none">Telefono</th> <!-- columna oculta -->
                                                 <th>Mensaje</th>
+                                                <th class="d-none">Respuesta</th> <!-- columna oculta -->
+                                                <th class="d-none">Fecha Respuesta</th> <!-- columna oculta -->
+                                                <th class="d-none">Usuario Respuesta</th> <!-- columna oculta -->
+                                                <th class="d-none">Rol Usuario</th> <!-- columna oculta -->
                                                 <th>Estado</th>
                                                 <th>Fecha</th>
                                                 <th class="text-center">Acciones</th>

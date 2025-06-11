@@ -164,6 +164,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'admin') {
                                         <thead class="table-light">
                                             <tr>
                                                 <th class="text-center">★</th>
+                                                <th class="d-none">Importante</th> <!-- columna oculta -->
                                                 <th>ID</th>
                                                 <th>Tipo de<br>Persona</th>
                                                 <th>Nombre de<br>Empresa</th>
@@ -173,6 +174,11 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'admin') {
                                                 <th>Tipo de<br>Activo</th>
                                                 <th>Detalle de<br>Activo</th>
                                                 <th>Estado</th>
+                                                <th class="d-none">Fecha Creación</th> <!-- columna oculta -->
+                                                <th class="d-none">Fecha Modificación</th> <!-- columna oculta -->
+                                                <th class="d-none">Email Usuario Creador</th> <!-- columna oculta -->
+                                                <th class="d-none">Nombre Usuario Creador</th> <!-- columna oculta -->
+                                                <th class="d-none">Notas</th> <!-- columna oculta -->
                                                 <th class="text-center">Acciones</th>
                                             </tr>
                                         </thead>
@@ -258,6 +264,13 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'admin') {
                         }
                     },
                     {
+                        data: "importante_texto",
+                        visible: false,
+                        render: function (data) {
+                            return data;
+                        }
+                    },
+                    {
                         data: 'id'
                     },
                     {
@@ -302,6 +315,41 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'admin') {
                         }
                     },
                     {
+                        data: 'fecha',
+                        visible: false,
+                        render: function (data) {
+                            return data;
+                        }
+                    },
+                    {
+                        data: 'fecha_modificacion',
+                        visible: false,
+                        render: function (data) {
+                            return data;
+                        }
+                    },
+                    {
+                        data: 'email_usuario_creador',
+                        visible: false,
+                        render: function (data) {
+                            return data;
+                        }
+                    },
+                    {
+                        data: 'nombre_usuario_creador',
+                        visible: false,
+                        render: function (data) {
+                            return data;
+                        }
+                    },
+                    {
+                        data: 'notas',
+                        visible: false,
+                        render: function (data) {
+                            return data;
+                        }
+                    },
+                    {
                         data: null,
                         orderable: false,
                         searchable: false,
@@ -343,12 +391,28 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'admin') {
                 buttons: [{
                         extend: 'copy',
                         text: '<i class="bi bi-clipboard me-1"></i> Copiar',
-                        className: 'btn btn-primary btn-sm me-2'
+                        className: 'btn btn-primary btn-sm me-2',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],  // Seleccion de columnas a copiar
+                            format: {
+                            body: function (data, row, column, node) {
+                                return typeof data === 'string' ? data.replace(/<.*?>/g, '') : data;
+                            }
+                            }
+                        }
                     },
                     {
                         extend: 'excel',
                         text: '<i class="bi bi-file-earmark-excel me-1"></i> Excel',
-                        className: 'btn btn-success btn-sm'
+                        className: 'btn btn-success btn-sm',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],  // Seleccion de columnas a copiar
+                            format: {
+                            body: function (data, row, column, node) {
+                                return typeof data === 'string' ? data.replace(/<.*?>/g, '') : data;
+                            }
+                            }
+                        }
                     }
                 ],
                 initComplete: function() {

@@ -96,7 +96,7 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'marcarLeido' && isset($_POS
     exit;
 }
 // Consulta con filtros
-$columns = ['importante', 'id', 'servicio', 'nombre', 'email', 'mensaje', 'estado', 'fecha_creacion'];
+$columns = ['m.importante', 'm.id', 'm.servicio', 'm.nombre', 'm.email', 'm.mensaje', 'm.estado', 'm.fecha_creacion'];
 $draw = intval($_POST['draw'] ?? 0);
 $start = intval($_POST['start'] ?? 0);
 $length = intval($_POST['length'] ?? 10);
@@ -114,7 +114,7 @@ $paramTypes = '';
 $params = [];
 
 // Construcción del WHERE con filtros y búsqueda
-$where = "WHERE nombre != ''";
+$where = "WHERE m.nombre != ''";
 
 // Solo excluir eliminados si no estamos buscando específicamente los eliminados
 if ($estado !== 'eliminado') {
@@ -149,7 +149,7 @@ if ($importante !== '') {
 }
 // Filtro de búsqueda
 if (!empty($search)) {
-    $where .= " AND (nombre LIKE ? OR email LIKE ? OR mensaje LIKE ? OR servicio LIKE ? OR estado LIKE ?)";
+    $where .= " AND (m.nombre LIKE ? OR m.email LIKE ? OR m.mensaje LIKE ? OR m.servicio LIKE ? OR m.estado LIKE ?)";
     $paramTypes .= "sssss";
     $params[] = "%$search%";
     $params[] = "%$search%";
@@ -159,7 +159,7 @@ if (!empty($search)) {
 }
 
 // --- COUNT con filtros ---
-$sqlCount = "SELECT COUNT(*) as total FROM mensajes $where";
+$sqlCount = "SELECT COUNT(*) as total FROM mensajes m $where";
 $stmtCount = $conexion->prepare($sqlCount);
 if ($paramTypes) {
     $stmtCount->bind_param($paramTypes, ...$params);
@@ -173,11 +173,30 @@ $stmtCount->close();
 $secondaryOrder = ($orderColumn === 'fecha_creacion') ? ', importante DESC' : '';
 $orderClause = "ORDER BY $orderColumn $orderDir $secondaryOrder";
 
-$sqlData = "SELECT importante, id, servicio, nombre, email, mensaje, estado, fecha_creacion
-            FROM mensajes
-            $where
-            $orderClause
-            LIMIT ?, ?";
+$sqlData = "
+    SELECT 
+        m.importante,
+        m.id,
+        m.servicio,
+        m.nombre,
+        m.apellido,
+        m.email,
+        m.telefono,
+        m.mensaje,
+        m.estado,
+        m.fecha_creacion,
+        r.respuesta,
+        r.fecha_respuesta,
+        ua.nombre AS admin_nombre,
+        ua.apellido AS admin_apellido,
+        rl.nombre AS rol
+    FROM mensajes m
+    LEFT JOIN respuestas r ON r.mensaje_id = m.id
+    LEFT JOIN usuarios_admin ua ON ua.id = r.usuario_admin_id
+    LEFT JOIN roles rl ON rl.id = ua.rol_id
+    $where
+    $orderClause
+    LIMIT ?, ?";
 $stmtData = $conexion->prepare($sqlData);
 
 $paramsWithLimits = $params;
@@ -195,13 +214,19 @@ while ($row = $resultData->fetch_assoc()) {
     $data[] = [
         'DT_RowId' => 'row_' . $row['id'],
         'importante' => $row['importante'],
+        'importante_texto' => ($row['importante'] ?? 0) == 1 ? 'Sí' : 'No',
         'id' => $row['id'],
         'servicio' => $row['servicio'],
-        'nombre' => $row['nombre'],
+        'nombre' => $row['nombre'] . ' ' . $row['apellido'],
         'email' => $row['email'],
+        'telefono' => $row['telefono'] ?? '',
         'mensaje' => $row['mensaje'],
         'estado' => $row['estado'],
         'fecha' => date('d-m-Y', strtotime($row['fecha_creacion'])),
+        'respuesta' => $row['respuesta'] ?? '',
+        'fecha_respuesta' => $row['fecha_respuesta'] ?? '',
+        'admin' => ($row['admin_nombre'] ?? '') . ' ' . ($row['admin_apellido'] ?? ''),
+        'rol' => $row['rol'] ?? '',
         'acciones' => ''
     ];
 }
