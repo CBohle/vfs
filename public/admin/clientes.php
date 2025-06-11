@@ -7,7 +7,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'admin') {
     header('Location: /admin/login.php');
     exit;
 } */
-requiereRol([1, 3, 4]);
+requiereRol([1, 3, 4,5]);
 ?>
 
 <!DOCTYPE html>
@@ -140,14 +140,17 @@ requiereRol([1, 3, 4]);
                             <label for="filtro_busqueda">Buscar palabra clave</label>
                         </div>
                         <!-- Grupo 3: Crear nuevo cliente -->
-                        <div class="form-floating align-items-center">
-                            <label class="form-label d-block invisible">.</label>
-                            <button type="button" class="btn btn-warning btn-sm w-100" onclick="crearCliente()">
-                                <h6 class="mb-1 fw-semibold">
-                                    <span id="ClientePorCrear">Nuevo Cliente</span>
-                                </h6>
-                            </button>
-                        </div>
+                       <?php if ($_SESSION['rol_id'] != 4): ?>
+    <div class="form-floating align-items-center">
+        <label class="form-label d-block invisible">.</label>
+        <button type="button" class="btn btn-warning btn-sm w-100" onclick="crearCliente()">
+            <h6 class="mb-1 fw-semibold">
+                <span id="ClientePorCrear">Nuevo Cliente</span>
+            </h6>
+        </button>
+    </div>
+<?php endif; ?>
+
                     </form>
                 </div>
             </div>
@@ -224,8 +227,12 @@ requiereRol([1, 3, 4]);
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+  
+<script>
+    const rol_id = <?= json_encode($_SESSION['rol_id']) ?>;
+</script>
     <script>
+
         window.tabla = window.tabla || null;
 
         function inicializarTablaClientes() {
@@ -356,27 +363,27 @@ requiereRol([1, 3, 4]);
                         orderable: false,
                         searchable: false,
                         className: 'text-center',
-                        render: function(data, type, row) {
+                       render: function(data, type, row) {
+                            let botones = `
+                        <button class="btn btn-sm btn-primary me-1" title="Ver" onclick="verCliente(${row.id})">
+                            <i class="bi bi-eye"></i>
+                        </button>`;
+
                             if (row.estado.toLowerCase() === 'eliminado') {
-                                return `
-                    <button class="btn btn-sm btn-primary me-1" title="Ver" onclick="verCliente(${row.id})">
-                        <i class="bi bi-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-success" title="Recuperar" onclick="recuperarCliente(${row.id})">
-                        <i class="bi bi-arrow-counterclockwise"></i>
-                    </button>
-                    `;
-                            } else {
-                                return `
-                    <button class="btn btn-sm btn-primary me-1" title="Ver" onclick="verCliente(${row.id})">
-                        <i class="bi bi-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger" title="Eliminar" onclick="eliminarCliente(${row.id})">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                    `;
+                                botones += `
+                        <button class="btn btn-sm btn-success" title="Recuperar" onclick="recuperarCliente(${row.id})">
+                            <i class="bi bi-arrow-counterclockwise"></i>
+                        </button>`;
+                            } else if (rol_id != 4) {
+                                botones += `
+                        <button class="btn btn-sm btn-danger" title="Eliminar" onclick="eliminarCliente(${row.id})">
+                            <i class="bi bi-trash"></i>
+                        </button>`;
                             }
-                        },
+
+                            return botones;
+                        }
+                                ,
                     }
                 ],
                 order: [
