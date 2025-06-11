@@ -461,20 +461,6 @@ requiereRol([1]);
             <?php
             require_once __DIR__ . '/includes/footerAdmin.php';
             ?>
-            <!-- <script>
-                document.getElementById('formUsuario').addEventListener('submit', function(event) {
-                    const password = document.getElementById('passwordUsuario').value;
-                    const confirmarPassword = document.getElementById('confirmarPasswordUsuario').value;
-
-                    if (password !== confirmarPassword) {
-                        event.preventDefault(); // Evita que se envíe el formulario
-                        return false;
-                    }
-
-                    // Si las contraseñas coinciden, el formulario se envía normalmente
-                });
-            </script> -->
-
 </body>
 
 </html>
