@@ -96,7 +96,7 @@ $stmtCount->close();
 
 // --- Datos filtrados ---
 $orderClause = "ORDER BY $orderColumn $orderDir, importante DESC";
-$sqlData = "SELECT importante, id, rut, nombre, apellido, fecha_nacimiento, email, telefono, direccion, comuna, region, institucion_educacional,formacion_tasacion_descripcion, empresa_tasacion, estudio, ano_titulacion, formacion_tasacion, anos_experiencia_tasacion, disponibilidad_comuna, disponibilidad_region, movilizacion_propia, estado, archivo, fecha_creacion FROM curriculum $where $orderClause LIMIT ?, ?";
+$sqlData = "SELECT importante, id, rut, nombre, apellido, fecha_nacimiento, email, telefono, direccion, comuna, region, institucion_educacional, detalle_formacion, otra_empresa, estudios, ano_titulacion, formacion_tasacion, anos_experiencia_tasacion, disponibilidad_comuna, disponibilidad_region, movilizacion_propia, estado, archivo, fecha_creacion FROM curriculum $where $orderClause LIMIT ?, ?";
 $stmtData = $conexion->prepare($sqlData);
 if (!$stmtData) {
     echo json_encode(['error' => 'Error en SQL DATA: ' . $conexion->error]);
@@ -127,14 +127,14 @@ while ($row = $resultData->fetch_assoc()) {
         'direccion' => $row['direccion'],
         'comuna' => $row['comuna'],
         'region' => $row['region'],
-        'estudio' => $row['estudio'],
+        'estudios' => $row['estudios'],
         'institucion_educacional' => $row['institucion_educacional'],
-        'formacion_tasacion_descripcion' => $row['formacion_tasacion_descripcion'],
+        'detalle_formacion' => $row['detalle_formacion'],
         'ano_titulacion' => $row['ano_titulacion'],
         'formacion_tasacion' => $row['formacion_tasacion'] ?? 0,
         'formacion_tasacion_texto' => ($row['formacion_tasacion'] ?? 0) == 1 ? 'Sí' : 'No',
         'anos_experiencia_tasacion' => $row['anos_experiencia_tasacion'],
-        'empresa_tasacion' => $row['empresa_tasacion'],
+        'otra_empresa' => $row['otra_empresa'],
         'disponibilidad_comuna' => $row['disponibilidad_comuna'],
         'disponibilidad_comuna_texto' => ($row['disponibilidad_comuna'] ?? 0) == 1 ? 'Sí' : 'No',
         'disponibilidad_region' => $row['disponibilidad_region'],

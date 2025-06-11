@@ -69,7 +69,7 @@ function inicializarTablaPostulaciones() {
         data: "fecha_nacimiento",
       },
       {
-        data: "estudio",
+        data: "estudios",
       },
       {
         data: "institucion_educacional",
@@ -103,7 +103,7 @@ function inicializarTablaPostulaciones() {
         }
       },
       {
-        data: "formacion_tasacion_descripcion",
+        data: "detalle_formacion",
         visible: false,
         render: function (data) {
           return data;
@@ -114,7 +114,7 @@ function inicializarTablaPostulaciones() {
         className: "text-center",
       },
       {
-        data: "empresa_tasacion",
+        data: "otra_empresa",
         visible: false,
         render: function (data) {
           return data;

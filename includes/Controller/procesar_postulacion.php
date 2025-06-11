@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         INSERT INTO curriculum (
             nombre, apellido, fecha_nacimiento, rut, email, telefono,
             direccion, comuna, region, estudios, institucion_educacional,
-            ano_titulacion, formacion_tasacion, formacion_tasacion_descripcion,
+            ano_titulacion, formacion_tasacion, detalle_formacion,
             anos_experiencia_tasacion, otra_empresa,
             disponibilidad_comuna, disponibilidad_region, movilizacion_propia,
             archivo
@@ -87,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         "sssssssssssisisiisss",
         $nombre, $apellido, $fecha_nacimiento, $rut, $email, $telefono,
         $direccion, $comuna, $region, $estudios, $institucion, $ano_titulacion,
-        $formacion_tasacion, $formacion_tasacion_descripcion,
+        $formacion_tasacion, $detalle_formacion,
         $anos_experiencia_tasacion, $otra_empresa,
         $disponibilidad_comuna, $disponibilidad_region, $movilizacion_propia,
         $ruta_relativa
