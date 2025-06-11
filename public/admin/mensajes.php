@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../includes/Controller/mensajesController.php';
 require_once __DIR__ . '/../../includes/auth.php';
 $total_mensajes = obtener_total_mensajes();
 $pendientes_mensajes = obtener_mensajes_pendientes();
-requiereRol([1, 3, 4]);
+requiereRol([1, 3, 4, 5]);
 ?>
 
 <!DOCTYPE html>
@@ -325,7 +325,7 @@ requiereRol([1, 3, 4]);
                             </button>
                         `;
 
-                        <?php if ($_SESSION['rol_id'] === 4): ?>
+                        <?php if ($_SESSION['rol_id'] === 4 || $_SESSION['rol_id'] === 5 ): ?>
                             // Practicante solo ve
                             return verBtn;
                         <?php else: ?>
