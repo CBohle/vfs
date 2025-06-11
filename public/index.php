@@ -1,7 +1,10 @@
 <!-- Creative - Start Bootstrap Theme
     https://startbootstrap.com/template/creative
     Licencia MIT -->
-<!-- Vista pública del landing -->
+
+<!-- VISTA DE LA LANDING PAGE -->
+<!-- Incluye el formulario de contacto y sus validaciones nativas -->
+
 <?php
 require_once __DIR__ . '/../includes/config.php';
 ?>
