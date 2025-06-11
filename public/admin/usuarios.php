@@ -174,6 +174,7 @@ requiereRol([1]);
                             </div>
                         </div>
                     </div>
+                    <!-- Creación de nuevo usuario -->
                     <div class="col-lg-5 mb-3" id="formularioUsuarioContainer" style="display: none;">
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
@@ -204,8 +205,13 @@ requiereRol([1]);
                                 </div>
                                 <div class="mb-3">
                                     <label for="passwordUsuario" class="form-label">Contraseña</label>
-                                    <input type="text" class="form-control" id="passwordUsuario" name="password">
+                                    <input type="password" class="form-control" id="passwordUsuario" name="password" required>
                                 </div>
+                                <div class="mb-3">
+                                    <label for="confirmarPasswordUsuario" class="form-label">Confirmar Contraseña</label>
+                                    <input type="password" class="form-control" id="confirmarPasswordUsuario" name="confirmar_password" required>
+                                </div>
+
                                 <input type="hidden" name="usuario_id" id="usuario_id">
                                 <div class="d-flex justify-content-end gap-2">
                                     <button type="button" class="btn btn-secondary" onclick="ocultarFormularioUsuario()">Cancelar</button>
@@ -422,13 +428,23 @@ requiereRol([1]);
                 }
                 $('#formUsuario').on('submit', function(e) {
                     e.preventDefault();
+
+                    const password = $('#passwordUsuario').val().trim();
+                    const confirmarPassword = $('#confirmarPasswordUsuario').val().trim();
+
+                    if (password !== confirmarPassword) {
+                        alert('Las contraseñas no coinciden. Por favor, verifica ambos campos.');
+                        return; // NO continúa con la creación del usuario
+                    }
+
+                    // Si las contraseñas coinciden, continúa con la petición AJAX
                     $.post('usuariosAjax.php', {
                         accion: 'guardarUsuario',
                         id: $('#usuario_id').val(),
                         email: $('#emailUsuario').val().trim(),
                         nombre: $('#nombreUsuario').val().trim(),
                         apellido: $('#apellidoUsuario').val().trim(),
-                        password: $('#passwordUsuario').val().trim(),
+                        password: password,
                         rol_id: $('#rolUsuario').val()
                     }, function(response) {
                         if (response.success) {
@@ -445,6 +461,20 @@ requiereRol([1]);
             <?php
             require_once __DIR__ . '/includes/footerAdmin.php';
             ?>
+            <!-- <script>
+                document.getElementById('formUsuario').addEventListener('submit', function(event) {
+                    const password = document.getElementById('passwordUsuario').value;
+                    const confirmarPassword = document.getElementById('confirmarPasswordUsuario').value;
+
+                    if (password !== confirmarPassword) {
+                        event.preventDefault(); // Evita que se envíe el formulario
+                        return false;
+                    }
+
+                    // Si las contraseñas coinciden, el formulario se envía normalmente
+                });
+            </script> -->
+
 </body>
 
 </html>
