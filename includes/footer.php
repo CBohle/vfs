@@ -74,7 +74,7 @@ if ($pagina_actual === 'index.php') {
 
         if (seleccion === "Sí") {
             campoEspecificar.style.display = "block";
-            inputEspecificar.setAttribute("", "required");
+            inputEspecificar.setAttribute("required", "");
         } else {
             campoEspecificar.style.display = "none";
             inputEspecificar.removeAttribute("data-sb-validations");
