@@ -101,7 +101,7 @@ $textoImportante = $esImportante ? 'Marcar como no importante' : 'Marcar como im
                 </div>
                 <div class="fila-dato">
                     <span class="dato-label">Tipo Persona:</span>
-                    <select class="form-select" aria-label="Tipo Persona" <?= $id > 0 ? 'disabled' : '' ?>>
+                    <select class="form-select" aria-label="Tipo Persona" name="tipo_persona" <?= $id > 0 ? 'disabled' : '' ?>>
                         <option hidden selected>Seleccionar</option>
                         <option value="Natural" <?= $msg['tipo_persona'] === 'Natural' ? 'selected' : '' ?>>Natural</option>
                         <option value="Juridica" <?= $msg['tipo_persona'] === 'Juridica' ? 'selected' : '' ?>>Jurídica</option>
@@ -162,7 +162,7 @@ $textoImportante = $esImportante ? 'Marcar como no importante' : 'Marcar como im
 
                 <div class="fila-dato">
                     <span class="dato-label">Detalle Activo:</span>
-                    <select class="form-select" id="detalle_activo" aria-label="Detalle de Activo" name="detalle_activo" <?= $id > 0 ? 'disabled' : '' ?>>
+                    <select class="form-select" id="detalle_activos" aria-label="Detalle de Activos" name="detalle_activos" <?= $id > 0 ? 'disabled' : '' ?> data-valor="<?= htmlspecialchars($msg['detalle_activos']) ?>">
                         <!-- Las opciones son modificadas dinámicamente con JavaScript -->
                     </select>
                 </div>
@@ -197,39 +197,3 @@ $textoImportante = $esImportante ? 'Marcar como no importante' : 'Marcar como im
         </div>
     </div>
 </form>
-
-<script>
-    function toggleImportante(id, estadoActual) {
-        const nuevoValor = estadoActual === 1 ? 0 : 1;
-
-        $.post('ClientesAjax.php', {
-            accion: 'importante',
-            cliente_id: id,
-            importante: nuevoValor
-        }, function(response) {
-            if (response.success) {
-                const boton = $('#btnImportante');
-                const icono = $('#iconoImportante');
-                const texto = $('#textoImportante');
-
-                if (nuevoValor === 1) {
-                    boton.removeClass('btn-warning').addClass('btn-outline-warning');
-                    icono.removeClass('bi-star').addClass('bi-star-fill');
-                    texto.text('Marcar como no importante');
-                } else {
-                    boton.removeClass('btn-outline-warning').addClass('btn-warning');
-                    icono.removeClass('bi-star-fill').addClass('bi-star');
-                    texto.text('Marcar como importante');
-                }
-
-                boton.attr('onclick', `toggleImportante(${id}, ${nuevoValor})`);
-
-                if (typeof tabla !== 'undefined' && tabla !== null) {
-                    tabla.ajax.reload(null, false);
-                }
-            } else {
-                alert('No se pudo actualizar el estado de importancia.');
-            }
-        }, 'json');
-    }
-</script>

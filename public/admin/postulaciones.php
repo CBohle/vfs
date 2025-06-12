@@ -74,7 +74,9 @@ requiereRol([1, 2,5]);
         }
     </style>
     <script>
-        const BASE_PATH = "/vfs/public/admin/";
+        if (typeof BASE_PATH === 'undefined') {
+            var BASE_PATH = "/vfs/public/admin/";
+        }
     </script>
 </head>
 

@@ -3,6 +3,7 @@ header('Content-Type: application/json');
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+session_start();
 
 require_once __DIR__ . '/../../includes/db.php';
 require_once __DIR__ . '/../../includes/Controller/clientesController.php';
@@ -13,6 +14,56 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
+if (isset($_POST['accion']) && $_POST['accion'] === 'crear') {
+    $nombre = $_POST['nombre_cliente'] ?? '';
+    $apellido = $_POST['apellido_cliente'] ?? '';
+    $tipo_persona = $_POST['tipo_persona'] ?? '';
+    $nombre_empresa = $_POST['nombre_empresa'] ?? '';
+    $email = $_POST['email_contacto'] ?? '';
+    $telefono = $_POST['telefono_contacto'] ?? '';
+    $tipo_activo = $_POST['tipo_activo'] ?? '';
+    $detalle_activo = $_POST['detalle_activo'] ?? '';
+    $notas = $_POST['notas'] ?? '';
+    $usuario_id = $_SESSION['usuario_id'] ?? null;
+
+    $sql = "INSERT INTO clientes 
+        (tipo_persona, nombre_empresa, nombre_contacto, apellido_contacto, email_contacto, telefono_contacto, tipo_activos, detalle_activos, notas, estado, usuario_admin_id, fecha_creacion) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'activo', ?, NOW())";
+
+    $stmt = $conexion->prepare($sql);
+    $stmt->bind_param('sssssssssi', $tipo_persona, $nombre_empresa, $nombre, $apellido, $email, $telefono, $tipo_activo, $detalle_activo, $notas, $usuario_id);
+
+    /*if ($stmt->execute()) {
+        echo json_encode(['success' => true]);
+    } else {
+        echo json_encode(['success' => false, 'error' => $stmt->error]);
+    }
+    exit;*/
+
+    if (!$stmt->execute()) {
+        echo json_encode([
+            'success' => false,
+            'error' => $stmt->error,
+            'sql' => $sql,
+            'data' => [
+                'tipo_persona' => $tipo_persona,
+                'nombre_empresa' => $nombre_empresa,
+                'nombre' => $nombre,
+                'apellido' => $apellido,
+                'email' => $email,
+                'telefono' => $telefono,
+                'tipo_activo' => $tipo_activo,
+                'detalle_activo' => $detalle_activo,
+                'notas' => $notas,
+                'usuario_id' => $usuario_id,
+            ]
+        ]);
+        exit;
+    }
+
+    echo json_encode(['success' => true]);
+    exit;
+}
 // --- Inicializar variables ---
 $params = [];
 $paramTypes = '';
