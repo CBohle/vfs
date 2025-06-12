@@ -122,19 +122,24 @@
           searchable: false,
           className: "text-center",
           render: function (data, type, row) {
+            const verBtn = `
+              <button class="btn btn-sm btn-primary me-1" title="Ver" onclick="verMensaje(${row.id})">
+                  <i class="bi bi-eye"></i>
+              </button>
+            `;
+
+            if (ROL_ID === 4 || ROL_ID === 5) {
+              // Practicante solo puede ver
+              return verBtn;
+            }
+
             if (row.estado.toLowerCase() === "eliminado") {
-              return `
-                <button class="btn btn-sm btn-primary me-1" title="Ver" onclick="verMensaje(${row.id})">
-                    <i class="bi bi-eye"></i>
-                </button>
+              return verBtn + `
                 <button class="btn btn-sm btn-success" title="Recuperar" onclick="recuperarMensaje(${row.id})">
                     <i class="bi bi-arrow-counterclockwise"></i>
                 </button>`;
             } else {
-              return `
-                <button class="btn btn-sm btn-primary me-1" title="Ver" onclick="verMensaje(${row.id})">
-                    <i class="bi bi-eye"></i>
-                </button>
+              return verBtn + `
                 <button class="btn btn-sm btn-danger" title="Eliminar" onclick="eliminarMensaje(${row.id})">
                     <i class="bi bi-trash"></i>
                 </button>`;

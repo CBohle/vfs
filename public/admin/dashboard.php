@@ -25,6 +25,7 @@ require_once __DIR__ . '/../../includes/config.php';
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script>
         const BASE_ADMIN_URL = "<?= BASE_ADMIN_URL ?>";
+        const ROL_ID = <?= $_SESSION['rol_id'] ?>;
     </script>
 </head>
 
@@ -53,7 +54,7 @@ require_once __DIR__ . '/../../includes/config.php';
                 <ul class="nav flex-column">
                      <?php if (in_array($_SESSION['rol_id'], [1, 5])): ?> 
                         <li class="nav-item">
-                        <a class="nav-link active" data-section="inicio">
+                        <a class="nav-link active" data-section="inicioResumen">
                             <i class="bi bi-house fs-6" style="margin-right: 5px"></i>
                             Dashboard
                         </a>

@@ -11,6 +11,10 @@ require_once __DIR__ . '/../../vendor/autoload.php'; // Asegúrate de que exista
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+if (!isset($_POST['accion']) && empty($_POST['draw'])) {
+    echo json_encode(['success' => false, 'error' => 'Acción no especificada']);
+    exit;
+}
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -64,7 +68,7 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'recuperar' && isset($_POST[
 
 
 // Guardar respuesta a un mensaje
-if (isset($_POST['mensaje_id'], $_POST['respuesta']) && empty($_POST['accion'])) {
+if (isset($_POST['accion']) && $_POST['accion'] === 'guardarRespuesta' && isset($_POST['mensaje_id'], $_POST['respuesta'])) {
     $mensaje_id = intval($_POST['mensaje_id']);
     $respuesta = trim($_POST['respuesta']);
     $usuario_admin_id = $_SESSION['usuario_id'] ?? 0;
@@ -75,7 +79,20 @@ if (isset($_POST['mensaje_id'], $_POST['respuesta']) && empty($_POST['accion']))
     $stmt->execute();
     $result = $stmt->get_result();
     $cliente = $result->fetch_assoc();
+    // Verificar si ya existe una respuesta para este mensaje
+    $stmt = $conexion->prepare("SELECT COUNT(*) as total FROM respuestas WHERE mensaje_id = ?");
+    $stmt->bind_param("i", $mensaje_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $existe = $result->fetch_assoc()['total'] ?? 0;
 
+    if ($existe > 0) {
+        echo json_encode([
+            'success' => false,
+            'error' => 'Este mensaje ya ha sido respondido.'
+        ]);
+        exit;
+    }
     // Guardar respuesta
     $stmt = $conexion->prepare("INSERT INTO respuestas (mensaje_id, usuario_admin_id, respuesta) VALUES (?, ?, ?)");
     $stmt->bind_param("iis", $mensaje_id, $usuario_admin_id, $respuesta);
@@ -131,7 +148,10 @@ if (isset($_POST['mensaje_id'], $_POST['respuesta']) && empty($_POST['accion']))
             'rol' => $admin['rol'] ?? ''
         ]);
     } else {
-        echo json_encode(['success' => false, 'error' => 'Error al insertar respuesta']);
+        echo json_encode([
+            'success' => false,
+            'error' => 'Error al insertar respuesta: ' . $stmt->error
+        ]);
     }
     exit;
 }
