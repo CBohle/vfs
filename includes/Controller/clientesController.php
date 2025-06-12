@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../includes/db.php';
+require_once __DIR__ . '/../includes/db.php';
 
 function actualizar_campo_cliente($campo, $valor, $id)
 {

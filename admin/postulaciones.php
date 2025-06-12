@@ -1,10 +1,10 @@
 <?php
-require_once __DIR__ . '/../../includes/db.php';
-require_once __DIR__ . '/../../includes/Controller/mensajesController.php';
-require_once __DIR__ . '/../../includes/auth.php';
-$total_mensajes = obtener_total_mensajes();
-$pendientes_mensajes = obtener_mensajes_pendientes();
-requiereRol([1, 3, 4, 5]);
+require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../includes/Controller/postulacionesController.php';
+require_once __DIR__ . '/../includes/auth.php';
+$total_postulaciones = obtener_total_postulaciones();
+$pendientes_postulaciones = obtener_postulaciones_pendientes();
+requiereRol([1, 2,5]);
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +12,7 @@ requiereRol([1, 3, 4, 5]);
 
 <head>
     <meta charset="UTF-8">
-    <title>Mensajes de Contacto</title>
+    <title>Postulaciones</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css">
@@ -27,7 +27,7 @@ requiereRol([1, 3, 4, 5]);
             background-color: #f8f9fa;
         }
 
-        a.marcarImportante {
+        a.marcarImportantePostulacion {
             cursor: pointer;
             text-decoration: none;
         }
@@ -38,9 +38,7 @@ requiereRol([1, 3, 4, 5]);
 
         .col-mensaje {
             width: 25%;
-            max-width: 300px;
             white-space: normal;
-            word-break: break-word;
         }
 
         .truncado-3-lineas {
@@ -54,7 +52,6 @@ requiereRol([1, 3, 4, 5]);
             line-height: 1.2em;
             max-height: 3.6em;
             text-align: justify;
-            word-break: break-word;
         }
 
         .navbar {
@@ -76,17 +73,22 @@ requiereRol([1, 3, 4, 5]);
             max-width: 100%;
         }
     </style>
+    <script>
+        if (typeof BASE_PATH === 'undefined') {
+            var BASE_PATH = "/vfs/public/admin/";
+        }
+    </script>
 </head>
 
 <body class="bg-light">
     <div class="container-fluid px-3 py-2">
         <div id="contenido-dinamico" class="mx-auto w-100" style="max-width: 100%;">
             <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-                <h2 class="mb-0">Mensajes de Contacto</h2>
+                <h2 class="mb-0">Postulaciones</h2>
                 <!-- Botones de exportación -->
                 <div id="exportButtons" class="d-flex gap-1"></div>
             </div>
-
+            <!-- Filtros -->
             <div class="card mb-4">
                 <div class="card-header">
                     <h5 class="mb-0">Filtros</h5>
@@ -100,23 +102,13 @@ requiereRol([1, 3, 4, 5]);
                                     <option value="" hidden>Seleccionar</option>
                                     <option value="pendiente">Pendiente</option>
                                     <option value="leido">Leído</option>
-                                    <option value="respondido">Respondido</option>
                                     <option value="eliminado">Eliminado</option>
                                 </select>
                                 <label for="filtro_estado">Estado</label>
                             </div>
-                            <div class="form-floating">
-                                <select class="form-select form-select-sm" id="filtro_servicio" aria-label="Servicio">
-                                    <option value="" hidden selected>Seleccionar</option>
-                                    <option value="tasacion">Tasación</option>
-                                    <option value="consultoria">Consultoria</option>
-                                    <option value="Otros">Otros</option>
-                                </select>
-                                <label for="filtro_servicio">Servicio</label>
-                            </div>
-                            <!--<div class="form-floating">
+                            <!--<div class="form-floating hidden">
                                 <select class="form-select form-select-sm" id="filtro_orden" aria-label="Orden">
-                                    <option value="DESC" hidden selected>Seleccionar</option>
+                                    <option value="" hidden selected>Seleccionar</option>
                                     <option value="DESC">Más Reciente</option>
                                     <option value="ASC">Más Antiguo</option>
                                 </select>
@@ -147,47 +139,62 @@ requiereRol([1, 3, 4, 5]);
                             <input type="text" class="form-floating form-control form-control-sm" id="filtro_busqueda" placeholder="Buscar palabra clave">
                             <label for="filtro_busqueda">Buscar palabra clave</label>
                         </div>
-
-                        <!-- Grupo 3: Mensajes pendientes -->
+                        <!-- Grupo 3: Postulaciones pendientes -->
                         <div class="form-floating align-items-center">
                             <label class="form-label d-block invisible">.</label>
-                            <button type="button" class="btn btn-warning btn-sm w-100" onclick="$('#filtro_estado').val('');$('#filtro_servicio').val('');$('#filtro_orden').val('DESC');$('#filtro_importante').val(''); filtrarPendienteYLeido()">
+                            <button type="button" class="btn btn-warning btn-sm w-100" onclick="$('#filtro_estado').val('pendiente'); $('#filtro_orden').val('DESC');$('#filtro_importante').val('');filtrar();">
                                 <h6 class="mb-1 fw-semibold">
-                                    <span id="mensajesPorResponder"><?= $pendientes_mensajes ?> de <?= $total_mensajes ?></span>
+                                    <span id="PostulacionesPorResponder"><?= $pendientes_postulaciones ?> de <?= $total_postulaciones ?></span>
                                 </h6>
-                                <p class="text-muted mb-0 small">Mensajes sin responder</p>
+                                <p class="text-muted mb-0 small">Postulaciones pendientes</p>
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
+            <!-- Tabla postulaciones -->
             <div class="card-body">
                 <div class="row gy-2 gx-3 align-items-end justify-content-between flex-wrap">
-                    <section id="tabla-mensajes">
+                    <section id="tabla-postulaciones">
                         <div class="card">
                             <div class="card-body">
                                 <div id="loaderTabla" class="text-center my-3">
-                                    <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Cargando...</span></div>
+                                    <div class="spinner-border text-primary" role="status"><span class="visually-hidden"></span></div>
                                     <p class="mt-2 mb-0 text-muted">Cargando tabla...</p>
                                 </div>
-                                <div id="tablaMensajesContainer" class="table-responsive" style="overflow-x: auto;">
-                                    <table id="tablaMensajes" class="table table-striped table-hover align-middle nowrap w-100" style="min-width: 1200px;">
+                                <div class="table-responsive" style="overflow-x: auto;">
+                                    <table id="tablaPostulaciones" class="table table-striped table-hover align-middle nowrap w-100" style="min-width: 1200px;">
                                         <thead class="table-light">
                                             <tr>
                                                 <th class="text-center">★</th>
                                                 <th class="d-none">Importante</th> <!-- columna oculta -->
                                                 <th>ID</th>
-                                                <th>Servicio</th>
+                                                <th>Rut</th>
                                                 <th>Nombre</th>
-                                                <th>Email</th>
+                                                <th>Apellido</th>
+                                                <th class="d-none">Fecha Nacimiento</th> <!-- columna oculta -->
+                                                <th>Estudio</th>
+                                                <th class="d-none">Institucion Educacional</th> <!-- columna oculta -->
+                                                <th class="d-none">Año Titulación</th> <!-- columna oculta -->
+                                                <th>Formación<br>Tasación</th>
+                                                <th class="d-none">Formación Tasación</th> <!-- columna oculta -->
+                                                <th class="d-none">Descripción Formación</th> <!-- columna oculta -->
+                                                <th>Años<br>Experiencia</th>
+                                                <th class="d-none">Empresa Tasacion</th> <!-- columna oculta -->
+                                                <th>Disponibilidad<br>Comuna</th>
+                                                <th class="d-none">Disponibilidad Comuna</th> <!-- columna oculta -->
+                                                <th>Disponibilidad<br>Region</th>
+                                                <th class="d-none">Disponibilidad Region</th> <!-- columna oculta -->
+                                                <th>Movilización<br>Propia</th>   
+                                                <th class="d-none">Movilizacion Propia</th> <!-- columna oculta -->                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+                                                <th class="d-none">Email</th> <!-- columna oculta -->
                                                 <th class="d-none">Telefono</th> <!-- columna oculta -->
-                                                <th>Mensaje</th>
-                                                <th class="d-none">Respuesta</th> <!-- columna oculta -->
-                                                <th class="d-none">Fecha Respuesta</th> <!-- columna oculta -->
-                                                <th class="d-none">Usuario Respuesta</th> <!-- columna oculta -->
-                                                <th class="d-none">Rol Usuario</th> <!-- columna oculta -->
+                                                <th class="d-none">Dirección</th> <!-- columna oculta -->
+                                                <th class="d-none">Comuna</th> <!-- columna oculta -->
+                                                <th class="d-none">Region</th> <!-- columna oculta -->
                                                 <th>Estado</th>
                                                 <th>Fecha</th>
+                                                <th>Archivo</th>
                                                 <th class="text-center">Acciones</th>
                                             </tr>
                                         </thead>
@@ -200,27 +207,48 @@ requiereRol([1, 3, 4, 5]);
             </div>
         </div>
     </div>
-    <!-- Modal para Ver Mensaje -->
-    <div class="modal fade" id="modalVerMensaje" tabindex="-1" aria-labelledby="modalVerMensajeLabel" aria-hidden="true">
+    <!-- Modal para Ver Postulacion -->
+    <div class="modal fade" id="modalVerPostulacion" tabindex="-1" aria-labelledby="modalVerPostulacionLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
                 <!-- Modal Header -->
                 <div class="modal-header d-flex justify-content-between align-items-center flex-wrap gap-2">
                     <div class="d-flex align-items-center gap-2 flex-wrap">
-                        <h5 class="modal-title mb-0" id="modalVerMensajeLabel">Detalle del Mensaje</h5>
+                        <h5 class="modal-title mb-0" id="modalVerPostulacionLabel">Detalle de la Postulación</h5>
                     </div>
                     <div class="d-flex align-items-center gap-2">
                         <div id="botonImportanteWrapper" style="min-width: 200px;"></div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                     </div>
                 </div>
-                <div class="modal-body" id="contenidoModalMensaje">
-                    <!-- Aquí se carga el contenido dinámico con AJAX -->
+                <!-- Modal Body -->
+                <div class="modal-body" id="contenidoModalPostulacion">
                     <p class="text-center text-muted">Cargando...</p>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Modal para ver PDF con descarga -->
+    <div class="modal fade" id="modalPDF" tabindex="-1" aria-labelledby="modalPDFLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header d-flex justify-content-between align-items-center">
+                    <h5 class="modal-title mb-0" id="modalPDFLabel">Vista previa del archivo</h5>
+                    <div class="d-flex gap-2">
+                        <a id="btnDescargarPDF" href="#" download class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-download me-1"></i> Descargar
+                        </a>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                </div>
+                <div class="modal-body" style="height: 80vh;">
+                    <iframe id="iframePDF" src="" width="100%" height="100%" style="border: none;"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>

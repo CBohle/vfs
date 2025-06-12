@@ -1,7 +1,7 @@
 <!-- ESTRUCTURA GENERAL DEL DASHBOARD: NAV Y SIDEBAR -->
 <?php
-require_once '../../includes/auth.php';
-require_once __DIR__ . '/../../includes/config.php';
+require_once '../includes/auth.php';
+require_once __DIR__ . '/../includes/config.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">

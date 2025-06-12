@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../../includes/db.php';
-require_once __DIR__ . '/../../vendor/autoload.php'; // Si usas PHPMailer
+require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../vendor/autoload.php'; // Si usas PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 

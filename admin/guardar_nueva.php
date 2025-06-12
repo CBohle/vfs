@@ -1,6 +1,6 @@
 <?php
-include '../../includes/db.php';
-require_once __DIR__ . '/../../includes/config.php';
+include '../includes/db.php';
+require_once __DIR__ . '/../includes/config.php';
 
 // Detectar si estamos en la landing o no
 $is_landing = basename($_SERVER['PHP_SELF']) === 'index.php';

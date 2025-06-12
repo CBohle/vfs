@@ -1,6 +1,6 @@
 <?php
 // Incluye config.php que determina la BASE_URL
-require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/includes/config.php';
 
 // DETECTAR SI ESTÁ EN LA LANDING O NO, PARA REDIRECCIONAR
 $is_landing = basename($_SERVER['PHP_SELF']) === 'index.php';

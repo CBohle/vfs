@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__ . '/../../includes/db.php';
-require_once __DIR__ . '/../../includes/Controller/usuariosController.php';
-require_once __DIR__ . '/../../includes/auth.php';
+require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../includes/Controller/usuariosController.php';
+require_once __DIR__ . '/../includes/auth.php';
 $roles = obtenerRoles();
 requiereRol([1]);
 ?>

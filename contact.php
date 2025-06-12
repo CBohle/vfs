@@ -1,8 +1,8 @@
 
 <?php
-// require_once '../includes/db.php'; // ← Activar cuando se defina la conexión $conn
+// require_once '/includes/db.php'; // ← Activar cuando se defina la conexión $conn
 
-require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/includes/config.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validación reCAPTCHA
