@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../includes/db.php'; // ← Activa cuando uses base de datos real
+require_once __DIR__ . '/../../includes/db.php';
 
 // Función general para actualizar cualquier campo de mensaje
 function actualizar_campo_mensaje($campo, $valor, $id)

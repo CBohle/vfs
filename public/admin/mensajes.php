@@ -47,7 +47,6 @@ requiereRol([1, 3, 4, 5]);
             display: -webkit-box;
             -webkit-line-clamp: 3;
             line-clamp: 3;
-            /* ← esta línea soluciona la advertencia */
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -65,7 +64,6 @@ requiereRol([1, 3, 4, 5]);
         #contenido-dinamico {
             width: 100%;
             max-width: 1700px;
-            /* Limita el ancho en desktop */
             padding: 1rem;
             margin-top: 3px;
             margin-bottom: 3px;
@@ -141,7 +139,7 @@ requiereRol([1, 3, 4, 5]);
                                         <button class="btn btn-outline-secondary btn-sm" type="button" onclick="resetearFiltros()">Borrar filtros</button>
                                     </div>
                                 </div>
-                                <label class="d-none">Acciones</label> <!-- etiqueta invisible para mantener estructura -->
+                                <label class="d-none">Acciones</label>
                             </div>
                         </div>
                         <!-- Grupo 2: Buscar -->

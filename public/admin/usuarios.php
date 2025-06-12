@@ -68,7 +68,7 @@ requiereRol([1]);
             margin: 0 2px;
             border-radius: 0.375rem;
             border: 1px solid transparent;
-            background-color: #f8f9fa; /* gris claro */
+            background-color: #f8f9fa;
             color: #6c757d;
             font-size: 0.875rem;
             text-decoration: none;
@@ -76,13 +76,11 @@ requiereRol([1]);
             transition: all 0.2s;
         }
 
-        /* Hover para botones normales */
         .dataTables_paginate .paginate_button:not(.current):not(.disabled):hover {
             background-color: #e2e6ea;
             color: #495057;
         }
 
-        /* Botón activo (página actual) */
         .dataTables_paginate .paginate_button.current {
             background-color: #0d6efd;
             color: #fff !important;
@@ -90,7 +88,6 @@ requiereRol([1]);
             font-weight: bold;
         }
 
-        /* Botones "Anterior" y "Siguiente" cuando están activos */
         .dataTables_paginate .paginate_button.previous:not(.disabled),
         .dataTables_paginate .paginate_button.next:not(.disabled) {
             background-color: #0d6efd;
@@ -98,7 +95,6 @@ requiereRol([1]);
             border-color: #0d6efd;
         }
 
-        /* Hover también para anterior/siguiente si están activos */
         .dataTables_paginate .paginate_button.previous:not(.disabled):hover,
         .dataTables_paginate .paginate_button.next:not(.disabled):hover {
             background-color: #0b5ed7;
@@ -106,7 +102,6 @@ requiereRol([1]);
             color: #fff !important;
         }
 
-        /* Botones deshabilitados */
         .dataTables_paginate .paginate_button.disabled {
             background-color: #f1f3f5;
             color: #adb5bd !important;
