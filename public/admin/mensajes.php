@@ -114,14 +114,14 @@ requiereRol([1, 3, 4, 5]);
                                 </select>
                                 <label for="filtro_servicio">Servicio</label>
                             </div>
-                            <div class="form-floating">
+                            <!--<div class="form-floating">
                                 <select class="form-select form-select-sm" id="filtro_orden" aria-label="Orden">
                                     <option value="DESC" hidden selected>Seleccionar</option>
                                     <option value="DESC">Más Reciente</option>
                                     <option value="ASC">Más Antiguo</option>
                                 </select>
                                 <label for="filtro_orden">Orden</label>
-                            </div>
+                            </div>-->
                             <div class="form-floating">
                                 <select class="form-select form-select-sm" id="filtro_importante" aria-label="Importante">
                                     <option value="" hidden selected>Seleccionar</option>
@@ -207,7 +207,7 @@ requiereRol([1, 3, 4, 5]);
                 <!-- Modal Header -->
                 <div class="modal-header d-flex justify-content-between align-items-center flex-wrap gap-2">
                     <div class="d-flex align-items-center gap-2 flex-wrap">
-                        <h5 class="modal-title mb-0" id="modalVerMensajeLabel">Detalle de la Postulación</h5>
+                        <h5 class="modal-title mb-0" id="modalVerMensajeLabel">Detalle del Mensaje</h5>
                     </div>
                     <div class="d-flex align-items-center gap-2">
                         <div id="botonImportanteWrapper" style="min-width: 200px;"></div>

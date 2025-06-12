@@ -193,8 +193,8 @@ function toggleImportante(id, estadoActual) {
 
             boton.attr('onclick', `toggleImportante(${id}, ${nuevoValor})`);
 
-            if (typeof tabla !== 'undefined' && tabla !== null) {
-                tabla.ajax.reload(null, false);
+             if (typeof window.cargarVistaMensajes === 'function') {
+                window.cargarVistaMensajes();
             }
         } else {
             alert('No se pudo actualizar el estado de importancia.');

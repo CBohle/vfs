@@ -1,6 +1,6 @@
 (function () {
   let tabla = null;
-
+  window.ordenManualActivado = window.ordenManualActivado || false;
   function inicializarTablaMensajes() {
     if (tabla) return; // Ya inicializada
 
@@ -18,10 +18,13 @@
           }
 
           d.servicio = $("#filtro_servicio").val();
+          // Aplica orden manual (por filtro) solo si NO hay orden del usuario
+        if (window.ordenManualActivado && (!d.order || d.order.length === 0)) {
           const ordenSeleccionado = $("#filtro_orden").val();
-          if (ordenSeleccionado === 'ASC' || ordenSeleccionado === 'DESC') {
+          if (ordenSeleccionado === "ASC" || ordenSeleccionado === "DESC") {
             d.order = [{ column: 13, dir: ordenSeleccionado.toLowerCase() }];
           }
+        }
           d.importante = $("#filtro_importante").val();
           d.search.value = $("#filtro_busqueda").val();
         },
@@ -150,10 +153,7 @@
           },
         },
       ],
-      order: [
-        [0, "desc"],
-        [13, "desc"],
-      ],
+      order: [],
       language: {
         url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json",
       },
@@ -194,7 +194,8 @@
         tabla.columns.adjust().draw();
         tabla.buttons().container().appendTo("#exportButtons");
         $('#tablaMensajes thead').on('click', 'th', function () {
-          $("#filtro_orden").prop("selectedIndex", 0);
+          $("#filtro_orden").val(""); // limpia visual
+          window.ordenManualActivado = false; // desactiva orden manual
         });
       },
     });
@@ -206,6 +207,8 @@
 
   window.filtrar = function () {
     delete window.estadoPersonalizado;
+    const ordenSeleccionado = $("#filtro_orden").val();
+    window.ordenManualActivado = (ordenSeleccionado === "ASC" || ordenSeleccionado === "DESC");
     if (!tabla) inicializarTablaMensajes();
     tabla.ajax.reload();
   };
@@ -221,6 +224,7 @@
   };
 
   window.resetearFiltros = function () {
+    window.ordenManualActivado = false;
     $("#filtro_estado").val("");
     $("#filtro_servicio").val("");
     $("#filtro_orden").val("DESC");

@@ -228,9 +228,11 @@ requiereRol([1, 3, 4,5]);
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   
-<script>
-    const rol_id = <?= json_encode($_SESSION['rol_id']) ?>;
-</script>
+    <script>
+        if (typeof rol_id === 'undefined') {
+            var rol_id = <?= json_encode($_SESSION['rol_id']) ?>;
+        }
+    </script>
     <script>
 
         window.tabla = window.tabla || null;
@@ -471,29 +473,62 @@ requiereRol([1, 3, 4,5]);
             $('#contenidoModalCliente').html('<p class="text-center text-muted">Cargando...</p>');
             $('#modalVerCliente').modal('show');
 
-            $.get('clienteModal.php', {
-                id
-            }, function(respuesta) {
+            $.get('clienteModal.php', { id }, function(respuesta) {
                 $('#contenidoModalCliente').html(respuesta);
 
                 const botonHTML = $('#contenidoModalCliente').find('#botonImportanteHTML').html();
                 $('#botonImportanteWrapper').html(botonHTML);
+
+                // 👉 Re-ejecutar lógica para cargar detalle activo
+                const tipoActivo = $('#tipo_activo').val();
+                const detalleActual = "<?= $msg['detalle_activos'] ?? '' ?>"; // esto no se puede hacer desde JS, así que mejor:
+                const detalleActualInput = $('#detalle_activos').data('valor'); // lo puedes inyectar en el HTML
+
+                const opciones = {
+                    "Propiedad Residencial": ["Casa", "Departamento", "Parcela"],
+                    "Inmueble Comercial": ["Local", "Oficina", "Centro Comercial"],
+                    "Activo Industrial": ["Fábrica", "Planta", "Galpón"],
+                    "Bien Especial": ["Terreno", "Estacionamiento", "Otro"]
+                };
+
+                const detalleSelect = $('#detalle_activos');
+                detalleSelect.empty();
+
+                if (opciones[tipoActivo]) {
+                    detalleSelect.append('<option hidden>Seleccionar</option>');
+                    opciones[tipoActivo].forEach(detalle => {
+                        const selected = detalle === detalleSelect.data('valor') ? 'selected' : '';
+                        detalleSelect.append(`<option value="${detalle}" ${selected}>${detalle}</option>`);
+                    });
+                } else {
+                    detalleSelect.append('<option value="">Selecciona un tipo válido</option>');
+                }
+
             }).fail(function() {
                 $('#contenidoModalCliente').html('<p class="text-danger">Error al cargar el cliente.</p>');
             });
         }
 
-        function crearCliente() {
-            $('#contenidoModalCliente').html('<p class="text-center text-muted">Cargando formulario...</p>');
-            $('#modalVerCliente').modal('show');
+        function cargarEventosSelectActivo() {
+            $('#tipo_activo').off('change').on('change', function () {
+                const tipoSeleccionado = $(this).val();
+                const opciones = {
+                    'Inmueble Comercial': ['Oficina', 'Local', 'Bodega'],
+                    'Inmueble Habitacional': ['Casa', 'Departamento'],
+                    'Vehículo': ['Auto', 'Camioneta', 'Moto'],
+                };
 
-            $.get('clienteModal.php', function(respuesta) {
-                $('#contenidoModalCliente').html(respuesta);
+                const detalleSelect = $('#detalle_activos');
+                detalleSelect.empty();
 
-                const botonHTML = '<button type="submit" class="btn btn-primary">Crear Cliente</button>';
-                $('#botonImportanteWrapper').html(botonHTML);
-            }).fail(function() {
-                $('#contenidoModalCliente').html('<p class="text-danger">Error al cargar el formulario.</p>');
+                if (opciones[tipoSeleccionado]) {
+                    detalleSelect.append('<option hidden selected>Seleccionar</option>');
+                    opciones[tipoSeleccionado].forEach(op => {
+                        detalleSelect.append(`<option value="${op}">${op}</option>`);
+                    });
+                } else {
+                    detalleSelect.append('<option value="">Selecciona un tipo válido</option>');
+                }
             });
         }
 

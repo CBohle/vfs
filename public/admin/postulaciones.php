@@ -27,7 +27,7 @@ requiereRol([1, 2,5]);
             background-color: #f8f9fa;
         }
 
-        a.marcarImportante {
+        a.marcarImportantePostulacion {
             cursor: pointer;
             text-decoration: none;
         }
@@ -74,7 +74,9 @@ requiereRol([1, 2,5]);
         }
     </style>
     <script>
-        const BASE_PATH = "/vfs/public/admin/";
+        if (typeof BASE_PATH === 'undefined') {
+            var BASE_PATH = "/vfs/public/admin/";
+        }
     </script>
 </head>
 
@@ -100,19 +102,18 @@ requiereRol([1, 2,5]);
                                     <option value="" hidden>Seleccionar</option>
                                     <option value="pendiente">Pendiente</option>
                                     <option value="leido">Leído</option>
-                                    <option value="respondido">Respondido</option>
                                     <option value="eliminado">Eliminado</option>
                                 </select>
                                 <label for="filtro_estado">Estado</label>
                             </div>
-                            <div class="form-floating">
+                            <!--<div class="form-floating hidden">
                                 <select class="form-select form-select-sm" id="filtro_orden" aria-label="Orden">
-                                    <option value="DESC" hidden selected>Seleccionar</option>
+                                    <option value="" hidden selected>Seleccionar</option>
                                     <option value="DESC">Más Reciente</option>
                                     <option value="ASC">Más Antiguo</option>
                                 </select>
                                 <label for="filtro_orden">Orden</label>
-                            </div>
+                            </div>-->
                             <div class="form-floating">
                                 <select class="form-select form-select-sm" id="filtro_importante" aria-label="Importante">
                                     <option value="" hidden selected>Seleccionar</option>

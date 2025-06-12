@@ -164,6 +164,25 @@ require_once __DIR__ . '/../../includes/config.php';
                         };
                         document.body.appendChild(script);
                     }
+                    if (section === 'clientes') {
+                        $('script[src*="clientes.js"]').remove();
+
+                        const script = document.createElement('script');
+                        script.src = BASE_ADMIN_URL + 'adminlte/assets/js/clientes.js?v=' + new Date().getTime();
+
+                        script.onload = function () {
+                            const intervalo = setInterval(() => {
+                                if (document.querySelector('#tablaClientes')) {
+                                    clearInterval(intervalo);
+                                    if (typeof inicializarTablaClientes === 'function') {
+                                        inicializarTablaClientes();
+                                    }
+                                }
+                            }, 100); // Espera que el HTML esté en el DOM
+                        };
+
+                        document.body.appendChild(script);
+                    }
                 });
             });
 
