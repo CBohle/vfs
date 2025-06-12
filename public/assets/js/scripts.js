@@ -7,6 +7,7 @@
 // Scripts
 // 
 
+// SCRIPTS DE LA LANDING PAGE
 window.addEventListener('DOMContentLoaded', event => {
 
     // Navbar shrink function

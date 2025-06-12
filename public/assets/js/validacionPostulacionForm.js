@@ -1,3 +1,4 @@
+// SCRIPT QUE VALIDA EL FORMULARIO DE POSTULACIÓN CON VALIDACIONES PERSONALIZADAS
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector("form");
 

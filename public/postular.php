@@ -1,7 +1,8 @@
 <!-- Creative - Start Bootstrap Theme
     https://startbootstrap.com/template/creative
     Licencia MIT -->
-<!-- Vista pública del landing -->
+
+<!-- VISTA DEL FORMULARIO DE POSTULACIÓN -->
 <?php
 require_once __DIR__ . '/../includes/config.php';
 ?>
