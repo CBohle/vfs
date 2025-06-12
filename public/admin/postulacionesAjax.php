@@ -12,17 +12,65 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(["error" => "Método no permitido"]);
     exit;
 }
-
 // --- Inicializar variables ---
 $params = [];
 $paramTypes = '';
 $where = "WHERE nombre != ''";
-$columns = ['importante', 'id', 'rut', 'nombre', 'apellido', 'email', 'estudios', 'ano_titulacion', 'anos_experiencia_tasacion', 'disponibilidad_comuna', 'disponibilidad_region', 'movilizacion_propia', 'estado', 'fecha_creacion'];
+$columns = [
+  'importante',
+  'importante_texto',
+  'id',
+  'rut',
+  'nombre',
+  'apellido',
+  'fecha_nacimiento',
+  'estudios',
+  'institucion_educacional',
+  'ano_titulacion',
+  'formacion_tasacion',
+  'formacion_tasacion_texto',
+  'detalle_formacion',
+  'anos_experiencia_tasacion',
+  'otra_empresa',
+  'disponibilidad_comuna',
+  'disponibilidad_comuna_texto',
+  'disponibilidad_region',
+  'disponibilidad_region_texto',
+  'movilizacion_propia',
+  'movilizacion_propia_texto',
+  'email',
+  'telefono',
+  'direccion',
+  'comuna',
+  'region',
+  'estado',
+  'fecha_creacion',
+  'archivo',
+  'acciones'
+];
 $draw = intval($_POST['draw'] ?? 0);
 $start = intval($_POST['start'] ?? 0);
 $length = intval($_POST['length'] ?? 10);
-$orderColumnIndex = $_POST['order'][0]['column'] ?? 12;
-$orderDir = in_array(strtolower($_POST['order'][0]['dir'] ?? ''), ['asc', 'desc']) ? $_POST['order'][0]['dir'] : 'desc';
+$orderColumnIndex = 27; // Por defecto
+$orderDir = 'desc';
+
+// Recorre el arreglo de órdenes
+$orderClause = "ORDER BY importante DESC, fecha_creacion DESC"; // Orden por defecto
+
+if (isset($_POST['order']) && is_array($_POST['order']) && count($_POST['order']) > 0) {
+    $orderings = [];
+    foreach ($_POST['order'] as $orderItem) {
+        $idx = intval($orderItem['column']);
+        $dir = strtolower($orderItem['dir']) === 'asc' ? 'ASC' : 'DESC';
+        $col = $columns[$idx] ?? '';
+        if ($col) {
+            $orderings[] = "$col $dir";
+        }
+    }
+    if (!empty($orderings)) {
+        $orderClause = "ORDER BY " . implode(', ', $orderings);
+    }
+}
 $orderColumn = $columns[$orderColumnIndex] ?? 'fecha_creacion';
 $estado = $_POST['estado'] ?? '';
 $importante = $_POST['importante'] ?? '';
@@ -43,9 +91,9 @@ if ($importante !== '') {
     $params[] = intval($importante);
 }
 if (!empty($search)) {
-    $where .= " AND (rut LIKE ? OR nombre LIKE ? OR apellido LIKE ? OR email LIKE ? OR estudios LIKE ? OR estado LIKE ?)";
-    $paramTypes .= 'ssssss';
-    $params = array_merge($params, array_fill(0, 6, "%$search%"));
+    $where .= " AND (rut LIKE ? OR nombre LIKE ? OR apellido LIKE ? OR email LIKE ? OR estudios LIKE ? OR estado LIKE ? OR DATE_FORMAT(fecha_creacion, '%d-%m-%Y') LIKE ?)";
+    $paramTypes .= 'sssssss';
+    $params = array_merge($params, array_fill(0, 7, "%$search%"));
 }
 
 // --- Eliminar, marcar importante, recuperar ---
@@ -95,7 +143,6 @@ $totalFiltered = ($row = $resultCount->fetch_assoc()) ? intval($row['total']) : 
 $stmtCount->close();
 
 // --- Datos filtrados ---
-$orderClause = "ORDER BY $orderColumn $orderDir, importante DESC";
 $sqlData = "SELECT importante, id, rut, nombre, apellido, fecha_nacimiento, email, telefono, direccion, comuna, region, institucion_educacional, detalle_formacion, otra_empresa, estudios, ano_titulacion, formacion_tasacion, anos_experiencia_tasacion, disponibilidad_comuna, disponibilidad_region, movilizacion_propia, estado, archivo, fecha_creacion FROM curriculum $where $orderClause LIMIT ?, ?";
 $stmtData = $conexion->prepare($sqlData);
 if (!$stmtData) {
@@ -142,7 +189,7 @@ while ($row = $resultData->fetch_assoc()) {
         'movilizacion_propia' => $row['movilizacion_propia'],
         'movilizacion_propia_texto' => ($row['movilizacion_propia'] ?? 0) == 1 ? 'Sí' : 'No',
         'estado' => $row['estado'],
-        'fecha' => date('d-m-Y', strtotime($row['fecha_creacion'])),
+        'fecha_creacion' => date('d-m-Y', strtotime($row['fecha_creacion'])),
         'archivo' => $row['archivo'],
         'acciones' => '',
     ];

@@ -171,9 +171,21 @@ $draw = intval($_POST['draw'] ?? 0);
 $start = intval($_POST['start'] ?? 0);
 $length = intval($_POST['length'] ?? 10);
 
-$orderColumnIndex = $_POST['order'][0]['column'] ?? 13;
-$orderDir = in_array(strtolower($_POST['order'][0]['dir'] ?? ''), ['asc', 'desc']) ? $_POST['order'][0]['dir'] : 'desc';
-$orderColumn = $columns[$orderColumnIndex] ?? 'fecha_creacion';
+if (!isset($_POST['order']) || empty($_POST['order'])) {
+    // Orden inicial por defecto
+    $orderClause = "ORDER BY m.importante DESC, m.fecha_creacion DESC";
+} else {
+    $orderings = [];
+    foreach ($_POST['order'] as $orderItem) {
+        $idx = intval($orderItem['column']);
+        $dir = strtolower($orderItem['dir']) === 'asc' ? 'ASC' : 'DESC';
+        $col = $columns[$idx] ?? '';
+        if ($col) {
+            $orderings[] = "$col $dir";
+        }
+    }
+    $orderClause = "ORDER BY " . implode(', ', $orderings);
+}
 
 $estado = $_POST['estado'] ?? '';
 $servicio = $_POST['servicio'] ?? '';
@@ -219,8 +231,9 @@ if ($importante !== '') {
 }
 // Filtro de búsqueda
 if (!empty($search)) {
-    $where .= " AND (m.nombre LIKE ? OR m.email LIKE ? OR m.mensaje LIKE ? OR m.servicio LIKE ? OR m.estado LIKE ?)";
-    $paramTypes .= "sssss";
+    $where .= " AND (m.nombre LIKE ? OR m.email LIKE ? OR m.mensaje LIKE ? OR m.servicio LIKE ? OR m.estado LIKE ? OR DATE_FORMAT(m.fecha_creacion, '%d-%m-%Y') LIKE ?)";
+    $paramTypes .= "ssssss";
+    $params[] = "%$search%";
     $params[] = "%$search%";
     $params[] = "%$search%";
     $params[] = "%$search%";
@@ -240,9 +253,6 @@ $totalFiltered = ($row = $resultCount->fetch_assoc()) ? intval($row['total']) : 
 $stmtCount->close();
 
 // --- SELECT con filtros, orden y paginación ---
-$secondaryOrder = ($orderColumn === 'fecha_creacion') ? ', importante DESC' : '';
-$orderClause = "ORDER BY $orderColumn $orderDir $secondaryOrder";
-
 $sqlData = "
     SELECT 
         m.importante,

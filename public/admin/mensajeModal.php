@@ -112,7 +112,7 @@ $textoImportante = $esImportante ? 'Marcar como no importante' : 'Marcar como im
 <div id="botonImportanteHTML" style="display: none;">
     <button id="btnImportante"
         class="btn <?= $btnClase ?> btn-sm d-flex align-items-center"
-        onclick="toggleImportante(<?= $msg['id'] ?>, <?= $esImportante ?>)">
+        onclick="toggleImportanteMensaje(<?= $msg['id'] ?>, <?= $esImportante ?>)">
         <i id="iconoImportante" class="bi <?= $iconoClase ?> me-2"></i>
         <span id="textoImportante"><?= $textoImportante ?></span>
     </button>
@@ -168,7 +168,7 @@ $textoImportante = $esImportante ? 'Marcar como no importante' : 'Marcar como im
 </div>
 
 <script>
-function toggleImportante(id, estadoActual) {
+function toggleImportanteMensaje(id, estadoActual) {
     const nuevoValor = estadoActual === 1 ? 0 : 1;
 
     $.post('mensajesAjax.php', {
@@ -191,7 +191,7 @@ function toggleImportante(id, estadoActual) {
                 texto.text('Marcar como importante');
             }
 
-            boton.attr('onclick', `toggleImportante(${id}, ${nuevoValor})`);
+            boton.attr('onclick', `toggleImportanteMensaje(${id}, ${nuevoValor})`);
 
             if (typeof tabla !== 'undefined' && tabla !== null) {
                 tabla.ajax.reload(null, false);
