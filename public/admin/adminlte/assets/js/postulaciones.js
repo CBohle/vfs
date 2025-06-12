@@ -67,6 +67,10 @@ function inicializarTablaPostulaciones() {
       },
       {
         data: "fecha_nacimiento",
+        visible: false,
+        render: function (data) {
+          return data;
+        }
       },
       {
         data: "estudios",
