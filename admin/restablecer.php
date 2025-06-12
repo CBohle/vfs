@@ -1,5 +1,5 @@
 <?php
-include '../../includes/db.php';
+include __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/config.php';
 
 
