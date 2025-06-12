@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../includes/db.php'; // ← Activa cuando uses base de datos real
+require_once __DIR__ . '/../../includes/db.php';
 
 // Función general para actualizar cualquier campo de mensaje
 function actualizar_campo_mensaje($campo, $valor, $id)
@@ -83,7 +83,7 @@ function obtener_total_mensajes()
 function obtener_mensajes_pendientes()
 {
     global $conexion;
-    $sql = "SELECT COUNT(*) AS pendientes FROM mensajes WHERE estado = 'pendiente'";
+    $sql = "SELECT COUNT(*) AS pendientes FROM mensajes WHERE estado IN ('pendiente', 'leido')";
     $result = mysqli_query($conexion, $sql);
     return ($fila = mysqli_fetch_assoc($result)) ? $fila['pendientes'] : 0;
 }

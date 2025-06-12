@@ -73,6 +73,9 @@ echo '<style>
   white-space: pre-wrap;
   color: #343a40;
 }
+.texto-largo-contenido {
+  word-break: break-word;
+}
 </style>';
 
 $sql = "SELECT 
@@ -131,7 +134,7 @@ $textoImportante = $esImportante ? 'Marcar como no importante' : 'Marcar como im
                 </div>
             </div>
             <br>
-            <p class="mb-2"><?= htmlspecialchars($msg['mensaje'] ?? '') ?></p>
+            <p class="mb-2 texto-largo-contenido"><?= htmlspecialchars($msg['mensaje'] ?? '') ?></p>
             <?php if (!empty($msg['respuesta'])): ?>
                 <div class="reply">
                     <div class="reply-box" style="width: 100%; position: relative;">
@@ -142,7 +145,7 @@ $textoImportante = $esImportante ? 'Marcar como no importante' : 'Marcar como im
                             </div>
                             <span class="text-muted ms-2"><?= htmlspecialchars($msg['fecha_respuesta'] ?? '') ?></span>
                         </div>
-                        <span class="reply-text"><?= htmlspecialchars($msg['respuesta'] ?? '') ?></span>
+                        <span class="reply-text texto-largo-contenido"><?= htmlspecialchars($msg['respuesta'] ?? '') ?></span>
                     </div>
                 </div>
             <?php elseif ($msg['estado'] !== 'eliminado'): ?>
@@ -153,6 +156,7 @@ $textoImportante = $esImportante ? 'Marcar como no importante' : 'Marcar como im
                     </div>
                 <?php else: ?>
                     <form id="formRespuesta" class="mt-3">
+                    <input type="hidden" name="accion" value="guardarRespuesta">
                     <input type="hidden" name="mensaje_id" value="<?= $msg['id'] ?>">
                     <textarea name="respuesta" class="form-control mb-2" required placeholder="Escribe tu respuesta..."></textarea>
                     <button type="submit" class="btn btn-primary btn-sm">Enviar respuesta</button>

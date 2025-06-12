@@ -44,7 +44,7 @@ CREATE TABLE curriculum (
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     fecha_modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     importante BOOLEAN NOT NULL DEFAULT FALSE,
-    estado ENUM('pendiente', 'leido', 'respondido','eliminado') NOT NULL DEFAULT 'pendiente'
+    estado ENUM('pendiente', 'leido','eliminado') NOT NULL DEFAULT 'pendiente'
 );
 
 CREATE TABLE roles (

@@ -33,7 +33,9 @@ requiereRol([1]);
         .dataTables_wrapper .dataTables_length,
         .dataTables_wrapper .dataTables_info,
         .dataTables_wrapper .dataTables_paginate {
-            display: none !important;
+            display: flex;
+            justify-content: end;
+            margin-top: 0.5rem;
         }
 
         table.dataTable {
@@ -50,7 +52,7 @@ requiereRol([1]);
 
         table.dataTable tbody tr td {
             border: none !important;
-            padding: 1rem 0.75rem;
+            padding: 0.25rem 0.5rem !important;
         }
 
         table.dataTable thead th {
@@ -59,6 +61,52 @@ requiereRol([1]);
             font-weight: 600;
             color: #495057;
             padding: 0.75rem;
+        }
+        /* Estilo base del paginador */
+        .dataTables_paginate .paginate_button {
+            padding: 0.4rem 0.75rem;
+            margin: 0 2px;
+            border-radius: 0.375rem;
+            border: 1px solid transparent;
+            background-color: #f8f9fa;
+            color: #6c757d;
+            font-size: 0.875rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .dataTables_paginate .paginate_button:not(.current):not(.disabled):hover {
+            background-color: #e2e6ea;
+            color: #495057;
+        }
+
+        .dataTables_paginate .paginate_button.current {
+            background-color: #0d6efd;
+            color: #fff !important;
+            border-color: #0d6efd;
+            font-weight: bold;
+        }
+
+        .dataTables_paginate .paginate_button.previous:not(.disabled),
+        .dataTables_paginate .paginate_button.next:not(.disabled) {
+            background-color: #0d6efd;
+            color: #fff !important;
+            border-color: #0d6efd;
+        }
+
+        .dataTables_paginate .paginate_button.previous:not(.disabled):hover,
+        .dataTables_paginate .paginate_button.next:not(.disabled):hover {
+            background-color: #0b5ed7;
+            border-color: #0a58ca;
+            color: #fff !important;
+        }
+
+        .dataTables_paginate .paginate_button.disabled {
+            background-color: #f1f3f5;
+            color: #adb5bd !important;
+            border-color: #dee2e6;
+            cursor: not-allowed;
         }
     </style>
 </head>
@@ -99,6 +147,7 @@ requiereRol([1]);
                                 </table>
                             </div>
                         </div>
+                        <div id="contenedorPaginacionRoles" class="pt-2 mt-3 d-flex justify-content-end"></div>
                     </div>
                     <div class="col-lg-5 mb-3" id="formularioRolContainer" style="display: none;">
                         <div class="card">
@@ -173,6 +222,7 @@ requiereRol([1]);
                                 </table>
                             </div>
                         </div>
+                        <div id="contenedorPaginacionUsuarios" class="pt-2 mt-3 d-flex justify-content-end"></div>
                     </div>
                     <!-- Creación de nuevo usuario -->
                     <div class="col-lg-5 mb-3" id="formularioUsuarioContainer" style="display: none;">
@@ -253,6 +303,7 @@ requiereRol([1]);
                             },
                             {
                                 data: 'activo',
+                                className: 'text-center',
                                 render: (data, _, row) => {
                                     const clase = data ? 'bg-success' : 'bg-secondary';
                                     const texto = data ? 'Activo' : 'Inactivo';
@@ -265,10 +316,18 @@ requiereRol([1]);
                                 render: data => `<button class="btn btn-sm btn-primary" onclick="verRol(${data.id})"><i class="bi bi-eye"></i></button>`
                             }
                         ],
-                        dom: 't',
+                        dom: '<"datatable-container"t><"datatable-footer d-flex justify-content-end mt-2"p>',
                         language: {
                             url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
-                        }
+                        },
+                        drawCallback: function () {
+                            const paginador = $('#tablaRoles_wrapper .dataTables_paginate');
+                            if (paginador.length) {
+                            $('#contenedorPaginacionRoles').html(paginador);
+                            }
+                        },
+                        pagingType: 'simple_numbers',
+                        pageLength: 10
                     });
                 }
 
@@ -299,6 +358,7 @@ requiereRol([1]);
                             },
                             {
                                 data: 'activo',
+                                className: 'text-center',
                                 render: data => data ? '<span class="badge bg-success">Activo</span>' : '<span class="badge bg-secondary">Inactivo</span>'
                             },
                             {
@@ -307,10 +367,18 @@ requiereRol([1]);
                                 render: data => `<button class="btn btn-sm btn-primary" onclick="verUsuario(${data.id})"><i class="bi bi-eye"></i></button>`
                             }
                         ],
-                        dom: 't',
+                        dom: '<"datatable-container"t><"datatable-footer d-flex justify-content-end mt-2"p>',
                         language: {
                             url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
-                        }
+                        },
+                        drawCallback: function () {
+                            const paginador = $('#tablaUsuarios_wrapper .dataTables_paginate');
+                            if (paginador.length) {
+                                $('#contenedorPaginacionUsuarios').html(paginador);
+                            }
+                        },
+                        pagingType: 'simple_numbers',
+                        pageLength: 10
                     });
                 }
 

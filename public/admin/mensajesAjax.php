@@ -1,16 +1,20 @@
 <?php
 session_start();
 header('Content-Type: application/json');
-ini_set('display_errors', 0); // Cambiar a 1 para ver errores en desarrollo
-ini_set('display_startup_errors', 0); // Cambiar a 1 para ver errores en desarrollo
+ini_set('display_errors', 1); // Cambiar a 1 para ver errores en desarrollo
+ini_set('display_startup_errors', 1); // Cambiar a 1 para ver errores en desarrollo
 error_reporting(E_ALL);
 
 require_once __DIR__ . '/../../includes/db.php';
 require_once __DIR__ . '/../../includes/Controller/mensajesController.php';
-require_once __DIR__ . '/../../vendor/autoload.php'; // Asegúrate de que exista
+require_once __DIR__ . '/../../vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+if (!isset($_POST['accion']) && empty($_POST['draw'])) {
+    echo json_encode(['success' => false, 'error' => 'Acción no especificada']);
+    exit;
+}
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -35,7 +39,7 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'eliminar' && isset($_POST['
 
 
 // Marcar como importante
-if ($_POST['accion'] === 'importante' && isset($_POST['mensaje_id'], $_POST['importante'])) {
+if (isset($_POST['accion']) && $_POST['accion'] === 'importante' && isset($_POST['mensaje_id'], $_POST['importante'])) {
     if ($_SESSION['rol_id'] == 4) {
         echo json_encode(['success' => false, 'error' => 'Sin permisos para marcar como importante']);
         exit;
@@ -64,7 +68,7 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'recuperar' && isset($_POST[
 
 
 // Guardar respuesta a un mensaje
-if (isset($_POST['mensaje_id'], $_POST['respuesta']) && empty($_POST['accion'])) {
+if (isset($_POST['accion']) && $_POST['accion'] === 'guardarRespuesta' && isset($_POST['mensaje_id'], $_POST['respuesta'])) {
     $mensaje_id = intval($_POST['mensaje_id']);
     $respuesta = trim($_POST['respuesta']);
     $usuario_admin_id = $_SESSION['usuario_id'] ?? 0;
@@ -75,7 +79,20 @@ if (isset($_POST['mensaje_id'], $_POST['respuesta']) && empty($_POST['accion']))
     $stmt->execute();
     $result = $stmt->get_result();
     $cliente = $result->fetch_assoc();
+    // Verificar si ya existe una respuesta para este mensaje
+    $stmt = $conexion->prepare("SELECT COUNT(*) as total FROM respuestas WHERE mensaje_id = ?");
+    $stmt->bind_param("i", $mensaje_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $existe = $result->fetch_assoc()['total'] ?? 0;
 
+    if ($existe > 0) {
+        echo json_encode([
+            'success' => false,
+            'error' => 'Este mensaje ya ha sido respondido.'
+        ]);
+        exit;
+    }
     // Guardar respuesta
     $stmt = $conexion->prepare("INSERT INTO respuestas (mensaje_id, usuario_admin_id, respuesta) VALUES (?, ?, ?)");
     $stmt->bind_param("iis", $mensaje_id, $usuario_admin_id, $respuesta);
@@ -131,14 +148,26 @@ if (isset($_POST['mensaje_id'], $_POST['respuesta']) && empty($_POST['accion']))
             'rol' => $admin['rol'] ?? ''
         ]);
     } else {
-        echo json_encode(['success' => false, 'error' => 'Error al insertar respuesta']);
+        echo json_encode([
+            'success' => false,
+            'error' => 'Error al insertar respuesta: ' . $stmt->error
+        ]);
     }
     exit;
 }
+if (isset($_POST['accion']) && $_POST['accion'] === 'marcarLeido' && isset($_POST['id'])) {
+    $id = intval($_POST['id']);
 
+    // Solo cambiar si está en estado 'pendiente'
+    $stmt = $conexion->prepare("UPDATE mensajes SET estado = 'leido' WHERE id = ? AND estado = 'pendiente'");
+    $stmt->bind_param("i", $id);
+    $resultado = $stmt->execute();
 
+    echo json_encode(['success' => $resultado]);
+    exit;
+}
 // Consulta con filtros
-$columns = ['importante', 'id', 'servicio', 'nombre', 'email', 'mensaje', 'estado', 'fecha_creacion'];
+$columns = ['m.importante', 'm.id', 'm.servicio', 'm.nombre', 'm.email', 'm.mensaje', 'm.estado', 'm.fecha_creacion'];
 $draw = intval($_POST['draw'] ?? 0);
 $start = intval($_POST['start'] ?? 0);
 $length = intval($_POST['length'] ?? 10);
@@ -152,8 +181,11 @@ $servicio = $_POST['servicio'] ?? '';
 $importante = $_POST['importante'] ?? '';
 $search = trim($_POST['search']['value'] ?? '');
 
+$paramTypes = '';
+$params = [];
+
 // Construcción del WHERE con filtros y búsqueda
-$where = "WHERE nombre != ''";
+$where = "WHERE m.nombre != ''";
 
 // Solo excluir eliminados si no estamos buscando específicamente los eliminados
 if ($estado !== 'eliminado') {
@@ -161,7 +193,13 @@ if ($estado !== 'eliminado') {
 }
 
 // Filtro por estado
-if ($estado !== '' && $estado !== 'Todos') {
+if (isset($_POST['estadoMultiple']) && is_array($_POST['estadoMultiple']) && count($_POST['estadoMultiple']) > 0) {
+    $estados = $_POST['estadoMultiple'];
+    $placeholders = implode(',', array_fill(0, count($estados), '?'));
+    $where .= " AND estado IN ($placeholders)";
+    $paramTypes .= str_repeat('s', count($estados));
+    $params = array_merge($params, $estados);
+} elseif ($estado !== '') {
     $where .= " AND estado = ?";
     $paramTypes .= 's';
     $params[] = $estado;
@@ -182,7 +220,7 @@ if ($importante !== '') {
 }
 // Filtro de búsqueda
 if (!empty($search)) {
-    $where .= " AND (nombre LIKE ? OR email LIKE ? OR mensaje LIKE ? OR servicio LIKE ? OR estado LIKE ?)";
+    $where .= " AND (m.nombre LIKE ? OR m.email LIKE ? OR m.mensaje LIKE ? OR m.servicio LIKE ? OR m.estado LIKE ?)";
     $paramTypes .= "sssss";
     $params[] = "%$search%";
     $params[] = "%$search%";
@@ -192,7 +230,7 @@ if (!empty($search)) {
 }
 
 // --- COUNT con filtros ---
-$sqlCount = "SELECT COUNT(*) as total FROM mensajes $where";
+$sqlCount = "SELECT COUNT(*) as total FROM mensajes m $where";
 $stmtCount = $conexion->prepare($sqlCount);
 if ($paramTypes) {
     $stmtCount->bind_param($paramTypes, ...$params);
@@ -206,11 +244,30 @@ $stmtCount->close();
 $secondaryOrder = ($orderColumn === 'fecha_creacion') ? ', importante DESC' : '';
 $orderClause = "ORDER BY $orderColumn $orderDir $secondaryOrder";
 
-$sqlData = "SELECT importante, id, servicio, nombre, email, mensaje, estado, fecha_creacion
-            FROM mensajes
-            $where
-            $orderClause
-            LIMIT ?, ?";
+$sqlData = "
+    SELECT 
+        m.importante,
+        m.id,
+        m.servicio,
+        m.nombre,
+        m.apellido,
+        m.email,
+        m.telefono,
+        m.mensaje,
+        m.estado,
+        m.fecha_creacion,
+        r.respuesta,
+        r.fecha_respuesta,
+        ua.nombre AS admin_nombre,
+        ua.apellido AS admin_apellido,
+        rl.nombre AS rol
+    FROM mensajes m
+    LEFT JOIN respuestas r ON r.mensaje_id = m.id
+    LEFT JOIN usuarios_admin ua ON ua.id = r.usuario_admin_id
+    LEFT JOIN roles rl ON rl.id = ua.rol_id
+    $where
+    $orderClause
+    LIMIT ?, ?";
 $stmtData = $conexion->prepare($sqlData);
 
 $paramsWithLimits = $params;
@@ -226,14 +283,21 @@ $resultData = $stmtData->get_result();
 $data = [];
 while ($row = $resultData->fetch_assoc()) {
     $data[] = [
+        'DT_RowId' => 'row_' . $row['id'],
         'importante' => $row['importante'],
+        'importante_texto' => ($row['importante'] ?? 0) == 1 ? 'Sí' : 'No',
         'id' => $row['id'],
         'servicio' => $row['servicio'],
-        'nombre' => $row['nombre'],
+        'nombre' => $row['nombre'] . ' ' . $row['apellido'],
         'email' => $row['email'],
+        'telefono' => $row['telefono'] ?? '',
         'mensaje' => $row['mensaje'],
         'estado' => $row['estado'],
         'fecha' => date('d-m-Y', strtotime($row['fecha_creacion'])),
+        'respuesta' => $row['respuesta'] ?? '',
+        'fecha_respuesta' => $row['fecha_respuesta'] ?? '',
+        'admin' => ($row['admin_nombre'] ?? '') . ' ' . ($row['admin_apellido'] ?? ''),
+        'rol' => $row['rol'] ?? '',
         'acciones' => ''
     ];
 }

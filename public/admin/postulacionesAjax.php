@@ -66,6 +66,17 @@ if (isset($_POST['accion'])) {
         echo actualizar_estado_postulacion($id);
         exit;
     }
+    if ($_POST['accion'] === 'marcarLeido' && isset($_POST['id'])) {
+        $id = intval($_POST['id']);
+
+        // Solo cambiar si está en estado 'pendiente'
+        $stmt = $conexion->prepare("UPDATE curriculum SET estado = 'leido' WHERE id = ? AND estado = 'pendiente'");
+        $stmt->bind_param("i", $id);
+        $resultado = $stmt->execute();
+
+        echo json_encode(['success' => $resultado]);
+        exit;
+    }
 }
 
 // --- Contar total filtrado ---
@@ -85,7 +96,7 @@ $stmtCount->close();
 
 // --- Datos filtrados ---
 $orderClause = "ORDER BY $orderColumn $orderDir, importante DESC";
-$sqlData = "SELECT importante, id, rut, nombre, apellido, email, estudios, ano_titulacion, anos_experiencia_tasacion, disponibilidad_comuna, disponibilidad_region, movilizacion_propia, estado, archivo, fecha_creacion FROM curriculum $where $orderClause LIMIT ?, ?";
+$sqlData = "SELECT importante, id, rut, nombre, apellido, fecha_nacimiento, email, telefono, direccion, comuna, region, institucion_educacional, detalle_formacion, otra_empresa, estudios, ano_titulacion, formacion_tasacion, anos_experiencia_tasacion, disponibilidad_comuna, disponibilidad_region, movilizacion_propia, estado, archivo, fecha_creacion FROM curriculum $where $orderClause LIMIT ?, ?";
 $stmtData = $conexion->prepare($sqlData);
 if (!$stmtData) {
     echo json_encode(['error' => 'Error en SQL DATA: ' . $conexion->error]);
@@ -105,21 +116,35 @@ $data = [];
 while ($row = $resultData->fetch_assoc()) {
     $data[] = [
         'importante' => $row['importante'],
+        'importante_texto' => ($row['importante'] ?? 0) == 1 ? 'Sí' : 'No',
         'id' => $row['id'],
         'rut' => $row['rut'],
         'nombre' => $row['nombre'],
         'apellido' => $row['apellido'],
+        'fecha_nacimiento' => $row['fecha_nacimiento'] ? date('d-m-Y', strtotime($row['fecha_nacimiento'])) : '—',
         'email' => $row['email'],
+        'telefono' => $row['telefono'],
+        'direccion' => $row['direccion'],
+        'comuna' => $row['comuna'],
+        'region' => $row['region'],
         'estudios' => $row['estudios'],
+        'institucion_educacional' => $row['institucion_educacional'],
+        'detalle_formacion' => $row['detalle_formacion'],
         'ano_titulacion' => $row['ano_titulacion'],
+        'formacion_tasacion' => $row['formacion_tasacion'] ?? 0,
+        'formacion_tasacion_texto' => ($row['formacion_tasacion'] ?? 0) == 1 ? 'Sí' : 'No',
         'anos_experiencia_tasacion' => $row['anos_experiencia_tasacion'],
+        'otra_empresa' => $row['otra_empresa'],
         'disponibilidad_comuna' => $row['disponibilidad_comuna'],
+        'disponibilidad_comuna_texto' => ($row['disponibilidad_comuna'] ?? 0) == 1 ? 'Sí' : 'No',
         'disponibilidad_region' => $row['disponibilidad_region'],
+        'disponibilidad_region_texto' => ($row['disponibilidad_region'] ?? 0) == 1 ? 'Sí' : 'No',
         'movilizacion_propia' => $row['movilizacion_propia'],
+        'movilizacion_propia_texto' => ($row['movilizacion_propia'] ?? 0) == 1 ? 'Sí' : 'No',
         'estado' => $row['estado'],
         'fecha' => date('d-m-Y', strtotime($row['fecha_creacion'])),
         'archivo' => $row['archivo'],
-        'acciones' => ''
+        'acciones' => '',
     ];
 }
 $stmtData->close();
@@ -141,4 +166,3 @@ $response = [
     "totalPostulaciones" => $total
 ];
 echo json_encode($response);
-?>
