@@ -97,10 +97,8 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'guardarRespuesta' && isset(
     $stmt = $conexion->prepare("INSERT INTO respuestas (mensaje_id, usuario_admin_id, respuesta) VALUES (?, ?, ?)");
     $stmt->bind_param("iis", $mensaje_id, $usuario_admin_id, $respuesta);
     $resultado = $stmt->execute();
-
     if ($resultado) {
         $conexion->query("UPDATE mensajes SET estado = 'respondido' WHERE id = $mensaje_id");
-
         // Datos del admin
         $stmt = $conexion->prepare("
             SELECT ua.nombre, ua.apellido, r.nombre AS rol
@@ -114,6 +112,7 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'guardarRespuesta' && isset(
         $admin = $result->fetch_assoc();
 
         // Enviar correo
+        /*
         try {
             $mail = new PHPMailer(true);
             $mail->isSMTP();
@@ -137,7 +136,7 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'guardarRespuesta' && isset(
                 'error' => 'Error al enviar correo: ' . $mail->ErrorInfo
             ]);
             exit;
-        }
+        }*/
 
         echo json_encode([
             'success' => true,
@@ -167,12 +166,12 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'marcarLeido' && isset($_POS
     exit;
 }
 // Consulta con filtros
-$columns = ['m.importante', 'm.id', 'm.servicio', 'm.nombre', 'm.email', 'm.mensaje', 'm.estado', 'm.fecha_creacion'];
+$columns = ['m.importante', 'm.importante', 'm.id', 'm.servicio', 'm.nombre', 'm.email', 'm.telefono', 'm.mensaje', 'r.respuesta', 'r.fecha_respuesta', 'ua.nombre', 'rl.nombre', 'm.estado', 'm.fecha_creacion', 'm.id'];
 $draw = intval($_POST['draw'] ?? 0);
 $start = intval($_POST['start'] ?? 0);
 $length = intval($_POST['length'] ?? 10);
 
-$orderColumnIndex = $_POST['order'][0]['column'] ?? 7;
+$orderColumnIndex = $_POST['order'][0]['column'] ?? 13;
 $orderDir = in_array(strtolower($_POST['order'][0]['dir'] ?? ''), ['asc', 'desc']) ? $_POST['order'][0]['dir'] : 'desc';
 $orderColumn = $columns[$orderColumnIndex] ?? 'fecha_creacion';
 
