@@ -231,6 +231,11 @@ $('#formRespuesta').on('submit', function(e) {
             // Insertar el bloque de respuesta justo después del encabezado del mensaje
             $('#resultado_filtro_mensaje').append(replyHTML);
 
+            $("#contenidoModalMensaje .badge")
+                .removeClass("bg-primary bg-warning text-dark")
+                .addClass("bg-success")
+                .text("Respondido");
+
             // Opcional: mostrar mensaje de éxito
             $('#resultado_filtro_mensaje').prepend(`
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -243,7 +248,6 @@ $('#formRespuesta').on('submit', function(e) {
             if (typeof tabla !== 'undefined') {
                 tabla.ajax.reload(null, false);
             }
-
         } else {
             alert('No se pudo guardar la respuesta.');
         }

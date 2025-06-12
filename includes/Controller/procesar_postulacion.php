@@ -84,12 +84,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $stmt->bind_param(
-        "sssssssssssisisiisss",
-        $nombre, $apellido, $fecha_nacimiento, $rut, $email, $telefono,
-        $direccion, $comuna, $region, $estudios, $institucion, $ano_titulacion,
-        $formacion_tasacion, $detalle_formacion,
-        $anos_experiencia_tasacion, $otra_empresa,
-        $disponibilidad_comuna, $disponibilidad_region, $movilizacion_propia,
+        "sssssssssssiisisiiis",
+        $nombre,
+        $apellido,
+        $fecha_nacimiento,
+        $rut,
+        $email,
+        $telefono,
+        $direccion,
+        $comuna,
+        $region,
+        $estudios,
+        $institucion,
+        $ano_titulacion,
+        $formacion_tasacion,
+        $detalle_formacion,
+        $anos_experiencia_tasacion,
+        $otra_empresa,
+        $disponibilidad_comuna,
+        $disponibilidad_region,
+        $movilizacion_propia,
         $ruta_relativa
     );
 

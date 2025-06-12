@@ -107,10 +107,10 @@ requiereRol([1, 3, 4, 5]);
                             </div>
                             <div class="form-floating">
                                 <select class="form-select form-select-sm" id="filtro_servicio" aria-label="Servicio">
-                                    <option value="" hidden selected>Seleccione</option>
-                                    <option value="Tasacion de bienes raices">Tasación de bienes raíces</option>
-                                    <option value="Ambos">Ambos servicios</option>
-                                    <option value="Otros">Otros servicios</option>
+                                    <option value="" hidden selected>Seleccionar</option>
+                                    <option value="tasacion">Tasación</option>
+                                    <option value="consultoria">Consultoria</option>
+                                    <option value="Otros">Otros</option>
                                 </select>
                                 <label for="filtro_servicio">Servicio</label>
                             </div>
