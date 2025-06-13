@@ -5,6 +5,9 @@ ini_set('display_errors', 0);
 
 require_once __DIR__ . '/../db.php';
 require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../../vendor/autoload.php';  // Asegúrate de incluir PHPMailer
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 header('Content-Type: application/json');
 
@@ -15,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
+    // Recoger los datos del formulario
     $nombre = trim($_POST['nombre'] ?? '');
     $apellido = trim($_POST['apellido'] ?? '');
     $fecha_nacimiento = trim($_POST['fecha_nacimiento'] ?? '');
@@ -39,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $disponibilidad_region = ($_POST['disponibilidad_regional'] ?? '') === 'Sí' ? 1 : 0;
     $movilizacion_propia = ($_POST['movilizacion'] ?? '') === 'Sí' ? 1 : 0;
 
+    // Validación de archivo de CV
     if (!isset($_FILES['cv']) || $_FILES['cv']['error'] !== UPLOAD_ERR_OK) {
         echo json_encode(['success' => false, 'error' => 'No se subió el archivo correctamente.']);
         exit;
@@ -67,6 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
+    // Insertar en la base de datos
     $stmt = $conexion->prepare("
         INSERT INTO curriculum (
             nombre, apellido, fecha_nacimiento, rut, email, telefono,
@@ -109,11 +115,75 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($stmt->execute()) {
         $stmt->close();
-        echo json_encode(['success' => true]);
+
+        // Enviar correos a los administradores
+        $stmt_admins = $conexion->prepare("SELECT email FROM usuarios_admin WHERE rol_id IN (1, 5) AND activo = 1");
+        $stmt_admins->execute();
+        $result = $stmt_admins->get_result();
+
+        // Inicializar PHPMailer para el envío
+        $mail = new PHPMailer(true);
+        try {
+            $mail->isSMTP();
+            $mail->Host = 'mail.vfs.cl';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'contacto@vfs.cl';
+            $mail->Password = 'ContactoVFS1234.';
+            $mail->SMTPSecure = 'ssl';
+            $mail->Port = 465;
+            $mail->CharSet = 'UTF-8';
+            $mail->setFrom('contacto@vfs.cl', 'VFS-Admin');
+            
+            // Añadir los destinatarios (administradores)
+            while ($admin = $result->fetch_assoc()) {
+                $mail->addAddress($admin['email']);
+            }
+
+            // Asunto y cuerpo del correo
+            $mail->Subject = 'Nueva postulación recibida';
+            $mail->Body = "
+            Has recibido una nueva postulación con los siguientes datos:
+
+            Nombre: $nombre $apellido
+            Fecha de Nacimiento: $fecha_nacimiento
+            RUT: $rut
+            Email: $email
+            Teléfono: $telefono
+            Dirección: $direccion
+            Comuna: $comuna
+            Región: $region
+            Estudios: $estudios
+            Institución: $institucion
+            Año de Titulación: $ano_titulacion
+            Formación en Tasación: " . ($formacion_tasacion ? 'Sí' : 'No') . "
+            Detalles de la Formación: $detalle_formacion
+            Años de Experiencia: $anos_experiencia_tasacion
+            Otra Empresa: $otra_empresa
+            Disponibilidad Comuna: " . ($disponibilidad_comuna ? 'Sí' : 'No') . "
+            Disponibilidad Región: " . ($disponibilidad_region ? 'Sí' : 'No') . "
+            Movilización Propia: " . ($movilizacion_propia ? 'Sí' : 'No') . "
+
+            El CV adjunto ha sido recibido.
+            ";
+
+            // Adjuntar el CV
+            $mail->addAttachment($ruta_absoluta, $cv_nombre);  // Añadir el CV como adjunto
+
+            // Enviar el correo
+            $mail->send();
+        } catch (Exception $e) {
+            error_log("Error al enviar correo a administrador: {$mail->ErrorInfo}");
+            echo json_encode(['success' => false, 'error' => 'Error al enviar correo a los administradores']);
+            exit;
+        }
+
+        // Respuesta exitosa
+        echo json_encode(['success' => true, 'mensaje' => 'Postulación enviada correctamente.']);
+        exit;
     } else {
         echo json_encode(['success' => false, 'error' => 'Error al guardar en la base de datos.']);
+        exit;
     }
-    exit;
 }
 
 echo json_encode(['success' => false, 'error' => 'Solicitud no válida.']);
