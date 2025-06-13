@@ -292,12 +292,29 @@ require_once __DIR__ . '/includes/config.php';
 
                 const form = this;
 
+                // Validar reCAPTCHA
+                const captchaResponse = grecaptcha.getResponse();
+                if (!captchaResponse) {
+                    Swal.fire({
+                        title: 'Atención',
+                        text: 'Por favor, completa el reCAPTCHA antes de enviar tu postulación.',
+                        icon: 'warning',
+                        confirmButtonText: 'Cerrar',
+                        customClass: {
+                            popup: 'rounded-4 shadow-lg'
+                        }
+                    });
+                    return;
+                }
+
+                // Validación HTML5
                 if (!form.checkValidity()) {
                     form.classList.add('was-validated');
                     return;
                 }
 
                 const formData = new FormData(form);
+                formData.append('g-recaptcha-response', captchaResponse); // 👈 Enviar token al servidor
 
                 $.ajax({
                     type: 'POST',
@@ -321,6 +338,7 @@ require_once __DIR__ . '/includes/config.php';
                                 });
 
                                 form.reset();
+                                grecaptcha.reset(); // ✅ Reiniciar reCAPTCHA
                                 form.classList.remove('was-validated');
                                 $(form).find('input, textarea, select').removeClass('is-valid is-invalid');
                             } else {
@@ -328,7 +346,10 @@ require_once __DIR__ . '/includes/config.php';
                                     title: 'Error',
                                     text: jsonResponse.error || 'Hubo un problema al enviar la postulación.',
                                     icon: 'error',
-                                    confirmButtonText: 'Cerrar'
+                                    confirmButtonText: 'Cerrar',
+                                    customClass: {
+                                        popup: 'rounded-4 shadow-lg'
+                                    }
                                 });
                             }
                         } catch (err) {
@@ -336,7 +357,10 @@ require_once __DIR__ . '/includes/config.php';
                                 title: 'Error inesperado',
                                 text: 'La respuesta del servidor no fue válida.',
                                 icon: 'warning',
-                                confirmButtonText: 'Cerrar'
+                                confirmButtonText: 'Cerrar',
+                                customClass: {
+                                    popup: 'rounded-4 shadow-lg'
+                                }
                             });
                         }
                     },
@@ -345,7 +369,10 @@ require_once __DIR__ . '/includes/config.php';
                             title: 'Error de conexión',
                             text: 'No se pudo conectar con el servidor.',
                             icon: 'error',
-                            confirmButtonText: 'Cerrar'
+                            confirmButtonText: 'Cerrar',
+                            customClass: {
+                                popup: 'rounded-4 shadow-lg'
+                            }
                         });
                     }
                 });
