@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../db.php';
 
 // Función general para actualizar cualquier campo de postulacion
 function actualizar_campo_postulacion($campo, $valor, $id)

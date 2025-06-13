@@ -600,7 +600,7 @@ $(document).ready(function() {
 
         $.ajax({
             type: 'POST',
-            url: '../includes/Controller/procesar_mensaje.php',
+            url: 'includes/Controller/procesar_mensaje.php',
             data: formData,
             processData: false,
             contentType: false,

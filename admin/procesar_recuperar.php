@@ -3,7 +3,7 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require '/../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../includes/config.php';
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/mailer.php';
@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt = $pdo->prepare("UPDATE usuarios_admin SET reset_token = ?, token_expira = ? WHERE email = ?");
         $stmt->execute([$token, $expira, $email]);
 
-        $enlace = "http://localhost/vfs/public/admin/restablecer.php?token=$token";
+        $enlace = "http://localhost/vfs/admin/restablecer.php?token=$token";
 
         // Enviar email con PHPMailer
         $asunto = 'Recuperación de contraseña';

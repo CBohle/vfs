@@ -1,10 +1,3 @@
-
-<?php
-// Previo a los cambios de rutas
-// define('BASE_URL', 'http://localhost/vfs/public/');
-// define('BASE_ADMIN_URL', 'http://localhost/vfs/public/admin/');
-?>
-
 <?php
 $esLocal = ($_SERVER['HTTP_HOST'] === 'localhost');
 

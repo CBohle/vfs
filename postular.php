@@ -43,7 +43,7 @@ require_once __DIR__ . '/includes/config.php';
             </div>
             <div class="accordion" id="postulacionAccordion">
                 <!-- INICIO FORMULARIO DE POSTULACIÓN -->
-                <form id="postulacionForm" action="<?= BASE_URL ?>../includes/Controller/procesar_postulacion.php" method="post" enctype="multipart/form-data">
+                <form id="postulacionForm" action="<?= BASE_URL ?>includes/Controller/procesar_postulacion.php" method="post" enctype="multipart/form-data">
                     <!-- DATOS PERSONALES (Campo 1-4)(Nombre/Apellido/Nacimiento/Rut)-->
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingOne">
@@ -301,7 +301,7 @@ require_once __DIR__ . '/includes/config.php';
 
                 $.ajax({
                     type: 'POST',
-                    url: '<?= BASE_URL ?>../includes/Controller/procesar_postulacion.php',
+                    url: '<?= BASE_URL ?>includes/Controller/procesar_postulacion.php',
                     data: formData,
                     processData: false,
                     contentType: false,
