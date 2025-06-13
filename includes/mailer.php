@@ -1,4 +1,5 @@
 <?php
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use Dotenv\Dotenv;
@@ -19,7 +20,8 @@ $dotenv->load();
  * @param string|null $cuerpoAlt Texto alternativo (opcional)
  * @return bool
  */
-function enviarCorreo($destinatario, $asunto, $cuerpoHTML, $remitente = 'soporte', $cuerpoAlt = null) {
+function enviarCorreo($destinatario, $asunto, $cuerpoHTML, $remitente = 'soporte', $cuerpoAlt = null)
+{
     $mail = new PHPMailer(true);
 
     try {
@@ -29,6 +31,7 @@ function enviarCorreo($destinatario, $asunto, $cuerpoHTML, $remitente = 'soporte
         $mail->SMTPAuth   = true;
         $mail->Port       = $_ENV['MAIL_PORT'];
         $mail->SMTPSecure = $_ENV['MAIL_SECURE']; // Ej: 'ssl' o 'tls'
+        $mail->CharSet = 'UTF-8';
 
         // Autenticación y remitente según tipo
         switch (strtolower($remitente)) {
@@ -55,7 +58,6 @@ function enviarCorreo($destinatario, $asunto, $cuerpoHTML, $remitente = 'soporte
 
         $mail->send();
         return true;
-
     } catch (Exception $e) {
         error_log("Error al enviar correo desde $remitente: {$mail->ErrorInfo}");
         return false;

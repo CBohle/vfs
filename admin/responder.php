@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../includes/db.php';
-require_once __DIR__ . '/../vendor/autoload.php'; // Si usas PHPMailer
+require_once __DIR__ . '/../vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mail->Password = 'lcrl uqjg wfbn apla'; // Tu contraseña
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
-
+        $mail->CharSet = 'UTF-8';
         $mail->setFrom('parmait.detalles@gmail.com', 'VFS-Admin');
         $mail->addAddress($cliente['email'], $cliente['nombre'] . ' ' . $cliente['apellido']);
         $mail->Subject = 'Respuesta a tu consulta en VFS';
