@@ -106,14 +106,14 @@ requiereRol([1, 3, 4,5]);
                                 </select>
                                 <label for="filtro_estado">Estado</label>
                             </div>
-                            <div class="form-floating">
+                            <!--<div class="form-floating">
                                 <select class="form-select form-select-sm" id="filtro_orden" aria-label="Orden">
                                     <option value="DESC" hidden selected>Seleccionar</option>
                                     <option value="DESC">Más Reciente</option>
                                     <option value="ASC">Más Antiguo</option>
                                 </select>
                                 <label for="filtro_orden">Orden</label>
-                            </div>
+                            </div>-->
                             <div class="form-floating">
                                 <select class="form-select form-select-sm" id="filtro_importante" aria-label="Importante">
                                     <option value="" hidden selected>Seleccionar</option>
@@ -546,6 +546,39 @@ requiereRol([1, 3, 4,5]);
                     }
                 }, 'json');
             }
+        }
+        function toggleImportante(id, estadoActual) {
+            const nuevoValor = estadoActual === 1 ? 0 : 1;
+
+            $.post('clientesAjax.php', {
+                accion: 'importante',
+                cliente_id: id,
+                importante: nuevoValor
+            }, function (response) {
+                if (response.success) {
+                    const boton = $('#btnImportante');
+                    const icono = $('#iconoImportante');
+                    const texto = $('#textoImportante');
+
+                    if (nuevoValor === 1) {
+                        boton.removeClass('btn-warning').addClass('btn-outline-warning');
+                        icono.removeClass('bi-star').addClass('bi-star-fill');
+                        texto.text('Marcar como no importante');
+                    } else {
+                        boton.removeClass('btn-outline-warning').addClass('btn-warning');
+                        icono.removeClass('bi-star-fill').addClass('bi-star');
+                        texto.text('Marcar como importante');
+                    }
+
+                    boton.attr('onclick', `toggleImportante(${id}, ${nuevoValor})`);
+
+                    if (typeof tabla !== 'undefined') {
+                        tabla.ajax.reload(null, false);
+                    }
+                } else {
+                    alert('No se pudo actualizar el estado de importancia.');
+                }
+            }, 'json');
         }
         $(document).ready(function() {
             inicializarTablaClientes();

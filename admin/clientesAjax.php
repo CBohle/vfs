@@ -107,8 +107,8 @@ if (isset($_POST['accion'])) {
         echo json_encode(['success' => actualizar_estado($id, 'eliminado')]);
         exit;
     }
-    if ($accion === 'importante' && isset($_POST['postulacion_id'], $_POST['importante'])) {
-        $id = intval($_POST['postulacion_id']);
+    if ($accion === 'importante' && isset($_POST['cliente_id'], $_POST['importante'])) {
+        $id = intval($_POST['cliente_id']);
         $importante = intval($_POST['importante']);
         echo json_encode(['success' => actualizar_importante($id, $importante)]);
         exit;
