@@ -8896,6 +8896,11 @@ fieldset:disabled .btn {
   padding-bottom: 3rem !important;
 }
 
+.py-6 {
+  padding-top: 4rem !important;
+  padding-bottom: 3rem !important;
+}
+
 .pt-0 {
   padding-top: 0 !important;
 }
@@ -12749,15 +12754,26 @@ body {
 }
 
 .page-section {
-  padding: 6rem 0;
+  padding: 3rem 0;
+}
+
+.page-section1 {
+  padding-top: 5rem;
 }
 
 .page-section2 {
-  padding-top: 6rem;
+  padding-top: 5rem;
+  padding-bottom: 6rem;
 }
 
 .page-section3 {
-  padding-bottom: 6rem;
+  padding-top: 3rem;
+  padding-bottom: 4rem;
+
+}
+.page-section4 {
+  padding-top: 7rem;
+  padding-bottom: 4rem;
 }
 
 .servicios-border-izq {

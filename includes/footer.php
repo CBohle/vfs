@@ -8,7 +8,7 @@ $base_url = $is_landing ? '' : BASE_URL . 'index.php';
 ?>
 
 <!-- ESTRUCTURA DEL FOOTER -->
-<footer class="bg-light py-5">
+<footer class="bg-light py-6">
     <div class="container px-4 px-lg-5">
         <div class="row text-center text-md-start">
             <!-- COLUMNA IZQUIERDA: IDENTIFICACIÓN -->

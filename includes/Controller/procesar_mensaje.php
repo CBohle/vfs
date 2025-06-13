@@ -90,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $mail->Port = 465;  // Puerto 465 para SSL
         
                 $mail->addAddress($admin['email']);  // Enviar al email del administrador
-                $mail->Subject = 'Nuevo mensaje desde el formulario de contacto';
+                $mail->Subject = 'Nuevo mensaje de contacto';
                 $mail->Body = "Has recibido un nuevo mensaje de contacto de:\n\nNombre: $nombre $apellido\nEmail: $email\nTeléfono: $telefono\nServicio: $servicio\n\nMensaje:\n$mensaje";
 
                 // Enviar el correo
