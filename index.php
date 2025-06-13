@@ -28,7 +28,7 @@ require_once __DIR__ . '/includes/config.php';
     <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet" />
     <!-- Hoja de estilos CSS-->
     <link href="<?= BASE_URL ?>assets/css/styles.css" rel="stylesheet" />
-     <!--SweetAlert2 CSS-->
+    <!--SweetAlert2 CSS-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 
@@ -464,7 +464,7 @@ require_once __DIR__ . '/includes/config.php';
                     <div class="row gx-4 gx-lg-5 justify-content-center ">
                         <div class="">
                             <!-- Mensaje de recepción exitosa o error -->
-                           <div id="mensajeAlerta" class="alert d-none alert-dismissible fade show" role="alert">
+                            <div id="mensajeAlerta" class="alert d-none alert-dismissible fade show" role="alert">
                                 <span id="mensajeTexto"></span>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
                             </div>
@@ -550,12 +550,12 @@ require_once __DIR__ . '/includes/config.php';
                                 <div class="d-none" id="submitErrorMessage">
                                     <div class="text-center text-danger mb-3">Error al enviar el mensaje.</div>
                                 </div>
+                                <!-- reCAPTCHA -->
+                                <div class="g-recaptcha mb-3 mt-3" data-sitekey="6LdyYy0rAAAAAH9kSCDWmq8Rkp0vZRQX3oFSZcpr"></div>
                                 <!-- Botón enviar -->
                                 <div class="d-grid">
                                     <button class="btn btn-primary btn-xl" id="submitButtonContacto" type="submit" disabled>Enviar</button>
                                 </div>
-                                <!-- reCAPTCHA -->
-                                <div class="g-recaptcha mb-3 mt-3" data-sitekey="6LdyYy0rAAAAAH9kSCDWmq8Rkp0vZRQX3oFSZcpr"></div>
                             </form>
                             <!-- FIN FORMULARIO DE CONTACTO -->
                         </div>
@@ -574,74 +574,81 @@ require_once __DIR__ . '/includes/config.php';
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-$(document).ready(function() {
-    const form = $('#contactoForm');
+    $(document).ready(function() {
+        const form = $('#contactoForm');
 
-    // Validación por campo
-    form.find('input, textarea, select').on('input blur', function() {
-        if (this.checkValidity()) {
-            $(this).removeClass('is-invalid').addClass('is-valid');
-        } else {
-            $(this).removeClass('is-valid').addClass('is-invalid');
-        }
-    });
-
-    // Envío por AJAX
-    form.on('submit', function(e) {
-        e.preventDefault(); // Evita el comportamiento normal
-
-        if (!this.checkValidity()) {
-            this.classList.add('was-validated');
-            return;
-        }
-
-        const formData = new FormData(this);
-
-        $.ajax({
-            type: 'POST',
-            url: 'includes/Controller/procesar_mensaje.php',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                try {
-                    const jsonResponse = typeof response === 'string' ? JSON.parse(response) : response;
-                    if (jsonResponse.success) {
-                        mostrarAlerta("¡Tu mensaje ha sido enviado con éxito!", "success");
-                        form[0].reset();
-                        form.removeClass('was-validated');
-                        form.find('input, textarea, select').removeClass('is-valid is-invalid');
-                    } else {
-                        mostrarAlerta("Error: " + (jsonResponse.error || "Hubo un problema al enviar el mensaje."), "danger");
-                    }
-                } catch (err) {                    
-                    mostrarAlerta("Hubo un error inesperado en la respuesta del servidor."+ err, "warning");
-                }
-            },
-            error: function() {
-                console.error("Error en la solicitud AJAX:", status, error);
-                mostrarAlerta("Error al conectar con el servidor.", "danger");
+        // Validación por campo
+        form.find('input, textarea, select').on('input blur', function() {
+            if (this.checkValidity()) {
+                $(this).removeClass('is-invalid').addClass('is-valid');
+            } else {
+                $(this).removeClass('is-valid').addClass('is-invalid');
             }
         });
-    });
 
-    // Mostrar alertas bonitas de Bootstrap
-   function mostrarAlerta(mensaje, tipo) {
-    Swal.fire({
-        title: tipo === 'success' ? '¡Éxito!' : 'Atención',
-        text: mensaje,
-        icon: tipo, // 'success', 'error', 'warning', etc.
-        confirmButtonText: 'Cerrar',
-        customClass: {
-            popup: 'rounded-4 shadow-lg'
+        // Envío por AJAX
+        form.on('submit', function(e) {
+            e.preventDefault();
+
+            const captchaResponse = grecaptcha.getResponse();
+            if (!captchaResponse) {
+                mostrarAlerta("Por favor, completa el reCAPTCHA.", "warning");
+                return;
+            }
+
+            if (!this.checkValidity()) {
+                this.classList.add('was-validated');
+                return;
+            }
+
+            const formData = new FormData(this);
+            formData.append('g-recaptcha-response', captchaResponse); // importante
+
+            $.ajax({
+                type: 'POST',
+                url: 'includes/Controller/procesar_mensaje.php',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    try {
+                        const jsonResponse = typeof response === 'string' ? JSON.parse(response) : response;
+                        if (jsonResponse.success) {
+                            mostrarAlerta("¡Tu mensaje ha sido enviado con éxito!", "success");
+                            form[0].reset();
+                            grecaptcha.reset(); // reinicia el captcha
+                            form.removeClass('was-validated');
+                            form.find('input, textarea, select').removeClass('is-valid is-invalid');
+                        } else {
+                            mostrarAlerta("Error: " + (jsonResponse.error || "Hubo un problema al enviar el mensaje."), "danger");
+                        }
+                    } catch (err) {
+                        mostrarAlerta("Hubo un error inesperado en la respuesta del servidor. " + err, "warning");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error en la solicitud AJAX:", status, error);
+                    mostrarAlerta("Error al conectar con el servidor.", "danger");
+                }
+            });
+        });
+
+
+        // Mostrar alertas bonitas de Bootstrap
+        function mostrarAlerta(mensaje, tipo) {
+            Swal.fire({
+                title: tipo === 'success' ? '¡Éxito!' : 'Atención',
+                text: mensaje,
+                icon: tipo, // 'success', 'error', 'warning', etc.
+                confirmButtonText: 'Cerrar',
+                customClass: {
+                    popup: 'rounded-4 shadow-lg'
+                }
+            });
         }
+
     });
-    }
-
-});
 </script>
-
-
 
 </body>
 
