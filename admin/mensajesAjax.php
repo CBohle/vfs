@@ -112,31 +112,32 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'guardarRespuesta' && isset(
         $admin = $result->fetch_assoc();
 
         // Enviar correo
-        /*
+     $mail = new PHPMailer(true);
         try {
-            $mail = new PHPMailer(true);
             $mail->isSMTP();
-            $mail->Host = 'mail.vfs.cl'; // Cambia por smtp.hostingblue si lo usas
+            $mail->Host = 'mail.vfs.cl';  // Usando el servidor SMTP en duro
             $mail->SMTPAuth = true;
-            $mail->Username = 'contacto@vfs.cl';
-            $mail->Password = 'ContactoVFS1234.';
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port = 465;
+            $mail->Username = 'contacto@vfs.cl';  // Tu correo
+            $mail->Password = 'ContactoVFS1234.';  // Tu contraseña
+            $mail->SMTPSecure = 'ssl';  // Usando SSL
+            $mail->Port = 465;  // Puerto 465 para SSL
 
             $mail->setFrom('contacto@vfs.cl', 'VFS-Admin');
             $mail->addAddress($cliente['email'], $cliente['nombre'] . ' ' . $cliente['apellido']);
             $mail->Subject = 'Respuesta a tu consulta en VFS';
-            $mail->Body = "Hola {$cliente['nombre']},\n\nEsta es nuestra respuesta a tu consulta:\n\n$respuesta\n\nGracias por contactarnos.";
+            $mail->Body    = "Hola {$cliente['nombre']},\n\nEsta es nuestra respuesta a tu consulta:\n\n$respuesta\n\nGracias por contactarnos.";
 
+            // Enviar el correo
             $mail->send();
         } catch (Exception $e) {
-             error_log("ERROR SMTP: " . $mail->ErrorInfo); // Se registra en error_log
+            error_log("Error al enviar correo: {$mail->ErrorInfo}");  // Log en caso de error
             echo json_encode([
                 'success' => false,
                 'error' => 'Error al enviar correo: ' . $mail->ErrorInfo
             ]);
             exit;
-        }*/
+        }
+
 
         echo json_encode([
             'success' => true,
@@ -154,6 +155,7 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'guardarRespuesta' && isset(
     }
     exit;
 }
+
 if (isset($_POST['accion']) && $_POST['accion'] === 'marcarLeido' && isset($_POST['id'])) {
     $id = intval($_POST['id']);
 

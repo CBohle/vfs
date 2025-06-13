@@ -615,11 +615,12 @@ $(document).ready(function() {
                     } else {
                         mostrarAlerta("Error: " + (jsonResponse.error || "Hubo un problema al enviar el mensaje."), "danger");
                     }
-                } catch (err) {
-                    mostrarAlerta("Hubo un error inesperado en la respuesta del servidor.", "warning");
+                } catch (err) {                    
+                    mostrarAlerta("Hubo un error inesperado en la respuesta del servidor."+ err, "warning");
                 }
             },
             error: function() {
+                console.error("Error en la solicitud AJAX:", status, error);
                 mostrarAlerta("Error al conectar con el servidor.", "danger");
             }
         });
