@@ -29,6 +29,17 @@ requiereRol([1]);
             vertical-align: middle;
         }
 
+        .table td.descripcion {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal !important;
+            line-height: 1.3rem;
+            max-height: calc(1.3rem * 3);
+        }
+
         .dataTables_wrapper .dataTables_filter,
         .dataTables_wrapper .dataTables_length,
         .dataTables_wrapper .dataTables_info,
@@ -137,7 +148,7 @@ requiereRol([1]);
                                 <table id="tablaRoles" class="table table-hover w-100">
                                     <thead>
                                         <tr>
-                                            <th>Nombre del Rol</th>
+                                            <th>Rol</th>
                                             <th>Descripción</th>
                                             <th>Estatus</th>
                                             <th>Acciones</th>
@@ -286,6 +297,7 @@ requiereRol([1]);
                     if ($.fn.DataTable.isDataTable('#tablaRoles')) tablaRoles.destroy();
 
                     tablaRoles = $('#tablaRoles').DataTable({
+                        autoWidth: false,
                         serverSide: true,
                         ajax: {
                             url: 'usuariosAjax.php',
@@ -299,7 +311,8 @@ requiereRol([1]);
                                 data: 'nombre'
                             },
                             {
-                                data: 'descripcion'
+                                data: 'descripcion',
+                                className: 'descripcion'
                             },
                             {
                                 data: 'activo',
@@ -327,7 +340,12 @@ requiereRol([1]);
                             {
                                 data: null,
                                 className: 'text-center',
-                                render: data => `<button class="btn btn-sm btn-primary" onclick="verRol(${data.id})"><i class="bi bi-eye"></i></button>`
+                                render: function (data, type, row) {
+                                    return `
+                                    <button class="btn btn-sm btn-primary me-1" onclick="verRol(${row.id})"><i class="bi bi-eye"></i></button>
+                                    <button class="btn btn-sm btn-danger" onclick="eliminarRol(${row.id})"><i class="bi bi-trash"></i></button>
+                                    `;
+                                }
                             }
                         ],
                         dom: '<"datatable-container"t><"datatable-footer d-flex justify-content-end mt-2"p>',
@@ -341,7 +359,11 @@ requiereRol([1]);
                             }
                         },
                         pagingType: 'simple_numbers',
-                        pageLength: 10
+                        pageLength: 10,
+                        columnDefs: [
+                            { targets: 2, width: '100px' }, // Estatus
+                            { targets: 3, width: '110px' }  // Acciones
+                        ],
                     });
                 }
 
@@ -396,7 +418,12 @@ requiereRol([1]);
                             {
                                 data: null,
                                 className: 'text-center',
-                                render: data => `<button class="btn btn-sm btn-primary" onclick="verUsuario(${data.id})"><i class="bi bi-eye"></i></button>`
+                                render: function (data, type, row) {
+                                    return `
+                                    <button class="btn btn-sm btn-primary me-1" onclick="verUsuario(${row.id})"><i class="bi bi-eye"></i></button>
+                                    <button class="btn btn-sm btn-danger" onclick="eliminarUsuario(${row.id})"><i class="bi bi-trash"></i></button>
+                                    `;
+                                }
                             }
                         ],
                         dom: '<"datatable-container"t><"datatable-footer d-flex justify-content-end mt-2"p>',
@@ -594,7 +621,30 @@ requiereRol([1]);
                                 alert('No se pudo cambiar el estado.');
                             }
                         }, 'json');
-                    });    
+                    });  
+                    function eliminarRol(id) {
+                        if (!confirm("¿Estás seguro de que deseas eliminar este rol?")) return;
+                        $.post('usuariosAjax.php', { accion: 'eliminarRol', id }, function (response) {
+                            if (response.success) {
+                                alert('Rol eliminado correctamente.');
+                                tablaRoles.ajax.reload();
+                            } else {
+                                alert('Error al eliminar el rol.');
+                            }
+                        }, 'json');
+                    }
+
+                    function eliminarUsuario(id) {
+                        if (!confirm("¿Estás seguro de que deseas eliminar este usuario?")) return;
+                        $.post('usuariosAjax.php', { accion: 'eliminarUsuario', id }, function (response) {
+                            if (response.success) {
+                                alert('Usuario eliminado correctamente.');
+                                tablaUsuarios.ajax.reload();
+                            } else {
+                                alert('Error al eliminar el usuario.');
+                            }
+                        }, 'json');
+                    }  
             </script>
             <!-- Footer -->
             <?php

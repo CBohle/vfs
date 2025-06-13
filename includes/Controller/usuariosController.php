@@ -156,7 +156,21 @@ function cambiarEstadoUsuario($id, $estado) {
     $stmt = $conexion->prepare("UPDATE usuarios_admin SET activo = ? WHERE id = ?");
     $stmt->bind_param("si", $estado, $id);
     return $stmt->execute();
-}    
+}
+function eliminarRol($id) {
+    global $conexion;
+    $conexion->query("DELETE FROM permisos WHERE rol_id = $id");
+    $stmt = $conexion->prepare("DELETE FROM roles WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    return $stmt->execute();
+}
+
+function eliminarUsuario($id) {
+    global $conexion;
+    $stmt = $conexion->prepare("DELETE FROM usuarios_admin WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    return $stmt->execute();
+}
 ?>
 
 
