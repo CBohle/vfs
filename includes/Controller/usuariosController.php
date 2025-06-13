@@ -72,7 +72,11 @@ function listarRoles($post) {
     $stmt->bind_param("ii", $start, $length);
     $stmt->execute();
     $result = $stmt->get_result();
-    $data = $result->fetch_all(MYSQLI_ASSOC);
+    $data = [];
+    while ($row = $result->fetch_assoc()) {
+        $row['activo'] = $row['activo'] == 1 ? 'Activo' : 'Inactivo';
+        $data[] = $row;
+    }
 
     $total = $conexion->query("SELECT COUNT(*) as total FROM roles")->fetch_assoc();
 
@@ -145,6 +149,27 @@ function listarUsuarios($post) {
         "recordsFiltered" => $total['total'],
         "data" => $data
     ];
+}
+function cambiarEstadoUsuario($id, $estado) {
+    global $conexion;
+    $estado = $estado === 'activo' ? 'activo' : 'inactivo';
+    $stmt = $conexion->prepare("UPDATE usuarios_admin SET activo = ? WHERE id = ?");
+    $stmt->bind_param("si", $estado, $id);
+    return $stmt->execute();
+}
+function eliminarRol($id) {
+    global $conexion;
+    $conexion->query("DELETE FROM permisos WHERE rol_id = $id");
+    $stmt = $conexion->prepare("DELETE FROM roles WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    return $stmt->execute();
+}
+
+function eliminarUsuario($id) {
+    global $conexion;
+    $stmt = $conexion->prepare("DELETE FROM usuarios_admin WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    return $stmt->execute();
 }
 ?>
 

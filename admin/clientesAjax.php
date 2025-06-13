@@ -80,13 +80,15 @@ $importante = $_POST['importante'] ?? '';
 $search = trim($_POST['search']['value'] ?? '');
 
 // Filtros
-if ($estado !== 'eliminado') {
+if (empty($estado)) {
     $where .= " AND estado != 'eliminado'";
 }
 if (!empty($estado) && $estado !== 'Todos') {
     $where .= " AND estado = ?";
     $paramTypes .= 's';
     $params[] = $estado;
+} else {
+    $where .= " AND estado != 'eliminado'";
 }
 if ($importante !== '') {
     $where .= " AND importante = ?";
@@ -107,14 +109,22 @@ if (isset($_POST['accion'])) {
         echo json_encode(['success' => actualizar_estado($id, 'eliminado')]);
         exit;
     }
-    if ($accion === 'importante' && isset($_POST['postulacion_id'], $_POST['importante'])) {
-        $id = intval($_POST['postulacion_id']);
+    if ($accion === 'importante' && isset($_POST['cliente_id'], $_POST['importante'])) {
+        $id = intval($_POST['cliente_id']);
         $importante = intval($_POST['importante']);
         echo json_encode(['success' => actualizar_importante($id, $importante)]);
         exit;
     }
     if ($accion === 'recuperar' && $id) {
         echo actualizar_estado_cliente($id);
+        exit;
+    }
+    if ($accion === 'cambiar_estado' && $id && isset($_POST['estado'])) {
+        $nuevoEstado = $_POST['estado'];
+        $stmt = $conexion->prepare("UPDATE clientes SET estado = ?, fecha_modificacion = NOW() WHERE id = ?");
+        $stmt->bind_param("si", $nuevoEstado, $id);
+        $success = $stmt->execute();
+        echo json_encode(['success' => $success]);
         exit;
     }
 }

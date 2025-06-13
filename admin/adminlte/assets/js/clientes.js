@@ -33,3 +33,15 @@ function crearCliente() {
         $('#contenidoModalCliente').html('<p class="text-danger">Error al cargar el formulario.</p>');
     });
 }
+function destruirYRestaurarEncabezado(idTabla) {
+    const $tabla = $(idTabla);
+    const theadHtml = $tabla.find('thead').prop('outerHTML'); // ⚠️ más robusto
+    const tbodyHtml = $tabla.find('tbody').length ? $tabla.find('tbody').prop('outerHTML') : '<tbody></tbody>';
+
+    // Eliminar completamente y reconstruir tabla
+    $tabla.DataTable().clear().destroy();
+    $tabla.empty(); // ⚠️ importante: borrar todo el contenido de la tabla
+
+    // Reconstruir tabla con thead y tbody válidos
+    $tabla.append(theadHtml).append(tbodyHtml);
+}

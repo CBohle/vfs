@@ -8,7 +8,13 @@ $id = intval($_GET['id'] ?? 0);
 // Si estamos creando un cliente, inicializamos un arreglo vacío
 if ($id > 0) {
     // Obtener los datos del cliente para verlo
-    $sql = "SELECT * FROM clientes WHERE id = ?";
+    $sql = "SELECT 
+            c.*, 
+            u.nombre AS nombre_usuario_creador,
+            u.email AS email_usuario_creador
+        FROM clientes c
+        LEFT JOIN usuarios_admin u ON c.usuario_admin_id = u.id
+        WHERE c.id = ?";
     $stmt = $conexion->prepare($sql);
     $stmt->bind_param("i", $id);
     $stmt->execute();
@@ -188,7 +194,10 @@ $textoImportante = $esImportante ? 'Marcar como no importante' : 'Marcar como im
             <div class="seccion-cliente">
                 <h5><i class="bi bi-info-circle me-2"></i>Otros Detalles</h5>
                 <div class="row">
-                    <div class="col-md-6 fila-dato"><span class="dato-label">Usuario creador:</span> <a href="<?= htmlspecialchars($msg['usuario_admin_id']) ?>"></a></div>
+                    <div class="col-md-6 fila-dato">
+                        <span class="dato-label">Usuario creador:</span>
+                        <span class="dato-valor"><?= htmlspecialchars($msg['nombre_usuario_creador'] ?? '—') ?> (<?= htmlspecialchars($msg['email_usuario_creador'] ?? '') ?>)</span>
+                    </div>
                     <div class=" col-md-6 fila-dato"><span class="dato-label">Estado:</span> <span class="badge <?= $estadoClass ?>"><?= htmlspecialchars($msg['estado']) ?></span></div>
                     <div class="col-md-6 fila-dato"><span class="dato-label">Fecha de Creación:</span> <?= htmlspecialchars($msg['fecha_creacion']) ?></div>
                     <div class="col-md-6 fila-dato"><span class="dato-label">Última Modificación:</span> <?= htmlspecialchars($msg['fecha_modificacion']) ?></div>
