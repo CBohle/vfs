@@ -235,210 +235,214 @@ requiereRol([1, 3, 4,5]);
     </script>
     <script>
 
-        window.tabla = window.tabla || null;
+        window.tablaClientes = window.tablaClientes || null;
 
         function inicializarTablaClientes() {
-            if ($.fn.DataTable.isDataTable('#tablaClientes')) {
-                tabla.clear().destroy();
-            }
-
-            tabla = $('#tablaClientes').DataTable({
-                responsive: false,
-                scrollX: true,
-                processing: true,
-                serverSide: true,
-                destroy: true,
-                ajax: {
-                    url: 'clientesAjax.php',
-                    type: 'POST',
-                    data: function(d) {
-                        d.estado = $('#filtro_estado').val();
-                        d.orden = $('#filtro_orden').val();
-                        d.importante = $('#filtro_importante').val();
-                        d.search.value = $('#filtro_busqueda').val(); // 🔍 filtro personalizado
-                    },
-                    dataSrc: function(json) {
-                        //if (json.totalPendientesPostulaciones !== undefined && json.totalPostulaciones !== undefined) {
-                        //    $('#PostulacionesPorResponder').text(json.totalPendientesPostulaciones + ' de ' + json.totalPostulaciones);
-                        //}
-                        return json.data;
-                    }
-                },
-                columns: [{
-                        data: 'importante',
-                        orderable: true,
-                        searchable: false,
-                        className: 'text-center',
-                        render: function(data, type, row) {
-                            const icon = data == 1 ? 'bi-star-fill text-warning' : 'bi-star text-muted';
-                            return `<i class="bi ${icon} marcarImportante" data-id="${row.id}" data-valor="${data}" style="cursor:pointer;"></i>`;
-                        }
-                    },
-                    {
-                        data: "importante_texto",
-                        visible: false,
-                        render: function (data) {
-                            return data;
-                        }
-                    },
-                    {
-                        data: 'id'
-                    },
-                    {
-                        data: 'tipo_persona',
-                    },
-                    {
-                        data: 'nombre_empresa',
-                    },
-                    {
-                        render: function(data, type, row) {
-                            return `${row.nombre_contacto} ${row.apellido_contacto}`;
+            if (!$.fn.DataTable.isDataTable('#tablaClientes')) {
+                tablaClientes = $('#tablaClientes').DataTable({
+                    responsive: false,
+                    scrollX: true,
+                    processing: true,
+                    serverSide: true,
+                    destroy: true,
+                    ajax: {
+                        url: 'clientesAjax.php',
+                        type: 'POST',
+                        data: function(d) {
+                            d.estado = $('#filtro_estado').val();
+                            d.orden = $('#filtro_orden').val();
+                            d.importante = $('#filtro_importante').val();
+                            d.search.value = $('#filtro_busqueda').val(); // 🔍 filtro personalizado
                         },
+                        dataSrc: function(json) {
+                            //if (json.totalPendientesPostulaciones !== undefined && json.totalPostulaciones !== undefined) {
+                            //    $('#PostulacionesPorResponder').text(json.totalPendientesPostulaciones + ' de ' + json.totalPostulaciones);
+                            //}
+                            return json.data;
+                        }
                     },
-                    {
-                        data: 'email_contacto',
-                    },
-                    {
-                        data: 'telefono_contacto',
-                    },
-                    {
-                        data: 'tipo_activos',
-                    },
-                    {
-                        data: 'detalle_activos',
-                    },
-                    {
-                        data: 'estado',
-                        render: function(data) {
-                            let clase = 'badge ';
-                            switch (data.toLowerCase()) {
-                                case 'activo':
-                                    clase += 'bg-success';
-                                    break;
-                                case 'inactivo':
-                                    clase += 'bg-warning text-dark';
-                                    break;
-                                case 'eliminado':
-                                    clase += 'bg-secondary';
-                                    break;
+                    columns: [{
+                            data: 'importante',
+                            orderable: true,
+                            searchable: false,
+                            className: 'text-center',
+                            render: function(data, type, row) {
+                                const icon = data == 1 ? 'bi-star-fill text-warning' : 'bi-star text-muted';
+                                return `<i class="bi ${icon} marcarImportante" data-id="${row.id}" data-valor="${data}" style="cursor:pointer;"></i>`;
                             }
-                            return `<span class="${clase}">${data.charAt(0).toUpperCase() + data.slice(1)}</span>`;
-                        }
-                    },
-                    {
-                        data: 'fecha',
-                        visible: false,
-                        render: function (data) {
-                            return data;
-                        }
-                    },
-                    {
-                        data: 'fecha_modificacion',
-                        visible: false,
-                        render: function (data) {
-                            return data;
-                        }
-                    },
-                    {
-                        data: 'email_usuario_creador',
-                        visible: false,
-                        render: function (data) {
-                            return data;
-                        }
-                    },
-                    {
-                        data: 'nombre_usuario_creador',
-                        visible: false,
-                        render: function (data) {
-                            return data;
-                        }
-                    },
-                    {
-                        data: 'notas',
-                        visible: false,
-                        render: function (data) {
-                            return data;
-                        }
-                    },
-                    {
-                        data: null,
-                        orderable: false,
-                        searchable: false,
-                        className: 'text-center',
-                       render: function(data, type, row) {
-                            let botones = `
-                        <button class="btn btn-sm btn-primary me-1" title="Ver" onclick="verCliente(${row.id})">
-                            <i class="bi bi-eye"></i>
-                        </button>`;
+                        },
+                        {
+                            data: "importante_texto",
+                            visible: false,
+                            render: function (data) {
+                                return data;
+                            }
+                        },
+                        {
+                            data: 'id'
+                        },
+                        {
+                            data: 'tipo_persona',
+                        },
+                        {
+                            data: 'nombre_empresa',
+                        },
+                        {
+                            render: function(data, type, row) {
+                                return `${row.nombre_contacto} ${row.apellido_contacto}`;
+                            },
+                        },
+                        {
+                            data: 'email_contacto',
+                        },
+                        {
+                            data: 'telefono_contacto',
+                        },
+                        {
+                            data: 'tipo_activos',
+                        },
+                        {
+                            data: 'detalle_activos',
+                        },
+                        {
+                            data: 'estado',
+                            className: 'text-center estado-toggle',
+                            render: function(data, type, row) {
+                                let clase = 'badge estado-click ';
+                                switch (data.toLowerCase()) {
+                                    case 'activo':
+                                        clase += 'bg-success';
+                                        break;
+                                    case 'inactivo':
+                                        clase += 'bg-warning text-dark';
+                                        break;
+                                    case 'eliminado':
+                                        clase += 'bg-secondary';
+                                        break;
+                                }
+                                return `<span class="${clase}" data-id="${row.id}" data-estado="${data}">${data.charAt(0).toUpperCase() + data.slice(1)}</span>`;
+                            }
+                        },
+                        {
+                            data: 'fecha',
+                            visible: false,
+                            render: function (data) {
+                                return data;
+                            }
+                        },
+                        {
+                            data: 'fecha_modificacion',
+                            visible: false,
+                            render: function (data) {
+                                return data;
+                            }
+                        },
+                        {
+                            data: 'email_usuario_creador',
+                            visible: false,
+                            render: function (data) {
+                                return data;
+                            }
+                        },
+                        {
+                            data: 'nombre_usuario_creador',
+                            visible: false,
+                            render: function (data) {
+                                return data;
+                            }
+                        },
+                        {
+                            data: 'notas',
+                            visible: false,
+                            render: function (data) {
+                                return data;
+                            }
+                        },
+                        {
+                            data: null,
+                            orderable: false,
+                            searchable: false,
+                            className: 'text-center',
+                        render: function(data, type, row) {
+                                let botones = `
+                            <button class="btn btn-sm btn-primary me-1" title="Ver" onclick="verCliente(${row.id})">
+                                <i class="bi bi-eye"></i>
+                            </button>`;
 
-                            if (row.estado.toLowerCase() === 'eliminado') {
-                                botones += `
-                        <button class="btn btn-sm btn-success" title="Recuperar" onclick="recuperarCliente(${row.id})">
-                            <i class="bi bi-arrow-counterclockwise"></i>
-                        </button>`;
-                            } else if (rol_id != 4) {
-                                botones += `
-                        <button class="btn btn-sm btn-danger" title="Eliminar" onclick="eliminarCliente(${row.id})">
-                            <i class="bi bi-trash"></i>
-                        </button>`;
-                            }
+                                if (row.estado.toLowerCase() === 'eliminado') {
+                                    botones += `
+                            <button class="btn btn-sm btn-success" title="Recuperar" onclick="recuperarCliente(${row.id})">
+                                <i class="bi bi-arrow-counterclockwise"></i>
+                            </button>`;
+                                } else if (rol_id != 4) {
+                                    botones += `
+                            <button class="btn btn-sm btn-danger" title="Eliminar" onclick="eliminarCliente(${row.id})">
+                                <i class="bi bi-trash"></i>
+                            </button>`;
+                                }
 
-                            return botones;
-                        }
-                                ,
-                    }
-                ],
-                order: [
-                    [0, 'desc'],
-                    [3, 'desc'],
-                    [4, 'asc'],
-                    [5, 'asc']
-                ],
-                language: {
-                    url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
-                },
-                dom: '<"d-flex justify-content-end mb-2"l>Bfrtip',
-                lengthMenu: [10, 30, 50, 100],
-                buttons: [{
-                        extend: 'copy',
-                        text: '<i class="bi bi-clipboard me-1"></i> Copiar',
-                        className: 'btn btn-primary btn-sm me-2',
-                        exportOptions: {
-                            columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],  // Seleccion de columnas a copiar
-                            format: {
-                            body: function (data, row, column, node) {
-                                return typeof data === 'string' ? data.replace(/<.*?>/g, '') : data;
+                                return botones;
                             }
-                            }
+                                    ,
                         }
+                    ],
+                    order: [
+                        [0, 'desc'],
+                        [3, 'desc'],
+                        [4, 'asc'],
+                        [5, 'asc']
+                    ],
+                    language: {
+                        url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
                     },
-                    {
-                        extend: 'excel',
-                        text: '<i class="bi bi-file-earmark-excel me-1"></i> Excel',
-                        className: 'btn btn-success btn-sm',
-                        exportOptions: {
-                            columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],  // Seleccion de columnas a copiar
-                            format: {
-                            body: function (data, row, column, node) {
-                                return typeof data === 'string' ? data.replace(/<.*?>/g, '') : data;
+                    dom: '<"d-flex justify-content-end mb-2"l>Bfrtip',
+                    lengthMenu: [10, 30, 50, 100],
+                    buttons: [{
+                            extend: 'copy',
+                            text: '<i class="bi bi-clipboard me-1"></i> Copiar',
+                            className: 'btn btn-primary btn-sm me-2',
+                            exportOptions: {
+                                columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],  // Seleccion de columnas a copiar
+                                format: {
+                                body: function (data, row, column, node) {
+                                    return typeof data === 'string' ? data.replace(/<.*?>/g, '') : data;
+                                }
+                                }
                             }
+                        },
+                        {
+                            extend: 'excel',
+                            text: '<i class="bi bi-file-earmark-excel me-1"></i> Excel',
+                            className: 'btn btn-success btn-sm',
+                            exportOptions: {
+                                columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],  // Seleccion de columnas a copiar
+                                format: {
+                                body: function (data, row, column, node) {
+                                    return typeof data === 'string' ? data.replace(/<.*?>/g, '') : data;
+                                }
+                                }
                             }
                         }
+                    ],
+                    initComplete: function() {
+                        $('#loaderTabla').hide();
+                        $('#tablaClientes thead').show();
+                        $('#tablaClientes_wrapper').show();
+                        tablaClientes.columns.adjust().draw();
+                        tablaClientes.buttons().container().appendTo('#exportButtons');
+                    },
+                    drawCallback: function() {
+                        registrarEventosEstadoCliente();
                     }
-                ],
-                initComplete: function() {
-                    $('#loaderTabla').hide();
-                    $('#tablaClientes thead').show();
-                    $('#tablaClientes_wrapper').show();
-                    tabla.columns.adjust().draw();
-                    tabla.buttons().container().appendTo('#exportButtons');
-                }
-            });
+                });
+            }else {
+                tablaClientes.ajax.reload(null, false);
+            }
         }
 
         // Evento para búsqueda en tiempo real
         $(document).on('keyup', '#filtro_busqueda', function() {
-            if (tabla) tabla.draw(); // Redibuja tabla con nuevo filtro
+            if (tablaClientes) tablaClientes.draw(); // Redibuja tabla con nuevo filtro
         });
 
         function filtrar() {
@@ -461,7 +465,7 @@ requiereRol([1, 3, 4,5]);
                 }, function(response) {
                     if (response.success) {
                         alert("Cliente eliminado correctamente.");
-                        tabla.ajax.reload(null, false); // solo recarga datos sin redireccionar
+                        tablaClientes.ajax.reload(null, false); // solo recarga datos sin redireccionar
                     } else {
                         alert("Hubo un error al intentar eliminar el cliente.");
                     }
@@ -539,7 +543,7 @@ requiereRol([1, 3, 4,5]);
                     id: id
                 }, function(response) {
                     if (response.success) {
-                        tabla.ajax.reload(null, false);
+                        tablaClientes.ajax.reload(null, false);
                         alert('Cliente recuperado con éxito.');
                     } else {
                         alert('No se pudo recuperar el cliente.');
@@ -572,8 +576,8 @@ requiereRol([1, 3, 4,5]);
 
                     boton.attr('onclick', `toggleImportante(${id}, ${nuevoValor})`);
 
-                    if (typeof tabla !== 'undefined') {
-                        tabla.ajax.reload(null, false);
+                    if (typeof tablaClientes !== 'undefined') {
+                        tablaClientes.ajax.reload(null, false);
                     }
                 } else {
                     alert('No se pudo actualizar el estado de importancia.');
@@ -583,6 +587,51 @@ requiereRol([1, 3, 4,5]);
         $(document).ready(function() {
             inicializarTablaClientes();
         });
+        function registrarEventosEstadoCliente() {
+            // Elimina eventos previos para evitar duplicados
+            $(document).off('click', '.estado-click');
+
+            $(document).on('click', '.estado-click', function () {
+                const $span = $(this);
+                const id = $span.data('id');
+                const estadoActual = $span.data('estado');
+
+                if (typeof estadoActual !== 'string') return;
+
+                const estadoLower = estadoActual.toLowerCase();
+                let nuevoEstado = '';
+
+                if (estadoLower === 'activo') {
+                    nuevoEstado = 'inactivo';
+                } else if (estadoLower === 'inactivo') {
+                    nuevoEstado = 'activo';
+                } else {
+                    return; // Si es 'eliminado' u otro, no hace nada
+                }
+
+                $.post('clientesAjax.php', {
+                    accion: 'cambiar_estado',
+                    id: id,
+                    estado: nuevoEstado
+                }, function (response) {
+                    if (response.success) {
+                        const nuevaClase = nuevoEstado === 'activo' ? 'bg-success' : 'bg-warning text-dark';
+                        const nuevoTexto = nuevoEstado.charAt(0).toUpperCase() + nuevoEstado.slice(1);
+
+                        $span.fadeOut(200, function () {
+                            $span.removeClass('bg-success bg-warning text-dark')
+                                .addClass(nuevaClase)
+                                .text(nuevoTexto)
+                                .data('estado', nuevoEstado)
+                                .fadeIn(200);
+                        });
+                    } else {
+                        alert('No se pudo cambiar el estado.');
+                    }
+                }, 'json');
+            });
+        }
+
         $(document).on('click', '.marcarImportante', function() {
             const id = $(this).data('id');
             const valorActual = $(this).data('valor');
@@ -594,7 +643,7 @@ requiereRol([1, 3, 4,5]);
                 importante: nuevoValor
             }, function(response) {
                 if (response.success) {
-                    tabla.ajax.reload(null, false); // recarga sin perder la página actual
+                    tablaClientes.ajax.reload(null, false); // recarga sin perder la página actual
                 } else {
                     alert('No se pudo actualizar el estado de importancia.');
                 }

@@ -62,7 +62,11 @@ switch ($accion) {
     case 'listarUsuarios':
         echo json_encode(listarUsuarios($_POST));
         break;
-
+    case 'cambiar_estado':
+        $id = intval($_POST['id']);
+        $estado = $_POST['estado'];
+        echo json_encode(['success' => cambiarEstadoUsuario($id, $estado)]);
+        break;
     default:
         echo json_encode(['error' => 'Acción no válida']);
         break;

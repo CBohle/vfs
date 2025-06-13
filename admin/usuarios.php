@@ -303,11 +303,25 @@ requiereRol([1]);
                             },
                             {
                                 data: 'activo',
-                                className: 'text-center',
-                                render: (data, _, row) => {
-                                    const clase = data ? 'bg-success' : 'bg-secondary';
-                                    const texto = data ? 'Activo' : 'Inactivo';
-                                    return `<span class="badge ${clase} estado-toggle" data-id="${row.id}" style="cursor:pointer;">${texto}</span>`;
+                                className: 'text-center estado-toggle',
+                                render: function(data, type, row) {
+                                    const estado = String(data).toLowerCase();
+                                    let clase = 'badge estado-click ';
+                                    switch (estado) {
+                                        case 'activo':
+                                        case '1':
+                                        case 'true':
+                                            clase += 'bg-success';
+                                            return `<span class="${clase}" data-id="${row.id}" data-activo="activo">Activo</span>`;
+                                        case 'inactivo':
+                                        case '0':
+                                        case 'false':
+                                            clase += 'bg-warning text-dark';
+                                            return `<span class="${clase}" data-id="${row.id}" data-activo="inactivo">Inactivo</span>`;
+                                        default:
+                                            clase += 'bg-secondary';
+                                            return `<span class="${clase}" data-id="${row.id}" data-activo="desconocido">Desconocido</span>`;
+                                    }
                                 }
                             },
                             {
@@ -358,8 +372,26 @@ requiereRol([1]);
                             },
                             {
                                 data: 'activo',
-                                className: 'text-center',
-                                render: data => data ? '<span class="badge bg-success">Activo</span>' : '<span class="badge bg-secondary">Inactivo</span>'
+                                className: 'text-center estado-toggle',
+                                render: function(data, type, row) {
+                                    const estado = String(data).toLowerCase();
+                                    let clase = 'badge estado-click ';
+                                    switch (estado) {
+                                        case 'activo':
+                                        case '1':
+                                        case 'true':
+                                            clase += 'bg-success';
+                                            return `<span class="${clase}" data-id="${row.id}" data-activo="activo">Activo</span>`;
+                                        case 'inactivo':
+                                        case '0':
+                                        case 'false':
+                                            clase += 'bg-warning text-dark';
+                                            return `<span class="${clase}" data-id="${row.id}" data-activo="inactivo">Inactivo</span>`;
+                                        default:
+                                            clase += 'bg-secondary';
+                                            return `<span class="${clase}" data-id="${row.id}" data-activo="desconocido">Desconocido</span>`;
+                                    }
+                                }
                             },
                             {
                                 data: null,
@@ -524,6 +556,45 @@ requiereRol([1]);
                         }
                     }, 'json');
                 });
+                $(document).on('click', '.estado-click', function () {
+                    const id = $(this).data('id');
+                    const activoRaw = $(this).data('activo');
+                    if (typeof activoRaw !== 'string') return;
+
+                        const estadoActual = activoRaw.toLowerCase();
+                        let FnuevoEstado = '';
+
+                        if (estadoActual === 'activo') {
+                            nuevoEstado = 'inactivo';
+                        } else if (estadoActual === 'inactivo') {
+                            nuevoEstado = 'activo';
+                        } else {
+                            return;
+                        }
+
+                        $.post('usuariosAjax.php', {
+                            accion: 'cambiar_estado',
+                            id: id,
+                            estado: nuevoEstado
+                        }, function (response) {
+                            if (response.success) {
+                                // ⚡ animación sin recargar toda la tabla
+                                const $span = $(`.estado-click[data-id="${id}"]`);
+                                const nuevaClase = nuevoEstado === 'activo' ? 'bg-success' : 'bg-warning text-dark';
+                                const nuevoTexto = nuevoEstado.charAt(0).toUpperCase() + nuevoEstado.slice(1);
+
+                                $span.fadeOut(200, function () {
+                                    $span.removeClass('bg-success bg-warning text-dark')
+                                        .addClass(nuevaClase)
+                                        .text(nuevoTexto)
+                                        .data('activo', nuevoEstado)
+                                        .fadeIn(200);
+                                });
+                            } else {
+                                alert('No se pudo cambiar el estado.');
+                            }
+                        }, 'json');
+                    });    
             </script>
             <!-- Footer -->
             <?php
