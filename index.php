@@ -6,7 +6,7 @@
 <!-- Incluye el formulario de contacto y sus validaciones nativas -->
 
 <?php
-require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/includes/config.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,7 +33,7 @@ require_once __DIR__ . '/../includes/config.php';
 </head>
 
 <!-- INCLUDE HEADER  -->
-<?php include_once __DIR__ . '/../includes/header.php'; ?>
+<?php include_once __DIR__ . '/includes/header.php'; ?>
 
 <!-- INICIO MASTHEAD-->
 <header class="masthead">
@@ -569,7 +569,7 @@ require_once __DIR__ . '/../includes/config.php';
 <!-- FIN SECCIÓN FORMULARIO DE CONTACTO -->
 
 <!-- INCLUDE FOOTER-->
-<?php include_once __DIR__ . '/../includes/footer.php'; ?>
+<?php include_once __DIR__ . '/includes/footer.php'; ?>
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -600,7 +600,7 @@ $(document).ready(function() {
 
         $.ajax({
             type: 'POST',
-            url: '../includes/Controller/procesar_mensaje.php',
+            url: 'includes/Controller/procesar_mensaje.php',
             data: formData,
             processData: false,
             contentType: false,

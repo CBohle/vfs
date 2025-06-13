@@ -5,9 +5,9 @@ ini_set('display_errors', 1); // Cambiar a 1 para ver errores en desarrollo
 ini_set('display_startup_errors', 1); // Cambiar a 1 para ver errores en desarrollo
 error_reporting(E_ALL);
 
-require_once __DIR__ . '/../../includes/db.php';
-require_once __DIR__ . '/../../includes/Controller/mensajesController.php';
-require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../includes/Controller/mensajesController.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 

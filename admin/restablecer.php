@@ -1,6 +1,6 @@
 <?php
-include '../../includes/db.php';
-require_once __DIR__ . '/../../includes/config.php';
+include __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../includes/config.php';
 
 
 $token = $_GET["token"] ?? null;

@@ -1,7 +1,7 @@
 <!-- CONTENIDO DEL DASHBOARD: CONTENIDO INICIAL -->
 <?php
-require_once __DIR__ . '/../../includes/auth.php';
-require_once __DIR__ . '/../../includes/db.php'; // conexión con variable $conexion
+require_once __DIR__ . '/../includes/auth.php';
+require_once __DIR__ . '/../includes/db.php'; // conexión con variable $conexion
 
 $mensajes_pendientes = 0;
 $postulaciones_pendientes = 0;

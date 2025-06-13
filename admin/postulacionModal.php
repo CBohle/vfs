@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../../includes/db.php';
-require_once __DIR__ . '/../../includes/Controller/postulacionesController.php';
+require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../includes/Controller/postulacionesController.php';
 
 $id = intval($_GET['id'] ?? 0);
 

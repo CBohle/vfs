@@ -1,8 +1,8 @@
 <?php
 session_start();
 $rol_id = $_SESSION['rol_id'] ?? null;
-require_once __DIR__ . '/../../includes/db.php';
-require_once __DIR__ . '/../../includes/Controller/mensajesController.php';
+require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../includes/Controller/mensajesController.php';
 
 $id = intval($_GET['id'] ?? 0);
 

@@ -4,7 +4,7 @@
 
 <!-- VISTA DEL FORMULARIO DE POSTULACIÓN -->
 <?php
-require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/includes/config.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -31,7 +31,7 @@ require_once __DIR__ . '/../includes/config.php';
 </head>
 
 <!-- INCLUDE HEADER -->
-<?php include_once __DIR__ . '/../includes/header.php'; ?>
+<?php include_once __DIR__ . '/includes/header.php'; ?>
 
 <body>
     <section class="page-section bg-tertiary" id="postulacion">
@@ -43,7 +43,7 @@ require_once __DIR__ . '/../includes/config.php';
             </div>
             <div class="accordion" id="postulacionAccordion">
                 <!-- INICIO FORMULARIO DE POSTULACIÓN -->
-                <form id="postulacionForm" action="<?= BASE_URL ?>../includes/Controller/procesar_postulacion.php" method="post" enctype="multipart/form-data">
+                <form id="postulacionForm" action="<?= BASE_URL ?>includes/Controller/procesar_postulacion.php" method="post" enctype="multipart/form-data">
                     <!-- DATOS PERSONALES (Campo 1-4)(Nombre/Apellido/Nacimiento/Rut)-->
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingOne">
@@ -280,7 +280,7 @@ require_once __DIR__ . '/../includes/config.php';
     ?>
 
     <!-- INCLUDE FOOTER-->
-    <?php include_once __DIR__ . '/../includes/footer.php'; ?>
+    <?php include_once __DIR__ . '/includes/footer.php'; ?>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -301,7 +301,7 @@ require_once __DIR__ . '/../includes/config.php';
 
                 $.ajax({
                     type: 'POST',
-                    url: '<?= BASE_URL ?>../includes/Controller/procesar_postulacion.php',
+                    url: '<?= BASE_URL ?>includes/Controller/procesar_postulacion.php',
                     data: formData,
                     processData: false,
                     contentType: false,
