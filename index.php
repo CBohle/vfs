@@ -70,14 +70,13 @@ require_once __DIR__ . '/includes/config.php';
                     <a class="btn btn-primary btn-xl" style="margin-top: 8px;" href="#servicios">¡Saber más!</a>
                 </div>
             </div>
-
         </div>
     </div>
 </section>
 <!-- FIN SECCIÓN QUIÉNES SOMOS-->
 
 <!-- SERVICIOS-->
-<div class="page-section bg-dark text-white" id="servicios">
+<div class="page-section1 bg-dark text-white" id="servicios">
     <div class="container-fluid p-0">
         <!-- Encabezado de sección -->
         <h2 class="text-center mt-0">Tu socio en tasaciones</h2>
@@ -279,7 +278,7 @@ require_once __DIR__ . '/includes/config.php';
 <!-- FIN SECCIÓN SERVICIOS-->
 
 <!-- LLAMADA A LA ACCIÓN-->
-<section class="page-section accion" id="llamadaAccion">
+<section class="page-section1 accion" id="llamadaAccion">
     <div class="container px-4 px-lg-5 text-center text-white">
         <h2 class="mb-4">¡Solicita tu tasación!</h2>
         <a class="btn btn-primary btn-xl" href="#contacto">Contáctanos</a>
@@ -288,7 +287,7 @@ require_once __DIR__ . '/includes/config.php';
 <!-- FIN LLAMADA A LA ACCIÓN -->
 
 <!-- INICIO SECCIÓN FAQ -->
-<section class="page-section" id="faq">
+<section class="page-section2" id="faq">
     <div class="container-fluid px-4 px-lg-5">
         <!-- Encabezado de sección -->
         <div class="row gx-4 gx-lg-5 justify-content-center">
@@ -441,7 +440,7 @@ require_once __DIR__ . '/includes/config.php';
 <!-- FIN SECCIÓN FAQ -->
 
 <!-- INICIO SECCIÓN FORMULARIO DE CONTACTO -->
-<section class="page-section bg-tertiary" id="contacto">
+<section class="page-section3 bg-tertiary" id="contacto">
     <div class="container px-5 ">
         <!-- Encabezado de sección -->
         <div class="text-center">

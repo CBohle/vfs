@@ -34,7 +34,7 @@ require_once __DIR__ . '/includes/config.php';
 <?php include_once __DIR__ . '/includes/header.php'; ?>
 
 <body>
-    <section class="page-section bg-tertiary" id="postulacion">
+    <section class="page-section4 bg-tertiary" id="postulacion">
         <!-- Encabezado de sección  -->
         <div class="container px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 align-items-center">
