@@ -5,7 +5,7 @@ require_once __DIR__ . '/../includes/Controller/usuariosController.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
-    echo json_encode(["error" => "Método no permitido"]);
+    echo json_encode(["error" => "Método no permitido."]);
     exit;
 }
 
@@ -21,7 +21,7 @@ switch ($accion) {
         $id = $_POST['id'] ?? null;
         $rolActual = $id ? obtenerRolPorId($id) : null;
         if ($rolActual && strtolower($rolActual['nombre']) === 'admin') {
-            echo json_encode(['success' => false, 'error' => 'No se pueden modificar los permisos del rol admin']);
+            echo json_encode(['success' => false, 'error' => 'No se pueden modificar los permisos del rol admin.']);
             exit;
         }
         $datos = [
@@ -113,7 +113,7 @@ switch ($accion) {
         $rol = obtenerRolPorId($id);
 
         if (strtolower($rol['nombre']) === 'admin') {
-            echo json_encode(['success' => false, 'error' => 'No se puede eliminar el rol admin']);
+            echo json_encode(['success' => false, 'error' => 'No se puede eliminar el rol admin.']);
         } else {
             echo json_encode(['success' => eliminarRol($id)]);
         }
@@ -123,7 +123,7 @@ switch ($accion) {
         echo json_encode(['success' => eliminarUsuario($id)]);
         break;
     default:
-        echo json_encode(['error' => 'Acción no válida']);
+        echo json_encode(['error' => 'Acción no válida.']);
         break;
 }
 ?>
