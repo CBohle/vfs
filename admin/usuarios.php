@@ -332,7 +332,7 @@ requiereRol([1]);
                                         case '0':
                                         case 'false':
                                             clase += 'bg-warning text-dark';
-                                            return `<span class="${clase}" data-id="${row.id}" data-activo="inactivo">Inactivo</span>`;
+                                            return `<span class="${clase}" data-id="${row.id}" data-activo="inactivo" data-tipo="rol">Inactivo</span>`;
                                         default:
                                             clase += 'bg-secondary';
                                             return `<span class="${clase}" data-id="${row.id}" data-activo="desconocido">Desconocido</span>`;
@@ -401,22 +401,22 @@ requiereRol([1]);
                                 render: function(data, type, row) {
                                     const estado = String(data).toLowerCase();
                                     let clase = 'badge estado-click ';
+                                    let tipo = 'usuario';
                                     switch (estado) {
                                         case 'activo':
                                         case '1':
                                         case 'true':
                                             clase += 'bg-success';
-                                            return `<span class="${clase}" data-id="${row.id}" data-activo="activo">Activo</span>`;
+                                            return `<span class="${clase}" data-id="${row.id}" data-activo="activo" data-tipo="${tipo}">Activo</span>`;
                                         case 'inactivo':
                                         case '0':
                                         case 'false':
                                             clase += 'bg-warning text-dark';
-                                            return `<span class="${clase}" data-id="${row.id}" data-activo="inactivo">Inactivo</span>`;
+                                            return `<span class="${clase}" data-id="${row.id}" data-activo="inactivo" data-tipo="${tipo}">Inactivo</span>`;
                                         default:
                                             clase += 'bg-secondary';
-                                            return `<span class="${clase}" data-id="${row.id}" data-activo="desconocido">Desconocido</span>`;
+                                            return `<span class="${clase}" data-id="${row.id}" data-activo="desconocido" data-tipo="${tipo}">Desconocido</span>`;
                                     }
-                                    return `<span class="${clase}" data-id="${row.id}" data-activo="${estado}" data-tipo="${row.rol ? 'usuario' : 'rol'}">${estado.charAt(0).toUpperCase() + estado.slice(1)}</span>`;
                                 }
                             },
                             {
@@ -579,6 +579,7 @@ requiereRol([1]);
                     const tipo = badge.data("tipo"); // 'usuario' o 'rol'
                     const estadoActual = badge.data("activo");
                     const nuevoEstado = estadoActual === "activo" ? "inactivo" : "activo";
+                    const estado = $(this).text().trim().toLowerCase() === "activo" ? "inactivo" : "activo";
 
                     const nombre = tipo === 'usuario' ? 'usuario' : 'rol';
 
@@ -593,27 +594,20 @@ requiereRol([1]);
                         cancelButtonText: "Cancelar"
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            $.post("usuariosAjax.php", {
-                                accion: "cambiar_estado",
-                                id,
-                                estado: nuevoEstado,
-                                tipo // lo envías como referencia si deseas usarlo en PHP
-                            }, function (response) {
-                                if (response.success) {
-                                    badge
-                                        .text(nuevoEstado === "activo" ? "Activo" : "Inactivo")
-                                        .removeClass("bg-success bg-warning text-dark")
-                                        .addClass(nuevoEstado === "activo" ? "bg-success" : "bg-warning text-dark")
-                                        .data("activo", nuevoEstado)
-                                        .addClass("balanceando");
-
-                                    setTimeout(() => badge.removeClass("balanceando"), 500);
-
-                                    Swal.fire("Estado actualizado", "", "success");
-                                } else {
-                                    Swal.fire("Error", "No se pudo cambiar el estado.", "error");
-                                }
-                            }, "json");
+                            $.post("usuariosAjax.php", { accion: "cambiar_estado", id, estado, tipo }, function (respuesta) {
+                        if (respuesta.success) {
+                            Swal.fire("Éxito", "Estado actualizado correctamente", "success");
+                            if (tipo === "usuario") {
+                                tablaUsuarios.ajax.reload();
+                            } else if (tipo === "rol") {
+                                tablaRoles.ajax.reload();
+                            }
+                        } else {
+                            Swal.fire("Error", respuesta.error || "No se pudo cambiar el estado", "error");
+                        }
+                        }, "json").fail(function () {
+                        Swal.fire("Error", "No se pudo conectar al servidor", "error");
+                        });
                         }
                     });
                 });
@@ -630,16 +624,45 @@ requiereRol([1]);
                     }
 
                     function eliminarUsuario(id) {
-                        if (!confirm("¿Estás seguro de que deseas eliminar este usuario?")) return;
-                        $.post('usuariosAjax.php', { accion: 'eliminarUsuario', id }, function (response) {
-                            if (response.success) {
-                                alert('Usuario eliminado correctamente.');
-                                tablaUsuarios.ajax.reload();
-                            } else {
-                                alert('Error al eliminar el usuario.');
+                        Swal.fire({
+                            title: '¿Estás seguro?',
+                            text: 'Esta acción eliminará al usuario de forma permanente.',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Sí, eliminar',
+                            cancelButtonText: 'Cancelar'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $.post("usuariosAjax.php", {
+                                    accion: "eliminarUsuario",
+                                    id: id
+                                }, function (respuesta) {
+                                    if (respuesta.success) {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Usuario eliminado',
+                                            timer: 1500,
+                                            showConfirmButton: false
+                                        });
+                                        tablaUsuarios.ajax.reload();
+                                    } else {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Error',
+                                            text: respuesta.error || 'Ocurrió un error inesperado'
+                                        });
+                                    }
+                                }, "json").fail(function () {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error de conexión',
+                                        text: 'No se pudo conectar al servidor'
+                                    });
+                                });
                             }
-                        }, 'json');
-                    }  
+                        });
+                    }
+                                    
             </script>
             <!-- Footer -->
             <?php

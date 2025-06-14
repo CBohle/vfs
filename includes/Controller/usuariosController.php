@@ -9,7 +9,13 @@ function obtenerRoles() {
 
 function guardarRol($datos, $permisos) {
     global $conexion;
-
+    if (!empty($datos['id'])) {
+        $rolActual = obtenerRolPorId($datos['id']);
+        if (strtolower($rolActual['nombre']) === 'admin') {
+            echo json_encode(['success' => false, 'error' => 'No puedes modificar los permisos del rol admin']);
+            return;
+        }
+    }
     if (!empty($datos['id'])) {
         $stmt = $conexion->prepare("UPDATE roles SET descripcion = ? WHERE id = ?");
         $stmt->bind_param("si", $datos['descripcion'], $datos['id']);
@@ -117,13 +123,48 @@ function obtenerUsuarioPorId($id) {
     $result = $stmt->get_result();
     return $result->fetch_assoc();
 }
-
+function obtenerRolPorNombre($nombre) {
+    global $conexion;
+    $stmt = $conexion->prepare("SELECT * FROM roles WHERE LOWER(nombre) = LOWER(?)");
+    $stmt->bind_param("s", $nombre);
+    $stmt->execute();
+    return $stmt->get_result()->fetch_assoc();
+}
 function toggleEstadoUsuario($id) {
     global $conexion;
+
+    // Obtener datos del usuario
+    $stmt = $conexion->prepare("SELECT rol_id, activo FROM usuarios_admin WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $usuario = $result->fetch_assoc();
+
+    // Obtener nombre del rol
+    $stmt = $conexion->prepare("SELECT nombre FROM roles WHERE id = ?");
+    $stmt->bind_param("i", $usuario['rol_id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $rol = $result->fetch_assoc();
+
+    if ($usuario['activo'] && strtolower($rol['nombre']) === 'admin') {
+        // Verificar si es el único admin activo
+        $query = "SELECT COUNT(*) as total FROM usuarios_admin u JOIN roles r ON u.rol_id = r.id WHERE r.nombre = 'admin' AND u.activo = 1 AND u.id != ?";
+        $stmt = $conexion->prepare($query);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $res = $stmt->get_result()->fetch_assoc();
+        if ($res['total'] == 0) {
+            return ['success' => false, 'error' => 'Debe existir al menos un usuario activo con rol admin.'];
+        }
+    }
+
     $stmt = $conexion->prepare("UPDATE usuarios_admin SET activo = NOT activo WHERE id = ?");
     $stmt->bind_param("i", $id);
-    return $stmt->execute();
+    $stmt->execute();
+    return ['success' => true];
 }
+
 
 function listarUsuarios($post) {
     global $conexion;
@@ -152,17 +193,66 @@ function listarUsuarios($post) {
 }
 function cambiarEstadoUsuario($id, $estado) {
     global $conexion;
+
+    // Obtener datos del usuario
+    $stmt = $conexion->prepare("SELECT rol_id FROM usuarios_admin WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $usuario = $stmt->get_result()->fetch_assoc();
+
+    // Obtener nombre del rol
+    $stmt = $conexion->prepare("SELECT nombre FROM roles WHERE id = ?");
+    $stmt->bind_param("i", $usuario['rol_id']);
+    $stmt->execute();
+    $rol = $stmt->get_result()->fetch_assoc();
+
     $nuevoValor = ($estado === 'activo') ? 1 : 0;
+
+    if ($nuevoValor === 0 && strtolower($rol['nombre']) === 'admin') {
+        // Verificar si es el único admin activo
+        $query = "SELECT COUNT(*) as total FROM usuarios_admin u 
+                  JOIN roles r ON u.rol_id = r.id 
+                  WHERE r.nombre = 'admin' AND u.activo = 1 AND u.id != ?";
+        $stmt = $conexion->prepare($query);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $res = $stmt->get_result()->fetch_assoc();
+        if ($res['total'] == 0) {
+            return ['success' => false, 'error' => 'Debe existir al menos un usuario activo con rol admin.'];
+        }
+    }
+
     $stmt = $conexion->prepare("UPDATE usuarios_admin SET activo = ? WHERE id = ?");
     $stmt->bind_param("ii", $nuevoValor, $id);
-    return $stmt->execute();
+    $success = $stmt->execute();
+
+    return ['success' => $success];
 }
 function cambiarEstadoRol($id, $estado) {
     global $conexion;
+
+    // 1. Obtener el nombre del rol
+    $stmt = $conexion->prepare("SELECT nombre FROM roles WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $rol = $stmt->get_result()->fetch_assoc();
+
+    if (!$rol) {
+        return ['success' => false, 'error' => 'Rol no encontrado'];
+    }
+
+    // 2. Validar si es el rol admin y se intenta desactivar
     $nuevoValor = ($estado === 'activo') ? 1 : 0;
+    if ($nuevoValor === 0 && strtolower($rol['nombre']) === 'admin') {
+        return ['success' => false, 'error' => 'No puedes desactivar el rol admin.'];
+    }
+
+    // 3. Ejecutar actualización
     $stmt = $conexion->prepare("UPDATE roles SET activo = ? WHERE id = ?");
     $stmt->bind_param("ii", $nuevoValor, $id);
-    return $stmt->execute();
+    $success = $stmt->execute();
+
+    return ['success' => $success];
 }
 function eliminarRol($id) {
     global $conexion;
@@ -174,6 +264,34 @@ function eliminarRol($id) {
 
 function eliminarUsuario($id) {
     global $conexion;
+
+    // Obtener datos del usuario
+    $stmt = $conexion->prepare("SELECT rol_id FROM usuarios_admin WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $usuario = $result->fetch_assoc();
+
+    // Obtener nombre del rol
+    $stmt = $conexion->prepare("SELECT nombre FROM roles WHERE id = ?");
+    $stmt->bind_param("i", $usuario['rol_id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $rol = $result->fetch_assoc();
+
+    if (strtolower($rol['nombre']) === 'admin') {
+        // Verificar si es el único admin activo
+        $query = "SELECT COUNT(*) as total FROM usuarios_admin u JOIN roles r ON u.rol_id = r.id WHERE r.nombre = 'admin' AND u.id != ?";
+        $stmt = $conexion->prepare($query);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $res = $stmt->get_result()->fetch_assoc();
+        if ($res['total'] == 0) {
+            echo json_encode(['success' => false, 'error' => 'Debe existir al menos un admin activo.']);
+            exit;
+        }
+    }
+
     $stmt = $conexion->prepare("DELETE FROM usuarios_admin WHERE id = ?");
     $stmt->bind_param("i", $id);
     return $stmt->execute();

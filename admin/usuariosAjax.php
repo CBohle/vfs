@@ -18,11 +18,18 @@ switch ($accion) {
         break;
 
     case 'guardarRol':
+        $id = $_POST['id'] ?? null;
+        $rolActual = $id ? obtenerRolPorId($id) : null;
+        if ($rolActual && strtolower($rolActual['nombre']) === 'admin') {
+            echo json_encode(['success' => false, 'error' => 'No se pueden modificar los permisos del rol admin']);
+            exit;
+        }
         $datos = [
-            'id' => $_POST['id'] ?? null,
+            'id' => $id,
             'nombre' => $_POST['nombre'] ?? '',
             'descripcion' => $_POST['descripcion'] ?? ''
         ];
+
         $permisos = $_POST['permisos'] ?? [];
         echo json_encode(['success' => guardarRol($datos, $permisos)]);
         break;
@@ -56,7 +63,8 @@ switch ($accion) {
 
     case 'toggleEstadoUsuario':
         $id = intval($_POST['id']);
-        echo json_encode(['success' => toggleEstadoUsuario($id)]);
+        $resultado = toggleEstadoUsuario($id);
+        echo json_encode($resultado);
         break;
 
     case 'listarUsuarios':
@@ -65,19 +73,51 @@ switch ($accion) {
     case 'cambiar_estado':
         $id = intval($_POST['id']);
         $estado = $_POST['estado'];
-        $tipo = $_POST['tipo'] ?? 'usuario'; // por defecto
+        $tipo = $_POST['tipo'] ?? 'usuario';
 
-        if ($tipo === 'rol') {
-            echo json_encode(['success' => cambiarEstadoRol($id, $estado)]);
+        if ($tipo === 'usuario') {
+            $usuario = obtenerUsuarioPorId($id);
+
+            if ($estado === 'inactivo') {
+                // Verificar si es un admin
+                
+                $rolAdmin = obtenerRolPorNombre('admin');
+                if (!$usuario) {
+                    echo json_encode(['success' => false, 'error' => 'Usuario no encontrado.']);
+                    exit;
+                }
+                if (!$rolAdmin) {
+                    echo json_encode(['success' => false, 'error' => 'Rol admin no existe.']);
+                    exit;
+                }
+                if ($usuario['rol_id'] == $rolAdmin['id']) {
+                    $sql = "SELECT COUNT(*) as total FROM usuarios_admin WHERE activo = 1 AND rol_id = ?";
+                    $stmt = $conexion->prepare($sql);
+                    $stmt->bind_param("i", $rolAdmin['id']);
+                    $stmt->execute();
+                    $result = $stmt->get_result()->fetch_assoc();
+                    if ($result['total'] <= 1) {
+                        echo json_encode(['success' => false, 'error' => 'Debe haber al menos un usuario admin activo.']);
+                        exit;
+                    }
+                }
+            }
+
+            echo json_encode(cambiarEstadoUsuario($id, $estado));
         } else {
-            echo json_encode(['success' => cambiarEstadoUsuario($id, $estado)]);
+            echo json_encode(cambiarEstadoRol($id, $estado));
         }
         break;
     case 'eliminarRol':
         $id = intval($_POST['id']);
-        echo json_encode(['success' => eliminarRol($id)]);
-        break;
+        $rol = obtenerRolPorId($id);
 
+        if (strtolower($rol['nombre']) === 'admin') {
+            echo json_encode(['success' => false, 'error' => 'No se puede eliminar el rol admin']);
+        } else {
+            echo json_encode(['success' => eliminarRol($id)]);
+        }
+        break;
     case 'eliminarUsuario':
         $id = intval($_POST['id']);
         echo json_encode(['success' => eliminarUsuario($id)]);
