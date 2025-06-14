@@ -98,6 +98,7 @@
         },
         {
           data: "estado",
+          className: "col-estado",
           render: function (data) {
             let clase = "badge ";
             switch (data.toLowerCase()) {
@@ -116,9 +117,7 @@
               default:
                 clase += "bg-light text-dark";
             }
-            return `<span class="${clase}">${
-              data.charAt(0).toUpperCase() + data.slice(1)
-            }</span>`;
+            return `<span class="${clase}">${data.charAt(0).toUpperCase() + data.slice(1)}</span>`;
           },
         },
         { data: "fecha" },
@@ -245,8 +244,18 @@
       "mensajesAjax.php",
       { accion: "marcarLeido", id: id },
       function (response) {
-        if (response.success && typeof tabla !== "undefined") {
-          tabla.ajax.reload(null, false);
+        if (response.success) {
+          const $badge = $(`#row_${id} td.col-estado span`);
+
+          if ($badge.length > 0 && $badge.text().toLowerCase() === "pendiente") {
+            $badge.fadeOut(200, function () {
+              $(this)
+                .removeClass("bg-warning text-dark")
+                .addClass("bg-primary")
+                .text("Leído")
+                .fadeIn(200);
+            });
+          }
         }
       },
       "json"
@@ -274,6 +283,7 @@
           if (response.success) {
             alert("Mensaje eliminado correctamente.");
             tabla.ajax.reload(null, false);
+            actualizarContadorMensajesPendientes();
           } else {
             alert("Hubo un error al intentar eliminar el mensaje.");
           }
@@ -291,6 +301,7 @@
         function (response) {
           if (response.success) {
             tabla.ajax.reload(null, false);
+            actualizarContadorMensajesPendientes();
             alert("Mensaje recuperado con éxito.");
           } else {
             alert("No se pudo recuperar el mensaje.");
@@ -349,4 +360,11 @@
 
     inicializarTablaMensajes();
   };
+  window.actualizarContadorMensajesPendientes = function () {
+    $.post('mensajesAjax.php', { accion: 'contarPendientes' }, function(res) {
+        if (res.success) {
+            $('#mensajesPorResponder').text(`${res.pendientes} de ${res.total}`);
+        }
+    }, 'json');
+  }
 })();

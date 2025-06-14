@@ -32,6 +32,7 @@ requiereRol([1]);
         .table td.descripcion {
             display: -webkit-box;
             -webkit-box-orient: vertical;
+            line-clamp: 3;
             -webkit-line-clamp: 3;
             overflow: hidden;
             text-overflow: ellipsis;

@@ -167,6 +167,17 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'marcarLeido' && isset($_POS
     echo json_encode(['success' => $resultado]);
     exit;
 }
+if (isset($_POST['accion']) && $_POST['accion'] === 'contarPendientes') {
+    $total = obtener_total_mensajes();
+    $pendientes = obtener_mensajes_pendientes();
+
+    echo json_encode([
+        'success' => true,
+        'total' => $total,
+        'pendientes' => $pendientes
+    ]);
+    exit;
+}
 // Consulta con filtros
 $columns = ['m.importante', 'm.importante', 'm.id', 'm.servicio', 'm.nombre', 'm.email', 'm.telefono', 'm.mensaje', 'r.respuesta', 'r.fecha_respuesta', 'ua.nombre', 'rl.nombre', 'm.estado', 'm.fecha_creacion', 'm.id'];
 $draw = intval($_POST['draw'] ?? 0);

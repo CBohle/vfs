@@ -231,10 +231,14 @@ $('#formRespuesta').on('submit', function(e) {
             // Insertar el bloque de respuesta justo después del encabezado del mensaje
             $('#resultado_filtro_mensaje').append(replyHTML);
 
-            $("#contenidoModalMensaje .badge")
-                .removeClass("bg-primary bg-warning text-dark")
+            const $badge = $("#contenidoModalMensaje .badge");
+            $badge.fadeOut(200, function () {
+            $(this)
+                .removeClass("bg-warning bg-primary text-dark")
                 .addClass("bg-success")
-                .text("Respondido");
+                .text("Respondido")
+                .fadeIn(200);
+            });
 
             // Opcional: mostrar mensaje de éxito
             $('#resultado_filtro_mensaje').prepend(`
@@ -243,7 +247,8 @@ $('#formRespuesta').on('submit', function(e) {
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
                 </div>
             `);
-
+            
+            actualizarContadorMensajesPendientes();
             // Recargar tabla sin perder estado
             if (typeof tabla !== 'undefined') {
                 tabla.ajax.reload(null, false);
