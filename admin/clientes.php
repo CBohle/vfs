@@ -150,16 +150,16 @@ if (!tienePermiso('clientes', 'ver')) {
                             <label for="filtro_busqueda">Buscar palabra clave</label>
                         </div>
                         <!-- Grupo 3: Crear nuevo cliente -->
-                       <?php if ($_SESSION['rol_id'] != 4): ?>
-    <div class="form-floating align-items-center">
-        <label class="form-label d-block invisible">.</label>
-        <button type="button" class="btn btn-warning btn-sm w-100" onclick="crearCliente()">
-            <h6 class="mb-1 fw-semibold">
-                <span id="ClientePorCrear">Nuevo Cliente</span>
-            </h6>
-        </button>
-    </div>
-<?php endif; ?>
+                        <?php if ($_SESSION['rol_id'] != 4): ?>
+                            <div class="form-floating align-items-center">
+                                <label class="form-label d-block invisible">.</label>
+                                <button type="button" class="btn btn-info btn-sm w-100" style="color:rgb(255, 255, 255)" onclick="crearCliente()">
+                                    <h6 class="mb-1 fw-semibold">
+                                        <span id="ClientePorCrear">Nuevo Cliente</span>
+                                    </h6>
+                                </button>
+                            </div>
+                        <?php endif; ?>
 
                     </form>
                 </div>
@@ -213,7 +213,7 @@ if (!tienePermiso('clientes', 'ver')) {
                 <!-- Modal Header -->
                 <div class="modal-header d-flex justify-content-between align-items-center flex-wrap gap-2">
                     <div class="d-flex align-items-center gap-2 flex-wrap">
-                        <h5 class="modal-title mb-0" id="modalVerClienteLabel">Detalle del cliente</h5>
+                        <h5 class="modal-title mb-0 px-3" id="modalVerClienteLabel">Detalle del cliente</h5>
                     </div>
                     <div class="d-flex align-items-center gap-2">
                         <div id="botonImportanteWrapper" style="min-width: 200px;"></div>
@@ -377,7 +377,7 @@ if (!tienePermiso('clientes', 'ver')) {
                             orderable: false,
                             searchable: false,
                             className: 'text-center',
-                        render: function(data, type, row) {
+                            render: function(data, type, row) {
                                 let botones = `
                             <button class="btn btn-sm btn-primary me-1" title="Ver" onclick="verCliente(${row.id})">
                                 <i class="bi bi-eye"></i>
@@ -418,9 +418,9 @@ if (!tienePermiso('clientes', 'ver')) {
                             exportOptions: {
                                 columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],  // Seleccion de columnas a copiar
                                 format: {
-                                body: function (data, row, column, node) {
-                                    return typeof data === 'string' ? data.replace(/<.*?>/g, '') : data;
-                                }
+                                    body: function (data, row, column, node) {
+                                        return typeof data === 'string' ? data.replace(/<.*?>/g, '') : data;
+                                    }
                                 }
                             }
                         },
@@ -431,9 +431,9 @@ if (!tienePermiso('clientes', 'ver')) {
                             exportOptions: {
                                 columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],  // Seleccion de columnas a copiar
                                 format: {
-                                body: function (data, row, column, node) {
-                                    return typeof data === 'string' ? data.replace(/<.*?>/g, '') : data;
-                                }
+                                    body: function (data, row, column, node) {
+                                        return typeof data === 'string' ? data.replace(/<.*?>/g, '') : data;
+                                    }
                                 }
                             }
                         }
@@ -543,7 +543,7 @@ if (!tienePermiso('clientes', 'ver')) {
                 detalleSelect.empty();
 
                 if (opciones[tipoActivo]) {
-                    detalleSelect.append('<option hidden>Seleccionar</option>');
+                    detalleSelect.append('<option value="" hidden selected>Seleccionar</option>');
                     opciones[tipoActivo].forEach(detalle => {
                         const selected = detalle === detalleSelect.data('valor') ? 'selected' : '';
                         detalleSelect.append(`<option value="${detalle}" ${selected}>${detalle}</option>`);
@@ -558,26 +558,33 @@ if (!tienePermiso('clientes', 'ver')) {
         }
 
         function cargarEventosSelectActivo() {
-            $('#tipo_activo').off('change').on('change', function () {
-                const tipoSeleccionado = $(this).val();
-                const opciones = {
-                    'Inmueble Comercial': ['Oficina', 'Local', 'Bodega'],
-                    'Inmueble Habitacional': ['Casa', 'Departamento'],
-                    'Vehículo': ['Auto', 'Camioneta', 'Moto'],
-                };
+            const tipoActivoSelect = $('#tipo_activo');
+            const detalleSelect = $('#detalle_activos');
 
-                const detalleSelect = $('#detalle_activos');
+            const opciones = {
+                "Propiedad Residencial": ["Casa", "Departamento", "Parcela"],
+                "Inmueble Comercial": ["Local", "Oficina", "Centro Comercial"],
+                "Activo Industrial": ["Fábrica", "Planta", "Galpón"],
+                "Bien Especial": ["Terreno", "Estacionamiento", "Otro"]
+            };
+
+            tipoActivoSelect.on('change', function() {
+                const tipoActivo = $(this).val();
                 detalleSelect.empty();
+                detalleSelect.val('');
+                detalleSelect.removeClass('is-valid is-invalid');
 
-                if (opciones[tipoSeleccionado]) {
-                    detalleSelect.append('<option hidden selected>Seleccionar</option>');
-                    opciones[tipoSeleccionado].forEach(op => {
-                        detalleSelect.append(`<option value="${op}">${op}</option>`);
+                if (opciones[tipoActivo]) {
+                    detalleSelect.append('<option value="" hidden selected>Seleccionar</option>');
+                    opciones[tipoActivo].forEach(function(opcion) {
+                        detalleSelect.append(`<option value="${opcion}">${opcion}</option>`);
                     });
                 } else {
                     detalleSelect.append('<option value="">Selecciona un tipo válido</option>');
                 }
             });
+            // También ejecuta esto al cargar por primera vez (por si ya hay un valor seleccionado)
+            tipoActivoSelect.trigger('change');
         }
 
         function recuperarCliente(id) {

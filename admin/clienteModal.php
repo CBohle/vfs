@@ -78,7 +78,7 @@ function formatearFecha($fechaOriginal) {
         padding: 0.5rem 1rem;
         border-radius: 0.5rem 0.5rem 0 0;
         background-color: #0d6efd;
-        color: white;
+        color: rgb(255, 255, 255) !important;
     }
 
     .dato-label {
@@ -114,32 +114,42 @@ function formatearFecha($fechaOriginal) {
     <div class="row g-4 align-items-stretch">
         <!-- Columna Izquierda -->
         <div class="col-md-6 d-flex flex-column gap-1">
+            <!-- Información -->
             <div class="seccion-cliente h-100">
                 <h5><i class="bi bi-person-badge me-2"></i>Información</h5>
+                <!-- Nombre -->
                 <div class="fila-dato">
                     <span class="dato-label">Nombre:</span>
                     <input type="text" class="form-control" id="nombre_cliente" name="nombre_cliente" value="<?= htmlspecialchars($msg['nombre_contacto']) ?>" <?= empty($msg['nombre_contacto']) ? '' : 'disabled' ?> required>
+                    <div class="invalid-feedback">Este campo es obligatorio</div>
                 </div>
+                <!-- Apellido -->
                 <div class="fila-dato">
                     <span class="dato-label">Apellido:</span>
                     <input type="text" class="form-control" id="apellido_cliente" name="apellido_cliente" value="<?= htmlspecialchars($msg['apellido_contacto']) ?>" <?= empty($msg['apellido_contacto']) ? '' : 'disabled' ?> required>
+                    <div class="invalid-feedback">Este campo es obligatorio</div>
                 </div>
+                <!-- Tipo de persona -->
                 <div class="fila-dato">
                     <span class="dato-label">Tipo Persona:</span>
-                    <select class="form-select" aria-label="Tipo Persona" name="tipo_persona" <?= $id > 0 ? 'disabled' : '' ?>>
-                        <option hidden selected>Seleccionar</option>
+                    <select class="form-select" aria-label="Tipo Persona" name="tipo_persona" required <?= $id > 0 ? 'disabled' : '' ?>>
+                        <option value="" hidden selected>Seleccionar</option>
                         <option value="Natural" <?= $msg['tipo_persona'] === 'Natural' ? 'selected' : '' ?>>Natural</option>
                         <option value="Juridica" <?= $msg['tipo_persona'] === 'Juridica' ? 'selected' : '' ?>>Jurídica</option>
                     </select>
+                    <div class="invalid-feedback">Selecciona una opción válida.</div>
                 </div>
+                <!-- Nombre empresa -->
                 <div class="fila-dato">
                     <span class="dato-label">Nombre empresa:</span>
                     <input type="text" class="form-control" id="nombre_empresa" name="nombre_empresa" value="<?= htmlspecialchars($msg['nombre_empresa']) ?>" <?= empty($msg['nombre_empresa']) ? '' : 'disabled' ?> required>
+                    <div class="invalid-feedback">Este campo es obligatorio</div>
                 </div>
             </div>
+            <!-- Contacto -->
             <div class="seccion-cliente h-100">
                 <h5><i class="bi bi-envelope me-2"></i>Contacto</h5>
-
+                <!-- Email -->
                 <div class="d-flex align-items-center mb-3">
                     <i class="bi bi-envelope-fill me-2 text-primary fs-5 mt-1"></i>
                     <div class="w-100 d-flex justify-content-between">
@@ -150,10 +160,11 @@ function formatearFecha($fechaOriginal) {
                         <?php else: ?>
                             <!-- Si estamos creando un nuevo cliente, mostramos un input editable -->
                             <input type="email" class="form-control w-75" id="email_contacto" name="email_contacto" value="<?= htmlspecialchars($msg['email_contacto']) ?>" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
                         <?php endif; ?>
                     </div>
                 </div>
-
+                <!-- Teléfono -->
                 <div class="d-flex align-items-center mb-3">
                     <i class="bi bi-telephone-fill me-2 text-success fs-5 mt-1"></i>
                     <div class="w-100 d-flex justify-content-between">
@@ -164,6 +175,7 @@ function formatearFecha($fechaOriginal) {
                         <?php else: ?>
                             <!-- Si estamos creando un nuevo cliente, mostramos un input editable -->
                             <input type="tel" class="form-control w-75" id="telefono_contacto" name="telefono_contacto" value="<?= htmlspecialchars($msg['telefono_contacto']) ?>" required>
+                            <div class="invalid-feedback">Este campo es obligatorio</div>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -172,24 +184,28 @@ function formatearFecha($fechaOriginal) {
 
         <!-- Columna Derecha -->
         <div class="col-md-6 d-flex flex-column gap-1">
+            <!-- Activos -->
             <div class="seccion-cliente h-100">
                 <h5><i class="bi bi-mortarboard me-2"></i>Activos</h5>
+                <!-- Tipo de activo -->
                 <div class="fila-dato">
                     <span class="dato-label">Tipo de Activo:</span>
-                    <select class="form-select" id="tipo_activo" aria-label="Tipo de Activo" name="tipo_activo" <?= $id > 0 ? 'disabled' : '' ?>>
-                        <option hidden selected>Seleccionar</option>
+                    <select class="form-select" id="tipo_activo" aria-label="Tipo de Activo" name="tipo_activo" required<?= $id > 0 ? 'disabled' : '' ?>>
+                        <option value="" hidden selected>Seleccionar</option>
                         <option value="Propiedad Residencial" <?= $msg['tipo_activos'] === 'Propiedad Residencial' ? 'selected' : '' ?>>Propiedad Residencial</option>
                         <option value="Inmueble Comercial" <?= $msg['tipo_activos'] === 'Inmueble Comercial' ? 'selected' : '' ?>>Inmueble Comercial</option>
                         <option value="Activo Industrial" <?= $msg['tipo_activos'] === 'Activo Industrial' ? 'selected' : '' ?>>Activo Industrial</option>
                         <option value="Bien Especial" <?= $msg['tipo_activos'] === 'Bien Especial' ? 'selected' : '' ?>>Bien Especial</option>
                     </select>
+                    <div class="invalid-feedback">Selecciona una opción válida.</div>
                 </div>
-
+                <!-- Detalle de activo -->
                 <div class="fila-dato">
                     <span class="dato-label">Detalle Activo:</span>
                     <select class="form-select" id="detalle_activos" aria-label="Detalle de Activos" name="detalle_activo" <?= $id > 0 ? 'disabled' : '' ?> data-valor="<?= htmlspecialchars($msg['detalle_activos']) ?>">
                         <!-- Las opciones son modificadas dinámicamente con JavaScript -->
                     </select>
+                    <div class="invalid-feedback">Selecciona una opción válida.</div>
                 </div>
             </div>
             <div class="seccion-cliente h-100">
@@ -202,7 +218,8 @@ function formatearFecha($fechaOriginal) {
                 <?php else: ?>
                     <!-- Si estamos creando o editando, mostramos un textarea para edición -->
                     <div class="fila-dato mt-3">
-                        <textarea class="form-control" id="notas" name="notas" rows="10"><?= htmlspecialchars($msg['notas']) ?></textarea>
+                        <textarea class="form-control" id="notas" name="notas" rows="10" required><?= htmlspecialchars($msg['notas']) ?></textarea>
+                        <div class="invalid-feedback">Este campo es obligatorio.</div>
                     </div>
                 <?php endif; ?>
             </div>

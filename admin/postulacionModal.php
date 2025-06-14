@@ -53,7 +53,7 @@ function formatearFecha($fechaOriginal) {
         padding: 0.5rem 1rem;
         border-radius: 0.5rem 0.5rem 0 0;
         background-color: #0d6efd;
-        color: white;
+        color:rgb(255, 255, 255) !important;
     }
 
     .dato-label {
