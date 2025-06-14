@@ -89,7 +89,9 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'guardarRespuesta' && isset(
     if ($existe > 0) {
         echo json_encode([
             'success' => false,
-            'error' => 'Este mensaje ya ha sido respondido.'
+            'error' => 'Este mensaje ya ha sido respondido.',
+            'mensaje_id_debug' => $mensaje_id,
+            'total_encontrado' => $existe
         ]);
         exit;
     }
@@ -132,8 +134,14 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'guardarRespuesta' && isset(
         } catch (Exception $e) {
             error_log("Error al enviar correo: {$mail->ErrorInfo}");  // Log en caso de error
             echo json_encode([
-                'success' => false,
-                'error' => 'Error al enviar correo: ' . $mail->ErrorInfo
+                'success' => true,
+                'correoError' => true,
+                'error' => 'La respuesta fue guardada, pero ocurrió un error al enviar el correo.',
+                'respuesta' => $respuesta,
+                'fecha' => date('d-m-Y H:i'),
+                'admin_nombre' => $admin['nombre'] ?? '',
+                'admin_apellido' => $admin['apellido'] ?? '',
+                'rol' => $admin['rol'] ?? ''
             ]);
             exit;
         }
@@ -165,6 +173,17 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'marcarLeido' && isset($_POS
     $resultado = $stmt->execute();
 
     echo json_encode(['success' => $resultado]);
+    exit;
+}
+if (isset($_POST['accion']) && $_POST['accion'] === 'contarPendientes') {
+    $total = obtener_total_mensajes();
+    $pendientes = obtener_mensajes_pendientes();
+
+    echo json_encode([
+        'success' => true,
+        'total' => $total,
+        'pendientes' => $pendientes
+    ]);
     exit;
 }
 // Consulta con filtros

@@ -52,26 +52,24 @@ require_once __DIR__ . '/../includes/config.php';
             <!-- Sidebar -->
             <div class="sidebar sidebar-text" id="sidebar">
                 <ul class="nav flex-column">
-                     <?php if (in_array($_SESSION['rol_id'], [1, 5])): ?> 
                         <li class="nav-item">
                         <a class="nav-link active" data-section="inicioResumen">
                             <i class="bi bi-house fs-6" style="margin-right: 5px"></i>
                             Dashboard
                         </a>
                     </li>
-                        <?php endif; ?>
                     
-                    <?php if (in_array($_SESSION['rol_id'], [1,3, 4, 5])): ?>
-                         <li class="nav-item">
-                        <a class="nav-link" data-section="mensajes">
-                            <i class="bi bi-chat-square-text fs-6" style="margin-right: 5px"></i>
-                            Mensajes <span id="badge-mensajes" class="badge bg-danger d-none"></span>
-                        </a>
-                    </li>
+                    <?php if (tienePermiso('mensajes', 'ver')): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" data-section="mensajes">
+                                <i class="bi bi-chat-square-text fs-6" style="margin-right: 5px"></i>
+                                Mensajes <span id="badge-mensajes" class="badge bg-danger d-none"></span>
+                            </a>
+                        </li>
                         
-                        <?php endif; ?>
+                    <?php endif; ?>
                    
-                  <?php if (in_array($_SESSION['rol_id'], [1, 2, 5])): ?>
+                  <?php if (tienePermiso('postulaciones', 'ver')): ?>
     <li class="nav-item">
         <a class="nav-link" data-section="postulaciones">
             <i class="bi bi-bookmark-check fs-6" style="margin-right: 5px"></i>
@@ -79,7 +77,7 @@ require_once __DIR__ . '/../includes/config.php';
         </a>
     </li>
 <?php endif; ?>
-  <?php if (in_array($_SESSION['rol_id'], [1,3,4,5])): ?> 
+  <?php if (tienePermiso('clientes', 'ver')): ?>
         <li class="nav-item">
                         <a class="nav-link" data-section="clientes">
                             <i class="bi bi-people-fill fs-6" style="margin-right: 5px"></i>
@@ -88,14 +86,14 @@ require_once __DIR__ . '/../includes/config.php';
                     </li>
     <?php endif; ?>
                     
-                    <?php if ($_SESSION['rol_id'] === 1): ?>
+                <?php if (tienePermiso('usuarios', 'ver') || tienePermiso('roles', 'ver')): ?>    
                     <li class="nav-item">
                         <a class="nav-link" data-section="usuarios">
                             <i class="bi bi-person-vcard fs-6" style="margin-right: 5px"></i>
                             Usuarios
                         </a>
                     </li>
-                    <?php endif; ?>
+                <?php endif; ?>
                     <li class="nav-item">
                         <a class="nav-link" href="<?= BASE_URL ?>logout.php">
                             <i class="bi bi-arrow-bar-left fs-6" style="margin-right: 5px"></i>

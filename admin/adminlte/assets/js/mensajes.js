@@ -7,6 +7,7 @@
     tabla = $("#tablaMensajes").DataTable({
       serverSide: true,
       processing: true,
+      rowId: 'DT_RowId',
       ajax: {
         url: "mensajesAjax.php",
         type: "POST",
@@ -98,6 +99,7 @@
         },
         {
           data: "estado",
+          className: "col-estado",
           render: function (data) {
             let clase = "badge ";
             switch (data.toLowerCase()) {
@@ -116,9 +118,7 @@
               default:
                 clase += "bg-light text-dark";
             }
-            return `<span class="${clase}">${
-              data.charAt(0).toUpperCase() + data.slice(1)
-            }</span>`;
+            return `<span class="${clase}">${data.charAt(0).toUpperCase() + data.slice(1)}</span>`;
           },
         },
         { data: "fecha" },
@@ -236,24 +236,35 @@
   };
 
   window.verMensaje = function (id) {
-    $("#contenidoModalMensaje").html(
-      '<p class="text-center text-muted">Cargando...</p>'
+    $("#contenidoModalMensaje").empty().html(
+        '<p class="text-center text-muted">Cargando...</p>'
     );
     $("#modalVerMensaje").modal("show");
+    $("#botonImportanteWrapper").empty();
 
-    $.post(
-      "mensajesAjax.php",
-      { accion: "marcarLeido", id: id },
-      function (response) {
-        if (response.success && typeof tabla !== "undefined") {
-          tabla.ajax.reload(null, false);
+    console.log("ID del mensaje al abrir:", id);
+
+    // Marcar como leído
+    $.post("mensajesAjax.php", { accion: "marcarLeido", id: id }, function (response) {
+        if (response.success) {
+            const $badge = $(`#row_${id} td.col-estado span`);
+            if ($badge.length > 0 && $badge.text().toLowerCase() === "pendiente") {
+                $badge.fadeOut(200, function () {
+                    $(this)
+                        .removeClass("bg-warning text-dark")
+                        .addClass("bg-primary")
+                        .text("Leído")
+                        .fadeIn(200);
+                });
+            }
         }
-      },
-      "json"
-    );
+    }, "json");
 
+    // Cargar contenido HTML actualizado del mensaje
     $.get("mensajeModal.php", { id: id }, function (respuesta) {
       $("#contenidoModalMensaje").html(respuesta);
+
+      // Extraer y volver a mostrar el botón de importante
       const botonHTML = $("#contenidoModalMensaje")
         .find("#botonImportanteHTML")
         .html();
@@ -274,6 +285,7 @@
           if (response.success) {
             alert("Mensaje eliminado correctamente.");
             tabla.ajax.reload(null, false);
+            actualizarContadorMensajesPendientes();
           } else {
             alert("Hubo un error al intentar eliminar el mensaje.");
           }
@@ -291,6 +303,7 @@
         function (response) {
           if (response.success) {
             tabla.ajax.reload(null, false);
+            actualizarContadorMensajesPendientes();
             alert("Mensaje recuperado con éxito.");
           } else {
             alert("No se pudo recuperar el mensaje.");
@@ -302,6 +315,7 @@
   };
 
   $(document).on("click", ".marcarImportante", function () {
+    const icono = $(this);
     const id = $(this).data("id");
     const valorActual = $(this).data("valor");
     const nuevoValor = valorActual == 1 ? 0 : 1;
@@ -315,13 +329,143 @@
       },
       function (response) {
         if (response.success) {
-          tabla.ajax.reload(null, false);
+          const nuevaClase = nuevoValor == 1 ? "bi-star-fill text-warning" : "bi-star text-muted";
+          icono
+            .removeClass("bi-star bi-star-fill text-muted text-warning")
+            .addClass(nuevaClase)
+            .data("valor", nuevoValor); // actualiza el valor del data-valor
         } else {
           alert("No se pudo actualizar el estado de importancia.");
         }
       },
       "json"
     );
+  });
+  
+  window.toggleImportanteMensaje = function (id, estadoActual) {
+      const nuevoValor = estadoActual === 1 ? 0 : 1;
+
+      $.post('mensajesAjax.php', {
+          accion: 'importante',
+          mensaje_id: id,
+          importante: nuevoValor
+      }, function(response) {
+          if (response.success) {
+              const boton = $('#btnImportante');
+              const icono = $('#iconoImportante');
+              const texto = $('#textoImportante');
+              
+              icono.fadeOut(150, function () {
+                icono.addClass("balanceando");
+                setTimeout(() => {
+                icono.removeClass("balanceando");
+                }, 500);
+                if (nuevoValor === 1) {
+                    boton.removeClass('btn-warning').addClass('btn-outline-warning');
+                    icono.removeClass('bi-star').addClass('bi-star-fill');
+                    texto.text('Marcar como no importante');
+                } else {
+                    boton.removeClass('btn-outline-warning').addClass('btn-warning');
+                    icono.removeClass('bi-star-fill').addClass('bi-star');
+                    texto.text('Marcar como importante');
+                }
+                boton.attr('onclick', `toggleImportanteMensaje(${id}, ${nuevoValor})`);
+                icono.fadeIn(150);
+            });
+
+              if (nuevoValor === 1) {
+                  boton.removeClass('btn-warning').addClass('btn-outline-warning');
+                  icono.removeClass('bi-star').addClass('bi-star-fill');
+                  texto.text('Marcar como no importante');
+              } else {
+                  boton.removeClass('btn-outline-warning').addClass('btn-warning');
+                  icono.removeClass('bi-star-fill').addClass('bi-star');
+                  texto.text('Marcar como importante');
+              }
+
+              const iconoTabla = $(`#row_${id} .marcarImportante`);
+              if (iconoTabla.length > 0) {
+                  iconoTabla
+                      .removeClass('bi-star bi-star-fill text-warning text-muted')
+                      .addClass(nuevoValor === 1 ? 'bi-star-fill text-warning' : 'bi-star text-muted')
+                      .attr('data-valor', nuevoValor)
+                      .addClass('balanceando');
+
+                  setTimeout(() => {
+                      iconoTabla.removeClass('balanceando');
+                  }, 500);
+              }
+          } else {
+              alert('No se pudo actualizar el estado de importancia.');
+          }
+      }, 'json');
+  }
+  // Envío del formulario de respuesta
+  $(document).on("submit", "#formRespuesta", function (e) {
+      e.preventDefault();
+
+      const formData = $(this).serialize();
+      const id = $('input[name="mensaje_id"]').val();
+      console.log("Formulario actual corresponde a ID:", id);
+
+      $.post("mensajesAjax.php", formData, function (respuesta) {
+          if (respuesta.success) {
+              $('#formRespuesta').remove();
+
+              const replyHTML = `
+                  <div class="reply mt-3">
+                      <div class="reply-box" style="width: 100%; position: relative;">
+                          <div class="reply-header d-flex justify-content-between align-items-center">
+                              <div class="d-flex flex-wrap align-items-center gap-2">
+                                  <span class="reply-name">${respuesta.admin_nombre} ${respuesta.admin_apellido}</span>
+                                  <span class="rol">${respuesta.rol}</span>
+                              </div>
+                              <span class="text-muted ms-2">${respuesta.fecha}</span>
+                          </div>
+                          <span class="reply-text texto-largo-contenido">${respuesta.respuesta}</span>
+                      </div>
+                  </div>
+              `;
+
+              $("#resultado_filtro_mensaje .position-relative").append(replyHTML);
+
+              const fila = $(`#row_${id} td.col-estado span`);
+              if (fila.length > 0) {
+                  fila.fadeOut(200, function () {
+                      $(this)
+                          .removeClass("bg-warning bg-primary text-dark")
+                          .addClass("bg-success")
+                          .text("Respondido")
+                          .fadeIn(200);
+                  });
+              }
+
+              $("#resultado_filtro_mensaje .badge")
+                  .removeClass("bg-warning bg-primary text-dark")
+                  .addClass("bg-success")
+                  .text("Respondido");
+
+              if (typeof actualizarContadorMensajesPendientes === "function") {
+                  actualizarContadorMensajesPendientes();
+              }
+
+              $('#resultado_filtro_mensaje .alert').remove();
+              $('#resultado_filtro_mensaje').prepend(`
+                  <div class="alert alert-success alert-dismissible fade show" role="alert">
+                      Respuesta enviada correctamente.
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                  </div>
+              `);
+          } else {
+              $('#resultado_filtro_mensaje .alert').remove();
+              $('#resultado_filtro_mensaje').prepend(`
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                      ${respuesta.error || "Ocurrió un error al guardar la respuesta."}
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                  </div>
+              `);
+          }
+      }, "json");
   });
 
   function esperarYInicializarTabla() {
@@ -349,4 +493,11 @@
 
     inicializarTablaMensajes();
   };
+  window.actualizarContadorMensajesPendientes = function () {
+    $.post('mensajesAjax.php', { accion: 'contarPendientes' }, function(res) {
+        if (res.success) {
+            $('#mensajesPorResponder').text(`${res.pendientes} de ${res.total}`);
+        }
+    }, 'json');
+  }
 })();

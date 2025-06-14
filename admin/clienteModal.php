@@ -49,6 +49,10 @@ $esImportante = $msg['importante'] ?? 0;
 $btnClase = $esImportante ? 'btn-outline-warning' : 'btn-warning';
 $iconoClase = $esImportante ? 'bi-star-fill' : 'bi-star';
 $textoImportante = $esImportante ? 'Marcar como no importante' : 'Marcar como importante';
+function formatearFecha($fechaOriginal) {
+    $dt = new DateTime($fechaOriginal);
+    return $dt->format('d-m-Y H:i');
+}
 ?>
 
 <!-- Botón oculto que luego se moverá dinámicamente al header -->
@@ -88,6 +92,21 @@ $textoImportante = $esImportante ? 'Marcar como no importante' : 'Marcar como im
 
     .fila-dato {
         margin-bottom: 0.6rem;
+    }
+    #btnImportante:hover #iconoImportante {
+        transform: scale(1.3) rotate(10deg);
+        transition: transform 0.3s ease;
+    }
+    @keyframes balanceoEstrella {
+        0% { transform: rotate(0deg); }
+        25% { transform: rotate(15deg); }
+        50% { transform: rotate(-15deg); }
+        75% { transform: rotate(10deg); }
+        100% { transform: rotate(0deg); }
+    }
+
+    #iconoImportante.balanceando {
+        animation: balanceoEstrella 0.5s ease-in-out;
     }
 </style>
 <form id="formCliente">
@@ -183,8 +202,7 @@ $textoImportante = $esImportante ? 'Marcar como no importante' : 'Marcar como im
                 <!-- Detalle de activo -->
                 <div class="fila-dato">
                     <span class="dato-label">Detalle Activo:</span>
-                    <!-- <select class="form-select" id="detalle_activos" aria-label="Detalle de Activos" name="detalle_activos" <?= $id > 0 ? 'disabled' : '' ?> data-valor="<?= htmlspecialchars($msg['detalle_activos']) ?>"> -->
-                    <select class="form-select" id="detalle_activos" aria-label="Detalle de Activos" name="detalle_activos" required <?= $id > 0 ? 'disabled' : '' ?> data-valor="<?= htmlspecialchars($msg['detalle_activos']) ?>">
+                    <select class="form-select" id="detalle_activos" aria-label="Detalle de Activos" name="detalle_activo" <?= $id > 0 ? 'disabled' : '' ?> data-valor="<?= htmlspecialchars($msg['detalle_activos']) ?>">
                         <!-- Las opciones son modificadas dinámicamente con JavaScript -->
                     </select>
                     <div class="invalid-feedback">Selecciona una opción válida.</div>
@@ -217,8 +235,8 @@ $textoImportante = $esImportante ? 'Marcar como no importante' : 'Marcar como im
                         <span class="dato-valor"><?= htmlspecialchars($msg['nombre_usuario_creador'] ?? '—') ?> (<?= htmlspecialchars($msg['email_usuario_creador'] ?? '') ?>)</span>
                     </div>
                     <div class=" col-md-6 fila-dato"><span class="dato-label">Estado:</span> <span class="badge <?= $estadoClass ?>"><?= htmlspecialchars($msg['estado']) ?></span></div>
-                    <div class="col-md-6 fila-dato"><span class="dato-label">Fecha de Creación:</span> <?= htmlspecialchars($msg['fecha_creacion']) ?></div>
-                    <div class="col-md-6 fila-dato"><span class="dato-label">Última Modificación:</span> <?= htmlspecialchars($msg['fecha_modificacion']) ?></div>
+                    <div class="col-md-6 fila-dato"><span class="dato-label">Fecha de Creación:</span> <?= formatearFecha($msg['fecha_creacion']) ?></div>
+                    <div class="col-md-6 fila-dato"><span class="dato-label">Última Modificación:</span> <?= formatearFecha($msg['fecha_modificacion']) ?></div>
                 </div>
             </div>
         </div>
