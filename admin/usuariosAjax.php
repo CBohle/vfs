@@ -65,7 +65,13 @@ switch ($accion) {
     case 'cambiar_estado':
         $id = intval($_POST['id']);
         $estado = $_POST['estado'];
-        echo json_encode(['success' => cambiarEstadoUsuario($id, $estado)]);
+        $tipo = $_POST['tipo'] ?? 'usuario'; // por defecto
+
+        if ($tipo === 'rol') {
+            echo json_encode(['success' => cambiarEstadoRol($id, $estado)]);
+        } else {
+            echo json_encode(['success' => cambiarEstadoUsuario($id, $estado)]);
+        }
         break;
     case 'eliminarRol':
         $id = intval($_POST['id']);

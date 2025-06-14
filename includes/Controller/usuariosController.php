@@ -152,9 +152,16 @@ function listarUsuarios($post) {
 }
 function cambiarEstadoUsuario($id, $estado) {
     global $conexion;
-    $estado = $estado === 'activo' ? 'activo' : 'inactivo';
+    $nuevoValor = ($estado === 'activo') ? 1 : 0;
     $stmt = $conexion->prepare("UPDATE usuarios_admin SET activo = ? WHERE id = ?");
-    $stmt->bind_param("si", $estado, $id);
+    $stmt->bind_param("ii", $nuevoValor, $id);
+    return $stmt->execute();
+}
+function cambiarEstadoRol($id, $estado) {
+    global $conexion;
+    $nuevoValor = ($estado === 'activo') ? 1 : 0;
+    $stmt = $conexion->prepare("UPDATE roles SET activo = ? WHERE id = ?");
+    $stmt->bind_param("ii", $nuevoValor, $id);
     return $stmt->execute();
 }
 function eliminarRol($id) {

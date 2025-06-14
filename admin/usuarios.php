@@ -288,6 +288,7 @@ requiereRol([1]);
             <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
             <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             <script>
                 if (typeof tablaRoles === 'undefined') {
                     var tablaRoles;
@@ -326,7 +327,7 @@ requiereRol([1]);
                                         case '1':
                                         case 'true':
                                             clase += 'bg-success';
-                                            return `<span class="${clase}" data-id="${row.id}" data-activo="activo">Activo</span>`;
+                                            return `<span class="${clase}" data-id="${row.id}" data-activo="activo" data-tipo="rol">Activo</span>`;
                                         case 'inactivo':
                                         case '0':
                                         case 'false':
@@ -336,6 +337,7 @@ requiereRol([1]);
                                             clase += 'bg-secondary';
                                             return `<span class="${clase}" data-id="${row.id}" data-activo="desconocido">Desconocido</span>`;
                                     }
+                                    return `<span class="${clase}" data-id="${row.id}" data-activo="${estado}" data-tipo="${row.rol ? 'usuario' : 'rol'}">${estado.charAt(0).toUpperCase() + estado.slice(1)}</span>`;
                                 }
                             },
                             {
@@ -414,6 +416,7 @@ requiereRol([1]);
                                             clase += 'bg-secondary';
                                             return `<span class="${clase}" data-id="${row.id}" data-activo="desconocido">Desconocido</span>`;
                                     }
+                                    return `<span class="${clase}" data-id="${row.id}" data-activo="${estado}" data-tipo="${row.rol ? 'usuario' : 'rol'}">${estado.charAt(0).toUpperCase() + estado.slice(1)}</span>`;
                                 }
                             },
                             {
@@ -508,20 +511,6 @@ requiereRol([1]);
                     }, 'json');
                 });
 
-                $('#tablaRoles').on('click', '.estado-toggle', function() {
-                    const id = $(this).data('id');
-                    $.post('usuariosAjax.php', {
-                        accion: 'toggleEstadoRol',
-                        id
-                    }, function(response) {
-                        if (response.success) {
-                            tablaRoles.ajax.reload(null, false);
-                        } else {
-                            alert('Error al cambiar estado');
-                        }
-                    }, 'json');
-                });
-
                 $(document).ready(function() {
                     inicializarTablaRoles();
                     inicializarTablaUsuarios();
@@ -585,44 +574,49 @@ requiereRol([1]);
                     }, 'json');
                 });
                 $(document).on('click', '.estado-click', function () {
-                    const id = $(this).data('id');
-                    const activoRaw = $(this).data('activo');
-                    if (typeof activoRaw !== 'string') return;
+                    const badge = $(this);
+                    const id = badge.data("id");
+                    const tipo = badge.data("tipo"); // 'usuario' o 'rol'
+                    const estadoActual = badge.data("activo");
+                    const nuevoEstado = estadoActual === "activo" ? "inactivo" : "activo";
 
-                        const estadoActual = activoRaw.toLowerCase();
-                        let FnuevoEstado = '';
+                    const nombre = tipo === 'usuario' ? 'usuario' : 'rol';
 
-                        if (estadoActual === 'activo') {
-                            nuevoEstado = 'inactivo';
-                        } else if (estadoActual === 'inactivo') {
-                            nuevoEstado = 'activo';
-                        } else {
-                            return;
+                    Swal.fire({
+                        title: `¿Confirmar cambio de estado?`,
+                        text: `¿Deseas marcar este ${nombre} como "${nuevoEstado}"?`,
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Sí, cambiar",
+                        cancelButtonText: "Cancelar"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.post("usuariosAjax.php", {
+                                accion: "cambiar_estado",
+                                id,
+                                estado: nuevoEstado,
+                                tipo // lo envías como referencia si deseas usarlo en PHP
+                            }, function (response) {
+                                if (response.success) {
+                                    badge
+                                        .text(nuevoEstado === "activo" ? "Activo" : "Inactivo")
+                                        .removeClass("bg-success bg-warning text-dark")
+                                        .addClass(nuevoEstado === "activo" ? "bg-success" : "bg-warning text-dark")
+                                        .data("activo", nuevoEstado)
+                                        .addClass("balanceando");
+
+                                    setTimeout(() => badge.removeClass("balanceando"), 500);
+
+                                    Swal.fire("Estado actualizado", "", "success");
+                                } else {
+                                    Swal.fire("Error", "No se pudo cambiar el estado.", "error");
+                                }
+                            }, "json");
                         }
-
-                        $.post('usuariosAjax.php', {
-                            accion: 'cambiar_estado',
-                            id: id,
-                            estado: nuevoEstado
-                        }, function (response) {
-                            if (response.success) {
-                                // ⚡ animación sin recargar toda la tabla
-                                const $span = $(`.estado-click[data-id="${id}"]`);
-                                const nuevaClase = nuevoEstado === 'activo' ? 'bg-success' : 'bg-warning text-dark';
-                                const nuevoTexto = nuevoEstado.charAt(0).toUpperCase() + nuevoEstado.slice(1);
-
-                                $span.fadeOut(200, function () {
-                                    $span.removeClass('bg-success bg-warning text-dark')
-                                        .addClass(nuevaClase)
-                                        .text(nuevoTexto)
-                                        .data('activo', nuevoEstado)
-                                        .fadeIn(200);
-                                });
-                            } else {
-                                alert('No se pudo cambiar el estado.');
-                            }
-                        }, 'json');
-                    });  
+                    });
+                });
                     function eliminarRol(id) {
                         if (!confirm("¿Estás seguro de que deseas eliminar este rol?")) return;
                         $.post('usuariosAjax.php', { accion: 'eliminarRol', id }, function (response) {
