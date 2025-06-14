@@ -514,7 +514,12 @@ $(document).ready(function () {
                   }, 500);
               }
           } else {
-              alert('No se pudo actualizar el estado de importancia.');
+              Swal.fire({
+                icon: 'error',
+                title: 'No se pudo actualizar',
+                text: 'Ocurrió un error al cambiar la importancia de la postulación.',
+                confirmButtonText: 'Entendido'
+            });
           }
       }, 'json');
     }
