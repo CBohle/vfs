@@ -1,8 +1,8 @@
-undefined<?php
-session_start();
+<?php
 $rol_id = $_SESSION['rol_id'] ?? null;
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/Controller/mensajesController.php';
+require_once __DIR__ . '/../includes/auth.php';
 
 $id = intval($_GET['id'] ?? 0);
 
@@ -162,33 +162,35 @@ function formatearFecha($fechaOriginal) {
             <br>
             <p class="mb-2 texto-largo-contenido"><?= htmlspecialchars($msg['mensaje'] ?? '') ?></p>
             <?php if (!empty($msg['respuesta'])): ?>
-                <div class="reply">
-                    <div class="reply-box" style="width: 100%; position: relative;">
-                        <div class="reply-header d-flex justify-content-between align-items-center">
-                            <div class="d-flex flex-wrap align-items-center gap-2">
-                                <span class="reply-name"><?= htmlspecialchars($msg['admin_nombre'] ?? '') ?> <?= htmlspecialchars($msg['admin_apellido'] ?? '') ?></span>
-                                <span class="rol"><?= htmlspecialchars($msg['rol'] ?? '') ?></span>
-                            </div>
-                            <span class="text-muted ms-2"><?= isset($msg['fecha_respuesta']) ? formatearFecha($msg['fecha_respuesta']) : '' ?></span>
+            <!-- Mostrar respuesta ya existente -->
+            <div class="reply mt-3">
+                <div class="reply-box" style="width: 100%; position: relative;">
+                    <div class="reply-header d-flex justify-content-between align-items-center">
+                        <div class="d-flex flex-wrap align-items-center gap-2">
+                            <span class="reply-name"><?= htmlspecialchars($msg['admin_nombre'] ?? '') ?> <?= htmlspecialchars($msg['admin_apellido'] ?? '') ?></span>
+                            <span class="rol"><?= htmlspecialchars($msg['rol'] ?? '') ?></span>
                         </div>
-                        <span class="reply-text texto-largo-contenido"><?= htmlspecialchars($msg['respuesta'] ?? '') ?></span>
+                        <span class="text-muted ms-2"><?= isset($msg['fecha_respuesta']) ? formatearFecha($msg['fecha_respuesta']) : '' ?></span>
                     </div>
+                    <span class="reply-text texto-largo-contenido"><?= htmlspecialchars($msg['respuesta']) ?></span>
                 </div>
-            <?php elseif ($msg['estado'] !== 'eliminado'): ?>
-                <!-- Mostrar formulario solo si no está eliminado -->
-               <?php if ($rol_id == 4): ?>
-                    <div class="mt-3 alert alert-warning">
-                        No tienes permisos para responder mensajes.
-                    </div>
-                <?php else: ?>
-                    <form id="formRespuesta" class="mt-3">
+            </div>
+        <?php elseif ($msg['estado'] !== 'eliminado'): ?>
+            <!-- No hay respuesta aún -->
+            <?php if (!tienePermiso('mensajes', 'modificar')): ?>
+                <div class="mt-3 alert alert-warning">
+                    <i class="bi bi-shield-lock-fill me-2"></i>
+                    No tienes permisos para responder mensajes.
+                </div>
+            <?php else: ?>
+                <form id="formRespuesta" class="mt-3">
                     <input type="hidden" name="accion" value="guardarRespuesta">
                     <input type="hidden" name="mensaje_id" value="<?= $msg['id'] ?>">
                     <textarea id="respuesta_texto" name="respuesta" class="form-control mb-2" required placeholder="Escribe tu respuesta..."></textarea>
                     <button type="submit" class="btn btn-primary btn-sm">Enviar respuesta</button>
-                    </form>
-                <?php endif; ?>
+                </form>
             <?php endif; ?>
+        <?php endif; ?>
         </div>
     </div>
 </div>
