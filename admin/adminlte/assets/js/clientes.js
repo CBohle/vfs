@@ -6,11 +6,20 @@ function crearCliente() {
         $('#contenidoModalCliente').html(respuesta);
 
         $('#botonImportanteWrapper').html(`
-            <button type="button" class="btn btn-primary" id="btnCrearCliente">Crear Cliente</button>
-        `);
+    <button type="button" class="btn btn-primary" id="btnCrearCliente">Crear Cliente</button>
+`);
 
         $(document).off('click', '#btnCrearCliente').on('click', '#btnCrearCliente', function () {
-            $('#formCliente').submit();
+            // $('#formCliente').submit();
+
+            const form = document.getElementById('formCliente');
+            if (form.checkValidity()) {
+                // dispara el evento submit de jQuery para que corra tu lógica de AJAX/guardado
+                $(form).trigger('submit');
+            } else {
+                form.reportValidity();
+            }
+
         });
 
         // Verifica si ya está cargado el script externo
@@ -21,6 +30,9 @@ function crearCliente() {
             script.onload = function () {
                 if (typeof inicializarFormularioCliente === 'function') {
                     inicializarFormularioCliente();
+                }
+                if (typeof cargarEventosSelectActivo === 'function') {
+                    cargarEventosSelectActivo();
                 }
             };
             document.body.appendChild(script);

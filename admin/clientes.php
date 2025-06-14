@@ -140,16 +140,16 @@ requiereRol([1, 3, 4,5]);
                             <label for="filtro_busqueda">Buscar palabra clave</label>
                         </div>
                         <!-- Grupo 3: Crear nuevo cliente -->
-                       <?php if ($_SESSION['rol_id'] != 4): ?>
-    <div class="form-floating align-items-center">
-        <label class="form-label d-block invisible">.</label>
-        <button type="button" class="btn btn-info btn-sm w-100" style="color:rgb(255, 255, 255)" onclick="crearCliente()">
-            <h6 class="mb-1 fw-semibold">
-                <span id="ClientePorCrear">Nuevo Cliente</span>
-            </h6>
-        </button>
-    </div>
-<?php endif; ?>
+                        <?php if ($_SESSION['rol_id'] != 4): ?>
+                            <div class="form-floating align-items-center">
+                                <label class="form-label d-block invisible">.</label>
+                                <button type="button" class="btn btn-info btn-sm w-100" style="color:rgb(255, 255, 255)" onclick="crearCliente()">
+                                    <h6 class="mb-1 fw-semibold">
+                                        <span id="ClientePorCrear">Nuevo Cliente</span>
+                                    </h6>
+                                </button>
+                            </div>
+                        <?php endif; ?>
 
                     </form>
                 </div>
@@ -227,7 +227,7 @@ requiereRol([1, 3, 4,5]);
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  
+
     <script>
         if (typeof rol_id === 'undefined') {
             var rol_id = <?= json_encode($_SESSION['rol_id']) ?>;
@@ -363,7 +363,7 @@ requiereRol([1, 3, 4,5]);
                             orderable: false,
                             searchable: false,
                             className: 'text-center',
-                        render: function(data, type, row) {
+                            render: function(data, type, row) {
                                 let botones = `
                             <button class="btn btn-sm btn-primary me-1" title="Ver" onclick="verCliente(${row.id})">
                                 <i class="bi bi-eye"></i>
@@ -404,9 +404,9 @@ requiereRol([1, 3, 4,5]);
                             exportOptions: {
                                 columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],  // Seleccion de columnas a copiar
                                 format: {
-                                body: function (data, row, column, node) {
-                                    return typeof data === 'string' ? data.replace(/<.*?>/g, '') : data;
-                                }
+                                    body: function (data, row, column, node) {
+                                        return typeof data === 'string' ? data.replace(/<.*?>/g, '') : data;
+                                    }
                                 }
                             }
                         },
@@ -417,9 +417,9 @@ requiereRol([1, 3, 4,5]);
                             exportOptions: {
                                 columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],  // Seleccion de columnas a copiar
                                 format: {
-                                body: function (data, row, column, node) {
-                                    return typeof data === 'string' ? data.replace(/<.*?>/g, '') : data;
-                                }
+                                    body: function (data, row, column, node) {
+                                        return typeof data === 'string' ? data.replace(/<.*?>/g, '') : data;
+                                    }
                                 }
                             }
                         }
@@ -499,7 +499,7 @@ requiereRol([1, 3, 4,5]);
                 detalleSelect.empty();
 
                 if (opciones[tipoActivo]) {
-                    detalleSelect.append('<option hidden>Seleccionar</option>');
+                    detalleSelect.append('<option value="" hidden selected>Seleccionar</option>');
                     opciones[tipoActivo].forEach(detalle => {
                         const selected = detalle === detalleSelect.data('valor') ? 'selected' : '';
                         detalleSelect.append(`<option value="${detalle}" ${selected}>${detalle}</option>`);
@@ -514,26 +514,33 @@ requiereRol([1, 3, 4,5]);
         }
 
         function cargarEventosSelectActivo() {
-            $('#tipo_activo').off('change').on('change', function () {
-                const tipoSeleccionado = $(this).val();
-                const opciones = {
-                    'Inmueble Comercial': ['Oficina', 'Local', 'Bodega'],
-                    'Inmueble Habitacional': ['Casa', 'Departamento'],
-                    'Vehículo': ['Auto', 'Camioneta', 'Moto'],
-                };
+            const tipoActivoSelect = $('#tipo_activo');
+            const detalleSelect = $('#detalle_activos');
 
-                const detalleSelect = $('#detalle_activos');
+            const opciones = {
+                "Propiedad Residencial": ["Casa", "Departamento", "Parcela"],
+                "Inmueble Comercial": ["Local", "Oficina", "Centro Comercial"],
+                "Activo Industrial": ["Fábrica", "Planta", "Galpón"],
+                "Bien Especial": ["Terreno", "Estacionamiento", "Otro"]
+            };
+
+            tipoActivoSelect.on('change', function() {
+                const tipoActivo = $(this).val();
                 detalleSelect.empty();
+                detalleSelect.val('');
+                detalleSelect.removeClass('is-valid is-invalid');
 
-                if (opciones[tipoSeleccionado]) {
-                    detalleSelect.append('<option hidden selected>Seleccionar</option>');
-                    opciones[tipoSeleccionado].forEach(op => {
-                        detalleSelect.append(`<option value="${op}">${op}</option>`);
+                if (opciones[tipoActivo]) {
+                    detalleSelect.append('<option value="" hidden selected>Seleccionar</option>');
+                    opciones[tipoActivo].forEach(function(opcion) {
+                        detalleSelect.append(`<option value="${opcion}">${opcion}</option>`);
                     });
                 } else {
                     detalleSelect.append('<option value="">Selecciona un tipo válido</option>');
                 }
             });
+            // También ejecuta esto al cargar por primera vez (por si ya hay un valor seleccionado)
+            tipoActivoSelect.trigger('change');
         }
 
         function recuperarCliente(id) {
