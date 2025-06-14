@@ -122,6 +122,7 @@ $promedio_formateado = $promedio_minutos > 60
                     <h5>Pendientes</h5>
                 </div>
                 <div class="row g-3 mb-4">
+                <?php if (tienePermiso('mensajes', 'ver')): ?>
                     <div class="col-md-6">
                         <div class="card bg-warning-subtle h-100" id="verMensajes" style="cursor: pointer;">
                             <div class="card-header">Mensajes</div>
@@ -130,6 +131,8 @@ $promedio_formateado = $promedio_minutos > 60
                             </div>
                         </div>
                     </div>
+                <?php endif; ?>
+                <?php if (tienePermiso('postulaciones', 'ver')): ?>
                     <div class="col-md-6">
                         <div class="card bg-danger-subtle h-100" id="verPostulaciones" style="cursor: pointer;">
                             <div class="card-header">Postulaciones</div>
@@ -138,12 +141,15 @@ $promedio_formateado = $promedio_minutos > 60
                             </div>
                         </div>
                     </div>
+                <?php endif; ?>
                 </div>
+                
                 <!-- Datos -->
                 <div class="secc-title row">
                     <h5>Datos</h5>
                 </div>
                 <div class="row g-3 mb-4">
+                <?php if (tienePermiso('mensajes', 'ver')): ?>
                     <div class="col-md-6">
                         <div class="card bg-secondary-subtle h-100">
                             <div class="card-header">Tiempo de respuesta</div>
@@ -152,6 +158,8 @@ $promedio_formateado = $promedio_minutos > 60
                             </div>
                         </div>
                     </div>
+                <?php endif; ?>
+                <?php if (tienePermiso('clientes', 'ver')): ?>
                     <div class="col-md-6">
                         <div class="card bg-success-subtle h-100">
                             <div class="card-header">Clientes registrados</div>
@@ -160,6 +168,7 @@ $promedio_formateado = $promedio_minutos > 60
                             </div>
                         </div>
                     </div>
+                <?php endif; ?>
                 </div>
             </div>
             <!-- Fin contenido -->

@@ -2,8 +2,17 @@
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/Controller/usuariosController.php';
 require_once __DIR__ . '/../includes/auth.php';
-$roles = obtenerRoles();
-requiereRol([1]);
+if (!tienePermiso('usuarios', 'ver') && !tienePermiso('roles', 'ver')) {
+    echo '
+        <div class="container my-5">
+            <div class="alert alert-danger text-center p-4" role="alert" style="font-size: 1.25rem;">
+                <i class="bi bi-shield-lock-fill fs-1 mb-2 d-block"></i>
+                <strong>Acceso denegado</strong><br>
+                No tienes permiso para ver esta sección.
+            </div>
+        </div>';
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -127,17 +136,27 @@ requiereRol([1]);
     <div class="container py-4">
         <h2 class="mb-4">Administración de Usuarios y Roles</h2>
 
+        <?php
+            $puedeVerUsuarios = tienePermiso('usuarios', 'ver');
+            $puedeVerRoles = tienePermiso('roles', 'ver');
+            $primeraPestana = $puedeVerUsuarios ? 'usuarios' : 'roles';
+        ?>
         <ul class="nav nav-tabs" id="tabs" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="roles-tab" data-bs-toggle="tab" data-bs-target="#usuarios" type="button" role="tab">Usuarios</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="usuarios-tab" data-bs-toggle="tab" data-bs-target="#roles" type="button" role="tab">Roles</button>
-            </li>
+            <?php if ($puedeVerUsuarios): ?>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link <?= $primeraPestana === 'usuarios' ? 'active' : '' ?>" id="usuarios-tab" data-bs-toggle="tab" data-bs-target="#usuarios" type="button" role="tab">Usuarios</button>
+                    </li>
+                <?php endif; ?>
+                <?php if ($puedeVerRoles): ?>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link <?= $primeraPestana === 'roles' ? 'active' : '' ?>" id="roles-tab" data-bs-toggle="tab" data-bs-target="#roles" type="button" role="tab">Roles</button>
+                    </li>
+            <?php endif; ?>    
         </ul>
+            
 
         <div class="tab-content pt-3">
-            <div class="tab-pane fade" id="roles" role="tabpanel">
+            <div class="tab-pane fade <?= $primeraPestana === 'roles' ? 'show active' : '' ?>" id="roles" role="tabpanel">
                 <div class="row">
                     <div class="col-lg-7 mb-3">
                         <div class="card">
@@ -210,7 +229,7 @@ requiereRol([1]);
                     </div>
                 </div>
             </div>
-            <div class="tab-pane fade show active" id="usuarios" role="tabpanel">
+            <div class="tab-pane fade <?= $primeraPestana === 'usuarios' ? 'show active' : '' ?>" id="usuarios" role="tabpanel">
                 <div class="row">
                     <div class="col-lg-7 mb-3">
                         <div class="card">

@@ -4,7 +4,17 @@ require_once __DIR__ . '/../includes/Controller/postulacionesController.php';
 require_once __DIR__ . '/../includes/auth.php';
 $total_postulaciones = obtener_total_postulaciones();
 $pendientes_postulaciones = obtener_postulaciones_pendientes();
-requiereRol([1, 2,5]);
+if (!tienePermiso('postulaciones', 'ver')) {
+    echo '
+        <div class="container my-5">
+            <div class="alert alert-danger text-center p-4" role="alert" style="font-size: 1.25rem;">
+                <i class="bi bi-shield-lock-fill fs-1 mb-2 d-block"></i>
+                <strong>Acceso denegado</strong><br>
+                No tienes permiso para ver esta sección.
+            </div>
+        </div>';
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
