@@ -354,8 +354,6 @@
               const boton = $('#btnImportante');
               const icono = $('#iconoImportante');
               const texto = $('#textoImportante');
-
-              icono.addClass('transicion-estrella');
               
               icono.fadeOut(150, function () {
                 icono.addClass("balanceando");
