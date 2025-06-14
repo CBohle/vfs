@@ -8,6 +8,9 @@ function inicializarTablaPostulaciones() {
   }
   console.log("Iniciando tabla de postulaciones"); 
   tabla = $("#tablaPostulaciones").DataTable({
+    rowId: function(row) {
+      return 'row_' + row.id;
+    },
     responsive: false,
     scrollX: true,
     processing: true,
@@ -395,6 +398,7 @@ function verPostulacion(id) {
     '<p class="text-center text-muted">Cargando...</p>'
   );
   $("#modalVerPostulacion").modal("show");
+  $("#botonImportanteWrapper").empty();
   // Marcar como leído
   $.post(
     "postulacionesAjax.php",
@@ -403,9 +407,16 @@ function verPostulacion(id) {
       id: id,
     },
     function (response) {
-      if (response.success && typeof tabla !== "undefined") {
-        tabla.ajax.reload(null, false);
-      }
+      const $badge = $(`#row_${id} td.col-estado span`);
+            if ($badge.length > 0 && $badge.text().toLowerCase() === "pendiente") {
+                $badge.fadeOut(200, function () {
+                    $(this)
+                        .removeClass("bg-warning text-dark")
+                        .addClass("bg-primary")
+                        .text("Leído")
+                        .fadeIn(200);
+                });
+            }
     },
     "json"
   );
@@ -459,8 +470,62 @@ function verPDF(rutaArchivo) {
 
 $(document).ready(function () {
   inicializarTablaPostulaciones();
+
+    window.toggleImportante = function (id, estadoActual) {
+      const nuevoValor = estadoActual === 1 ? 0 : 1;
+
+      $.post('postulacionesAjax.php', {
+          accion: 'importante',
+          postulacion_id: id,
+          importante: nuevoValor
+      }, function(response) {
+          if (response.success) {
+              const boton = $('#btnImportante');
+              const icono = $('#iconoImportante');
+              const texto = $('#textoImportante');
+
+              icono.fadeOut(150, function () {
+                icono.addClass("balanceando");
+                setTimeout(() => {
+                icono.removeClass("balanceando");
+                }, 500);
+                if (nuevoValor === 1) {
+                    boton.removeClass('btn-warning').addClass('btn-outline-warning');
+                    icono.removeClass('bi-star').addClass('bi-star-fill');
+                    texto.text('Marcar como no importante');
+                } else {
+                    boton.removeClass('btn-outline-warning').addClass('btn-warning');
+                    icono.removeClass('bi-star-fill').addClass('bi-star');
+                    texto.text('Marcar como importante');
+                }
+                boton.attr('onclick', `toggleImportante(${id}, ${nuevoValor})`);
+                icono.fadeIn(150);
+              });
+              const iconoTabla = $(`#row_${id} .marcarImportantePostulacion`);
+              if (iconoTabla.length > 0) {
+                  iconoTabla
+                      .removeClass('bi-star bi-star-fill text-warning text-muted')
+                      .addClass(nuevoValor === 1 ? 'bi-star-fill text-warning' : 'bi-star text-muted')
+                      .attr('data-valor', nuevoValor)
+                      .addClass('balanceando');
+
+                  setTimeout(() => {
+                      iconoTabla.removeClass('balanceando');
+                  }, 500);
+              }
+          } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'No se pudo actualizar',
+                text: 'Ocurrió un error al cambiar la importancia de la postulación.',
+                confirmButtonText: 'Entendido'
+            });
+          }
+      }, 'json');
+    }
 });
 $(document).on("click", ".marcarImportantePostulacion", function () {
+  const icono = $(this);
   const id = $(this).data("id");
   const valorActual = $(this).data("valor");
   const nuevoValor = valorActual == 1 ? 0 : 1;
@@ -474,11 +539,15 @@ $(document).on("click", ".marcarImportantePostulacion", function () {
     },
     function (response) {
       if (response.success) {
-        tabla.ajax.reload(null, false); // recarga sin perder la página actual
+        const nuevaClase = nuevoValor == 1 ? "bi-star-fill text-warning" : "bi-star text-muted";
+          icono
+            .removeClass("bi-star bi-star-fill text-muted text-warning")
+            .addClass(nuevaClase)
+            .data("valor", nuevoValor); // actualiza el valor del data-valor
       } else {
         alert("No se pudo actualizar el estado de importancia.");
       }
     },
     "json"
   );
-});
+  });

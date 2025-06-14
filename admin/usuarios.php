@@ -2,8 +2,17 @@
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/Controller/usuariosController.php';
 require_once __DIR__ . '/../includes/auth.php';
-$roles = obtenerRoles();
-requiereRol([1]);
+if (!tienePermiso('usuarios', 'ver') && !tienePermiso('roles', 'ver')) {
+    echo '
+        <div class="container my-5">
+            <div class="alert alert-danger text-center p-4" role="alert" style="font-size: 1.25rem;">
+                <i class="bi bi-shield-lock-fill fs-1 mb-2 d-block"></i>
+                <strong>Acceso denegado</strong><br>
+                No tienes permiso para ver esta sección.
+            </div>
+        </div>';
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -32,6 +41,7 @@ requiereRol([1]);
         .table td.descripcion {
             display: -webkit-box;
             -webkit-box-orient: vertical;
+            line-clamp: 3;
             -webkit-line-clamp: 3;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -126,17 +136,27 @@ requiereRol([1]);
     <div class="container py-4">
         <h2 class="mb-4">Administración de Usuarios y Roles</h2>
 
+        <?php
+            $puedeVerUsuarios = tienePermiso('usuarios', 'ver');
+            $puedeVerRoles = tienePermiso('roles', 'ver');
+            $primeraPestana = $puedeVerUsuarios ? 'usuarios' : 'roles';
+        ?>
         <ul class="nav nav-tabs" id="tabs" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="roles-tab" data-bs-toggle="tab" data-bs-target="#usuarios" type="button" role="tab">Usuarios</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="usuarios-tab" data-bs-toggle="tab" data-bs-target="#roles" type="button" role="tab">Roles</button>
-            </li>
+            <?php if ($puedeVerUsuarios): ?>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link <?= $primeraPestana === 'usuarios' ? 'active' : '' ?>" id="usuarios-tab" data-bs-toggle="tab" data-bs-target="#usuarios" type="button" role="tab">Usuarios</button>
+                    </li>
+                <?php endif; ?>
+                <?php if ($puedeVerRoles): ?>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link <?= $primeraPestana === 'roles' ? 'active' : '' ?>" id="roles-tab" data-bs-toggle="tab" data-bs-target="#roles" type="button" role="tab">Roles</button>
+                    </li>
+            <?php endif; ?>    
         </ul>
+            
 
         <div class="tab-content pt-3">
-            <div class="tab-pane fade" id="roles" role="tabpanel">
+            <div class="tab-pane fade <?= $primeraPestana === 'roles' ? 'show active' : '' ?>" id="roles" role="tabpanel">
                 <div class="row">
                     <div class="col-lg-7 mb-3">
                         <div class="card">
@@ -209,7 +229,7 @@ requiereRol([1]);
                     </div>
                 </div>
             </div>
-            <div class="tab-pane fade show active" id="usuarios" role="tabpanel">
+            <div class="tab-pane fade <?= $primeraPestana === 'usuarios' ? 'show active' : '' ?>" id="usuarios" role="tabpanel">
                 <div class="row">
                     <div class="col-lg-7 mb-3">
                         <div class="card">
@@ -287,6 +307,7 @@ requiereRol([1]);
             <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
             <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             <script>
                 if (typeof tablaRoles === 'undefined') {
                     var tablaRoles;
@@ -325,16 +346,17 @@ requiereRol([1]);
                                         case '1':
                                         case 'true':
                                             clase += 'bg-success';
-                                            return `<span class="${clase}" data-id="${row.id}" data-activo="activo">Activo</span>`;
+                                            return `<span class="${clase}" data-id="${row.id}" data-activo="activo" data-tipo="rol">Activo</span>`;
                                         case 'inactivo':
                                         case '0':
                                         case 'false':
                                             clase += 'bg-warning text-dark';
-                                            return `<span class="${clase}" data-id="${row.id}" data-activo="inactivo">Inactivo</span>`;
+                                            return `<span class="${clase}" data-id="${row.id}" data-activo="inactivo" data-tipo="rol">Inactivo</span>`;
                                         default:
                                             clase += 'bg-secondary';
                                             return `<span class="${clase}" data-id="${row.id}" data-activo="desconocido">Desconocido</span>`;
                                     }
+                                    return `<span class="${clase}" data-id="${row.id}" data-activo="${estado}" data-tipo="${row.rol ? 'usuario' : 'rol'}">${estado.charAt(0).toUpperCase() + estado.slice(1)}</span>`;
                                 }
                             },
                             {
@@ -398,20 +420,21 @@ requiereRol([1]);
                                 render: function(data, type, row) {
                                     const estado = String(data).toLowerCase();
                                     let clase = 'badge estado-click ';
+                                    let tipo = 'usuario';
                                     switch (estado) {
                                         case 'activo':
                                         case '1':
                                         case 'true':
                                             clase += 'bg-success';
-                                            return `<span class="${clase}" data-id="${row.id}" data-activo="activo">Activo</span>`;
+                                            return `<span class="${clase}" data-id="${row.id}" data-activo="activo" data-tipo="${tipo}">Activo</span>`;
                                         case 'inactivo':
                                         case '0':
                                         case 'false':
                                             clase += 'bg-warning text-dark';
-                                            return `<span class="${clase}" data-id="${row.id}" data-activo="inactivo">Inactivo</span>`;
+                                            return `<span class="${clase}" data-id="${row.id}" data-activo="inactivo" data-tipo="${tipo}">Inactivo</span>`;
                                         default:
                                             clase += 'bg-secondary';
-                                            return `<span class="${clase}" data-id="${row.id}" data-activo="desconocido">Desconocido</span>`;
+                                            return `<span class="${clase}" data-id="${row.id}" data-activo="desconocido" data-tipo="${tipo}">Desconocido</span>`;
                                     }
                                 }
                             },
@@ -498,25 +521,21 @@ requiereRol([1]);
                         permisos
                     }, function(response) {
                         if (response.success) {
-                            alert('Rol guardado correctamente');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Rol guardado',
+                                text: 'El rol se ha guardado correctamente.',
+                                timer: 1500,
+                                showConfirmButton: false
+                            });
                             ocultarFormularioRol();
                             tablaRoles.ajax.reload();
                         } else {
-                            alert('Error al guardar');
-                        }
-                    }, 'json');
-                });
-
-                $('#tablaRoles').on('click', '.estado-toggle', function() {
-                    const id = $(this).data('id');
-                    $.post('usuariosAjax.php', {
-                        accion: 'toggleEstadoRol',
-                        id
-                    }, function(response) {
-                        if (response.success) {
-                            tablaRoles.ajax.reload(null, false);
-                        } else {
-                            alert('Error al cambiar estado');
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error al guardar',
+                                text: response.error || 'No se pudo guardar el rol.'
+                            });
                         }
                     }, 'json');
                 });
@@ -560,8 +579,14 @@ requiereRol([1]);
                     const confirmarPassword = $('#confirmarPasswordUsuario').val().trim();
 
                     if (password !== confirmarPassword) {
-                        alert('Las contraseñas no coinciden. Por favor, verifica ambos campos.');
-                        return; // NO continúa con la creación del usuario
+                        if (password !== confirmarPassword) {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Contraseñas no coinciden',
+                                text: 'Por favor, verifica ambos campos.'
+                            });
+                            return;
+                        }
                     }
 
                     // Si las contraseñas coinciden, continúa con la petición AJAX
@@ -575,76 +600,139 @@ requiereRol([1]);
                         rol_id: $('#rolUsuario').val()
                     }, function(response) {
                         if (response.success) {
-                            alert('Usuario guardado correctamente');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Usuario guardado',
+                                text: 'El usuario se ha guardado correctamente.',
+                                timer: 1500,
+                                showConfirmButton: false
+                            });
                             ocultarFormularioUsuario();
                             tablaUsuarios.ajax.reload();
                         } else {
-                            alert('Error al guardar');
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error al guardar',
+                                text: response.error || 'No se pudo guardar el usuario.'
+                            });
                         }
                     }, 'json');
                 });
                 $(document).on('click', '.estado-click', function () {
-                    const id = $(this).data('id');
-                    const activoRaw = $(this).data('activo');
-                    if (typeof activoRaw !== 'string') return;
+                    const badge = $(this);
+                    const id = badge.data("id");
+                    const tipo = badge.data("tipo"); // 'usuario' o 'rol'
+                    const estadoActual = badge.data("activo");
+                    const nuevoEstado = estadoActual === "activo" ? "inactivo" : "activo";
+                    const estado = $(this).text().trim().toLowerCase() === "activo" ? "inactivo" : "activo";
 
-                        const estadoActual = activoRaw.toLowerCase();
-                        let FnuevoEstado = '';
+                    const nombre = tipo === 'usuario' ? 'usuario' : 'rol';
 
-                        if (estadoActual === 'activo') {
-                            nuevoEstado = 'inactivo';
-                        } else if (estadoActual === 'inactivo') {
-                            nuevoEstado = 'activo';
-                        } else {
-                            return;
-                        }
-
-                        $.post('usuariosAjax.php', {
-                            accion: 'cambiar_estado',
-                            id: id,
-                            estado: nuevoEstado
-                        }, function (response) {
-                            if (response.success) {
-                                // ⚡ animación sin recargar toda la tabla
-                                const $span = $(`.estado-click[data-id="${id}"]`);
-                                const nuevaClase = nuevoEstado === 'activo' ? 'bg-success' : 'bg-warning text-dark';
-                                const nuevoTexto = nuevoEstado.charAt(0).toUpperCase() + nuevoEstado.slice(1);
-
-                                $span.fadeOut(200, function () {
-                                    $span.removeClass('bg-success bg-warning text-dark')
-                                        .addClass(nuevaClase)
-                                        .text(nuevoTexto)
-                                        .data('activo', nuevoEstado)
-                                        .fadeIn(200);
-                                });
-                            } else {
-                                alert('No se pudo cambiar el estado.');
-                            }
-                        }, 'json');
-                    });  
-                    function eliminarRol(id) {
-                        if (!confirm("¿Estás seguro de que deseas eliminar este rol?")) return;
-                        $.post('usuariosAjax.php', { accion: 'eliminarRol', id }, function (response) {
-                            if (response.success) {
-                                alert('Rol eliminado correctamente.');
+                    Swal.fire({
+                        title: `¿Confirmar cambio de estado?`,
+                        text: `¿Deseas marcar este ${nombre} como "${nuevoEstado}"?`,
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Sí, cambiar",
+                        cancelButtonText: "Cancelar"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.post("usuariosAjax.php", { accion: "cambiar_estado", id, estado, tipo }, function (respuesta) {
+                        if (respuesta.success) {
+                            Swal.fire("Éxito", "Estado actualizado correctamente.", "success");
+                            if (tipo === "usuario") {
+                                tablaUsuarios.ajax.reload();
+                            } else if (tipo === "rol") {
                                 tablaRoles.ajax.reload();
-                            } else {
-                                alert('Error al eliminar el rol.');
                             }
-                        }, 'json');
+                        } else {
+                            Swal.fire("Error", respuesta.error || "No se pudo cambiar el estado", "error");
+                        }
+                        }, "json").fail(function () {
+                        Swal.fire("Error", "No se pudo conectar al servidor.", "error");
+                        });
+                        }
+                    });
+                });
+                    function eliminarRol(id) {
+                        Swal.fire({
+                            title: '¿Estás seguro?',
+                            text: 'Esta acción eliminará el rol de forma permanente.',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Sí, eliminar',
+                            cancelButtonText: 'Cancelar'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $.post('usuariosAjax.php', { accion: 'eliminarRol', id }, function (response) {
+                                    if (response.success) {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Rol eliminado',
+                                            timer: 1500,
+                                            showConfirmButton: false
+                                        });
+                                        tablaRoles.ajax.reload();
+                                    } else {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Error',
+                                            text: response.error || 'No se pudo eliminar el rol.'
+                                        });
+                                    }
+                                }, 'json').fail(function () {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error de conexión',
+                                        text: 'No se pudo conectar al servidor.'
+                                    });
+                                });
+                            }
+                        });
                     }
 
                     function eliminarUsuario(id) {
-                        if (!confirm("¿Estás seguro de que deseas eliminar este usuario?")) return;
-                        $.post('usuariosAjax.php', { accion: 'eliminarUsuario', id }, function (response) {
-                            if (response.success) {
-                                alert('Usuario eliminado correctamente.');
-                                tablaUsuarios.ajax.reload();
-                            } else {
-                                alert('Error al eliminar el usuario.');
+                        Swal.fire({
+                            title: '¿Estás seguro?',
+                            text: 'Esta acción eliminará al usuario de forma permanente.',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Sí, eliminar',
+                            cancelButtonText: 'Cancelar'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $.post("usuariosAjax.php", {
+                                    accion: "eliminarUsuario",
+                                    id: id
+                                }, function (respuesta) {
+                                    if (respuesta.success) {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Usuario eliminado',
+                                            timer: 1500,
+                                            showConfirmButton: false
+                                        });
+                                        tablaUsuarios.ajax.reload();
+                                    } else {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Error',
+                                            text: respuesta.error || 'Ocurrió un error inesperado.'
+                                        });
+                                    }
+                                }, "json").fail(function () {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error de conexión',
+                                        text: 'No se pudo conectar al servidor.'
+                                    });
+                                });
                             }
-                        }, 'json');
-                    }  
+                        });
+                    }
+                                    
             </script>
             <!-- Footer -->
             <?php

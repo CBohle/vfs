@@ -23,6 +23,11 @@ $esImportante = $msg['importante'] ?? 0;
 $btnClase = $esImportante ? 'btn-outline-warning' : 'btn-warning';
 $iconoClase = $esImportante ? 'bi-star-fill' : 'bi-star';
 $textoImportante = $esImportante ? 'Marcar como no importante' : 'Marcar como importante';
+
+function formatearFecha($fechaOriginal) {
+    $dt = new DateTime($fechaOriginal);
+    return $dt->format('d-m-Y H:i');
+}
 ?>
 
 <!-- Botón oculto que luego se moverá dinámicamente al header -->
@@ -62,6 +67,21 @@ $textoImportante = $esImportante ? 'Marcar como no importante' : 'Marcar como im
 
     .fila-dato {
         margin-bottom: 0.6rem;
+    }
+    #btnImportante:hover #iconoImportante {
+        transform: scale(1.3) rotate(10deg);
+        transition: transform 0.3s ease;
+    }
+    @keyframes balanceoEstrella {
+        0% { transform: rotate(0deg); }
+        25% { transform: rotate(15deg); }
+        50% { transform: rotate(-15deg); }
+        75% { transform: rotate(10deg); }
+        100% { transform: rotate(0deg); }
+    }
+
+    #iconoImportante.balanceando {
+        animation: balanceoEstrella 0.5s ease-in-out;
     }
 </style>
 
@@ -159,46 +179,10 @@ $textoImportante = $esImportante ? 'Marcar como no importante' : 'Marcar como im
         <div class="seccion-postulacion">
             <h5><i class="bi bi-info-circle me-2"></i>Otros Detalles</h5>
             <div class="row">
-                <div class="col-md-6 fila-dato"><span class="dato-label">Fecha de Creación:</span> <?= htmlspecialchars($msg['fecha_creacion']) ?></div>
-                <div class="col-md-6 fila-dato"><span class="dato-label">Última Modificación:</span> <?= htmlspecialchars($msg['fecha_modificacion']) ?></div>
-                <div class="col-md-6 fila-dato"><span class="dato-label">Estado:</span> <span class="badge <?= $estadoClass ?>"><?= htmlspecialchars($msg['estado']) ?></span></div>
+                <div class="col-md-6 fila-dato"><span class="dato-label">Fecha de Creación:</span> <?= formatearFecha($msg['fecha_creacion']) ?></div>
+                <div class="col-md-6 fila-dato"><span class="dato-label">Última Modificación:</span> <?= formatearFecha($msg['fecha_modificacion']) ?></div>
+                <div class="col-md-6 fila-dato"><span class="dato-label">Estado:</span> <span class="badge <?= $estadoClass ?>"><?= ucfirst(htmlspecialchars($msg['estado'])) ?></span></div>
             </div>
         </div>
     </div>
 </div>
-
-<script>
-function toggleImportante(id, estadoActual) {
-    const nuevoValor = estadoActual === 1 ? 0 : 1;
-
-    $.post('postulacionesAjax.php', {
-        accion: 'importante',
-        postulacion_id: id,
-        importante: nuevoValor
-    }, function(response) {
-        if (response.success) {
-            const boton = $('#btnImportante');
-            const icono = $('#iconoImportante');
-            const texto = $('#textoImportante');
-
-            if (nuevoValor === 1) {
-                boton.removeClass('btn-warning').addClass('btn-outline-warning');
-                icono.removeClass('bi-star').addClass('bi-star-fill');
-                texto.text('Marcar como no importante');
-            } else {
-                boton.removeClass('btn-outline-warning').addClass('btn-warning');
-                icono.removeClass('bi-star-fill').addClass('bi-star');
-                texto.text('Marcar como importante');
-            }
-
-            boton.attr('onclick', `toggleImportante(${id}, ${nuevoValor})`);
-
-             if (typeof window.cargarVistaMensajes === 'function') {
-                window.cargarVistaMensajes();
-            }
-        } else {
-            alert('No se pudo actualizar el estado de importancia.');
-        }
-    }, 'json');
-}
-</script>

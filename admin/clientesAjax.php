@@ -26,6 +26,10 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'crear') {
     $notas = $_POST['notas'] ?? '';
     $usuario_id = $_SESSION['usuario_id'] ?? null;
 
+    if (!$usuario_id) {
+        echo json_encode(['success' => false, 'error' => 'Usuario no autenticado']);
+        exit;
+    }
     $sql = "INSERT INTO clientes 
         (tipo_persona, nombre_empresa, nombre_contacto, apellido_contacto, email_contacto, telefono_contacto, tipo_activos, detalle_activos, notas, estado, usuario_admin_id, fecha_creacion) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'activo', ?, NOW())";

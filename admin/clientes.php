@@ -7,7 +7,17 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'admin') {
     header('Location: /admin/login.php');
     exit;
 } */
-requiereRol([1, 3, 4,5]);
+if (!tienePermiso('clientes', 'ver')) {
+    echo '
+        <div class="container my-5">
+            <div class="alert alert-danger text-center p-4" role="alert" style="font-size: 1.25rem;">
+                <i class="bi bi-shield-lock-fill fs-1 mb-2 d-block"></i>
+                <strong>Acceso denegado</strong><br>
+                No tienes permiso para ver esta sección.
+            </div>
+        </div>';
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -227,7 +237,8 @@ requiereRol([1, 3, 4,5]);
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
     <script>
         if (typeof rol_id === 'undefined') {
             var rol_id = <?= json_encode($_SESSION['rol_id']) ?>;
@@ -240,6 +251,9 @@ requiereRol([1, 3, 4,5]);
         function inicializarTablaClientes() {
             if (!$.fn.DataTable.isDataTable('#tablaClientes')) {
                 tablaClientes = $('#tablaClientes').DataTable({
+                    rowId: function(row) {
+                        return 'row_' + row.id;
+                    },
                     responsive: false,
                     scrollX: true,
                     processing: true,
@@ -458,20 +472,50 @@ requiereRol([1, 3, 4,5]);
         }
 
         function eliminarCliente(id) {
-            if (confirm("¿Estás seguro de que deseas eliminar este cliente?")) {
-                $.post('clientesAjax.php', {
-                    accion: 'eliminar',
-                    id: id
-                }, function(response) {
-                    if (response.success) {
-                        alert("Cliente eliminado correctamente.");
-                        tablaClientes.ajax.reload(null, false); // solo recarga datos sin redireccionar
-                    } else {
-                        alert("Hubo un error al intentar eliminar el cliente.");
-                    }
-                }, 'json');
-            }
+            Swal.fire({
+                title: '¿Eliminar cliente?',
+                text: 'Esta acción no se puede deshacer.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.post('clientesAjax.php', {
+                        accion: 'eliminar',
+                        id: id
+                    }, function(response) {
+                        if (response.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Cliente eliminado',
+                                text: 'El cliente fue eliminado correctamente.',
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                            tablaClientes.ajax.reload(null, false); // Recarga sin redirigir
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error al eliminar',
+                                text: 'Hubo un problema al intentar eliminar el cliente.',
+                                confirmButtonText: 'Cerrar'
+                            });
+                        }
+                    }, 'json').fail(function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error de conexión',
+                            text: 'No se pudo contactar con el servidor.',
+                            confirmButtonText: 'Cerrar'
+                        });
+                    });
+                }
+            });
         }
+
 
         function verCliente(id) {
             $('#contenidoModalCliente').html('<p class="text-center text-muted">Cargando...</p>');
@@ -544,53 +588,50 @@ requiereRol([1, 3, 4,5]);
         }
 
         function recuperarCliente(id) {
-            if (confirm("¿Deseas recuperar este cliente?")) {
-                $.post('clientesAjax.php', {
-                    accion: 'recuperar',
-                    id: id
-                }, function(response) {
-                    if (response.success) {
-                        tablaClientes.ajax.reload(null, false);
-                        alert('Cliente recuperado con éxito.');
-                    } else {
-                        alert('No se pudo recuperar el cliente.');
-                    }
-                }, 'json');
-            }
-        }
-        function toggleImportante(id, estadoActual) {
-            const nuevoValor = estadoActual === 1 ? 0 : 1;
-
-            $.post('clientesAjax.php', {
-                accion: 'importante',
-                cliente_id: id,
-                importante: nuevoValor
-            }, function (response) {
-                if (response.success) {
-                    const boton = $('#btnImportante');
-                    const icono = $('#iconoImportante');
-                    const texto = $('#textoImportante');
-
-                    if (nuevoValor === 1) {
-                        boton.removeClass('btn-warning').addClass('btn-outline-warning');
-                        icono.removeClass('bi-star').addClass('bi-star-fill');
-                        texto.text('Marcar como no importante');
-                    } else {
-                        boton.removeClass('btn-outline-warning').addClass('btn-warning');
-                        icono.removeClass('bi-star-fill').addClass('bi-star');
-                        texto.text('Marcar como importante');
-                    }
-
-                    boton.attr('onclick', `toggleImportante(${id}, ${nuevoValor})`);
-
-                    if (typeof tablaClientes !== 'undefined') {
-                        tablaClientes.ajax.reload(null, false);
-                    }
-                } else {
-                    alert('No se pudo actualizar el estado de importancia.');
+            Swal.fire({
+                title: '¿Recuperar cliente?',
+                text: 'El cliente volverá a estar disponible en el sistema.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#198754', // verde Bootstrap
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sí, recuperar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.post('clientesAjax.php', {
+                        accion: 'recuperar',
+                        id: id
+                    }, function(response) {
+                        if (response.success) {
+                            tablaClientes.ajax.reload(null, false);
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Cliente recuperado',
+                                text: 'El cliente fue recuperado con éxito.',
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error al recuperar',
+                                text: 'No se pudo recuperar el cliente.',
+                                confirmButtonText: 'Cerrar'
+                            });
+                        }
+                    }, 'json').fail(function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error de conexión',
+                            text: 'No se pudo contactar con el servidor.',
+                            confirmButtonText: 'Cerrar'
+                        });
+                    });
                 }
-            }, 'json');
+            });
         }
+
         $(document).ready(function() {
             inicializarTablaClientes();
         });
@@ -633,16 +674,23 @@ requiereRol([1, 3, 4,5]);
                                 .fadeIn(200);
                         });
                     } else {
-                        alert('No se pudo cambiar el estado.');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error al cambiar estado',
+                            text: 'No se pudo cambiar el estado del cliente.',
+                            confirmButtonText: 'Cerrar'
+                        });
                     }
                 }, 'json');
             });
         }
 
         $(document).on('click', '.marcarImportante', function() {
-            const id = $(this).data('id');
-            const valorActual = $(this).data('valor');
-            const nuevoValor = valorActual == 1 ? 0 : 1;
+            const icono = $(this);
+            const id = icono.attr('data-id');
+            const valorActual = parseInt(icono.attr('data-valor')); // ✅ leerlo como número directamente del atributo
+
+            const nuevoValor = valorActual === 1 ? 0 : 1;
 
             $.post('clientesAjax.php', {
                 accion: 'importante',
@@ -650,9 +698,22 @@ requiereRol([1, 3, 4,5]);
                 importante: nuevoValor
             }, function(response) {
                 if (response.success) {
-                    tablaClientes.ajax.reload(null, false); // recarga sin perder la página actual
+                    icono
+                        .removeClass('bi-star bi-star-fill text-warning text-muted')
+                        .addClass(nuevoValor === 1 ? 'bi-star-fill text-warning' : 'bi-star text-muted')
+                        .attr('data-valor', nuevoValor) // ✅ actualizar atributo real
+                        .addClass('balanceando');
+
+                    setTimeout(() => {
+                        icono.removeClass('balanceando');
+                    }, 500);
                 } else {
-                    alert('No se pudo actualizar el estado de importancia.');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error al actualizar',
+                        text: 'No se pudo actualizar el estado de importancia.',
+                        confirmButtonText: 'Cerrar'
+                    });
                 }
             }, 'json');
         });
