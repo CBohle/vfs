@@ -7,7 +7,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'admin') {
     header('Location: /admin/login.php');
     exit;
 } */
-requiereRol([1, 3, 4,5]);
+requiereRol([1, 3, 4, 5]);
 ?>
 
 <!DOCTYPE html>
@@ -234,7 +234,6 @@ requiereRol([1, 3, 4,5]);
         }
     </script>
     <script>
-
         window.tablaClientes = window.tablaClientes || null;
 
         function inicializarTablaClientes() {
@@ -274,7 +273,7 @@ requiereRol([1, 3, 4,5]);
                         {
                             data: "importante_texto",
                             visible: false,
-                            render: function (data) {
+                            render: function(data) {
                                 return data;
                             }
                         },
@@ -326,35 +325,35 @@ requiereRol([1, 3, 4,5]);
                         {
                             data: 'fecha',
                             visible: false,
-                            render: function (data) {
+                            render: function(data) {
                                 return data;
                             }
                         },
                         {
                             data: 'fecha_modificacion',
                             visible: false,
-                            render: function (data) {
+                            render: function(data) {
                                 return data;
                             }
                         },
                         {
                             data: 'email_usuario_creador',
                             visible: false,
-                            render: function (data) {
+                            render: function(data) {
                                 return data;
                             }
                         },
                         {
                             data: 'nombre_usuario_creador',
                             visible: false,
-                            render: function (data) {
+                            render: function(data) {
                                 return data;
                             }
                         },
                         {
                             data: 'notas',
                             visible: false,
-                            render: function (data) {
+                            render: function(data) {
                                 return data;
                             }
                         },
@@ -382,8 +381,7 @@ requiereRol([1, 3, 4,5]);
                                 }
 
                                 return botones;
-                            }
-                                    ,
+                            },
                         }
                     ],
                     order: [
@@ -402,9 +400,9 @@ requiereRol([1, 3, 4,5]);
                             text: '<i class="bi bi-clipboard me-1"></i> Copiar',
                             className: 'btn btn-primary btn-sm me-2',
                             exportOptions: {
-                                columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],  // Seleccion de columnas a copiar
+                                columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], // Seleccion de columnas a copiar
                                 format: {
-                                    body: function (data, row, column, node) {
+                                    body: function(data, row, column, node) {
                                         return typeof data === 'string' ? data.replace(/<.*?>/g, '') : data;
                                     }
                                 }
@@ -415,9 +413,9 @@ requiereRol([1, 3, 4,5]);
                             text: '<i class="bi bi-file-earmark-excel me-1"></i> Excel',
                             className: 'btn btn-success btn-sm',
                             exportOptions: {
-                                columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],  // Seleccion de columnas a copiar
+                                columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], // Seleccion de columnas a copiar
                                 format: {
-                                    body: function (data, row, column, node) {
+                                    body: function(data, row, column, node) {
                                         return typeof data === 'string' ? data.replace(/<.*?>/g, '') : data;
                                     }
                                 }
@@ -435,7 +433,7 @@ requiereRol([1, 3, 4,5]);
                         registrarEventosEstadoCliente();
                     }
                 });
-            }else {
+            } else {
                 tablaClientes.ajax.reload(null, false);
             }
         }
@@ -477,7 +475,9 @@ requiereRol([1, 3, 4,5]);
             $('#contenidoModalCliente').html('<p class="text-center text-muted">Cargando...</p>');
             $('#modalVerCliente').modal('show');
 
-            $.get('clienteModal.php', { id }, function(respuesta) {
+            $.get('clienteModal.php', {
+                id
+            }, function(respuesta) {
                 $('#contenidoModalCliente').html(respuesta);
 
                 const botonHTML = $('#contenidoModalCliente').find('#botonImportanteHTML').html();
@@ -489,10 +489,10 @@ requiereRol([1, 3, 4,5]);
                 const detalleActualInput = $('#detalle_activos').data('valor'); // lo puedes inyectar en el HTML
 
                 const opciones = {
-                    "Propiedad Residencial": ["Casa", "Departamento", "Parcela"],
-                    "Inmueble Comercial": ["Local", "Oficina", "Centro Comercial"],
-                    "Activo Industrial": ["Fábrica", "Planta", "Galpón"],
-                    "Bien Especial": ["Terreno", "Estacionamiento", "Otro"]
+                    "Propiedad Residencial": ["Casa", "Departamento", "Parcela Agroresidencial", "Sitio Urbano", "Sitio Rural"],
+                    "Inmueble Comercial": ["Oficina", "Local Comercial"],
+                    "Activo Industrial": ["Bodega", "Industria", "Terreno Industrial"],
+                    "Bien Especial": ["Hotel", "Clínica", "Colegio", "Otros inmuebles de uso específico"]
                 };
 
                 const detalleSelect = $('#detalle_activos');
@@ -518,10 +518,10 @@ requiereRol([1, 3, 4,5]);
             const detalleSelect = $('#detalle_activos');
 
             const opciones = {
-                "Propiedad Residencial": ["Casa", "Departamento", "Parcela"],
-                "Inmueble Comercial": ["Local", "Oficina", "Centro Comercial"],
-                "Activo Industrial": ["Fábrica", "Planta", "Galpón"],
-                "Bien Especial": ["Terreno", "Estacionamiento", "Otro"]
+                "Propiedad Residencial": ["Casa", "Departamento", "Parcela Agroresidencial", "Sitio Urbano", "Sitio Rural"],
+                "Inmueble Comercial": ["Oficina", "Local Comercial"],
+                "Activo Industrial": ["Bodega", "Industria", "Terreno Industrial"],
+                "Bien Especial": ["Hotel", "Clínica", "Colegio", "Otros inmuebles de uso específico"]
             };
 
             tipoActivoSelect.on('change', function() {
@@ -558,6 +558,7 @@ requiereRol([1, 3, 4,5]);
                 }, 'json');
             }
         }
+
         function toggleImportante(id, estadoActual) {
             const nuevoValor = estadoActual === 1 ? 0 : 1;
 
@@ -565,7 +566,7 @@ requiereRol([1, 3, 4,5]);
                 accion: 'importante',
                 cliente_id: id,
                 importante: nuevoValor
-            }, function (response) {
+            }, function(response) {
                 if (response.success) {
                     const boton = $('#btnImportante');
                     const icono = $('#iconoImportante');
@@ -594,11 +595,12 @@ requiereRol([1, 3, 4,5]);
         $(document).ready(function() {
             inicializarTablaClientes();
         });
+
         function registrarEventosEstadoCliente() {
             // Elimina eventos previos para evitar duplicados
             $(document).off('click', '.estado-click');
 
-            $(document).on('click', '.estado-click', function () {
+            $(document).on('click', '.estado-click', function() {
                 const $span = $(this);
                 const id = $span.data('id');
                 const estadoActual = $span.data('estado');
@@ -620,12 +622,12 @@ requiereRol([1, 3, 4,5]);
                     accion: 'cambiar_estado',
                     id: id,
                     estado: nuevoEstado
-                }, function (response) {
+                }, function(response) {
                     if (response.success) {
                         const nuevaClase = nuevoEstado === 'activo' ? 'bg-success' : 'bg-warning text-dark';
                         const nuevoTexto = nuevoEstado.charAt(0).toUpperCase() + nuevoEstado.slice(1);
 
-                        $span.fadeOut(200, function () {
+                        $span.fadeOut(200, function() {
                             $span.removeClass('bg-success bg-warning text-dark')
                                 .addClass(nuevaClase)
                                 .text(nuevoTexto)
