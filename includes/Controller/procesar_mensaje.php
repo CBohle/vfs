@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail->Port = 465;  // Puerto 465 para SSL
 
             $mail->setFrom('contacto@vfs.cl', 'VFS-Admin');
-            $mail->addAddress('olavehernadezpaulina1310@gmail.com');  // Correo fijo
+            $mail->addAddress($admin['email']);  // Correo fijo
             $mail->Subject = 'Respuesta a tu consulta en VFS';
             $mail->Body    = "test";
 

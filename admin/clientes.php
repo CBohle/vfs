@@ -143,7 +143,7 @@ requiereRol([1, 3, 4,5]);
                        <?php if ($_SESSION['rol_id'] != 4): ?>
     <div class="form-floating align-items-center">
         <label class="form-label d-block invisible">.</label>
-        <button type="button" class="btn btn-warning btn-sm w-100" onclick="crearCliente()">
+        <button type="button" class="btn btn-info btn-sm w-100" style="color:rgb(255, 255, 255)" onclick="crearCliente()">
             <h6 class="mb-1 fw-semibold">
                 <span id="ClientePorCrear">Nuevo Cliente</span>
             </h6>
@@ -203,7 +203,7 @@ requiereRol([1, 3, 4,5]);
                 <!-- Modal Header -->
                 <div class="modal-header d-flex justify-content-between align-items-center flex-wrap gap-2">
                     <div class="d-flex align-items-center gap-2 flex-wrap">
-                        <h5 class="modal-title mb-0" id="modalVerClienteLabel">Detalle del cliente</h5>
+                        <h5 class="modal-title mb-0 px-3" id="modalVerClienteLabel">Detalle del cliente</h5>
                     </div>
                     <div class="d-flex align-items-center gap-2">
                         <div id="botonImportanteWrapper" style="min-width: 200px;"></div>
