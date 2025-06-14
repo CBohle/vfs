@@ -214,7 +214,7 @@ requiereRol([1, 2,5]);
                 <!-- Modal Header -->
                 <div class="modal-header d-flex justify-content-between align-items-center flex-wrap gap-2">
                     <div class="d-flex align-items-center gap-2 flex-wrap">
-                        <h5 class="modal-title mb-0" id="modalVerPostulacionLabel">Detalle de la Postulación</h5>
+                        <h5 class="modal-title mb-0 px-3" id="modalVerPostulacionLabel"> Detalle de la Postulación </h5>
                     </div>
                     <div class="d-flex align-items-center gap-2">
                         <div id="botonImportanteWrapper" style="min-width: 200px;"></div>
