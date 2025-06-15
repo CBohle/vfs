@@ -2,6 +2,7 @@
 <?php
 require_once '../includes/auth.php';
 require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/../includes/Controller/usuariosController.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -26,6 +27,8 @@ require_once __DIR__ . '/../includes/config.php';
     <script>
         const BASE_ADMIN_URL = "<?= BASE_ADMIN_URL ?>";
         const ROL_ID = <?= $_SESSION['rol_id'] ?>;
+        const PERMISOS = <?= json_encode($_SESSION['permisos'] ?? []) ?>;
+        console.log("PERMISOS cargados desde dashboard:", PERMISOS);
     </script>
 </head>
 
@@ -119,11 +122,37 @@ require_once __DIR__ . '/../includes/config.php';
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         $(document).ready(function() {
-            // Cargar sección por defecto
-            $('#contenido-dinamico').load('inicioResumen.php');
+            const urlParams = new URLSearchParams(window.location.search);
+            const seccionParam = urlParams.get('seccion');
+
+            if (seccionParam) {
+                $(`.nav-link[data-section="${seccionParam}"]`).trigger('click');
+            } else {
+                // Cargar la sección de resumen por defecto
+                $('#contenido-dinamico').load('inicioResumen.php', function () {
+                    // ✅ Activar visualmente el botón de Dashboard
+                    $('.nav-link').removeClass('active');
+                    $('.nav-link[data-section="inicioResumen"]').addClass('active');
+
+                    // ✅ Mostrar toast si fue una recarga autorizada
+                    if (sessionStorage.getItem('recargaExitosa') === '1') {
+                        sessionStorage.removeItem('recargaExitosa');
+                        Swal.fire({
+                            toast: true,
+                            icon: 'success',
+                            title: '<span style="font-size: 1.1rem;">Cambios aplicados correctamente</span>',
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 4000,
+                            timerProgressBar: true
+                        });
+                    }
+                });
+            }
 
             // Navegación entre secciones
             $('.nav-link[data-section]').click(function(e) {
@@ -135,6 +164,19 @@ require_once __DIR__ . '/../includes/config.php';
                 $('#contenido-dinamico').empty();
 
                 $('#contenido-dinamico').load(section + '.php', function() {
+                    // ✅ Mostrar toast (centralizado)
+                    if (sessionStorage.getItem('recargaExitosa') === '1') {
+                        sessionStorage.removeItem('recargaExitosa');
+                        Swal.fire({
+                            toast: true,
+                            icon: 'success',
+                            title: 'Cambios aplicados correctamente',
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 2500,
+                            timerProgressBar: true
+                        });
+                    }
                     if (section === 'mensajes') {
                         // Elimina script previo si existe
                         $('script[src*="mensajes.js"]').remove();
@@ -177,6 +219,20 @@ require_once __DIR__ . '/../includes/config.php';
                                     }
                                 }
                             }, 100); // Espera que el HTML esté en el DOM
+                        };
+
+                        document.body.appendChild(script);
+                    }
+                    if (section === 'usuarios') {
+                        $('script[src*="usuarios.js"]').remove();
+
+                        const script = document.createElement('script');
+                        script.src = BASE_ADMIN_URL + 'adminlte/assets/js/usuarios.js?v=' + new Date().getTime();
+
+                        script.onload = function () {
+                            if (typeof inicializarVistaUsuarios === 'function') {
+                                inicializarVistaUsuarios();
+                            }
                         };
 
                         document.body.appendChild(script);

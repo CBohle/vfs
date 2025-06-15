@@ -86,6 +86,9 @@ if (!tienePermiso('mensajes', 'ver')) {
             max-width: 100%;
         }
     </style>
+    <script>
+        window.PERMISOS = window.PERMISOS || <?= json_encode($_SESSION['permisos'] ?? []) ?>;
+    </script>
 </head>
 
 <body class="bg-light">

@@ -27,7 +27,9 @@ if ($id_usuario) {
     }
 }
 
-$_SESSION['permisos'] = obtenerPermisos($_SESSION['rol_id']);
+if (!isset($_SESSION['permisos'])) {
+    $_SESSION['permisos'] = obtenerPermisos($_SESSION['rol_id']);
+}
 
 // Función para validar si el usuario tiene uno de los roles permitidos
 function requiereRol(array $rolesPermitidos) {

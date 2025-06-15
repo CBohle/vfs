@@ -134,24 +134,28 @@
               </button>
             `;
 
-            if (ROL_ID === 4 || ROL_ID === 5) {
-              // Practicante solo puede ver
-              return verBtn;
-            }
+            // Verificar si el permiso 'eliminar' está presente
+            const puedeEliminar = PERMISOS['mensajes']?.includes('eliminar');
 
             if (row.estado.toLowerCase() === "eliminado") {
-              return verBtn + `
-                <button class="btn btn-sm btn-success" title="Recuperar" onclick="recuperarMensaje(${row.id})">
-                    <i class="bi bi-arrow-counterclockwise"></i>
-                </button>`;
+              if (puedeEliminar) {
+                return verBtn + `
+                  <button class="btn btn-sm btn-success" title="Recuperar" onclick="recuperarMensaje(${row.id})">
+                      <i class="bi bi-arrow-counterclockwise"></i>
+                  </button>`;
+              }
+              return verBtn;
             } else {
-              return verBtn + `
-                <button class="btn btn-sm btn-danger" title="Eliminar" onclick="eliminarMensaje(${row.id})">
-                    <i class="bi bi-trash"></i>
-                </button>`;
+              if (puedeEliminar) {
+                return verBtn + `
+                  <button class="btn btn-sm btn-danger" title="Eliminar" onclick="eliminarMensaje(${row.id})">
+                      <i class="bi bi-trash"></i>
+                  </button>`;
+              }
+              return verBtn;
             }
           },
-        },
+        }
       ],
       order: [],
       language: {

@@ -1,4 +1,13 @@
 function crearCliente() {
+    if (!PERMISOS['clientes']?.includes('crear')) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Acceso restringido',
+            text: 'No tienes los permisos necesarios para crear nuevos clientes.',
+            confirmButtonText: 'Cerrar'
+        });
+        return; // evita que se continúe con la lógica de apertura del modal
+    }
     $('#contenidoModalCliente').html('<p class="text-center text-muted">Cargando formulario...</p>');
     $('#modalVerCliente').modal('show');
 

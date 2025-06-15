@@ -72,7 +72,24 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'crear') {
 $params = [];
 $paramTypes = '';
 $where = "WHERE nombre_contacto != ''";
-$columns = ['importante', 'id', 'tipo_persona', 'nombre_empresa', 'nombre_contacto', 'apellido_contacto','email_contacto', 'telefono_contacto', 'tipo_activos', 'detalle_activos','estado', 'fecha_creacion'];
+$columns = [
+    'importante',            // 0 → ícono estrella
+    'importante',            // 1 → texto (oculta)
+    'id',                    // 2
+    'tipo_persona',          // 3
+    'nombre_empresa',        // 4
+    'nombre_contacto',       // 5 → nombre + apellido
+    'email_contacto',        // 6
+    'telefono_contacto',     // 7
+    'tipo_activos',          // 8
+    'detalle_activos',       // 9
+    'estado',                // 10
+    'fecha_creacion',        // 11 → oculta
+    'fecha_modificacion',    // 12 → oculta
+    'email_usuario',         // 13 → oculta
+    'nombre_usuario',        // 14 → oculta
+    'notas'                  // 15 → oculta
+];
 $draw = intval($_POST['draw'] ?? 0);
 $start = intval($_POST['start'] ?? 0);
 $length = intval($_POST['length'] ?? 10);
