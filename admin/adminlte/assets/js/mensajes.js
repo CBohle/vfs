@@ -281,42 +281,100 @@
   };
 
   window.eliminarMensaje = function (id) {
-    if (confirm("¿Estás seguro de que deseas eliminar este mensaje?")) {
+  Swal.fire({
+    title: '¿Eliminar mensaje?',
+    text: 'Esta acción no se puede deshacer.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#6c757d',
+    confirmButtonText: 'Sí, eliminar',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
       $.post(
         "mensajesAjax.php",
         { accion: "eliminar", id: id },
         function (response) {
           if (response.success) {
-            alert("Mensaje eliminado correctamente.");
-            tabla.ajax.reload(null, false);
-            actualizarContadorMensajesPendientes();
+            Swal.fire({
+              icon: 'success',
+              title: 'Mensaje eliminado',
+              text: 'El mensaje fue eliminado correctamente.',
+              timer: 2000,
+              showConfirmButton: false
+            });
+            tabla.ajax.reload(null, false); // Recarga DataTable sin redirigir
+            actualizarContadorMensajesPendientes(); // Si tienes contador dinámico
           } else {
-            alert("Hubo un error al intentar eliminar el mensaje.");
+            Swal.fire({
+              icon: 'error',
+              title: 'Error al eliminar',
+              text: 'Hubo un problema al intentar eliminar el mensaje.',
+              confirmButtonText: 'Cerrar'
+            });
           }
         },
         "json"
-      );
+      ).fail(function () {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error de conexión',
+          text: 'No se pudo contactar con el servidor.',
+          confirmButtonText: 'Cerrar'
+        });
+      });
     }
-  };
+  });
+};
 
   window.recuperarMensaje = function (id) {
-    if (confirm("¿Deseas recuperar este mensaje?")) {
+  Swal.fire({
+    title: '¿Recuperar mensaje?',
+    text: 'El mensaje volverá a estar disponible en el sistema.',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#198754', // verde Bootstrap
+    cancelButtonColor: '#6c757d',
+    confirmButtonText: 'Sí, recuperar',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
       $.post(
         "mensajesAjax.php",
         { accion: "recuperar", id: id },
         function (response) {
           if (response.success) {
-            tabla.ajax.reload(null, false);
-            actualizarContadorMensajesPendientes();
-            alert("Mensaje recuperado con éxito.");
+            tabla.ajax.reload(null, false); // recargar tabla
+            actualizarContadorMensajesPendientes(); // si existe
+            Swal.fire({
+              icon: 'success',
+              title: 'Mensaje recuperado',
+              text: 'El mensaje fue recuperado con éxito.',
+              timer: 2000,
+              showConfirmButton: false
+            });
           } else {
-            alert("No se pudo recuperar el mensaje.");
+            Swal.fire({
+              icon: 'error',
+              title: 'Error al recuperar',
+              text: 'No se pudo recuperar el mensaje.',
+              confirmButtonText: 'Cerrar'
+            });
           }
         },
         "json"
-      );
+      ).fail(function () {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error de conexión',
+          text: 'No se pudo contactar con el servidor.',
+          confirmButtonText: 'Cerrar'
+        });
+      });
     }
-  };
+  });
+};
 
   $(document).on("click", ".marcarImportante", function () {
     const icono = $(this);

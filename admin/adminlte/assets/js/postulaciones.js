@@ -379,24 +379,50 @@ function resetearFiltros() {
 }
 
 function eliminarPostulacion(id) {
-  if (confirm("¿Estás seguro de que deseas eliminar esta postulacion?")) {
-    $.post(
-      "postulacionesAjax.php",
-      {
-        accion: "eliminar",
-        id: id,
-      },
-      function (response) {
-        if (response.success) {
-          alert("Postulacion eliminada correctamente.");
-          tabla.ajax.reload(null, false); // solo recarga datos sin redireccionar
-        } else {
-          alert("Hubo un error al intentar eliminar la postulacion.");
-        }
-      },
-      "json"
-    );
-  }
+  Swal.fire({
+    title: '¿Eliminar postulación?',
+    text: 'Esta acción no se puede deshacer.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33', // rojo Bootstrap
+    cancelButtonColor: '#6c757d',
+    confirmButtonText: 'Sí, eliminar',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.post(
+        'postulacionesAjax.php',
+        { accion: 'eliminar', id: id },
+        function (response) {
+          if (response.success) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Postulación eliminada',
+              text: 'La postulación fue eliminada correctamente.',
+              timer: 2000,
+              showConfirmButton: false
+            });
+            tabla.ajax.reload(null, false); // recarga sin reiniciar paginación
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error al eliminar',
+              text: 'Hubo un problema al intentar eliminar la postulación.',
+              confirmButtonText: 'Cerrar'
+            });
+          }
+        },
+        'json'
+      ).fail(() => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error de conexión',
+          text: 'No se pudo contactar con el servidor.',
+          confirmButtonText: 'Cerrar'
+        });
+      });
+    }
+  });
 }
 
 function verPostulacion(id) {
@@ -448,24 +474,50 @@ function verPostulacion(id) {
 }
 
 function recuperarPostulacion(id) {
-  if (confirm("¿Deseas recuperar esta postulacion?")) {
-    $.post(
-      "postulacionesAjax.php",
-      {
-        accion: "recuperar",
-        id: id,
-      },
-      function (response) {
-        if (response.success) {
-          tabla.ajax.reload(null, false);
-          alert("Postulacion recuperada con éxito.");
-        } else {
-          alert("No se pudo recuperar la postulacion.");
-        }
-      },
-      "json"
-    );
-  }
+  Swal.fire({
+    title: '¿Recuperar postulación?',
+    text: 'La postulación volverá a estar disponible en el sistema.',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#198754', // verde Bootstrap
+    cancelButtonColor: '#6c757d',
+    confirmButtonText: 'Sí, recuperar',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.post(
+        'postulacionesAjax.php',
+        { accion: 'recuperar', id: id },
+        function (response) {
+          if (response.success) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Postulación recuperada',
+              text: 'La postulación fue recuperada con éxito.',
+              timer: 2000,
+              showConfirmButton: false
+            });
+            tabla.ajax.reload(null, false); // recarga sin reiniciar paginación
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error al recuperar',
+              text: 'No se pudo recuperar la postulación.',
+              confirmButtonText: 'Cerrar'
+            });
+          }
+        },
+        'json'
+      ).fail(() => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error de conexión',
+          text: 'No se pudo contactar con el servidor.',
+          confirmButtonText: 'Cerrar'
+        });
+      });
+    }
+  });
 }
 
 function verPDF(rutaArchivo) {

@@ -190,7 +190,7 @@ function formatearFecha($fechaOriginal) {
                 <!-- Tipo de activo -->
                 <div class="fila-dato">
                     <span class="dato-label">Tipo de Activo:</span>
-                    <select class="form-select" id="tipo_activo" aria-label="Tipo de Activo" name="tipo_activo" required<?= $id > 0 ? 'disabled' : '' ?>>
+                    <select class="form-select" id="tipo_activo" aria-label="Tipo de Activo" name="tipo_activo" required <?= $id > 0 ? 'disabled' : '' ?> data-valor="<?= htmlspecialchars($msg['tipo_activos']) ?>">
                         <option value="" hidden selected>Seleccionar</option>
                         <option value="Propiedad Residencial" <?= $msg['tipo_activos'] === 'Propiedad Residencial' ? 'selected' : '' ?>>Propiedad Residencial</option>
                         <option value="Inmueble Comercial" <?= $msg['tipo_activos'] === 'Inmueble Comercial' ? 'selected' : '' ?>>Inmueble Comercial</option>
