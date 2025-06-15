@@ -17,7 +17,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($pass !== $pass2) {
         $error = "Las contraseñas no coinciden.";
+    } elseif (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/', $pass)) {
+        $error = "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.";
     } else {
+
         $stmt = $pdo->prepare("SELECT * FROM usuarios_admin WHERE reset_token = ? AND token_expira > NOW()");
         $stmt->execute([$token]);
         $user = $stmt->fetch();
@@ -36,6 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Cambio de contraseña</title>
@@ -68,9 +72,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </div>
                 <?php endif; ?>
 
-                <hr class="divider"/>
+                <hr class="divider" />
             </div>
         </div>
     </div>
 </body>
+
 </html>
