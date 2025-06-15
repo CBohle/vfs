@@ -306,7 +306,7 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
                             <form id="formUsuario" class="card-body">
                                 <div class="mb-3">
                                     <label for="nombreUsuario" class="form-label">Email del Usuario</label>
-                                    <input type="text" class="form-control" id="emailUsuario" name="nombre" required>
+                                    <input type="text" class="form-control" id="emailUsuario" name="email" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="nombreUsuario" class="form-label">Nombre del Usuario</label>
@@ -314,7 +314,7 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
                                 </div>
                                 <div class="mb-3">
                                     <label for="nombreUsuario" class="form-label">Apellido del Usuario</label>
-                                    <input type="text" class="form-control" id="apellidoUsuario" name="nombre" required>
+                                    <input type="text" class="form-control" id="apellidoUsuario" name="apellido" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="rolUsuario" class="form-label">Rol</label>
@@ -650,6 +650,7 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
                     $('#formUsuarioTitulo').text(modo === 'crear' ? 'Nuevo Usuario' : 'Editar Usuario');
                     $('#usuario_id').val(usuarioData?.id || '');
                     $('#nombreUsuario').val(usuarioData?.nombre || '');
+                    $('#apellidoUsuario').val(usuarioData?.apellido || '');
                     $('#emailUsuario').val(usuarioData?.email || '').prop('disabled', modo === 'modificar');
                     $('#estadoUsuario').val(usuarioData?.estado || 'activo');
                     $('#rolUsuario').val(usuarioData?.rol_id || '');
