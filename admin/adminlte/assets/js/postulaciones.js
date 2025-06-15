@@ -280,27 +280,33 @@ function inicializarTablaPostulaciones() {
         searchable: false,
         className: "text-center",
         render: function (data, type, row) {
-          if (row.estado.toLowerCase() === "eliminado") {
-            return `
-                    <button class="btn btn-sm btn-primary me-1" title="Ver" onclick="verPostulacion(${row.id})">
-                        <i class="bi bi-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-success" title="Recuperar" onclick="recuperarPostulacion(${row.id})">
-                        <i class="bi bi-arrow-counterclockwise"></i>
-                    </button>
-                    `;
-          } else {
-            return `
-                    <button class="btn btn-sm btn-primary me-1" title="Ver" onclick="verPostulacion(${row.id})">
-                        <i class="bi bi-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger" title="Eliminar" onclick="eliminarPostulacion(${row.id})">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                    `;
+          let botones = `
+            <button class="btn btn-sm btn-primary me-1" title="Ver" onclick="verPostulacion(${row.id})">
+              <i class="bi bi-eye"></i>
+            </button>
+          `;
+
+          const puedeEliminar = PERMISOS?.postulaciones?.includes('eliminar');
+
+          if (puedeEliminar) {
+            if (row.estado.toLowerCase() === "eliminado") {
+              botones += `
+                <button class="btn btn-sm btn-success" title="Recuperar" onclick="recuperarPostulacion(${row.id})">
+                  <i class="bi bi-arrow-counterclockwise"></i>
+                </button>
+              `;
+            } else {
+              botones += `
+                <button class="btn btn-sm btn-danger" title="Eliminar" onclick="eliminarPostulacion(${row.id})">
+                  <i class="bi bi-trash"></i>
+                </button>
+              `;
+            }
           }
+
+          return botones;
         },
-      },
+      }
     ],
     order: [],
     language: {
