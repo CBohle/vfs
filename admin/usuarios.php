@@ -100,6 +100,7 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
             color: #495057;
             padding: 0.75rem;
         }
+
         /* Estilo base del paginador */
         .dataTables_paginate .paginate_button {
             padding: 0.4rem 0.75rem;
@@ -146,6 +147,7 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
             border-color: #dee2e6;
             cursor: not-allowed;
         }
+
         .disabled-cell {
             opacity: 0.5;
             pointer-events: none;
@@ -158,23 +160,23 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
         <h2 class="mb-4">Administración de Usuarios y Roles</h2>
 
         <?php
-            $puedeVerUsuarios = tienePermiso('usuarios', 'ver');
-            $puedeVerRoles = tienePermiso('roles', 'ver');
-            $primeraPestana = $puedeVerUsuarios ? 'usuarios' : 'roles';
+        $puedeVerUsuarios = tienePermiso('usuarios', 'ver');
+        $puedeVerRoles = tienePermiso('roles', 'ver');
+        $primeraPestana = $puedeVerUsuarios ? 'usuarios' : 'roles';
         ?>
         <ul class="nav nav-tabs" id="tabs" role="tablist">
             <?php if ($puedeVerUsuarios): ?>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link <?= $primeraPestana === 'usuarios' ? 'active' : '' ?>" id="usuarios-tab" data-bs-toggle="tab" data-bs-target="#usuarios" type="button" role="tab">Usuarios</button>
-                    </li>
-                <?php endif; ?>
-                <?php if ($puedeVerRoles): ?>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link <?= $primeraPestana === 'roles' ? 'active' : '' ?>" id="roles-tab" data-bs-toggle="tab" data-bs-target="#roles" type="button" role="tab">Roles</button>
-                    </li>
-            <?php endif; ?>    
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link <?= $primeraPestana === 'usuarios' ? 'active' : '' ?>" id="usuarios-tab" data-bs-toggle="tab" data-bs-target="#usuarios" type="button" role="tab">Usuarios</button>
+                </li>
+            <?php endif; ?>
+            <?php if ($puedeVerRoles): ?>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link <?= $primeraPestana === 'roles' ? 'active' : '' ?>" id="roles-tab" data-bs-toggle="tab" data-bs-target="#roles" type="button" role="tab">Roles</button>
+                </li>
+            <?php endif; ?>
         </ul>
-            
+
 
         <div class="tab-content pt-3">
             <div class="tab-pane fade <?= $primeraPestana === 'roles' ? 'show active' : '' ?>" id="roles" role="tabpanel">
@@ -230,10 +232,10 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
                                         </thead>
                                         <tbody>
                                             <?php foreach (['mensajes', 'postulaciones', 'clientes', 'usuarios', 'roles'] as $modulo): ?>
-                                            <tr>
-                                                <td class="text-start"><?= ucfirst($modulo) ?></td>
-                                                <?php foreach (['ver', 'modificar', 'crear', 'eliminar'] as $accion): ?>
-                                                    <?php
+                                                <tr>
+                                                    <td class="text-start"><?= ucfirst($modulo) ?></td>
+                                                    <?php foreach (['ver', 'modificar', 'crear', 'eliminar'] as $accion): ?>
+                                                        <?php
                                                         $bloqueado = false;
                                                         if (
                                                             ($accion === 'crear' && in_array($modulo, ['mensajes', 'postulaciones'])) ||
@@ -241,22 +243,22 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
                                                         ) {
                                                             $bloqueado = true;
                                                         }
-                                                    ?>
-                                                    <td class="text-center align-middle">
-                                                        <?php if ($bloqueado): ?>
-                                                            <span class="bloqueado-permiso" title="Este permiso no se puede asignar">✖</span>
-                                                        <?php else: ?>
-                                                            <input type="checkbox"
-                                                                class="form-check-input permiso-checkbox"
-                                                                data-modulo="<?= $modulo ?>"
-                                                                data-accion="<?= $accion ?>"
-                                                                name="permisos[<?= $modulo ?>][<?= $accion ?>]"
-                                                                <?= (!empty($rolPermisos[$modulo][$accion]) ? 'checked' : '') ?>>
-                                                        <?php endif; ?>
-                                                    </td>
-                                                <?php endforeach; ?>
-                                            </tr>
-                                        <?php endforeach; ?>
+                                                        ?>
+                                                        <td class="text-center align-middle">
+                                                            <?php if ($bloqueado): ?>
+                                                                <span class="bloqueado-permiso" title="Este permiso no se puede asignar">✖</span>
+                                                            <?php else: ?>
+                                                                <input type="checkbox"
+                                                                    class="form-check-input permiso-checkbox"
+                                                                    data-modulo="<?= $modulo ?>"
+                                                                    data-accion="<?= $accion ?>"
+                                                                    name="permisos[<?= $modulo ?>][<?= $accion ?>]"
+                                                                    <?= (!empty($rolPermisos[$modulo][$accion]) ? 'checked' : '') ?>>
+                                                            <?php endif; ?>
+                                                        </td>
+                                                    <?php endforeach; ?>
+                                                </tr>
+                                            <?php endforeach; ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -328,10 +330,12 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
                                 <div class="mb-3">
                                     <label for="passwordUsuario" class="form-label">Contraseña</label>
                                     <input type="password" class="form-control" id="passwordUsuario" name="password" required>
+                                    <small id="passwordUsuarioHelp" class="form-text text-warning"></small>
                                 </div>
                                 <div class="mb-3">
                                     <label for="confirmarPasswordUsuario" class="form-label">Confirmar Contraseña</label>
                                     <input type="password" class="form-control" id="confirmarPasswordUsuario" name="confirmar_password" required>
+                                    <small id="confirmarHelp" class="form-text text-warning"></small>
                                 </div>
 
                                 <input type="hidden" name="usuario_id" id="usuario_id">
@@ -407,7 +411,7 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
                             {
                                 data: null,
                                 className: 'text-center',
-                                render: function (data, type, row) {
+                                render: function(data, type, row) {
                                     let botones = `<button class="btn btn-sm btn-primary me-1" onclick="verRol(${row.id})"><i class="bi bi-eye"></i></button>`;
                                     if (PERMISOS?.roles?.includes('eliminar')) {
                                         botones += `<button class="btn btn-sm btn-danger" onclick="eliminarRol(${row.id})"><i class="bi bi-trash"></i></button>`;
@@ -420,21 +424,26 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
                         language: {
                             url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
                         },
-                        drawCallback: function () {
+                        drawCallback: function() {
                             const paginador = $('#tablaRoles_wrapper .dataTables_paginate');
                             if (paginador.length) {
-                            $('#contenedorPaginacionRoles').html(paginador);
+                                $('#contenedorPaginacionRoles').html(paginador);
                             }
                         },
                         pagingType: 'simple_numbers',
                         pageLength: 10,
-                        columnDefs: [
-                            { targets: 2, width: '100px' }, // Estatus
-                            { targets: 3, width: '110px' }  // Acciones
+                        columnDefs: [{
+                                targets: 2,
+                                width: '100px'
+                            }, // Estatus
+                            {
+                                targets: 3,
+                                width: '110px'
+                            } // Acciones
                         ],
                     });
                 }
-                window.mostrarFormularioRol = function (modo = 'crear', rolData = null) {
+                window.mostrarFormularioRol = function(modo = 'crear', rolData = null) {
                     if (modo === 'crear' && !PERMISOS?.roles?.includes('crear')) {
                         Swal.fire({
                             icon: 'warning',
@@ -474,6 +483,7 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
                     $('#formRol .btn[type="submit"]').show();
                     $('#formularioRolContainer').show();
                 }
+
                 function inicializarTablaUsuarios() {
                     if ($.fn.DataTable.isDataTable('#tablaUsuarios')) tablaUsuarios.destroy();
 
@@ -526,7 +536,7 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
                             {
                                 data: null,
                                 className: 'text-center',
-                                render: function (data, type, row) {
+                                render: function(data, type, row) {
                                     let botones = `<button class="btn btn-sm btn-primary me-1" onclick="verUsuario(${row.id})"><i class="bi bi-eye"></i></button>`;
                                     if (PERMISOS?.usuarios?.includes('eliminar')) {
                                         botones += `<button class="btn btn-sm btn-danger" onclick="eliminarUsuario(${row.id})"><i class="bi bi-trash"></i></button>`;
@@ -539,7 +549,7 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
                         language: {
                             url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
                         },
-                        drawCallback: function () {
+                        drawCallback: function() {
                             const paginador = $('#tablaUsuarios_wrapper .dataTables_paginate');
                             if (paginador.length) {
                                 $('#contenedorPaginacionUsuarios').html(paginador);
@@ -554,7 +564,7 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
                     $('#formularioRolContainer').hide();
                 }
 
-                $(document).ready(function () {
+                $(document).ready(function() {
                     function actualizarDependencia(modulo) {
                         const ver = $(`input[data-modulo="${modulo}"][data-accion="ver"]`);
                         const modificar = $(`input[data-modulo="${modulo}"][data-accion="modificar"]`);
@@ -571,13 +581,13 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
                     }
 
                     // Detecta cualquier cambio en checkboxes
-                    $('.permiso-checkbox').on('change', function () {
+                    $('.permiso-checkbox').on('change', function() {
                         const modulo = $(this).data('modulo');
                         actualizarDependencia(modulo);
                     });
 
                     // Inicializa lógica para todos los módulos al cargar
-                    const modulos = [...new Set($('.permiso-checkbox').map(function () {
+                    const modulos = [...new Set($('.permiso-checkbox').map(function() {
                         return $(this).data('modulo');
                     }).get())];
 
@@ -595,17 +605,25 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
 
                 $('#formRol').on('submit', function(e) {
                     e.preventDefault();
-                    
+
                     const esNuevo = $('#rol_id').val() === '';
                     if (esNuevo && !PERMISOS?.roles?.includes('crear')) {
-                        Swal.fire({ icon: 'warning', title: 'Sin permiso', text: 'No tienes permiso para crear roles.' });
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Sin permiso',
+                            text: 'No tienes permiso para crear roles.'
+                        });
                         return;
                     } else if (!esNuevo && !PERMISOS?.roles?.includes('modificar')) {
-                        Swal.fire({ icon: 'warning', title: 'Sin permiso', text: 'No tienes permiso para modificar roles.' });
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Sin permiso',
+                            text: 'No tienes permiso para modificar roles.'
+                        });
                         return;
                     }
                     const permisos = {};
-                    $('input[name^="permisos"]').each(function () {
+                    $('input[name^="permisos"]').each(function() {
                         if (this.checked) {
                             const match = this.name.match(/permisos\[(\w+)\]\[(\w+)\]/);
                             if (match) {
@@ -625,7 +643,7 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
 
                     guardarRolYActualizarPermisos(datosRol);
                 });
-                window.mostrarFormularioUsuario = function (modo = 'crear', usuarioData = null) {
+                window.mostrarFormularioUsuario = function(modo = 'crear', usuarioData = null) {
                     if (modo === 'crear' && !PERMISOS?.usuarios?.includes('crear')) {
                         Swal.fire({
                             icon: 'warning',
@@ -670,7 +688,7 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
                     $.post('usuariosAjax.php', {
                         accion: 'obtenerUsuarioPorId',
                         id
-                    }, function (data) {
+                    }, function(data) {
                         mostrarFormularioUsuario('modificar', data);
                     }, 'json');
                 }
@@ -679,15 +697,34 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
 
                     const esNuevo = $('#usuario_id').val() === '';
                     if (esNuevo && !PERMISOS?.usuarios?.includes('crear')) {
-                        Swal.fire({ icon: 'warning', title: 'Sin permiso', text: 'No tienes permiso para crear usuarios.' });
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Sin permiso',
+                            text: 'No tienes permiso para crear usuarios.'
+                        });
                         return;
                     } else if (!esNuevo && !PERMISOS?.usuarios?.includes('modificar')) {
-                        Swal.fire({ icon: 'warning', title: 'Sin permiso', text: 'No tienes permiso para modificar usuarios.' });
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Sin permiso',
+                            text: 'No tienes permiso para modificar usuarios.'
+                        });
                         return;
                     }
 
                     const password = $('#passwordUsuario').val().trim();
                     const confirmarPassword = $('#confirmarPasswordUsuario').val().trim();
+
+                    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+
+                    if (!regex.test(password)) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Contraseña insegura',
+                            html: 'La contraseña debe tener al menos:<br>- 8 caracteres<br>- Una mayúscula<br>- Una minúscula<br>- Un número<br>- Un carácter especial'
+                        });
+                        return;
+                    }
 
                     if (password !== confirmarPassword) {
                         Swal.fire({
@@ -697,6 +734,7 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
                         });
                         return;
                     }
+
 
                     const datosUsuario = {
                         id: $('#usuario_id').val(),
@@ -709,7 +747,7 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
 
                     guardarUsuarioYActualizar(datosUsuario);
                 });
-                $(document).on('click', '.estado-click', function () {
+                $(document).on('click', '.estado-click', function() {
                     const badge = $(this);
                     const id = badge.data("id");
                     const tipo = badge.data("tipo"); // 'usuario' o 'rol'
@@ -720,7 +758,7 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
                     // ✅ Validación de permiso antes de continuar
                     if (
                         (tipo === 'usuario' && !PERMISOS?.usuarios?.includes('modificar')) ||
-                        (tipo === 'rol' && !PERMISOS?.roles?.includes('modificar') )
+                        (tipo === 'rol' && !PERMISOS?.roles?.includes('modificar'))
                     ) {
                         Swal.fire({
                             icon: 'warning',
@@ -742,100 +780,130 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
                         cancelButtonText: "Cancelar"
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            $.post("usuariosAjax.php", { accion: "cambiar_estado", id, estado, tipo }, function (respuesta) {
-                        if (respuesta.success) {
-                            Swal.fire("Éxito", "Estado actualizado correctamente.", "success");
-                            if (tipo === "usuario") {
-                                tablaUsuarios.ajax.reload();
-                            } else if (tipo === "rol") {
-                                tablaRoles.ajax.reload();
-                            }
-                        } else {
-                            Swal.fire("Error", respuesta.error || "No se pudo cambiar el estado", "error");
-                        }
-                        }, "json").fail(function () {
-                        Swal.fire("Error", "No se pudo conectar al servidor.", "error");
-                        });
+                            $.post("usuariosAjax.php", {
+                                accion: "cambiar_estado",
+                                id,
+                                estado,
+                                tipo
+                            }, function(respuesta) {
+                                if (respuesta.success) {
+                                    Swal.fire("Éxito", "Estado actualizado correctamente.", "success");
+                                    if (tipo === "usuario") {
+                                        tablaUsuarios.ajax.reload();
+                                    } else if (tipo === "rol") {
+                                        tablaRoles.ajax.reload();
+                                    }
+                                } else {
+                                    Swal.fire("Error", respuesta.error || "No se pudo cambiar el estado", "error");
+                                }
+                            }, "json").fail(function() {
+                                Swal.fire("Error", "No se pudo conectar al servidor.", "error");
+                            });
                         }
                     });
                 });
-                    function eliminarRol(id) {
-                        Swal.fire({
-                            title: '¿Estás seguro?',
-                            text: 'Esta acción eliminará el rol de forma permanente.',
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonText: 'Sí, eliminar',
-                            cancelButtonText: 'Cancelar'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                $.post('usuariosAjax.php', { accion: 'eliminarRol', id }, function (response) {
-                                    if (response.success) {
-                                        Swal.fire({
-                                            icon: 'success',
-                                            title: 'Rol eliminado',
-                                            timer: 1500,
-                                            showConfirmButton: false
-                                        });
-                                        tablaRoles.ajax.reload();
-                                    } else {
-                                        Swal.fire({
-                                            icon: 'error',
-                                            title: 'Error',
-                                            text: response.error || 'No se pudo eliminar el rol.'
-                                        });
-                                    }
-                                }, 'json').fail(function () {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Error de conexión',
-                                        text: 'No se pudo conectar al servidor.'
-                                    });
-                                });
-                            }
-                        });
-                    }
 
-                    function eliminarUsuario(id) {
-                        Swal.fire({
-                            title: '¿Estás seguro?',
-                            text: 'Esta acción eliminará al usuario de forma permanente.',
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonText: 'Sí, eliminar',
-                            cancelButtonText: 'Cancelar'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                $.post("usuariosAjax.php", {
-                                    accion: "eliminarUsuario",
-                                    id: id
-                                }, function (respuesta) {
-                                    if (respuesta.success) {
-                                        Swal.fire({
-                                            icon: 'success',
-                                            title: 'Usuario eliminado',
-                                            timer: 1500,
-                                            showConfirmButton: false
-                                        });
-                                        tablaUsuarios.ajax.reload();
-                                    } else {
-                                        Swal.fire({
-                                            icon: 'error',
-                                            title: 'Error',
-                                            text: respuesta.error || 'Ocurrió un error inesperado.'
-                                        });
-                                    }
-                                }, "json").fail(function () {
+                function eliminarRol(id) {
+                    Swal.fire({
+                        title: '¿Estás seguro?',
+                        text: 'Esta acción eliminará el rol de forma permanente.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí, eliminar',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.post('usuariosAjax.php', {
+                                accion: 'eliminarRol',
+                                id
+                            }, function(response) {
+                                if (response.success) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Rol eliminado',
+                                        timer: 1500,
+                                        showConfirmButton: false
+                                    });
+                                    tablaRoles.ajax.reload();
+                                } else {
                                     Swal.fire({
                                         icon: 'error',
-                                        title: 'Error de conexión',
-                                        text: 'No se pudo conectar al servidor.'
+                                        title: 'Error',
+                                        text: response.error || 'No se pudo eliminar el rol.'
                                     });
+                                }
+                            }, 'json').fail(function() {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error de conexión',
+                                    text: 'No se pudo conectar al servidor.'
                                 });
-                            }
-                        });
+                            });
+                        }
+                    });
+                }
+
+                function eliminarUsuario(id) {
+                    Swal.fire({
+                        title: '¿Estás seguro?',
+                        text: 'Esta acción eliminará al usuario de forma permanente.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí, eliminar',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.post("usuariosAjax.php", {
+                                accion: "eliminarUsuario",
+                                id: id
+                            }, function(respuesta) {
+                                if (respuesta.success) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Usuario eliminado',
+                                        timer: 1500,
+                                        showConfirmButton: false
+                                    });
+                                    tablaUsuarios.ajax.reload();
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error',
+                                        text: respuesta.error || 'Ocurrió un error inesperado.'
+                                    });
+                                }
+                            }, "json").fail(function() {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error de conexión',
+                                    text: 'No se pudo conectar al servidor.'
+                                });
+                            });
+                        }
+                    });
+                }
+            </script>
+            <script>
+                document.querySelector('form').addEventListener('submit', function(e) {
+                    const passwordUsuario = document.getElementById('passwordUsuario').value;
+                    const confirm = document.getElementById('confirmarPasswordUsuario').value;
+
+                    const helpPass = document.getElementById('passwordUsuarioHelp');
+                    const helpConfirm = document.getElementById('confirmarHelp');
+
+                    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+
+                    helpPass.textContent = '';
+                    helpConfirm.textContent = '';
+
+                    if (!regex.test(password)) {
+                        helpPass.textContent = 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.';
+                        e.preventDefault();
+                    } else if (password !== confirm) {
+                        helpConfirm.textContent = 'Las contraseñas no coinciden.';
+                        e.preventDefault();
                     }
-                                    
+                });
             </script>
             <!-- Footer -->
             <?php

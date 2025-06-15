@@ -1,9 +1,9 @@
 function inicializarFormularioCliente() {
     const opcionesDetallePorTipo = {
-        "Propiedad Residencial": ["Casa", "Departamento", "Parcela"],
-        "Inmueble Comercial": ["Local", "Oficina", "Centro Comercial"],
-        "Activo Industrial": ["Fábrica", "Planta", "Galpón"],
-        "Bien Especial": ["Terreno", "Estacionamiento", "Otro"]
+        "Propiedad Residencial": ["Casa", "Departamento", "Parcela Agroresidencial", "Sitio Urbano", "Sitio Rural"],
+        "Inmueble Comercial": ["Oficina", "Local Comercial"],
+        "Activo Industrial": ["Bodega", "Industria", "Terreno Industrial"],
+        "Bien Especial": ["Hotel", "Clínica", "Colegio", "Otros inmuebles de uso específico"]
     };
 
     const tipoSelect = $('#tipo_activo');
