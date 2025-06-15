@@ -13,6 +13,23 @@ if (!tienePermiso('usuarios', 'ver') && !tienePermiso('roles', 'ver')) {
         </div>';
     exit;
 }
+// Cargar roles activos para el formulario
+$roles = [];
+$stmt = $conexion->prepare("SELECT id, nombre FROM roles WHERE activo = 1 ORDER BY nombre");
+$stmt->execute();
+$resultado = $stmt->get_result();
+
+while ($fila = $resultado->fetch_assoc()) {
+    $roles[] = $fila;
+}
+// Permisos adicionales para crear, modificar y eliminar
+$puedeCrearUsuarios = tienePermiso('usuarios', 'crear');
+$puedeModificarUsuarios = tienePermiso('usuarios', 'modificar');
+$puedeEliminarUsuarios = tienePermiso('usuarios', 'eliminar');
+
+$puedeCrearRoles = tienePermiso('roles', 'crear');
+$puedeModificarRoles = tienePermiso('roles', 'modificar');
+$puedeEliminarRoles = tienePermiso('roles', 'eliminar');
 ?>
 
 <!DOCTYPE html>
@@ -129,6 +146,10 @@ if (!tienePermiso('usuarios', 'ver') && !tienePermiso('roles', 'ver')) {
             border-color: #dee2e6;
             cursor: not-allowed;
         }
+        .disabled-cell {
+            opacity: 0.5;
+            pointer-events: none;
+        }
     </style>
 </head>
 
@@ -162,7 +183,7 @@ if (!tienePermiso('usuarios', 'ver') && !tienePermiso('roles', 'ver')) {
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <span>Roles Registrados</span>
-                                <button class="btn btn-sm btn-primary" onclick="mostrarFormularioRol()">Nuevo Rol</button>
+                                <button class="btn btn-sm btn-primary" onclick="mostrarFormularioRol('crear')">Nuevo Rol</button>
                             </div>
                             <div class="table-responsive">
                                 <table id="tablaRoles" class="table table-hover w-100">
@@ -209,13 +230,33 @@ if (!tienePermiso('usuarios', 'ver') && !tienePermiso('roles', 'ver')) {
                                         </thead>
                                         <tbody>
                                             <?php foreach (['mensajes', 'postulaciones', 'clientes', 'usuarios', 'roles'] as $modulo): ?>
-                                                <tr>
-                                                    <td class="text-start"><?= ucfirst($modulo) ?></td>
-                                                    <?php foreach (['ver', 'modificar', 'crear', 'eliminar'] as $accion): ?>
-                                                        <td><input type="checkbox" class="form-check-input" name="permisos[<?= $modulo ?>][<?= $accion ?>]"></td>
-                                                    <?php endforeach; ?>
-                                                </tr>
-                                            <?php endforeach; ?>
+                                            <tr>
+                                                <td class="text-start"><?= ucfirst($modulo) ?></td>
+                                                <?php foreach (['ver', 'modificar', 'crear', 'eliminar'] as $accion): ?>
+                                                    <?php
+                                                        $bloqueado = false;
+                                                        if (
+                                                            ($accion === 'crear' && in_array($modulo, ['mensajes', 'postulaciones'])) ||
+                                                            ($accion === 'modificar' && $modulo === 'postulaciones')
+                                                        ) {
+                                                            $bloqueado = true;
+                                                        }
+                                                    ?>
+                                                    <td class="text-center align-middle">
+                                                        <?php if ($bloqueado): ?>
+                                                            <span class="bloqueado-permiso" title="Este permiso no se puede asignar">✖</span>
+                                                        <?php else: ?>
+                                                            <input type="checkbox"
+                                                                class="form-check-input permiso-checkbox"
+                                                                data-modulo="<?= $modulo ?>"
+                                                                data-accion="<?= $accion ?>"
+                                                                name="permisos[<?= $modulo ?>][<?= $accion ?>]"
+                                                                <?= (!empty($rolPermisos[$modulo][$accion]) ? 'checked' : '') ?>>
+                                                        <?php endif; ?>
+                                                    </td>
+                                                <?php endforeach; ?>
+                                            </tr>
+                                        <?php endforeach; ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -235,7 +276,7 @@ if (!tienePermiso('usuarios', 'ver') && !tienePermiso('roles', 'ver')) {
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <span>Usuarios Registrados</span>
-                                <button class="btn btn-sm btn-primary" onclick="mostrarFormularioUsuario()">Nuevo Usuario</button>
+                                <button class="btn btn-sm btn-primary" onclick="mostrarFormularioUsuario('crear')">Nuevo Usuario</button>
                             </div>
                             <div class="table-responsive">
                                 <table id="tablaUsuarios" class="table table-hover w-100">
@@ -265,7 +306,7 @@ if (!tienePermiso('usuarios', 'ver') && !tienePermiso('roles', 'ver')) {
                             <form id="formUsuario" class="card-body">
                                 <div class="mb-3">
                                     <label for="nombreUsuario" class="form-label">Email del Usuario</label>
-                                    <input type="text" class="form-control" id="emailUsuario" name="nombre" required>
+                                    <input type="text" class="form-control" id="emailUsuario" name="email" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="nombreUsuario" class="form-label">Nombre del Usuario</label>
@@ -273,7 +314,7 @@ if (!tienePermiso('usuarios', 'ver') && !tienePermiso('roles', 'ver')) {
                                 </div>
                                 <div class="mb-3">
                                     <label for="nombreUsuario" class="form-label">Apellido del Usuario</label>
-                                    <input type="text" class="form-control" id="apellidoUsuario" name="nombre" required>
+                                    <input type="text" class="form-control" id="apellidoUsuario" name="apellido" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="rolUsuario" class="form-label">Rol</label>
@@ -308,6 +349,10 @@ if (!tienePermiso('usuarios', 'ver') && !tienePermiso('roles', 'ver')) {
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
             <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script>
+                window.PERMISOS = <?= json_encode($_SESSION['permisos'] ?? []) ?>;
+                console.log("PERMISOS cargados desde dashboard:", window.PERMISOS);
+            </script>
             <script>
                 if (typeof tablaRoles === 'undefined') {
                     var tablaRoles;
@@ -363,10 +408,11 @@ if (!tienePermiso('usuarios', 'ver') && !tienePermiso('roles', 'ver')) {
                                 data: null,
                                 className: 'text-center',
                                 render: function (data, type, row) {
-                                    return `
-                                    <button class="btn btn-sm btn-primary me-1" onclick="verRol(${row.id})"><i class="bi bi-eye"></i></button>
-                                    <button class="btn btn-sm btn-danger" onclick="eliminarRol(${row.id})"><i class="bi bi-trash"></i></button>
-                                    `;
+                                    let botones = `<button class="btn btn-sm btn-primary me-1" onclick="verRol(${row.id})"><i class="bi bi-eye"></i></button>`;
+                                    if (PERMISOS?.roles?.includes('eliminar')) {
+                                        botones += `<button class="btn btn-sm btn-danger" onclick="eliminarRol(${row.id})"><i class="bi bi-trash"></i></button>`;
+                                    }
+                                    return botones;
                                 }
                             }
                         ],
@@ -388,7 +434,46 @@ if (!tienePermiso('usuarios', 'ver') && !tienePermiso('roles', 'ver')) {
                         ],
                     });
                 }
+                window.mostrarFormularioRol = function (modo = 'crear', rolData = null) {
+                    if (modo === 'crear' && !PERMISOS?.roles?.includes('crear')) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Acceso restringido',
+                            text: 'No tienes permisos para crear nuevos roles.',
+                            confirmButtonText: 'Cerrar'
+                        });
+                        return;
+                    }
 
+                    if (modo === 'modificar' && !PERMISOS?.roles?.includes('modificar')) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Acceso restringido',
+                            text: 'No tienes permisos para editar roles.',
+                            confirmButtonText: 'Cerrar'
+                        });
+                        return;
+                    }
+
+                    $('#formRol')[0].reset();
+                    $('#formRolTitulo').text(modo === 'crear' ? 'Nuevo Rol' : 'Editar Rol');
+                    $('#rol_id').val(rolData?.id || '');
+                    $('#nombreRol').val(rolData?.nombre || '').prop('disabled', modo === 'modificar');
+                    $('#descripcionRol').val(rolData?.descripcion || '').prop('disabled', false);
+
+                    $('input[name^="permisos"]').prop('checked', false).prop('disabled', false);
+
+                    if (rolData?.permisos) {
+                        for (let modulo in rolData.permisos) {
+                            for (let accion in rolData.permisos[modulo]) {
+                                $(`input[name="permisos[${modulo}][${accion}]"]`).prop('checked', true);
+                            }
+                        }
+                    }
+
+                    $('#formRol .btn[type="submit"]').show();
+                    $('#formularioRolContainer').show();
+                }
                 function inicializarTablaUsuarios() {
                     if ($.fn.DataTable.isDataTable('#tablaUsuarios')) tablaUsuarios.destroy();
 
@@ -442,10 +527,11 @@ if (!tienePermiso('usuarios', 'ver') && !tienePermiso('roles', 'ver')) {
                                 data: null,
                                 className: 'text-center',
                                 render: function (data, type, row) {
-                                    return `
-                                    <button class="btn btn-sm btn-primary me-1" onclick="verUsuario(${row.id})"><i class="bi bi-eye"></i></button>
-                                    <button class="btn btn-sm btn-danger" onclick="eliminarUsuario(${row.id})"><i class="bi bi-trash"></i></button>
-                                    `;
+                                    let botones = `<button class="btn btn-sm btn-primary me-1" onclick="verUsuario(${row.id})"><i class="bi bi-eye"></i></button>`;
+                                    if (PERMISOS?.usuarios?.includes('eliminar')) {
+                                        botones += `<button class="btn btn-sm btn-danger" onclick="eliminarUsuario(${row.id})"><i class="bi bi-trash"></i></button>`;
+                                    }
+                                    return botones;
                                 }
                             }
                         ],
@@ -464,45 +550,62 @@ if (!tienePermiso('usuarios', 'ver') && !tienePermiso('roles', 'ver')) {
                     });
                 }
 
-                function mostrarFormularioRol() {
-                    $('#formRol')[0].reset();
-                    $('#formRolTitulo').text('Nuevo Rol');
-                    $('#rol_id').val('');
-                    $('#formularioRolContainer').show();
-                    $('#nombreRol').prop('disabled', false);
-                    $('input[name^="permisos"]').prop('checked', false).prop('disabled', false);
-                    $('#formRol .btn[type="submit"]').show();
-                }
-
                 function ocultarFormularioRol() {
                     $('#formularioRolContainer').hide();
                 }
+
+                $(document).ready(function () {
+                    function actualizarDependencia(modulo) {
+                        const ver = $(`input[data-modulo="${modulo}"][data-accion="ver"]`);
+                        const modificar = $(`input[data-modulo="${modulo}"][data-accion="modificar"]`);
+                        const crear = $(`input[data-modulo="${modulo}"][data-accion="crear"]`);
+                        const eliminar = $(`input[data-modulo="${modulo}"][data-accion="eliminar"]`);
+
+                        // Si modificar/crear/eliminar está marcado → marcar/ver "ver"
+                        if (modificar.prop('checked') || crear.prop('checked') || eliminar.prop('checked')) {
+                            ver.prop('checked', true).prop('disabled', true);
+                        } else {
+                            // Si no hay ninguno activo, permitir desmarcar "ver"
+                            ver.prop('disabled', false);
+                        }
+                    }
+
+                    // Detecta cualquier cambio en checkboxes
+                    $('.permiso-checkbox').on('change', function () {
+                        const modulo = $(this).data('modulo');
+                        actualizarDependencia(modulo);
+                    });
+
+                    // Inicializa lógica para todos los módulos al cargar
+                    const modulos = [...new Set($('.permiso-checkbox').map(function () {
+                        return $(this).data('modulo');
+                    }).get())];
+
+                    modulos.forEach(actualizarDependencia);
+                });
 
                 function verRol(id) {
                     $.post('usuariosAjax.php', {
                         accion: 'obtenerRolPorId',
                         id
                     }, function(data) {
-                        mostrarFormularioRol();
-                        $('#formRolTitulo').text('Editar Rol');
-                        $('#rol_id').val(data.id);
-                        $('#nombreRol').val(data.nombre).prop('disabled', true);
-                        $('#descripcionRol').val(data.descripcion).prop('disabled', false);
-                        $('input[name^="permisos"]').prop('checked', false).prop('disabled', false);
-                        if (data.permisos) {
-                            for (let modulo in data.permisos) {
-                                for (let accion in data.permisos[modulo]) {
-                                    $(`input[name="permisos[${modulo}][${accion}]"]`).prop('checked', true);
-                                }
-                            }
-                        }
+                        mostrarFormularioRol('modificar', data);
                     }, 'json');
                 }
 
                 $('#formRol').on('submit', function(e) {
                     e.preventDefault();
+                    
+                    const esNuevo = $('#rol_id').val() === '';
+                    if (esNuevo && !PERMISOS?.roles?.includes('crear')) {
+                        Swal.fire({ icon: 'warning', title: 'Sin permiso', text: 'No tienes permiso para crear roles.' });
+                        return;
+                    } else if (!esNuevo && !PERMISOS?.roles?.includes('modificar')) {
+                        Swal.fire({ icon: 'warning', title: 'Sin permiso', text: 'No tienes permiso para modificar roles.' });
+                        return;
+                    }
                     const permisos = {};
-                    $('input[name^="permisos"]').each(function() {
+                    $('input[name^="permisos"]').each(function () {
                         if (this.checked) {
                             const match = this.name.match(/permisos\[(\w+)\]\[(\w+)\]/);
                             if (match) {
@@ -513,46 +616,51 @@ if (!tienePermiso('usuarios', 'ver') && !tienePermiso('roles', 'ver')) {
                         }
                     });
 
-                    $.post('usuariosAjax.php', {
-                        accion: 'guardarRol',
+                    const datosRol = {
                         id: $('#rol_id').val(),
                         nombre: $('#nombreRol').val().trim(),
                         descripcion: $('#descripcionRol').val().trim(),
-                        permisos
-                    }, function(response) {
-                        if (response.success) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Rol guardado',
-                                text: 'El rol se ha guardado correctamente.',
-                                timer: 1500,
-                                showConfirmButton: false
-                            });
-                            ocultarFormularioRol();
-                            tablaRoles.ajax.reload();
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error al guardar',
-                                text: response.error || 'No se pudo guardar el rol.'
-                            });
-                        }
-                    }, 'json');
-                });
+                        permisos,
+                    };
 
+                    guardarRolYActualizarPermisos(datosRol);
+                });
+                window.mostrarFormularioUsuario = function (modo = 'crear', usuarioData = null) {
+                    if (modo === 'crear' && !PERMISOS?.usuarios?.includes('crear')) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Acceso restringido',
+                            text: 'No tienes permisos para crear nuevos usuarios.',
+                            confirmButtonText: 'Cerrar'
+                        });
+                        return;
+                    }
+
+                    if (modo === 'modificar' && !PERMISOS?.usuarios?.includes('modificar')) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Acceso restringido',
+                            text: 'No tienes permisos para editar usuarios.',
+                            confirmButtonText: 'Cerrar'
+                        });
+                        return;
+                    }
+
+                    $('#formUsuario')[0].reset();
+                    $('#formUsuarioTitulo').text(modo === 'crear' ? 'Nuevo Usuario' : 'Editar Usuario');
+                    $('#usuario_id').val(usuarioData?.id || '');
+                    $('#nombreUsuario').val(usuarioData?.nombre || '');
+                    $('#apellidoUsuario').val(usuarioData?.apellido || '');
+                    $('#emailUsuario').val(usuarioData?.email || '').prop('disabled', modo === 'modificar');
+                    $('#estadoUsuario').val(usuarioData?.estado || 'activo');
+                    $('#rolUsuario').val(usuarioData?.rol_id || '');
+                    $('#formUsuario .btn[type="submit"]').show();
+                    $('#formularioUsuarioContainer').show();
+                }
                 $(document).ready(function() {
                     inicializarTablaRoles();
                     inicializarTablaUsuarios();
                 });
-
-                function mostrarFormularioUsuario() {
-                    $('#formUsuario')[0].reset();
-                    $('#formUsuarioTitulo').text('Nuevo Usuario');
-                    $('#usuario_id').val('');
-                    $('#formularioUsuarioContainer').show();
-                    $('#emailUsuario').prop('disabled', false);
-                    $('#formUsuario .btn[type="submit"]').show();
-                }
 
                 function ocultarFormularioUsuario() {
                     $('#formularioUsuarioContainer').hide();
@@ -562,61 +670,44 @@ if (!tienePermiso('usuarios', 'ver') && !tienePermiso('roles', 'ver')) {
                     $.post('usuariosAjax.php', {
                         accion: 'obtenerUsuarioPorId',
                         id
-                    }, function(data) {
-                        mostrarFormularioUsuario();
-                        $('#formUsuarioTitulo').text('Editar Usuario');
-                        $('#usuario_id').val(data.id);
-                        $('#emailUsuario').val(data.email).prop('disabled', true);
-                        $('#nombreUsuario').val(data.nombre).prop('disabled', false);
-                        $('#apellidoUsuario').val(data.apellido).prop('disabled', false);
-                        $('#rolUsuario').val(data.rol_id).prop('disabled', false);
+                    }, function (data) {
+                        mostrarFormularioUsuario('modificar', data);
                     }, 'json');
                 }
                 $('#formUsuario').on('submit', function(e) {
                     e.preventDefault();
 
+                    const esNuevo = $('#usuario_id').val() === '';
+                    if (esNuevo && !PERMISOS?.usuarios?.includes('crear')) {
+                        Swal.fire({ icon: 'warning', title: 'Sin permiso', text: 'No tienes permiso para crear usuarios.' });
+                        return;
+                    } else if (!esNuevo && !PERMISOS?.usuarios?.includes('modificar')) {
+                        Swal.fire({ icon: 'warning', title: 'Sin permiso', text: 'No tienes permiso para modificar usuarios.' });
+                        return;
+                    }
+
                     const password = $('#passwordUsuario').val().trim();
                     const confirmarPassword = $('#confirmarPasswordUsuario').val().trim();
 
                     if (password !== confirmarPassword) {
-                        if (password !== confirmarPassword) {
-                            Swal.fire({
-                                icon: 'warning',
-                                title: 'Contraseñas no coinciden',
-                                text: 'Por favor, verifica ambos campos.'
-                            });
-                            return;
-                        }
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Contraseñas no coinciden',
+                            text: 'Por favor, verifica ambos campos.'
+                        });
+                        return;
                     }
 
-                    // Si las contraseñas coinciden, continúa con la petición AJAX
-                    $.post('usuariosAjax.php', {
-                        accion: 'guardarUsuario',
+                    const datosUsuario = {
                         id: $('#usuario_id').val(),
                         email: $('#emailUsuario').val().trim(),
                         nombre: $('#nombreUsuario').val().trim(),
                         apellido: $('#apellidoUsuario').val().trim(),
                         password: password,
                         rol_id: $('#rolUsuario').val()
-                    }, function(response) {
-                        if (response.success) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Usuario guardado',
-                                text: 'El usuario se ha guardado correctamente.',
-                                timer: 1500,
-                                showConfirmButton: false
-                            });
-                            ocultarFormularioUsuario();
-                            tablaUsuarios.ajax.reload();
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error al guardar',
-                                text: response.error || 'No se pudo guardar el usuario.'
-                            });
-                        }
-                    }, 'json');
+                    };
+
+                    guardarUsuarioYActualizar(datosUsuario);
                 });
                 $(document).on('click', '.estado-click', function () {
                     const badge = $(this);
@@ -626,6 +717,18 @@ if (!tienePermiso('usuarios', 'ver') && !tienePermiso('roles', 'ver')) {
                     const nuevoEstado = estadoActual === "activo" ? "inactivo" : "activo";
                     const estado = $(this).text().trim().toLowerCase() === "activo" ? "inactivo" : "activo";
 
+                    // ✅ Validación de permiso antes de continuar
+                    if (
+                        (tipo === 'usuario' && !PERMISOS?.usuarios?.includes('modificar')) ||
+                        (tipo === 'rol' && !PERMISOS?.roles?.includes('modificar') )
+                    ) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Sin permiso',
+                            text: `No tienes permiso para modificar ${tipo === 'usuario' ? 'usuarios' : 'roles'}.`
+                        });
+                        return;
+                    }
                     const nombre = tipo === 'usuario' ? 'usuario' : 'rol';
 
                     Swal.fire({

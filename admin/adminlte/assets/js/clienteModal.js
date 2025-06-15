@@ -41,6 +41,7 @@ function inicializarFormularioCliente() {
             ...Object.fromEntries(new URLSearchParams(formData))
         }, function (response) {
             if (response.success) {
+                actualizarPermisosSesion();
                 Swal.fire({
                     icon: 'success',
                     title: 'Cliente creado',

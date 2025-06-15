@@ -88,6 +88,9 @@ if (!tienePermiso('clientes', 'ver')) {
             max-width: 100%;
         }
     </style>
+    <script>
+        window.PERMISOS = window.PERMISOS || <?= json_encode($_SESSION['permisos'] ?? []) ?>;
+    </script>
 </head>
 
 <body class="bg-light">
@@ -379,25 +382,26 @@ if (!tienePermiso('clientes', 'ver')) {
                             className: 'text-center',
                             render: function(data, type, row) {
                                 let botones = `
-                            <button class="btn btn-sm btn-primary me-1" title="Ver" onclick="verCliente(${row.id})">
-                                <i class="bi bi-eye"></i>
-                            </button>`;
+                                    <button class="btn btn-sm btn-primary me-1" title="Ver" onclick="verCliente(${row.id})">
+                                        <i class="bi bi-eye"></i>
+                                    </button>`;
+
+                                const puedeEliminar = PERMISOS['clientes']?.includes('eliminar');
 
                                 if (row.estado.toLowerCase() === 'eliminado') {
                                     botones += `
-                            <button class="btn btn-sm btn-success" title="Recuperar" onclick="recuperarCliente(${row.id})">
-                                <i class="bi bi-arrow-counterclockwise"></i>
-                            </button>`;
-                                } else if (rol_id != 4) {
+                                        <button class="btn btn-sm btn-success" title="Recuperar" onclick="recuperarCliente(${row.id})">
+                                            <i class="bi bi-arrow-counterclockwise"></i>
+                                        </button>`;
+                                } else if (puedeEliminar) {
                                     botones += `
-                            <button class="btn btn-sm btn-danger" title="Eliminar" onclick="eliminarCliente(${row.id})">
-                                <i class="bi bi-trash"></i>
-                            </button>`;
+                                        <button class="btn btn-sm btn-danger" title="Eliminar" onclick="eliminarCliente(${row.id})">
+                                            <i class="bi bi-trash"></i>
+                                        </button>`;
                                 }
 
                                 return botones;
                             }
-                                    ,
                         }
                     ],
                     order: [
