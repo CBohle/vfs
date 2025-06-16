@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    $secretKey = '6LdyYy0rAAAAAHR192gnUWvBwEXWJkw57eCfuC0N';
+    $secretKey = '6Le_LWIrAAAAAPaYQUPk_E8aXMVmEdrIH-VCGpxd';
     $remoteIp = $_SERVER['REMOTE_ADDR'];
     $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$captcha&remoteip=$remoteIp");
     $captchaData = json_decode($response, true);
@@ -51,8 +51,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $formacion_tasacion = ($_POST['formacion_tasacion'] ?? '') === 'Sí' ? 1 : 0;
     $detalle_formacion = trim($_POST['campo_especificar'] ?? '');
     $mapa_experiencia = [
-        "Sin experiencia" => 0, "Menos de 1 año" => 0,
-        "1 a 3 años" => 2, "3 a 5 años" => 4, "Más de 5 años" => 5
+        "Sin experiencia" => 0,
+        "Menos de 1 año" => 0,
+        "1 a 3 años" => 2,
+        "3 a 5 años" => 4,
+        "Más de 5 años" => 5
     ];
     $anos_experiencia_tasacion = $mapa_experiencia[$_POST['ano_experiencia']] ?? 0;
     $otra_empresa = trim($_POST['otra_empresa'] ?? '');
@@ -142,14 +145,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mail = new PHPMailer(true);
         try {
             $mail->isSMTP();
-            $mail->Host = 'mail.vfs.cl';
+            $mail->Host       = $_ENV['MAIL_HOST'];
             $mail->SMTPAuth = true;
-            $mail->Username = 'contacto@vfs.cl';
-            $mail->Password = 'ContactoVFS1234.';
-            $mail->SMTPSecure = 'ssl';
-            $mail->Port = 465;
+            $mail->Username = $_ENV['MAIL_CONTACTO_USER'];
+            $mail->Password = $_ENV['MAIL_CONTACTO_PASS'];
+            $mail->SMTPSecure = $_ENV['MAIL_SECURE'];
+            $mail->Port       = $_ENV['MAIL_PORT'];
             $mail->CharSet = 'UTF-8';
-            $mail->setFrom('contacto@vfs.cl', 'VFS-Admin');
+            $mail->setFrom($_ENV['MAIL_CONTACTO_USER'], 'VFS-Admin');
 
             while ($admin = $result->fetch_assoc()) {
                 $mail->addAddress($admin['email']);

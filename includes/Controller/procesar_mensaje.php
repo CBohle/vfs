@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../db.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -10,7 +11,7 @@ header('Content-Type: application/json');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // --- Validación reCAPTCHA ---
-    $secretKey = '6LdyYy0rAAAAAHR192gnUWvBwEXWJkw57eCfuC0N';
+    $secretKey = '6Le_LWIrAAAAAPaYQUPk_E8aXMVmEdrIH-VCGpxd';
     $captchaResponse = $_POST['g-recaptcha-response'] ?? '';
 
     if (!$captchaResponse) {
@@ -74,22 +75,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         while ($admin = $result->fetch_assoc()) {
             try {
-
                 $mail->isSMTP();
-                $mail->clearAllRecipients();  
-                $mail->Host = 'mail.vfs.cl';  
+                $mail->clearAllRecipients();
+                $mail->Host       = $_ENV['MAIL_HOST'];
                 $mail->SMTPAuth = true;
-                $mail->Username = 'contacto@vfs.cl';  
-                $mail->Password = 'ContactoVFS1234.';  
-                $mail->SMTPSecure = 'ssl';  
-                $mail->Port = 465;  
-                
-                $mail->setFrom('contacto@vfs.cl', 'VFS-Admin');
-                // Aquí asumo que tienes una variable $admin con email. Si no, asigna un email fijo.
-                $mail->addAddress($admin['email']);  
+                $mail->Username = $_ENV['MAIL_CONTACTO_USER'];
+                $mail->Password = $_ENV['MAIL_CONTACTO_PASS'];
+                $mail->SMTPSecure = $_ENV['MAIL_SECURE'];
+                $mail->Port       = $_ENV['MAIL_PORT'];
+
+                $mail->setFrom($_ENV['MAIL_CONTACTO_USER'], 'VFS-Admin');
+                $mail->addAddress($admin['email']);
                 $mail->Subject = 'Nuevo mensaje de contacto';
                 $mail->Body = "Has recibido un nuevo mensaje de contacto de:\n\nNombre: $nombre $apellido\nEmail: $email\nTeléfono: $telefono\nServicio: $servicio\n\nMensaje:\n$mensaje";
 
+                // Enviar el correo
                 $mail->send();
             } catch (Exception $e) {
                 error_log("Error al enviar correo a administrador: {$mail->ErrorInfo}");
@@ -107,7 +107,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'fecha' => date('d-m-Y H:i')
         ]);
         exit;
-
     } else {
         echo json_encode(['success' => false, 'error' => 'Todos los campos son obligatorios.']);
         exit;
@@ -116,4 +115,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo json_encode(['success' => false, 'error' => 'Método no permitido.']);
     exit;
 }
-?>
