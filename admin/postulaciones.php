@@ -83,11 +83,6 @@ if (!tienePermiso('postulaciones', 'ver')) {
             max-width: 100%;
         }
     </style>
-    <script>
-        if (typeof BASE_PATH === 'undefined') {
-            var BASE_PATH = "/vfs/admin/";
-        }
-    </script>
 </head>
 
 <body class="bg-light">
