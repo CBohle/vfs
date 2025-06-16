@@ -11,7 +11,7 @@ function crearCliente() {
     $('#contenidoModalCliente').html('<p class="text-center text-muted">Cargando formulario...</p>');
     $('#modalVerCliente').modal('show');
 
-    $.get('clienteModal.php', function (respuesta) {
+    $.get('clienteModal.php', { modo: 'crear' }, function (respuesta) {
         $('#contenidoModalCliente').html(respuesta);
 
         $('#botonImportanteWrapper').html(`
