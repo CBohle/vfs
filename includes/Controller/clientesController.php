@@ -35,11 +35,16 @@ function ver_clientes()
 function obtenerClaseEstado($estado)
 {
     $estado = strtolower($estado);
-    return match ($estado) {
-        'activo' => 'bg-success text-light',
-        'inactivo' => 'bg-warning text-dark',
-        'eliminado' => 'bg-secondary text-light'
-    };
+    switch ($estado) {
+        case 'activo':
+            return 'bg-success text-light';
+        case 'inactivo':
+            return 'bg-warning text-dark';
+        case 'eliminado':
+            return 'bg-secondary text-light';
+        default:
+            return 'bg-secondary text-light';
+    }
 }
 
 function actualizar_estado_cliente($id)

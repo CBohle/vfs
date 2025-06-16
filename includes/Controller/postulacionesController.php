@@ -36,13 +36,18 @@ function ver_postulaciones()
 function obtenerClaseEstado($estado)
 {
     $estado = strtolower($estado);
-    return match ($estado) {
-        'respondido' => 'bg-success text-light',
-        'pendiente' => 'bg-warning text-dark',
-        'leido' => 'bg-primary text-light',
-        'eliminado' => 'bg-secondary text-light',
-        default => 'bg-secondary',
-    };
+    switch ($estado) {
+        case 'respondido':
+            return 'bg-success text-light';
+        case 'pendiente':
+            return 'bg-warning text-dark';
+        case 'leido':
+            return 'bg-primary text-light';
+        case 'eliminado':
+            return 'bg-secondary text-light';
+        default:
+            return 'bg-secondary';
+    }
 }
 
 function obtener_total_postulaciones()

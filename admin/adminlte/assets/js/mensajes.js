@@ -554,6 +554,13 @@
     }
 
     inicializarTablaMensajes();
+
+    if (sessionStorage.getItem('activarFiltroPendientes') === '1') {
+        sessionStorage.removeItem('activarFiltroPendientes');
+        if (typeof filtrarPendienteYLeido === 'function') {
+            filtrarPendienteYLeido();
+        }
+    }
   };
   window.actualizarContadorMensajesPendientes = function () {
     $.post('mensajesAjax.php', { accion: 'contarPendientes' }, function(res) {

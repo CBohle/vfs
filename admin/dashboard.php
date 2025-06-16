@@ -125,132 +125,98 @@ require_once __DIR__ . '/../includes/Controller/usuariosController.php';
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        $(document).ready(function() {
+        // Función centralizada para cargar cualquier sección
+        function cargarSeccion(section) {
+            $('.nav-link').removeClass('active');
+            $('.nav-link[data-section="' + section + '"]').addClass('active');
+
+            $('#contenido-dinamico').empty();
+
+            $('#contenido-dinamico').load(section + '.php', function () {
+                if (sessionStorage.getItem('recargaExitosa') === '1') {
+                    sessionStorage.removeItem('recargaExitosa');
+                    Swal.fire({
+                        toast: true,
+                        icon: 'success',
+                        title: 'Cambios aplicados correctamente',
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 2500,
+                        timerProgressBar: true
+                    });
+                }
+
+                // Scripts específicos por sección
+                const scripts = {
+                    mensajes: {
+                        src: 'adminlte/assets/js/mensajes.js',
+                        onload: () => {
+                            if (typeof cargarVistaMensajes === 'function') cargarVistaMensajes();
+                        }
+                    },
+                    postulaciones: {
+                        src: 'adminlte/assets/js/postulaciones.js',
+                        onload: () => {
+                            delete window.estadoFiltroPostulaciones;
+                            if (typeof cargarVistaPostulaciones === 'function') cargarVistaPostulaciones();
+                        }
+                    },
+                    clientes: {
+                        src: 'adminlte/assets/js/clientes.js',
+                        onload: () => {
+                            const intervalo = setInterval(() => {
+                                if (document.querySelector('#tablaClientes')) {
+                                    clearInterval(intervalo);
+                                    if (typeof inicializarTablaClientes === 'function') inicializarTablaClientes();
+                                }
+                            }, 100);
+                        }
+                    },
+                    usuarios: {
+                        src: 'adminlte/assets/js/usuarios.js',
+                        onload: () => {
+                            if (typeof inicializarVistaUsuarios === 'function') inicializarVistaUsuarios();
+                        }
+                    }
+                };
+
+                if (scripts[section]) {
+                    $('script[src*="' + section + '.js"]').remove();
+                    const script = document.createElement('script');
+                    script.src = BASE_ADMIN_URL + scripts[section].src + '?v=' + new Date().getTime();
+                    script.onload = scripts[section].onload;
+                    document.body.appendChild(script);
+                }
+            });
+        }
+
+        $(document).ready(function () {
             const urlParams = new URLSearchParams(window.location.search);
             const seccionParam = urlParams.get('seccion');
 
             if (seccionParam) {
-                $(`.nav-link[data-section="${seccionParam}"]`).trigger('click');
+                cargarSeccion(seccionParam);
             } else {
-                // Cargar la sección de resumen por defecto
-                $('#contenido-dinamico').load('inicioResumen.php', function () {
-                    // ✅ Activar visualmente el botón de Dashboard
-                    $('.nav-link').removeClass('active');
-                    $('.nav-link[data-section="inicioResumen"]').addClass('active');
-
-                    // ✅ Mostrar toast si fue una recarga autorizada
-                    if (sessionStorage.getItem('recargaExitosa') === '1') {
-                        sessionStorage.removeItem('recargaExitosa');
-                        Swal.fire({
-                            toast: true,
-                            icon: 'success',
-                            title: '<span style="font-size: 1.1rem;">Cambios aplicados correctamente</span>',
-                            position: 'top-end',
-                            showConfirmButton: false,
-                            timer: 4000,
-                            timerProgressBar: true
-                        });
-                    }
-                });
+                cargarSeccion('inicioResumen');
             }
 
-            // Navegación entre secciones
-            $('.nav-link[data-section]').click(function(e) {
+            // Menú lateral: navegación
+            $('.nav-link[data-section]').click(function (e) {
                 e.preventDefault();
                 const section = $(this).data('section');
-                $('.nav-link').removeClass('active');
-                $(this).addClass('active');
-
-                $('#contenido-dinamico').empty();
-
-                $('#contenido-dinamico').load(section + '.php', function() {
-                    // ✅ Mostrar toast (centralizado)
-                    if (sessionStorage.getItem('recargaExitosa') === '1') {
-                        sessionStorage.removeItem('recargaExitosa');
-                        Swal.fire({
-                            toast: true,
-                            icon: 'success',
-                            title: 'Cambios aplicados correctamente',
-                            position: 'top-end',
-                            showConfirmButton: false,
-                            timer: 2500,
-                            timerProgressBar: true
-                        });
-                    }
-                    if (section === 'mensajes') {
-                        // Elimina script previo si existe
-                        $('script[src*="mensajes.js"]').remove();
-
-                        // Crea y vuelve a insertar el script
-                        const script = document.createElement('script');
-                        script.src = BASE_ADMIN_URL + 'adminlte/assets/js/mensajes.js?v=' + new Date().getTime();
-                        script.onload = function() {
-                            if (typeof cargarVistaMensajes === 'function') {
-                                cargarVistaMensajes();
-                            }
-                        };
-                        document.body.appendChild(script);
-                    }
-                    if (section === 'postulaciones') {
-                        $('script[src*="postulaciones.js"]').remove();
-
-                        const script = document.createElement('script');
-                        script.src = BASE_ADMIN_URL + 'adminlte/assets/js/postulaciones.js?v=' + new Date().getTime();
-                        script.onload = function() {
-                            delete window.estadoFiltroPostulaciones; // Si tienes un filtro similar
-                            if (typeof cargarVistaPostulaciones === 'function') {
-                                cargarVistaPostulaciones();
-                            }
-                        };
-                        document.body.appendChild(script);
-                    }
-                    if (section === 'clientes') {
-                        $('script[src*="clientes.js"]').remove();
-
-                        const script = document.createElement('script');
-                        script.src = BASE_ADMIN_URL + 'adminlte/assets/js/clientes.js?v=' + new Date().getTime();
-
-                        script.onload = function () {
-                            const intervalo = setInterval(() => {
-                                if (document.querySelector('#tablaClientes')) {
-                                    clearInterval(intervalo);
-                                    if (typeof inicializarTablaClientes === 'function') {
-                                        inicializarTablaClientes();
-                                    }
-                                }
-                            }, 100); // Espera que el HTML esté en el DOM
-                        };
-
-                        document.body.appendChild(script);
-                    }
-                    if (section === 'usuarios') {
-                        $('script[src*="usuarios.js"]').remove();
-
-                        const script = document.createElement('script');
-                        script.src = BASE_ADMIN_URL + 'adminlte/assets/js/usuarios.js?v=' + new Date().getTime();
-
-                        script.onload = function () {
-                            if (typeof inicializarVistaUsuarios === 'function') {
-                                inicializarVistaUsuarios();
-                            }
-                        };
-
-                        document.body.appendChild(script);
-                    }
-                });
+                cargarSeccion(section);
             });
 
-            // Botón para mostrar/ocultar sidebar en móvil
-            // $('#toggleSidebar').click(function() {
-                // $('#sidebar').toggleClass('show');
-            // });
+            // Botones personalizados en tarjetas
+            $('#verMensajes').click(() => cargarSeccion('mensajes'));
+            $('#verPostulaciones').click(() => cargarSeccion('postulaciones'));
 
             // Notificaciones
             function actualizarNotificaciones() {
                 $.ajax({
                     url: 'notificaciones.php',
                     type: 'GET',
-                    success: function(data) {
+                    success: function (data) {
                         if (data.mensajes > 0) {
                             $('#badge-mensajes').text(data.mensajes).removeClass('d-none');
                         } else {

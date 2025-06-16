@@ -161,7 +161,7 @@ $promedio_formateado = $promedio_minutos > 60
                 <?php endif; ?>
                 <?php if (tienePermiso('clientes', 'ver')): ?>
                     <div class="col-md-6">
-                        <div class="card bg-success-subtle h-100">
+                        <div class="card bg-success-subtle h-100" id="verClientes" style="cursor: pointer;">
                             <div class="card-header">Clientes registrados</div>
                             <div class="card-body">
                                 👥 Hay <strong><?= $total_clientes ?></strong> <strong>clientes</strong> registrados en la base de datos.
@@ -177,20 +177,16 @@ $promedio_formateado = $promedio_minutos > 60
             require_once __DIR__ . '/includes/footerAdmin.php';
             ?>
             <!-- Fin Footer -->
-            <!-- Script para mostrar el contenido dinámico de Mensajes -->
             <script>
-                $(document).ready(function() {
-                    $('#verMensajes').click(function() {
-                        $('#contenido-dinamico').load('mensajes.php');
-                    });
+                $('#verMensajes').click(() => {
+                    sessionStorage.setItem('activarFiltroPendientes', '1');
+                    cargarSeccion('mensajes');
                 });
-            </script>
-            <!-- Script para mostrar el contenido dinámico de Postulaciones -->
-            <script>
-                $(document).ready(function() {
-                    $('#verPostulaciones').click(function() {
-                        $('#contenido-dinamico').load('postulaciones.php');
-                    });
+                $('#verPostulaciones').click(() => {
+                    sessionStorage.setItem('activarFiltroPostulaciones', '1');
+                    window.tablaInicializada = false;
+                    cargarSeccion('postulaciones');
                 });
+                $('#verClientes').click(() => cargarSeccion('clientes'));
             </script>
 </body>
