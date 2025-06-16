@@ -34,35 +34,36 @@ function inicializarFormularioCliente() {
     // Envío del formulario
     $(document).off('submit', '#formCliente').on('submit', '#formCliente', function (e) {
         e.preventDefault();
-        const formData = $(this).serialize();
 
-        $.post('clientesAjax.php', {
-            accion: 'crear',
-            ...Object.fromEntries(new URLSearchParams(formData))
-        }, function (response) {
+        const datos = $(this).serialize();
+
+        $.post('clientesAjax.php', datos, function (response) {
             if (response.success) {
-                actualizarPermisosSesion();
+                $('#modalVerCliente').modal('hide'); // ✅ Cierra el modal
+                if (window.tablaClientes) {
+                    tablaClientes.ajax.reload(null, false); // ✅ Recarga la tabla si existe
+                }
+
                 Swal.fire({
                     icon: 'success',
                     title: 'Cliente creado',
-                    text: 'El cliente fue registrado correctamente',
+                    text: 'El cliente fue agregado correctamente.',
                     timer: 2000,
                     showConfirmButton: false
                 });
-                $('#modalVerCliente').modal('hide');
-                if (typeof tablaClientes !== 'undefined') {
-                    tablaClientes.ajax.reload(null, false);
-                }
             } else {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Error al crear cliente',
-                    text: response.error || 'Ocurrió un error inesperado.'
+                    title: 'Error',
+                    text: response.error || 'No se pudo crear el cliente.'
                 });
-                console.error(response);
             }
-        }, 'json').fail(function (xhr) {
-            console.error('Fallo AJAX:', xhr.responseText);
+        }, 'json').fail(function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error de conexión',
+                text: 'No se pudo contactar con el servidor.'
+            });
         });
     });
 }
