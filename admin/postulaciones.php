@@ -84,8 +84,8 @@ if (!tienePermiso('postulaciones', 'ver')) {
         }
     </style>
     <script>
-        if (typeof BASE_PATH === 'undefined') {
-            var BASE_PATH = "/vfs/admin/";
+        if (typeof BASE_ADMIN_URL === 'undefined') {
+            var BASE_ADMIN_URL = "/vfs/admin/";
         }
     </script>
 </head>
