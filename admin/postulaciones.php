@@ -83,11 +83,6 @@ if (!tienePermiso('postulaciones', 'ver')) {
             max-width: 100%;
         }
     </style>
-    <script>
-        if (typeof BASE_ADMIN_URL === 'undefined') {
-            var BASE_ADMIN_URL = "/vfs/admin/";
-        }
-    </script>
 </head>
 
 <body class="bg-light">
