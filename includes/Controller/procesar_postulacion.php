@@ -1,11 +1,11 @@
 <?php
-// Desactivar errores visibles (opcional)
 error_reporting(0);
 ini_set('display_errors', 0);
 
 require_once __DIR__ . '/../db.php';
 require_once __DIR__ . '/../config.php';
-require_once __DIR__ . '/../../vendor/autoload.php';  // Asegúrate de incluir PHPMailer
+require_once __DIR__ . '/../../vendor/autoload.php';
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -18,7 +18,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Recoger los datos del formulario
+    // Validación de reCAPTCHA
+    $captcha = $_POST['g-recaptcha-response'] ?? '';
+    if (!$captcha) {
+        echo json_encode(['success' => false, 'error' => 'Por favor, verifica el reCAPTCHA.']);
+        exit;
+    }
+
+    $secretKey = '6LdyYy0rAAAAAHR192gnUWvBwEXWJkw57eCfuC0N';
+    $remoteIp = $_SERVER['REMOTE_ADDR'];
+    $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$captcha&remoteip=$remoteIp");
+    $captchaData = json_decode($response, true);
+
+    if (!$captchaData['success']) {
+        echo json_encode(['success' => false, 'error' => 'Error en la validación del captcha.']);
+        exit;
+    }
+
+    // Recoger datos del formulario
     $nombre = trim($_POST['nombre'] ?? '');
     $apellido = trim($_POST['apellido'] ?? '');
     $fecha_nacimiento = trim($_POST['fecha_nacimiento'] ?? '');
@@ -43,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $disponibilidad_region = ($_POST['disponibilidad_regional'] ?? '') === 'Sí' ? 1 : 0;
     $movilizacion_propia = ($_POST['movilizacion'] ?? '') === 'Sí' ? 1 : 0;
 
-    // Validación de archivo de CV
+    // Validar archivo CV
     if (!isset($_FILES['cv']) || $_FILES['cv']['error'] !== UPLOAD_ERR_OK) {
         echo json_encode(['success' => false, 'error' => 'No se subió el archivo correctamente.']);
         exit;
@@ -54,6 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $cv_tamano = $_FILES['cv']['size'];
     $cv_ext = strtolower(pathinfo($cv_nombre, PATHINFO_EXTENSION));
     $ext_permitidas = ['pdf', 'doc', 'docx'];
+
     if (!in_array($cv_ext, $ext_permitidas)) {
         echo json_encode(['success' => false, 'error' => 'Formato de archivo no permitido.']);
         exit;
@@ -121,7 +139,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt_admins->execute();
         $result = $stmt_admins->get_result();
 
-        // Inicializar PHPMailer para el envío
         $mail = new PHPMailer(true);
         try {
             $mail->isSMTP();
@@ -133,13 +150,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail->Port = 465;
             $mail->CharSet = 'UTF-8';
             $mail->setFrom('contacto@vfs.cl', 'VFS-Admin');
-            
-            // Añadir los destinatarios (administradores)
+
             while ($admin = $result->fetch_assoc()) {
                 $mail->addAddress($admin['email']);
             }
 
-            // Asunto y cuerpo del correo
             $mail->Subject = 'Nueva postulación recibida';
             $mail->Body = "
             Has recibido una nueva postulación con los siguientes datos:
@@ -166,10 +181,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             El CV adjunto ha sido recibido.
             ";
 
-            // Adjuntar el CV
-            $mail->addAttachment($ruta_absoluta, $cv_nombre);  // Añadir el CV como adjunto
-
-            // Enviar el correo
+            $mail->addAttachment($ruta_absoluta, $cv_nombre);
             $mail->send();
         } catch (Exception $e) {
             error_log("Error al enviar correo a administrador: {$mail->ErrorInfo}");
@@ -177,7 +189,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        // Respuesta exitosa
         echo json_encode(['success' => true, 'mensaje' => 'Postulación enviada correctamente.']);
         exit;
     } else {
