@@ -30,7 +30,7 @@ function enviarCorreo($destinatario, $asunto, $cuerpoHTML, $remitente = 'soporte
         $mail->Host       = $_ENV['MAIL_HOST'];
         $mail->SMTPAuth   = true;
         $mail->Port       = $_ENV['MAIL_PORT'];
-        $mail->SMTPSecure = $_ENV['MAIL_SECURE']; // Ej: 'ssl' o 'tls'
+        $mail->SMTPSecure = $_ENV['MAIL_SECURE'];
         $mail->CharSet = 'UTF-8';
 
         // Autenticación y remitente según tipo

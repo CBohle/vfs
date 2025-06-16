@@ -1,14 +1,16 @@
-# Ignorar credenciales y configuraciones privadas
-.env
+# .gitignore
 
-# Ignorar dependencias de Composer
+# Archivos sensibles
+.env
+includes/config.php
+sql/init.sql
+
+# Dependencias de Composer
 /vendor/
 
-# Ignorar archivos temporales
+# Cachés y archivos del sistema
 *.log
 *.tmp
-
-# Ignorar cachés de editores
 .vscode/
 .idea/
 .DS_Store
