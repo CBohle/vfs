@@ -28,7 +28,7 @@ require_once __DIR__ . '/../includes/Controller/usuariosController.php';
         const BASE_ADMIN_URL = "<?= BASE_ADMIN_URL ?>";
         const ROL_ID = <?= $_SESSION['rol_id'] ?>;
         const PERMISOS = <?= json_encode($_SESSION['permisos'] ?? []) ?>;
-        console.log("PERMISOS cargados desde dashboard:", PERMISOS);
+        //console.log("PERMISOS cargados desde dashboard:", PERMISOS);
     </script>
 </head>
 

@@ -1,12 +1,12 @@
 window.tabla = window.tabla || null;
 window.ordenManualActivado = window.ordenManualActivado || false;
 
-console.log("postulaciones.js cargado");
+//console.log("postulaciones.js cargado");
 function inicializarTablaPostulaciones() {
   if ($.fn.DataTable.isDataTable("#tablaPostulaciones")) {
     tabla.clear().destroy();
   }
-  console.log("Iniciando tabla de postulaciones"); 
+  //console.log("Iniciando tabla de postulaciones"); 
   tabla = $("#tablaPostulaciones").DataTable({
     rowId: function(row) {
       return 'row_' + row.id;

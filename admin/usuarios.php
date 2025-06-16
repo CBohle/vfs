@@ -355,7 +355,7 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             <script>
                 window.PERMISOS = <?= json_encode($_SESSION['permisos'] ?? []) ?>;
-                console.log("PERMISOS cargados desde dashboard:", window.PERMISOS);
+                //console.log("PERMISOS cargados desde dashboard:", window.PERMISOS);
             </script>
             <script>
                 if (typeof tablaRoles === 'undefined') {
