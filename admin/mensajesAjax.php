@@ -8,6 +8,7 @@ error_reporting(E_ALL);
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/Controller/mensajesController.php';
 require_once __DIR__ . '/../vendor/autoload.php';
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -114,17 +115,17 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'guardarRespuesta' && isset(
         $admin = $result->fetch_assoc();
 
         // Enviar correo
-     $mail = new PHPMailer(true);
+        $mail = new PHPMailer(true);
         try {
             $mail->isSMTP();
-            $mail->Host = 'mail.vfs.cl';  // Usando el servidor SMTP en duro
+            $mail->Host       = $_ENV['MAIL_HOST'];
             $mail->SMTPAuth = true;
-            $mail->Username = 'contacto@vfs.cl';  // Tu correo
-            $mail->Password = 'ContactoVFS1234.';  // Tu contraseña
-            $mail->SMTPSecure = 'ssl';  // Usando SSL
-            $mail->Port = 465;  // Puerto 465 para SSL
+            $mail->Username = $_ENV['MAIL_CONTACTO_USER'];
+            $mail->Password = $_ENV['MAIL_CONTACTO_PASS'];
+            $mail->SMTPSecure = $_ENV['MAIL_SECURE'];
+            $mail->Port       = $_ENV['MAIL_PORT'];
 
-            $mail->setFrom('contacto@vfs.cl', 'VFS-Admin');
+            $mail->setFrom($_ENV['MAIL_CONTACTO_USER'], 'VFS-Admin');
             $mail->addAddress($cliente['email'], $cliente['nombre'] . ' ' . $cliente['apellido']);
             $mail->Subject = 'Respuesta a tu consulta en VFS';
             $mail->Body    = "Hola {$cliente['nombre']},\n\nEsta es nuestra respuesta a tu consulta:\n\n$respuesta\n\nGracias por contactarnos.";

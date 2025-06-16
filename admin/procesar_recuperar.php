@@ -34,11 +34,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $resultado = enviarCorreo($email, $asunto, $contenidoHTML, 'soporte');
 
-        if ($resultado === true) {
-            $mensaje = "Si el correo está registrado, recibirás un enlace.";
-        } else {
+        if ($resultado !== true) {
             $mensaje = "Error al enviar el correo: $resultado";
         }
+    }
+
+    // Mostrar mensaje independientemente de si existe o no
+    if (empty($mensaje)) {
+        $mensaje = "Si el correo está registrado, recibirás un enlace.";
     }
 }
 ?>

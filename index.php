@@ -551,7 +551,7 @@ require_once __DIR__ . '/includes/config.php';
                                     <div class="text-center text-danger mb-3">Error al enviar el mensaje.</div>
                                 </div>
                                 <!-- reCAPTCHA -->
-                                <div class="g-recaptcha mb-3 mt-3" data-sitekey="6LdyYy0rAAAAAH9kSCDWmq8Rkp0vZRQX3oFSZcpr"></div>
+                                <div class="g-recaptcha mb-3 mt-3" data-sitekey="6Le_LWIrAAAAAENPyGmMQU-roMpK1x5VACi0x3QA"></div>
                                 <!-- Botón enviar -->
                                 <div class="d-grid">
                                     <button class="btn btn-primary btn-xl" id="submitButtonContacto" type="submit" disabled>Enviar</button>

@@ -50,12 +50,14 @@ if (!$user) {
                     <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>">
                     <div class="mb-3">
                         <label for="password" class="form-label text-white">Nueva contraseña</label>
-                        <input type="password" name="password" class="form-control" required>
+                        <input type="password" id="password" name="password" class="form-control" required>
+                        <small id="passwordHelp" class="form-text text-warning"></small>
                     </div>
                     <br>
                     <div class="mb-3">
                         <label for="password" class="form-label text-white">Confirmar contraseña</label>
-                        <input type="password" name="confirm_password" class="form-control" required>
+                        <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
+                        <small id="confirmHelp" class="form-text text-warning"></small>
                     </div>
                     <br>
                     <div class="d-grid">
@@ -65,6 +67,29 @@ if (!$user) {
             </div>
         </div>
     </div>
+    <script>
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const password = document.getElementById('password').value;
+            const confirm = document.getElementById('confirm_password').value;
+
+            const helpPass = document.getElementById('passwordHelp');
+            const helpConfirm = document.getElementById('confirmHelp');
+
+            const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+
+            helpPass.textContent = '';
+            helpConfirm.textContent = '';
+
+            if (!regex.test(password)) {
+                helpPass.textContent = 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.';
+                e.preventDefault();
+            } else if (password !== confirm) {
+                helpConfirm.textContent = 'Las contraseñas no coinciden.';
+                e.preventDefault();
+            }
+        });
+    </script>
+
 </body>
 
 </html>

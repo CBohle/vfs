@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../db.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -8,6 +9,26 @@ use PHPMailer\PHPMailer\Exception;
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    // --- Validación reCAPTCHA ---
+    $secretKey = '6Le_LWIrAAAAAPaYQUPk_E8aXMVmEdrIH-VCGpxd';
+    $captchaResponse = $_POST['g-recaptcha-response'] ?? '';
+
+    if (!$captchaResponse) {
+        echo json_encode(['success' => false, 'error' => 'Debe completar el reCAPTCHA.']);
+        exit;
+    }
+
+    $verifyUrl = 'https://www.google.com/recaptcha/api/siteverify';
+    $response = file_get_contents($verifyUrl . '?secret=' . $secretKey . '&response=' . $captchaResponse);
+    $responseData = json_decode($response);
+
+    if (!$responseData->success) {
+        echo json_encode(['success' => false, 'error' => 'Fallo la validación del reCAPTCHA.']);
+        exit;
+    }
+    // --- Fin validación reCAPTCHA ---
+
     $nombre   = trim($_POST['nombre'] ?? '');
     $apellido = trim($_POST['apellido'] ?? '');
     $email    = trim($_POST['email'] ?? '');
@@ -37,31 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Enviar correo a un destinatario fijo
         $mail = new PHPMailer(true);
-        try {
-            $mail->isSMTP();
-            $mail->Host = 'mail.vfs.cl';  // Usando el servidor SMTP en duro
-            $mail->SMTPAuth = true;
-            $mail->Username = 'contacto@vfs.cl';  // Tu correo
-            $mail->Password = 'ContactoVFS1234.';  // Tu contraseña
-            $mail->SMTPSecure = 'ssl';  // Usando SSL
-            $mail->Port = 465;  // Puerto 465 para SSL
-
-            $mail->setFrom('contacto@vfs.cl', 'VFS-Admin');
-            $mail->addAddress($admin['email']);  // Correo fijo
-            $mail->Subject = 'Respuesta a tu consulta en VFS';
-            $mail->Body    = "test";
-
-            // Enviar el correo
-            $mail->send();
-        } catch (Exception $e) {
-            error_log("Error al enviar correo: {$mail->ErrorInfo}");  // Log en caso de error
-            echo json_encode([
-                'success' => false,
-                'error' => 'Error al enviar correo: ' . $mail->ErrorInfo
-            ]);
-            exit;
-        }
-
         // Ahora enviar el correo a los administradores
         $stmt = $conexion->prepare("SELECT email FROM usuarios_admin WHERE rol_id IN (1, 5) AND activo = 1");
         if ($stmt === false) {
@@ -77,19 +73,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        // Enviar correos a los administradores
         while ($admin = $result->fetch_assoc()) {
             try {
                 $mail->isSMTP();
-                $mail->clearAllRecipients();  // Limpiar destinatarios previos
-                $mail->Host = 'mail.vfs.cl';  // Usando el servidor SMTP en duro
+                $mail->clearAllRecipients();
+                $mail->Host       = $_ENV['MAIL_HOST'];
                 $mail->SMTPAuth = true;
-                $mail->Username = 'contacto@vfs.cl';  // Tu correo
-                $mail->Password = 'ContactoVFS1234.';  // Tu contraseña
-                $mail->SMTPSecure = 'ssl';  // Usando SSL
-                $mail->Port = 465;  // Puerto 465 para SSL
-        
-                $mail->addAddress($admin['email']);  // Enviar al email del administrador
+                $mail->Username = $_ENV['MAIL_CONTACTO_USER'];
+                $mail->Password = $_ENV['MAIL_CONTACTO_PASS'];
+                $mail->SMTPSecure = $_ENV['MAIL_SECURE'];
+                $mail->Port       = $_ENV['MAIL_PORT'];
+
+                $mail->setFrom($_ENV['MAIL_CONTACTO_USER'], 'VFS-Admin');
+                $mail->addAddress($admin['email']);
                 $mail->Subject = 'Nuevo mensaje de contacto';
                 $mail->Body = "Has recibido un nuevo mensaje de contacto de:\n\nNombre: $nombre $apellido\nEmail: $email\nTeléfono: $telefono\nServicio: $servicio\n\nMensaje:\n$mensaje";
 
@@ -105,7 +101,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        // Respuesta final exitosa
         echo json_encode([
             'success' => true,
             'mensaje' => 'Mensaje enviado correctamente',
@@ -120,4 +115,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo json_encode(['success' => false, 'error' => 'Método no permitido.']);
     exit;
 }
-?>
