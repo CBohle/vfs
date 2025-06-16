@@ -241,7 +241,7 @@ if (!tienePermiso('clientes', 'ver')) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  
+
     <script>
         if (typeof rol_id === 'undefined') {
             var rol_id = <?= json_encode($_SESSION['rol_id']) ?>;
@@ -457,6 +457,15 @@ if (!tienePermiso('clientes', 'ver')) {
             }
         }
 
+        $(document).ready(function() {
+            if (typeof $.fn.DataTable === 'undefined') {
+                console.error("DataTables no está cargado aún.");
+                return;
+            }
+
+            inicializarTablaClientes();
+        });
+
         // Evento para búsqueda en tiempo real
         $(document).on('keyup', '#filtro_busqueda', function() {
             if (tablaClientes) tablaClientes.draw(); // Redibuja tabla con nuevo filtro
@@ -524,18 +533,15 @@ if (!tienePermiso('clientes', 'ver')) {
             $('#contenidoModalCliente').html('<p class="text-center text-muted">Cargando...</p>');
             $('#modalVerCliente').modal('show');
 
-            $.get('clienteModal.php', {
-                id
-            }, function(respuesta) {
+            $.get('clienteModal.php', { id, modo: 'ver' }, function(respuesta) {
                 $('#contenidoModalCliente').html(respuesta);
 
                 const botonHTML = $('#contenidoModalCliente').find('#botonImportanteHTML').html();
                 $('#botonImportanteWrapper').html(botonHTML);
 
-                // 👉 Re-ejecutar lógica para cargar detalle activo
+                // Re-ejecutar lógica para cargar detalle activo
                 const tipoActivo = $('#tipo_activo').val();
-                const detalleActual = "<?= $msg['detalle_activos'] ?? '' ?>"; // esto no se puede hacer desde JS, así que mejor:
-                const detalleActualInput = $('#detalle_activos').data('valor'); // lo puedes inyectar en el HTML
+                const detalleActualInput = $('#detalle_activos').data('valor') || '';
 
                 const opciones = {
                     "Propiedad Residencial": ["Casa", "Departamento", "Parcela Agroresidencial", "Sitio Urbano", "Sitio Rural"],
@@ -550,7 +556,7 @@ if (!tienePermiso('clientes', 'ver')) {
                 if (opciones[tipoActivo]) {
                     detalleSelect.append('<option value="" hidden selected>Seleccionar</option>');
                     opciones[tipoActivo].forEach(detalle => {
-                        const selected = detalle === detalleSelect.data('valor') ? 'selected' : '';
+                        const selected = detalle === detalleActualInput ? 'selected' : '';
                         detalleSelect.append(`<option value="${detalle}" ${selected}>${detalle}</option>`);
                     });
                 } else {
@@ -637,12 +643,7 @@ if (!tienePermiso('clientes', 'ver')) {
             });
         }
 
-        $(document).ready(function() {
-            inicializarTablaClientes();
-        });
-
         function registrarEventosEstadoCliente() {
-            // Elimina eventos previos para evitar duplicados
             $(document).off('click', '.estado-click');
 
             $(document).on('click', '.estado-click', function() {
@@ -660,34 +661,60 @@ if (!tienePermiso('clientes', 'ver')) {
                 } else if (estadoLower === 'inactivo') {
                     nuevoEstado = 'activo';
                 } else {
-                    return; // Si es 'eliminado' u otro, no hace nada
+                    return;
                 }
 
-                $.post('clientesAjax.php', {
-                    accion: 'cambiar_estado',
-                    id: id,
-                    estado: nuevoEstado
-                }, function(response) {
-                    if (response.success) {
-                        const nuevaClase = nuevoEstado === 'activo' ? 'bg-success' : 'bg-warning text-dark';
-                        const nuevoTexto = nuevoEstado.charAt(0).toUpperCase() + nuevoEstado.slice(1);
+                // ✅ Confirmar antes de enviar la petición
+                Swal.fire({
+                    title: '¿Confirmar cambio de estado?',
+                    text: `¿Deseas cambiar el estado del cliente a "${nuevoEstado}"?`,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, cambiar',
+                    cancelButtonText: 'Cancelar',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.post('clientesAjax.php', {
+                            accion: 'cambiar_estado',
+                            id: id,
+                            estado: nuevoEstado
+                        }, function(response) {
+                            if (response.success) {
+                                const nuevaClase = nuevoEstado === 'activo' ? 'bg-success' : 'bg-warning text-dark';
+                                const nuevoTexto = nuevoEstado.charAt(0).toUpperCase() + nuevoEstado.slice(1);
 
-                        $span.fadeOut(200, function() {
-                            $span.removeClass('bg-success bg-warning text-dark')
-                                .addClass(nuevaClase)
-                                .text(nuevoTexto)
-                                .data('estado', nuevoEstado)
-                                .fadeIn(200);
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error al cambiar estado',
-                            text: 'No se pudo cambiar el estado del cliente.',
-                            confirmButtonText: 'Cerrar'
+                                $span.fadeOut(200, function() {
+                                    $span
+                                        .removeClass('bg-success bg-warning text-dark')
+                                        .addClass(nuevaClase)
+                                        .text(nuevoTexto)
+                                        .data('estado', nuevoEstado)
+                                        .fadeIn(200);
+                                });
+
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Estado actualizado',
+                                    text: `El cliente fue marcado como ${nuevoTexto}.`,
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error al cambiar estado',
+                                    text: response.error || 'No se pudo cambiar el estado del cliente.',
+                                });
+                            }
+                        }, 'json').fail(function() {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error de conexión',
+                                text: 'No se pudo contactar con el servidor.',
+                            });
                         });
                     }
-                }, 'json');
+                });
             });
         }
 

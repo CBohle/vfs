@@ -1,7 +1,8 @@
 <?php
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/Controller/clientesController.php';
-
+$modo = $_GET['modo'] ?? 'ver';
+$soloLectura = ($modo === 'ver');
 // Determinar si estamos viendo un cliente o creando uno
 $id = intval($_GET['id'] ?? 0);
 
@@ -110,6 +111,7 @@ function formatearFecha($fechaOriginal) {
     }
 </style>
 <form id="formCliente">
+    <input type="hidden" name="accion" value="crear">
     <!-- Contenido principal -->
     <div class="row g-4 align-items-stretch">
         <!-- Columna Izquierda -->
@@ -190,7 +192,7 @@ function formatearFecha($fechaOriginal) {
                 <!-- Tipo de activo -->
                 <div class="fila-dato">
                     <span class="dato-label">Tipo de Activo:</span>
-                    <select class="form-select" id="tipo_activo" aria-label="Tipo de Activo" name="tipo_activo" required<?= $id > 0 ? 'disabled' : '' ?>>
+                    <select class="form-select" id="tipo_activo" aria-label="Tipo de Activo" name="tipo_activo" required <?= $soloLectura ? 'disabled' : '' ?>>
                         <option value="" hidden selected>Seleccionar</option>
                         <option value="Propiedad Residencial" <?= $msg['tipo_activos'] === 'Propiedad Residencial' ? 'selected' : '' ?>>Propiedad Residencial</option>
                         <option value="Inmueble Comercial" <?= $msg['tipo_activos'] === 'Inmueble Comercial' ? 'selected' : '' ?>>Inmueble Comercial</option>
