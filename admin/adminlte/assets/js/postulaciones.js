@@ -17,7 +17,7 @@ function inicializarTablaPostulaciones() {
     serverSide: true,
     destroy: true,
     ajax: {
-      url: BASE_PATH + "/postulacionesAjax.php",
+      url: BASE_ADMIN_URL + "/postulacionesAjax.php",
       type: "POST",
       data: function (d) {
         d.estado = $("#filtro_estado").val();
