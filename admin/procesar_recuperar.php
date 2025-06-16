@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt = $pdo->prepare("UPDATE usuarios_admin SET reset_token = ?, token_expira = ? WHERE email = ?");
         $stmt->execute([$token, $expira, $email]);
 
-        $enlace = "http://localhost/vfs/admin/restablecer.php?token=$token";
+        $enlace = "http://vfs.cl/admin/restablecer.php?token=$token";
 
         // Enviar email con PHPMailer
         $asunto = 'Recuperación de contraseña';
