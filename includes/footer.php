@@ -12,7 +12,7 @@ $base_url = $is_landing ? '' : BASE_URL . 'index.php';
     <div class="container px-4 px-lg-5">
         <div class="row text-center text-md-start">
             <!-- COLUMNA IZQUIERDA: IDENTIFICACIÓN -->
-            <div class="col-12 col-md-4 mb-4">
+            <div class="col-12 col-md-4 mb-4 alignFooter" >
                 <a href="#top">
                     <img src="<?= BASE_URL ?>assets/images/logo/LogoVFS2.png" alt="Logo de la empresa" style="max-width: 150px;">
                 </a>
@@ -22,7 +22,7 @@ $base_url = $is_landing ? '' : BASE_URL . 'index.php';
                 <h7 class="mb-0">Las Condes, Santiago, Chile.</h7>
             </div>
             <!-- COLUMNA CENTRO: NAVEGAR POR LA PÁGINA -->
-            <div class="col-12 col-md-4 mb-4">
+            <div class="col-12 col-md-4 mb-4 alignFooter">
                 <h5>Enlaces rápidos</h5>
                 <ul class="list-unstyled">
                     <li><a href="<?= $base_url ?>#faq">Preguntas frecuentes</a></li>
@@ -33,7 +33,7 @@ $base_url = $is_landing ? '' : BASE_URL . 'index.php';
 
             </div>
             <!-- COLUMNA DERECHA: CONTACTO-->
-            <div class="col-12 col-md-4 mb-4">
+            <div class="col-12 col-md-4 mb-4 alignFooter" >
                 <h5>Contacto</h5>
                 <ul class="list-unstyled">
                     <li class="bi-phone"><a href="tel:+1234567890">+56 997956894</a></li>

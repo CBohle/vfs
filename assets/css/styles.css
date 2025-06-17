@@ -13130,3 +13130,11 @@ header.masthead {
 .pb-100{
   padding-bottom: 100px;
 }
+
+
+.alignFooter{
+     align-content: space-around !important;
+     text-align: center;
+       vertical-align: middle;
+
+ }
