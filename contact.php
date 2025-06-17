@@ -6,7 +6,7 @@ require_once __DIR__ . '/includes/config.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validación reCAPTCHA
-    $recaptchaSecret = '6Le_LWIrAAAAAPaYQUPk_E8aXMVmEdrIH-VCGpxd';
+    $recaptchaSecret = '6LfJGWMrAAAAAF2Wz68UIcy4pu4gTWKb3qVzV-1j';
     $recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
 
     $recaptchaValid = false;

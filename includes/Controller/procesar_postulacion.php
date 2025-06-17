@@ -25,10 +25,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    $secretKey = '6Le_LWIrAAAAAPaYQUPk_E8aXMVmEdrIH-VCGpxd';
+    $secretKey = '6LfJGWMrAAAAAF2Wz68UIcy4pu4gTWKb3qVzV-1j';
     $remoteIp = $_SERVER['REMOTE_ADDR'];
-    $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$captcha&remoteip=$remoteIp");
+    $data = [
+        'secret' => $secretKey,
+        'response' => $captcha,
+        'remoteip' => $remoteIp
+    ];
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, 'https://www.google.com/recaptcha/api/siteverify');
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($ch);
+    curl_close($ch);
+
     $captchaData = json_decode($response, true);
+
 
     if (!$captchaData['success']) {
         echo json_encode(['success' => false, 'error' => 'Error en la validación del captcha.']);

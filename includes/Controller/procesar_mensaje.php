@@ -11,7 +11,7 @@ header('Content-Type: application/json');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // --- Validación reCAPTCHA ---
-    $secretKey = '6Le_LWIrAAAAAPaYQUPk_E8aXMVmEdrIH-VCGpxd';
+    $secretKey = '6LfJGWMrAAAAAF2Wz68UIcy4pu4gTWKb3qVzV-1j';
     $captchaResponse = $_POST['g-recaptcha-response'] ?? '';
 
     if (!$captchaResponse) {
@@ -20,8 +20,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $verifyUrl = 'https://www.google.com/recaptcha/api/siteverify';
-    $response = file_get_contents($verifyUrl . '?secret=' . $secretKey . '&response=' . $captchaResponse);
+    $data = [
+        'secret' => $secretKey,
+        'response' => $captchaResponse
+    ];
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $verifyUrl);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($ch);
+    curl_close($ch);
+
     $responseData = json_decode($response);
+
 
     if (!$responseData->success) {
         echo json_encode(['success' => false, 'error' => 'Fallo la validación del reCAPTCHA.']);
