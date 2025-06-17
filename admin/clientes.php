@@ -466,7 +466,7 @@ if (!tienePermiso('clientes', 'ver')) {
 
         $(document).ready(function() {
             if (typeof $.fn.DataTable === 'undefined') {
-                console.error("DataTables no está cargado aún.");
+                //console.error("DataTables no está cargado aún.");
                 return;
             }
 

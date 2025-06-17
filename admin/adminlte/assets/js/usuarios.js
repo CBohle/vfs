@@ -6,7 +6,7 @@ function actualizarPermisosSesion() {
             //console.log('Permisos actualizados:', res.permisos);
         }
     }, 'json').fail(function () {
-        console.warn('Error al conectar con el servidor para actualizar permisos.');
+        //console.warn('Error al conectar con el servidor para actualizar permisos.');
     });
 }
 function guardarRolYActualizarPermisos(datosRol) {

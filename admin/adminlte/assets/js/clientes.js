@@ -6,8 +6,9 @@ function crearCliente() {
             text: 'No tienes los permisos necesarios para crear nuevos clientes.',
             confirmButtonText: 'Cerrar'
         });
-        return; // evita que se continúe con la lógica de apertura del modal
+        return;
     }
+
     $('#contenidoModalCliente').html('<p class="text-center text-muted">Cargando formulario...</p>');
     $('#modalVerCliente').modal('show');
 
@@ -15,27 +16,57 @@ function crearCliente() {
         $('#contenidoModalCliente').html(respuesta);
 
         $('#botonImportanteWrapper').html(`
-    <button type="button" class="btn btn-primary" id="btnCrearCliente">Crear Cliente</button>
-`);
+            <button type="button" class="btn btn-primary" id="btnCrearCliente">Crear Cliente</button>
+        `);
 
+        // Elimina cualquier evento previo en #btnCrearCliente antes de registrar uno nuevo
         $(document).off('click', '#btnCrearCliente').on('click', '#btnCrearCliente', function () {
-            // $('#formCliente').submit();
-
             const form = document.getElementById('formCliente');
-            if (form.checkValidity()) {
-                // dispara el evento submit de jQuery para que corra tu lógica de AJAX/guardado
-                $(form).trigger('submit');
-            } else {
+            if (!form.checkValidity()) {
                 form.reportValidity();
+                return;
             }
 
+            const datos = $('#formCliente').serialize();
+            //console.log('✅ Envío desde botón manual (crear)');
+
+            $.post('clientesAjax.php', datos, function (response) {
+                if (response.success) {
+                    $('#modalVerCliente').modal('hide');
+                    if (window.tablaClientes) {
+                        tablaClientes.ajax.reload(null, false);
+                    }
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Cliente creado',
+                        text: 'El cliente fue agregado correctamente.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                } else {
+                    Swal.fire({
+                        icon: response.type || 'error',
+                        title: response.type === 'warning' ? 'Sin cambios' : 'Error',
+                        text: response.message || 'No se pudo crear el cliente.'
+                    });
+                }
+            }, 'json').fail(function () {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error de conexión',
+                    text: 'No se pudo contactar con el servidor.'
+                });
+            });
         });
 
-        // Verifica si ya está cargado el script externo
-        const yaCargado = document.querySelector('script[src*="clienteModal.js"]');
+        // Cargar el script clienteModal.js si no está cargado previamente
+        const yaCargado = [...document.scripts].some(s =>
+            s.src.includes('clienteModal.js')
+        );
+
         if (!yaCargado) {
             const script = document.createElement('script');
-            script.src = BASE_ADMIN_URL + 'adminlte/assets/js/clienteModal.js?v=' + new Date().getTime();
+            script.src = BASE_ADMIN_URL + 'adminlte/assets/js/clienteModal.js';
             script.onload = function () {
                 if (typeof inicializarFormularioCliente === 'function') {
                     inicializarFormularioCliente();
@@ -48,6 +79,9 @@ function crearCliente() {
         } else {
             if (typeof inicializarFormularioCliente === 'function') {
                 inicializarFormularioCliente();
+            }
+            if (typeof cargarEventosSelectActivo === 'function') {
+                cargarEventosSelectActivo();
             }
         }
     }).fail(function () {
@@ -75,20 +109,54 @@ function editarCliente(id) {
             <button type="button" class="btn btn-warning" id="btnGuardarCambiosCliente">Guardar Cambios</button>
         `);
 
+        // Previene múltiples registros del evento click
         $(document).off('click', '#btnGuardarCambiosCliente').on('click', '#btnGuardarCambiosCliente', function () {
             const form = document.getElementById('formCliente');
-            if (form.checkValidity()) {
-                $(form).trigger('submit');
-            } else {
+            if (!form.checkValidity()) {
                 form.reportValidity();
+                return;
             }
+
+            const datos = $('#formCliente').serialize();
+            //console.log('✅ Envío desde botón manual (editar)');
+
+            $.post('clientesAjax.php', datos, function (response) {
+                if (response.success) {
+                    $('#modalVerCliente').modal('hide');
+                    if (window.tablaClientes) {
+                        tablaClientes.ajax.reload(null, false);
+                    }
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Cliente actualizado',
+                        text: 'El cliente fue modificado correctamente.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                } else {
+                    Swal.fire({
+                        icon: response.type || 'error',
+                        title: response.type === 'warning' ? 'Sin cambios' : 'Error',
+                        text: response.message || 'No se pudo actualizar el cliente.'
+                    });
+                }
+            }, 'json').fail(function () {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error de conexión',
+                    text: 'No se pudo contactar con el servidor.'
+                });
+            });
         });
 
-        // 👇 Carga condicional del script como en crearCliente()
-        const yaCargado = document.querySelector('script[src*="clienteModal.js"]');
+        // Verifica si clienteModal.js ya fue cargado
+        const yaCargado = [...document.scripts].some(s =>
+            s.src.includes('clienteModal.js')
+        );
+
         if (!yaCargado) {
             const script = document.createElement('script');
-            script.src = BASE_ADMIN_URL + 'adminlte/assets/js/clienteModal.js?v=' + new Date().getTime();
+            script.src = BASE_ADMIN_URL + 'adminlte/assets/js/clienteModal.js';
             script.onload = function () {
                 if (typeof inicializarFormularioCliente === 'function') {
                     inicializarFormularioCliente();
@@ -106,7 +174,6 @@ function editarCliente(id) {
                 cargarEventosSelectActivo();
             }
         }
-
     }).fail(function () {
         $('#contenidoModalCliente').html('<p class="text-danger">Error al cargar el formulario.</p>');
     });
@@ -172,3 +239,19 @@ window.toggleImportante = function (id, estadoActual) {
                 }
             }, 'json');
         }            
+        $('#modalVerCliente').on('hidden.bs.modal', function () {
+            $('#contenidoModalCliente').html('<p class="text-center text-muted">Cargando formulario...</p>');
+            window.formClienteEventosRegistrados = false;
+        });
+        $('#formCliente').on('submit', function () {
+            //console.log('🔁 Se envió el formulario automáticamente (no deseado)');
+        });
+        $(document).on('submit', '#formCliente', () => {
+            //console.warn('⚠️ Evento submit detectado');
+        });
+        $('#modalVerCliente').on('hidden.bs.modal', function () {
+            $('#contenidoModalCliente').html('<p class="text-center text-muted">Cargando formulario...</p>');
+            $(document).off('submit', '#formCliente');
+            $(document).off('click', '#btnCrearCliente');
+            $(document).off('click', '#btnGuardarCambiosCliente');
+        });
