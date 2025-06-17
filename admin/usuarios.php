@@ -883,28 +883,6 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
                     });
                 }
             </script>
-            <script>
-                document.querySelector('form').addEventListener('submit', function(e) {
-                    const passwordUsuario = document.getElementById('passwordUsuario').value;
-                    const confirm = document.getElementById('confirmarPasswordUsuario').value;
-
-                    const helpPass = document.getElementById('passwordUsuarioHelp');
-                    const helpConfirm = document.getElementById('confirmarHelp');
-
-                    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-
-                    helpPass.textContent = '';
-                    helpConfirm.textContent = '';
-
-                    if (!regex.test(password)) {
-                        helpPass.textContent = 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.';
-                        e.preventDefault();
-                    } else if (password !== confirm) {
-                        helpConfirm.textContent = 'Las contraseñas no coinciden.';
-                        e.preventDefault();
-                    }
-                });
-            </script>
             <!-- Footer -->
             <?php
             require_once __DIR__ . '/includes/footerAdmin.php';

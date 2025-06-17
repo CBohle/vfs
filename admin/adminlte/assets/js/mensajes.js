@@ -246,7 +246,7 @@
     $("#modalVerMensaje").modal("show");
     $("#botonImportanteWrapper").empty();
 
-    console.log("ID del mensaje al abrir:", id);
+    //console.log("ID del mensaje al abrir:", id);
 
     // Marcar como leído
     $.post("mensajesAjax.php", { accion: "marcarLeido", id: id }, function (response) {
@@ -468,7 +468,7 @@
 
       const formData = $(this).serialize();
       const id = $('input[name="mensaje_id"]').val();
-      console.log("Formulario actual corresponde a ID:", id);
+      //console.log("Formulario actual corresponde a ID:", id);
 
       $.post("mensajesAjax.php", formData, function (respuesta) {
           if (respuesta.success) {

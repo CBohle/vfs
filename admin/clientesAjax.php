@@ -22,7 +22,7 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'crear') {
     $email = $_POST['email_contacto'] ?? '';
     $telefono = $_POST['telefono_contacto'] ?? '';
     $tipo_activo = $_POST['tipo_activo'] ?? '';
-    $detalle_activo = $_POST['detalle_activo'] ?? '';
+    $detalle_activos = $_POST['detalle_activos'] ?? '';
     $notas = $_POST['notas'] ?? '';
     $usuario_id = $_SESSION['usuario_id'] ?? null;
 
@@ -35,7 +35,7 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'crear') {
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'activo', ?, NOW())";
 
     $stmt = $conexion->prepare($sql);
-    $stmt->bind_param('sssssssssi', $tipo_persona, $nombre_empresa, $nombre, $apellido, $email, $telefono, $tipo_activo, $detalle_activo, $notas, $usuario_id);
+    $stmt->bind_param('sssssssssi', $tipo_persona, $nombre_empresa, $nombre, $apellido, $email, $telefono, $tipo_activo, $detalle_activos, $notas, $usuario_id);
 
     /*if ($stmt->execute()) {
         echo json_encode(['success' => true]);
@@ -57,11 +57,72 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'crear') {
                 'email' => $email,
                 'telefono' => $telefono,
                 'tipo_activo' => $tipo_activo,
-                'detalle_activo' => $detalle_activo,
+                'detalle_activos' => $detalle_activos,
                 'notas' => $notas,
                 'usuario_id' => $usuario_id,
             ]
         ]);
+        exit;
+    }
+
+    echo json_encode(['success' => true]);
+    exit;
+}
+if (isset($_POST['accion']) && $_POST['accion'] === 'actualizar') {
+    $id = intval($_POST['id'] ?? 0);
+    $nombre = trim($_POST['nombre_cliente'] ?? '');
+    $apellido = trim($_POST['apellido_cliente'] ?? '');
+    $tipo_persona = $_POST['tipo_persona'] ?? '';
+    $nombre_empresa = trim($_POST['nombre_empresa'] ?? '');
+    $email = trim($_POST['email_contacto'] ?? '');
+    $telefono = trim($_POST['telefono_contacto'] ?? '');
+    $tipo_activo = $_POST['tipo_activo'] ?? '';
+    $detalle_activos = $_POST['detalle_activos'] ?? '';
+    $notas = trim($_POST['notas'] ?? '');
+
+    $stmt = $conexion->prepare("SELECT * FROM clientes WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $actual = $stmt->get_result()->fetch_assoc();
+
+    if (!$actual) {
+        echo json_encode(['success' => false, 'error' => 'Cliente no encontrado.']);
+        exit;
+    }
+    if (trim($detalle_activos) === '') {
+        $detalle_activos = $actual['detalle_activos'] ?? '';
+    }
+
+    if (
+        $actual['nombre_contacto'] === $nombre &&
+        $actual['apellido_contacto'] === $apellido &&
+        $actual['tipo_persona'] === $tipo_persona &&
+        $actual['nombre_empresa'] === $nombre_empresa &&
+        $actual['email_contacto'] === $email &&
+        $actual['telefono_contacto'] === $telefono &&
+        $actual['tipo_activos'] === $tipo_activo &&
+        $actual['detalle_activos'] === $detalle_activos &&
+        $actual['notas'] === $notas
+    ) {
+        echo json_encode([
+            'success' => false,
+            'type' => 'warning',
+            'message' => 'No se detectaron cambios.'
+        ]);
+        exit;
+    }
+
+    $sql = "UPDATE clientes SET 
+        tipo_persona = ?, nombre_empresa = ?, nombre_contacto = ?, apellido_contacto = ?, 
+        email_contacto = ?, telefono_contacto = ?, tipo_activos = ?, detalle_activos = ?, 
+        notas = ?, fecha_modificacion = NOW() 
+        WHERE id = ?";
+
+    $stmt = $conexion->prepare($sql);
+    $stmt->bind_param('sssssssssi', $tipo_persona, $nombre_empresa, $nombre, $apellido, $email, $telefono, $tipo_activo, $detalle_activos, $notas, $id);
+
+    if (!$stmt->execute()) {
+        echo json_encode(['success' => false, 'error' => $stmt->error]);
         exit;
     }
 
