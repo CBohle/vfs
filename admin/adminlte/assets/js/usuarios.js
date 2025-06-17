@@ -1,9 +1,9 @@
 function actualizarPermisosSesion() {
     return $.get('../includes/Controller/obtenerPermisosActualizados.php', function (res) {
         if (!res.success) {
-            console.warn('No se pudieron actualizar los permisos en sesión:', res.error);
+            //console.warn('No se pudieron actualizar los permisos en sesión:', res.error);
         } else {
-            console.log('Permisos actualizados:', res.permisos);
+            //console.log('Permisos actualizados:', res.permisos);
         }
     }, 'json').fail(function () {
         console.warn('Error al conectar con el servidor para actualizar permisos.');
@@ -30,7 +30,7 @@ function guardarRolYActualizarPermisos(datosRol) {
 
                 actualizarPermisosSesion().done(function (resPermisos) {
                     if (resPermisos.success) {
-                        console.log('Permisos en sesión actualizados');
+                        //console.log('Permisos en sesión actualizados');
 
                         if (window.tablaRoles) tablaRoles.ajax.reload(null, false);
                         if (window.tablaUsuarios) tablaUsuarios.ajax.reload(null, false);

@@ -54,6 +54,63 @@ function crearCliente() {
         $('#contenidoModalCliente').html('<p class="text-danger">Error al cargar el formulario.</p>');
     });
 }
+function editarCliente(id) {
+    if (!PERMISOS['clientes']?.includes('modificar')) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Acceso restringido',
+            text: 'No tienes los permisos necesarios para editar clientes.',
+            confirmButtonText: 'Cerrar'
+        });
+        return;
+    }
+
+    $('#contenidoModalCliente').html('<p class="text-center text-muted">Cargando formulario...</p>');
+    $('#modalVerCliente').modal('show');
+
+    $.get('clienteModal.php', { id, modo: 'editar' }, function (respuesta) {
+        $('#contenidoModalCliente').html(respuesta);
+
+        $('#botonImportanteWrapper').html(`
+            <button type="button" class="btn btn-warning" id="btnGuardarCambiosCliente">Guardar Cambios</button>
+        `);
+
+        $(document).off('click', '#btnGuardarCambiosCliente').on('click', '#btnGuardarCambiosCliente', function () {
+            const form = document.getElementById('formCliente');
+            if (form.checkValidity()) {
+                $(form).trigger('submit');
+            } else {
+                form.reportValidity();
+            }
+        });
+
+        // 👇 Carga condicional del script como en crearCliente()
+        const yaCargado = document.querySelector('script[src*="clienteModal.js"]');
+        if (!yaCargado) {
+            const script = document.createElement('script');
+            script.src = BASE_ADMIN_URL + 'adminlte/assets/js/clienteModal.js?v=' + new Date().getTime();
+            script.onload = function () {
+                if (typeof inicializarFormularioCliente === 'function') {
+                    inicializarFormularioCliente();
+                }
+                if (typeof cargarEventosSelectActivo === 'function') {
+                    cargarEventosSelectActivo();
+                }
+            };
+            document.body.appendChild(script);
+        } else {
+            if (typeof inicializarFormularioCliente === 'function') {
+                inicializarFormularioCliente();
+            }
+            if (typeof cargarEventosSelectActivo === 'function') {
+                cargarEventosSelectActivo();
+            }
+        }
+
+    }).fail(function () {
+        $('#contenidoModalCliente').html('<p class="text-danger">Error al cargar el formulario.</p>');
+    });
+}
 function destruirYRestaurarEncabezado(idTabla) {
     const $tabla = $(idTabla);
     const theadHtml = $tabla.find('thead').prop('outerHTML'); // ⚠️ más robusto
