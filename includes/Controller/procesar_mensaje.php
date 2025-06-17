@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
     if (!$responseData->success) {
-        echo json_encode(['success' => false, 'error' => 'Fallo la validación del reCAPTCHA.']);
+        echo json_encode(['success' => false, 'error' => 'Falló la validación del reCAPTCHA.']);
         exit;
     }
     // --- Fin validación reCAPTCHA ---
@@ -72,6 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Enviar correo a un destinatario fijo
         $mail = new PHPMailer(true);
+        $mail->CharSet = 'UTF-8';
         // Ahora enviar el correo a los administradores
         $stmt = $conexion->prepare("SELECT email FROM usuarios_admin WHERE rol_id IN (1, 5) AND activo = 1");
         if ($stmt === false) {
