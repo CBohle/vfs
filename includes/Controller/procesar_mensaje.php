@@ -11,7 +11,7 @@ header('Content-Type: application/json');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // --- Validación reCAPTCHA ---
-    $secretKey = '6Le_LWIrAAAAAPaYQUPk_E8aXMVmEdrIH-VCGpxd';
+    $secretKey = '6LfJGWMrAAAAAF2Wz68UIcy4pu4gTWKb3qVzV-1j';
     $captchaResponse = $_POST['g-recaptcha-response'] ?? '';
 
     if (!$captchaResponse) {
