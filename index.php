@@ -627,7 +627,7 @@ require_once __DIR__ . '/includes/config.php';
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.error("Error en la solicitud AJAX:", status, error);
+                    //console.error("Error en la solicitud AJAX:", status, error);
                     mostrarAlerta("Error al conectar con el servidor.", "danger");
                 }
             });

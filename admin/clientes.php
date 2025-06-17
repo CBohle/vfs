@@ -385,8 +385,15 @@ if (!tienePermiso('clientes', 'ver')) {
                                         <i class="bi bi-eye"></i>
                                     </button>`;
 
+                                const puedeModificar = PERMISOS['clientes']?.includes('modificar');
                                 const puedeEliminar = PERMISOS['clientes']?.includes('eliminar');
 
+                                if (puedeModificar && row.estado.toLowerCase() !== 'eliminado') {
+                                    botones += `
+                                    <button class="btn btn-sm btn-warning me-1" title="Editar" onclick="editarCliente(${row.id})">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>`;
+                                }
                                 if (row.estado.toLowerCase() === 'eliminado') {
                                     botones += `
                                         <button class="btn btn-sm btn-success" title="Recuperar" onclick="recuperarCliente(${row.id})">
@@ -459,7 +466,7 @@ if (!tienePermiso('clientes', 'ver')) {
 
         $(document).ready(function() {
             if (typeof $.fn.DataTable === 'undefined') {
-                console.error("DataTables no está cargado aún.");
+                //console.error("DataTables no está cargado aún.");
                 return;
             }
 
@@ -533,7 +540,10 @@ if (!tienePermiso('clientes', 'ver')) {
             $('#contenidoModalCliente').html('<p class="text-center text-muted">Cargando...</p>');
             $('#modalVerCliente').modal('show');
 
-            $.get('clienteModal.php', { id, modo: 'ver' }, function(respuesta) {
+            $.get('clienteModal.php', {
+                id,
+                modo: 'ver'
+            }, function(respuesta) {
                 $('#contenidoModalCliente').html(respuesta);
 
                 const botonHTML = $('#contenidoModalCliente').find('#botonImportanteHTML').html();
