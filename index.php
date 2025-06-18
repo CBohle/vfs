@@ -460,106 +460,105 @@ require_once __DIR__ . '/includes/config.php';
             <!-- Fin Imagen -->
             <!-- Formulario -->
             <div class="col-lg-6 order-lg-2 mb-5">
-                <div class="">
-                    <div class="row gx-4 gx-lg-5 justify-content-center ">
-                        <div class="">
-                            <!-- Mensaje de recepción exitosa o error -->
-                            <div id="mensajeAlerta" class="alert d-none alert-dismissible fade show" role="alert">
-                                <span id="mensajeTexto"></span>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-                            </div>
-                            <!-- INICIO FORMULARIO DE CONTACTO CON VALIDACIONES POR CAMPO -->
-                            <form id="contactoForm" class="novalidate" method="post">
-                                <!-- Campo 1: Nombre-->
-                                <div class="form-floating mb-3">
-                                    <input
-                                        class="form-control"
-                                        id="nombre"
-                                        name="nombre"
-                                        type="text"
-                                        placeholder="Ingrese su nombre"
-                                        required
-                                        minlength="2"
-                                        maxlength="50"
-                                        pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" />
-                                    <label for="nombre">Nombre</label>
-                                    <div class="invalid-feedback" id="nombre-error">
-                                        El nombre debe tener solo letras, entre 2 y 50 caracteres.
-                                    </div>
-                                </div>
-                                <!-- Opción 2 apellido-->
-                                <div class="form-floating mb-3">
-                                    <input
-                                        class="form-control"
-                                        id="apellido"
-                                        name="apellido"
-                                        type="text"
-                                        placeholder="Ingrese su apellido"
-                                        required
-                                        minlength="2"
-                                        maxlength="50"
-                                        pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" />
-                                    <label for="apellido">Apellido</label>
-                                    <div class="invalid-feedback" id="apellido-error">
-                                        El apellido debe tener solo letras, entre 2 y 50 caracteres.
-                                    </div>
-                                </div>
-                                <!-- Campo 3: Mail-->
-                                <div class="form-floating mb-3">
-                                    <input name="email" class="form-control" id="email" type="email" placeholder="name@example.com" required />
-                                    <label for="email">Correo</label>
-                                    <div class="invalid-feedback">Ingrese un correo válido.</div>
-                                </div>
-                                <!-- Campo 4: Teléfono-->
-                                <div class="form-floating mb-3">
-                                    <input
-                                        class="form-control"
-                                        id="telefono"
-                                        name="telefono"
-                                        type="tel"
-                                        placeholder="56912345678"
-                                        required
-                                        pattern="^\d{8,15}$" />
-                                    <label for="telefono">Teléfono de contacto</label>
-                                    <div class="invalid-feedback">El número es obligatorio y solo debe contener dígitos (sin símbolos ni espacios).</div>
-                                </div>
-                                <!-- Elección de servicio-->
-                                <div class="form-group mb-3">
-                                    <label for="servicio" style="margin-bottom:6px">¿Qué servicio necesita?</label>
-                                    <select id="servicio" name="servicio" class="form-control" required>
-                                        <option value="" disabled selected>Seleccione una opción</option>
-                                        <option value="tasacion">Tasación de bienes raíces</option>
-                                        <option value="consultoria">Consultoría inmobiliaria</option>
-                                        <option value="otros">Otro</option>
-                                    </select>
-                                    <div class="invalid-feedback">El servicio es obligatorio.</div>
-                                </div>
-                                <!-- Mensaje-->
-                                <div class="form-floating mb-3">
-                                    <textarea name="mensaje" class="form-control" id="mensaje" placeholder="Ingrese su mensaje" style="height: 10rem" required minlength="20" maxlength="1000"></textarea>
-                                    <label for="mensaje">Mensaje</label>
-                                    <div class="invalid-feedback" id="mensajeError">El mensaje es obligatorio y debe tener entre 20 y 1000 caracteres.</div>
-                                </div>
-                                <!-- Respuesta recepción exitosa -->
-                                <div class="d-none" id="submitSuccessMessage">
-                                    <div class="text-center mb-3">
-                                        <div class="fw-bolder">Su mensaje ha sido recibido con éxito.</div>
-                                    </div>
-                                </div>
-                                <!-- Respuesta error envío -->
-                                <div class="d-none" id="submitErrorMessage">
-                                    <div class="text-center text-danger mb-3">Error al enviar el mensaje.</div>
-                                </div>
-                                <!-- reCAPTCHA -->
-                                <div class="g-recaptcha mb-3 mt-3" data-sitekey="6LfJGWMrAAAAADp3ReDXfUjTujWQsVMXhu53zmAS"></div>
-                                <!-- Botón enviar -->
-                                <div class="d-grid">
-                                    <button class="btn btn-primary btn-xl" id="submitButtonContacto" type="submit" disabled>Enviar</button>
-                                </div>
-                            </form>
-                            <!-- FIN FORMULARIO DE CONTACTO -->
+                <div class="row gx-4 gx-lg-5 justify-content-center ">
+                    <!-- Mensaje de recepción exitosa o error -->
+                    <div id="mensajeAlerta" class="alert d-none alert-dismissible fade show" role="alert">
+                        <span id="mensajeTexto"></span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                    </div>
+                    <!-- Respuesta recepción exitosa -->
+                    <div class="d-none" id="submitSuccessMessage">
+                        <div class="text-center mb-3">
+                            <div class="fw-bolder">Su mensaje ha sido recibido con éxito.</div>
                         </div>
                     </div>
+                    <!-- Respuesta error envío -->
+                    <div class="d-none" id="submitErrorMessage">
+                        <div class="text-center text-danger mb-3">Error al enviar el mensaje.</div>
+                    </div>
+                    <!-- INICIO FORMULARIO DE CONTACTO CON VALIDACIONES POR CAMPO -->
+                    <form id="contactoForm" class="novalidate" method="post">
+                        <!-- Campo 1: Nombre-->
+                        <div class="form-floating mb-3">
+                            <input
+                                class="form-control"
+                                id="nombre"
+                                name="nombre"
+                                type="text"
+                                placeholder="Ingrese su nombre"
+                                required
+                                minlength="2"
+                                maxlength="50"
+                                pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" />
+                            <label for="nombre">Nombre</label>
+                            <div class="invalid-feedback" id="nombre-error">
+                                El nombre debe tener solo letras, entre 2 y 50 caracteres.
+                            </div>
+                        </div>
+                        <!-- Opción 2 apellido-->
+                        <div class="form-floating mb-3">
+                            <input
+                                class="form-control"
+                                id="apellido"
+                                name="apellido"
+                                type="text"
+                                placeholder="Ingrese su apellido"
+                                required
+                                minlength="2"
+                                maxlength="50"
+                                pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" />
+                            <label for="apellido">Apellido</label>
+                            <div class="invalid-feedback" id="apellido-error">
+                                El apellido debe tener solo letras, entre 2 y 50 caracteres.
+                            </div>
+                        </div>
+                        <!-- Campo 3: Mail-->
+                        <div class="form-floating mb-3">
+                            <input name="email" class="form-control" id="email" type="email" placeholder="name@example.com" required />
+                            <label for="email">Correo</label>
+                            <div class="invalid-feedback">Ingrese un correo válido.</div>
+                        </div>
+                        <!-- Campo 4: Teléfono-->
+                        <div class="form-floating mb-3">
+                            <input
+                                class="form-control"
+                                id="telefono"
+                                name="telefono"
+                                type="tel"
+                                placeholder="56912345678"
+                                required
+                                pattern="^\d{8,15}$" />
+                            <label for="telefono">Teléfono de contacto</label>
+                            <div class="invalid-feedback">El número es obligatorio y solo debe contener dígitos (sin símbolos ni espacios).</div>
+                        </div>
+                        <!-- Elección de servicio-->
+                        <div class="form-group mb-3">
+                            <label for="servicio" style="margin-bottom:6px">¿Qué servicio necesita?</label>
+                            <select id="servicio" name="servicio" class="form-control" required>
+                                <option value="" disabled selected>Seleccione una opción</option>
+                                <option value="tasacion">Tasación de bienes raíces</option>
+                                <option value="consultoria">Consultoría inmobiliaria</option>
+                                <option value="otros">Otro</option>
+                            </select>
+                            <div class="invalid-feedback">El servicio es obligatorio.</div>
+                        </div>
+                        <!-- Mensaje-->
+                        <div class="form-floating mb-3">
+                            <textarea name="mensaje" class="form-control" id="mensaje" placeholder="Ingrese su mensaje" style="height: 10rem" required minlength="20" maxlength="1000"></textarea>
+                            <label for="mensaje">Mensaje</label>
+                            <div class="invalid-feedback" id="mensajeError">El mensaje es obligatorio y debe tener entre 20 y 1000 caracteres.</div>
+                        </div>
+                        <!-- reCAPTCHA -->
+                        <div class="recaptcha-box">
+                            <div class="g-recaptcha mb-3" data-sitekey="6LfJGWMrAAAAADp3ReDXfUjTujWQsVMXhu53zmAS"></div>
+                        </div>
+                        <br>
+                        <!-- Botón enviar -->
+                        <div class="d-grid">
+                            <button class="btn btn-primary btn-xl" id="submitButtonContacto" type="submit" disabled>Enviar</button>
+                        </div>
+                    </form>
+                    <!-- FIN FORMULARIO DE CONTACTO -->
                 </div>
             </div>
         </div>
@@ -649,6 +648,30 @@ require_once __DIR__ . '/includes/config.php';
 
     });
 </script>
+<script>
+  function scaleCaptcha() {
+    const box = document.querySelector('.recaptcha-box');
+    const captcha = document.querySelector('.g-recaptcha');
+    const reCaptchaWidth = 304;
+    const reCaptchaHeight = 78;
+
+    if (!box || !captcha) return;
+
+    const boxWidth = box.clientWidth;
+
+    // Escala solo si el ancho es menor que el ancho original, si no, escala 1 (normal)
+    const scale = boxWidth < reCaptchaWidth ? (boxWidth / reCaptchaWidth) : 1;
+
+    captcha.style.transform = `scale(${scale})`;
+    captcha.style.webkitTransform = `scale(${scale})`;
+    box.style.height = `${reCaptchaHeight * scale}px`;
+  }
+
+  window.addEventListener('load', scaleCaptcha);
+  window.addEventListener('resize', scaleCaptcha);
+</script>
+
+
 
 </body>
 
