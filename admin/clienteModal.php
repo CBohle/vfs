@@ -212,7 +212,7 @@ function formatearFecha($fechaOriginal)
                 <!-- Detalle de activo -->
                 <div class="fila-dato">
                     <span class="dato-label">Detalle Activo:</span>
-                    <select class="form-select" id="detalle_activos" aria-label="Detalle de Activos" name="detalle_activos"
+                    <select class="form-select" id="detalle_activos" aria-label="Detalle de Activos" name="detalle_activos" required
                         data-valor="<?= $msg['detalle_activos'] ?? '' ?>"
                         <?= ($modo === 'ver') ? 'disabled' : '' ?>>
                     </select>

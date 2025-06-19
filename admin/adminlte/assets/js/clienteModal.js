@@ -21,7 +21,7 @@ if (!window.clienteModalYaInicializado) {
         const detalleActual = detalleSelect.data('valor') || '';
 
         function llenarDetalles(tipo) {
-            detalleSelect.empty().append('<option hidden selected>Seleccionar</option>');
+            detalleSelect.empty().append('<option hidden selected>""</option>');
             if (opcionesDetallePorTipo[tipo]) {
                 opcionesDetallePorTipo[tipo].forEach(detalle => {
                     const selected = (detalle === detalleActual) ? 'selected' : '';
