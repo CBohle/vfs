@@ -13,7 +13,7 @@
  */
 
 /* HOJA DE ESTILOS DE LANDING PAGE Y POSTULAR.PHP */
- :root {
+:root {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
   --bs-purple: #6f42c1;
@@ -140,7 +140,7 @@ h1,
 }
 
 @media (min-width: 1200px) {
-  
+
   h1,
   .h1 {
     font-weight: 400;
@@ -201,9 +201,9 @@ h6,
 }
 
 .h7 {
-    font-weight: 400;
-    font-size: 1.0rem;
-  }
+  font-weight: 400;
+  font-size: 1.0rem;
+}
 
 p {
   margin-top: 0;
@@ -221,6 +221,7 @@ p {
   font-size: 1.2rem;
   font-weight: 300;
 }
+
 .p-postular {
   margin-top: 0;
   margin-bottom: 1rem;
@@ -236,6 +237,7 @@ p {
   font-size: 1rem;
   font-weight: 300;
 }
+
 .p-faq-accordion {
   margin-top: 0;
   margin-bottom: 0.9rem;
@@ -243,6 +245,7 @@ p {
   font-size: 1rem;
   font-weight: 500;
 }
+
 .ul-faq {
   font-family: "Raleway", sans-serif;
   font-size: 0.95rem;
@@ -12771,6 +12774,7 @@ body {
   padding-bottom: 4rem;
 
 }
+
 .page-section4 {
   padding-top: 7rem;
   padding-bottom: 4rem;
@@ -12972,7 +12976,7 @@ header.masthead .h1 {
   text-align: center;
 }
 
-.al-servicios{
+.al-servicios {
   margin-left: 20px;
   margin-bottom: 20px;
 }
@@ -13127,6 +13131,25 @@ header.masthead {
   border-radius: 1rem;
 }
 
-.pb-100{
+.pb-100 {
   padding-bottom: 100px;
+}
+
+
+.alignFooter {
+  align-content: space-around !important;
+  text-align: center;
+  vertical-align: middle;
+
+}
+
+.recaptcha-box {
+  max-width: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.g-recaptcha {
+  transform-origin: 0 0;
+  -webkit-transform-origin: 0 0;
 }

@@ -2,37 +2,36 @@
 include __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/config.php';
 
-
-// $token = $_GET["token"] ?? null;
-
-// $stmt = $pdo->prepare("SELECT * FROM usuarios_admin WHERE reset_token = ? AND token_expira > NOW()");
-// $stmt->execute([$token]);
-// $user = $stmt->fetch();
+// $stmt = $pdo->query("SELECT id, email, reset_token FROM usuarios_admin");
+// $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // if (!$user) {
-//     $error = "Enlace inválido o expirado.";
+//     echo "<strong>No se encontró el usuario.</strong><br>";
+    
+//     // Verificar si el token existe aunque esté expirado
+//     $stmt2 = $pdo->prepare("SELECT * FROM usuarios_admin WHERE reset_token = ?");
+//     $stmt2->execute([$token]);
+//     $user2 = $stmt2->fetch();
+//     if ($user2) {
+//         echo "<strong>Token encontrado pero expirado (token_expira: {$user2['token_expira']})</strong>";
+//     } else {
+//         echo "<strong>Token no existe en producción.</strong>";
+//     }
+//     exit;
+    
 // }
-
 
 $token = trim($_GET['token'] ?? '');
 
-$stmt = $pdo->query("SELECT id, email, reset_token FROM usuarios_admin");
-$usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$stmt = $pdo->prepare("SELECT * FROM usuarios_admin WHERE reset_token = ? AND token_expira > NOW()");
+$stmt->execute([$token]);
+$user = $stmt->fetch();
 
 if (!$user) {
-    echo "<strong>No se encontró el usuario.</strong><br>";
-    
-    // Verificar si el token existe aunque esté expirado
-    $stmt2 = $pdo->prepare("SELECT * FROM usuarios_admin WHERE reset_token = ?");
-    $stmt2->execute([$token]);
-    $user2 = $stmt2->fetch();
-    if ($user2) {
-        echo "<strong>Token encontrado pero expirado (token_expira: {$user2['token_expira']})</strong>";
-    } else {
-        echo "<strong>Token no existe en producción.</strong>";
-    }
+    $error = "El enlace es inválido o ha expirado.";
+    header('Location: error_token.php');
     exit;
-    
+
 }
 
 ?>

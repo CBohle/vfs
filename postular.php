@@ -261,7 +261,6 @@ require_once __DIR__ . '/includes/config.php';
                     </div>
                     <!-- reCAPTCHA -->
                     <div class="g-recaptcha mb-3 mt-3" data-sitekey="6LfJGWMrAAAAADp3ReDXfUjTujWQsVMXhu53zmAS"></div>
-
                     <!-- Botón enviar -->
                     <div class="d-grid">
                         <button class="btn btn-primary btn-xl" id="submitButton" type="submit" disabled>Enviar</button>
