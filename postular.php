@@ -170,15 +170,15 @@ require_once __DIR__ . '/includes/config.php';
                                 </div>
                                 <!-- Campo 13: Formación específica en tasación -->
                                 <div class="form-floating mb-3">
-                                    <select class="form-select custom-floating-select" id="formacion_tasacion" name="formacion_tasacion" aria-label="¿Tiene formación en tasación?" onchange="mostrarCampoEspecificar()">
+                                    <select class="form-select custom-floating-select" id="formacion_tasacion" name="formacion_tasacion" aria-label="¿Tiene formación en tasación?">
                                         <option value="" selected disabled>Seleccione una opción</option>
                                         <option value="Sí">Sí</option>
                                         <option value="No">No</option>
                                     </select>
                                     <label for="formacion_tasacion">¿Cuenta con formación específica en tasación?</label>
                                 </div>
-                                <!-- Campo adicional: En caso de respode "Sí" al campo 13, se activa este campo -->
-                                <div class="form-floating mb-3" id="campo_especificar" name="campo_especificar" style="display: none;">
+                                <!-- Campo adicional: En caso de responder "Sí" al campo 13, se activa este campo -->
+                                <div class="form-floating mb-3" id="campo_especificar" style="display: none;">
                                     <input class="form-control" id="detalle_formacion" name="campo_especificar" type="text" placeholder="Especifique su formación en tasación" />
                                     <label for="detalle_formacion">En caso de haber respondido afirmativamente, por favor especifique</label>
                                 </div>
@@ -380,9 +380,28 @@ require_once __DIR__ . '/includes/config.php';
         });
     </script>
 
+    <!-- Script para asignar required al campo desplegable que depende de la pregunta 13.  -->
+    <script>
+        const selectFormacion = document.getElementById('formacion_tasacion');
+        const campo = document.getElementById('campo_especificar');
+        const input = document.getElementById('detalle_formacion');
+
+        function toggleCampoEspecificar() {
+            if (selectFormacion.value === 'Sí') {
+                campo.style.display = 'block';
+                input.required = true;
+            } else {
+                campo.style.display = 'none';
+                input.required = false;
+            }
+        }
+
+        // Llama la función al cargar, por si viene preseleccionado
+        document.addEventListener('DOMContentLoaded', toggleCampoEspecificar);
+        selectFormacion.addEventListener('change', toggleCampoEspecificar);
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 
 </body>
 
