@@ -27,9 +27,10 @@ require_once __DIR__ . '/includes/config.php';
     <!-- SimpleLightbox plugin CSS-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet" />
     <!-- Hoja de estilos CSS-->
-    <link href="<?= BASE_URL ?>assets/css/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/styles.css?v=<?= time() ?>">
     <!--SweetAlert2 CSS-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
 </head>
 
 <!-- INCLUDE HEADER  -->
@@ -45,7 +46,7 @@ require_once __DIR__ . '/includes/config.php';
                     <hr class="divider" />
                 </div>
                 <div class="col-lg-8 align-self-baseline">
-                    <p class="text-white-75 mb-5 p-masthead">Somos una empresa de tasación y consultoría inmobiliaria que entrega soluciones integrales y asesoría precisa para apoyar decisiones estratégicas en inversión, financiamiento y gestión de activos.</p>
+                    <p class="text-white-75 mb-5 p-nosotros">Somos una empresa de tasación y consultoría inmobiliaria que entrega soluciones integrales y asesoría precisa para apoyar decisiones estratégicas en inversión, financiamiento y gestión de activos.</p>
                     <a class="btn btn-primary btn-xl" href="#nosotros">¡Conocer más!</a>
                 </div>
             </div>
@@ -80,84 +81,84 @@ require_once __DIR__ . '/includes/config.php';
     <div class="page-section1 bg-dark text-white" id="servicios">
         <div class="container-fluid p-0">
             <!-- Encabezado de sección -->
-            <h2 class="text-center mt-0">Tu socio en tasaciones</h2>
+            <h2 class="text-center display-4 mt-0">Tu socio en tasaciones</h2>
             <hr class="divider" />
-            <p class="text-muted mb-5 text-center text-white-75">Servicios</p>
+            <p class="text-muted p-nosotros mb-5 text-center text-white-75">Servicios</p>
             <div class="row g-0">
                 <!-- Servicio 1 -->
                 <div class="col-lg-6 col-sm-12 pe-4">
                     <div class="servicios-box al-servicios" data-bs-toggle="modal" data-bs-target="#modalServicio1">
                         <img class="img-fluid" src="<?= BASE_URL ?>assets/images/servicios/05.webp" alt="Consultoría inmobiliaria" />
                         <div class="servicios-box-caption">
-                            <div class="project-category text-white-50">TASACIÓN DE BIENES RAÍCES</div>
-                            <br>
-                            <div class="project-name">Nuestros servicios de tasación inmobiliaria están diseñados para determinar con precisión el valor de mercado de diversos tipos de propiedades.</div>
-                            <br>
-                            <p class="text-white-50 small m-0">Ver detalle</p>
+                            <div class="text-white-tit-serv mb-10">TASACIÓN DE BIENES RAÍCES</div>
+                            <p class="mx-4 mb-10">
+                                Nuestros servicios de tasación inmobiliaria están diseñados para determinar con precisión el valor de mercado de diversos tipos de propiedades.
+                            </p>
+                            <div class="text-white-det-serv">Ver detalle</div>
                         </div>
                     </div>
-                </div>
-                <!-- Modal con Carrusel para mostrar el detalle del servicio 1 -->
-                <div class="modal fade" id="modalServicio1" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog-centered">
-                        <div class="modal-content p-0 border-0">
-                            <div class="modal-body p-0 position-relative">
+                    <!-- Modal con Carrusel para mostrar el detalle del servicio 1 -->
+                    <div class="modal fade" id="modalServicio1" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <div class="modal-content p-0 border-0">
+                                <div class="modal-body p-0 position-relative">
 
-                                <!-- Botón de cierre -->
-                                <button type="button" class="btn-close position-absolute top-0 end-0 m-3 btn-close-white" data-bs-dismiss="modal"></button>
+                                    <!-- Botón de cierre -->
+                                    <button type="button" class="btn-close position-absolute top-0 end-0 m-3 btn-close-white" data-bs-dismiss="modal"></button>
 
-                                <!-- Carrusel -->
-                                <div id="carouselServicio1" class="carousel slide" data-bs-ride="carousel">
-                                    <div class="carousel-inner">
-                                        <!-- Slide 1 -->
-                                        <div class="carousel-item active">
-                                            <div class="carousel-slide-bg carrousel-servicio1-1">
-                                                <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
-                                                    <h3 class="mb-3">Propiedades</h3>
-                                                    <p class="lead mb-0">
-                                                    <ul class="text-start mx-auto ul-servicios">
-                                                        <li>Propiedades residenciales: casas, departamentos, parcelas agroresidenciales, sitios urbanos y rurales.</li>
-                                                        <li>Inmuebles comerciales: oficinas y locales comerciales.</li>
-                                                        <li>Activos industriales: bodegas, industrias y terrenos industriales.</li>
-                                                        <li>Bienes especiales: hoteles, clínicas, colegios y otros inmuebles de uso específico.</li>
-                                                    </ul>
-                                                    </p>
+                                    <!-- Carrusel -->
+                                    <div id="carouselServicio1" class="carousel slide" data-bs-ride="carousel">
+                                        <div class="carousel-inner">
+                                            <!-- Slide 1 -->
+                                            <div class="carousel-item active">
+                                                <div class="carousel-slide-bg carrousel-servicio1-1">
+                                                    <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
+                                                        <h3 class="mb-3">Propiedades</h3>
+                                                        <p class="lead mb-0">
+                                                        <ul class="text-start mx-auto ul-servicios">
+                                                            <li>Propiedades residenciales: casas, departamentos, parcelas agroresidenciales, sitios urbanos y rurales.</li>
+                                                            <li>Inmuebles comerciales: oficinas y locales comerciales.</li>
+                                                            <li>Activos industriales: bodegas, industrias y terrenos industriales.</li>
+                                                            <li>Bienes especiales: hoteles, clínicas, colegios y otros inmuebles de uso específico.</li>
+                                                        </ul>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Slide 2 -->
+                                            <div class="carousel-item">
+                                                <div class="carousel-slide-bg carrousel-servicio1-2">
+                                                    <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
+                                                        <h3 class="mb-3">Metodologías</h3>
+
+                                                        <p class="lead mb-0">
+                                                            Aplicamos metodologías reconocidas internacionalmente, como el enfoque de mercado, el método de costos y el enfoque de ingresos, adaptándolas a las particularidades de cada activo y a las necesidades específicas de nuestros clientes.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Slide 3 -->
+                                            <div class="carousel-item">
+                                                <div class="carousel-slide-bg carrousel-servicio1-3">
+                                                    <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
+                                                        <h3 class="mb-3">Informes</h3>
+                                                        <p class="lead mb-0">
+                                                            Nuestros informes cumplen con estándares de entidades financieras, organismos reguladores y normativas contables internacionales (IFRS).
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- Slide 2 -->
-                                        <div class="carousel-item">
-                                            <div class="carousel-slide-bg carrousel-servicio1-2">
-                                                <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
-                                                    <h3 class="mb-3">Metodologías</h3>
-
-                                                    <p class="lead mb-0">
-                                                        Aplicamos metodologías reconocidas internacionalmente, como el enfoque de mercado, el método de costos y el enfoque de ingresos, adaptándolas a las particularidades de cada activo y a las necesidades específicas de nuestros clientes.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Slide 3 -->
-                                        <div class="carousel-item">
-                                            <div class="carousel-slide-bg carrousel-servicio1-3">
-                                                <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
-                                                    <h3 class="mb-3">Informes</h3>
-                                                    <p class="lead mb-0">
-                                                        Nuestros informes cumplen con estándares de entidades financieras, organismos reguladores y normativas contables internacionales (IFRS).
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <!-- Controles Carrousel Servicio 1 -->
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselServicio1" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Anterior</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselServicio1" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Siguiente</span>
+                                        </button>
                                     </div>
-                                    <!-- Controles Carrousel Servicio 1 -->
-                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselServicio1" data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Anterior</span>
-                                    </button>
-                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselServicio1" data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Siguiente</span>
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -168,105 +169,105 @@ require_once __DIR__ . '/includes/config.php';
                     <div class="servicios-box al-servicios" data-bs-toggle="modal" data-bs-target="#modalServicio2">
                         <img class="img-fluid" src="<?= BASE_URL ?>assets/images/servicios/16.webp" alt="Consultoría inmobiliaria" />
                         <div class="servicios-box-caption">
-                            <div class="project-category text-white-50">CONSULTORÍA INMOBILIARIA</div>
-                            <br>
-                            <div class="project-name">Ofrecemos servicios de consultoría inmobiliaria orientados a maximizar el valor y la eficiencia de las inversiones y desarrollos inmobiliarios.</div>
-                            <br>
-                            <p class="text-white-50 small m-0">Ver detalle</p>
+                            <div class="text-white-tit-serv mb-10">CONSULTORÍA INMOBILIARIA</div>
+                            <p class="mx-4 mb-10">
+                                Ofrecemos servicios de consultoría inmobiliaria orientados a maximizar el valor y la eficiencia de las inversiones y desarrollos inmobiliarios.
+                            </p>
+                            <div class="text-white-det-serv">Ver detalle</div>
                         </div>
                     </div>
-                </div>
-                <!-- Modal con Carrusel para mostrar el detalle del servicio 2 -->
-                <div class="modal fade" id="modalServicio2" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog-centered">
-                        <div class="modal-content p-0 border-0">
-                            <div class="modal-body p-0 position-relative">
+                    <!-- Modal con Carrusel para mostrar el detalle del servicio 2 -->
+                    <div class="modal fade" id="modalServicio2" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <div class="modal-content p-0 border-0">
+                                <div class="modal-body p-0 position-relative">
 
-                                <!-- Botón de cierre -->
-                                <button type="button" class="btn-close position-absolute top-0 end-0 m-3 btn-close-white" data-bs-dismiss="modal"></button>
-                                <!-- Carrusel -->
-                                <div id="carouselServicio2" class="carousel slide" data-bs-ride="carousel">
-                                    <div class="carousel-inner">
-                                        <!-- Slide 1 -->
-                                        <div class="carousel-item active">
-                                            <div class="carousel-slide-bg carrousel-servicio2-1">
-                                                <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
-                                                    <h3 class="mb-3">Servicios</h3>
-                                                    <p class="lead mb-0">
-                                                    <ul class="text-start mx-auto ul-servicios">
-                                                        <li>Estudios de mercado</li>
-                                                        <li>Análisis de viabilidad</li>
-                                                        <li>Asesoramiento estratégico</li>
-                                                        <li>Gestión de activos</li>
-                                                    </ul>
-                                                    </p>
+                                    <!-- Botón de cierre -->
+                                    <button type="button" class="btn-close position-absolute top-0 end-0 m-3 btn-close-white" data-bs-dismiss="modal"></button>
+                                    <!-- Carrusel -->
+                                    <div id="carouselServicio2" class="carousel slide" data-bs-ride="carousel">
+                                        <div class="carousel-inner">
+                                            <!-- Slide 1 -->
+                                            <div class="carousel-item active">
+                                                <div class="carousel-slide-bg carrousel-servicio2-1">
+                                                    <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
+                                                        <h3 class="mb-3">Servicios</h3>
+                                                        <p class="lead mb-0">
+                                                        <ul class="text-start mx-auto ul-servicios">
+                                                            <li>Estudios de mercado</li>
+                                                            <li>Análisis de viabilidad</li>
+                                                            <li>Asesoramiento estratégico</li>
+                                                            <li>Gestión de activos</li>
+                                                        </ul>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Slide 2 -->
+                                            <div class="carousel-item">
+                                                <div class="carousel-slide-bg carrousel-servicio2-2">
+                                                    <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
+                                                        <h3 class="mb-3">Estudios de mercado</h3>
+                                                        <p class="lead mb-0">
+                                                            Análisis de oferta y demanda, identificación de tendencias y evaluación de oportunidades de inversión.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Slide 3 -->
+                                            <div class="carousel-item">
+                                                <div class="carousel-slide-bg carrousel-servicio2-3">
+                                                    <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
+                                                        <h3 class="mb-3">Análisis de viabilidad</h3>
+                                                        <p class="lead mb-0">
+                                                            Evaluación técnica, legal y financiera de proyectos inmobiliarios para determinar su rentabilidad y sostenibilidad.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Slide 4 -->
+                                            <div class="carousel-item">
+                                                <div class="carousel-slide-bg carrousel-servicio2-4">
+                                                    <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
+                                                        <h3 class="mb-3">Asesoramiento estratégico</h3>
+                                                        <p class="lead mb-0">
+                                                            Diseño de estrategias de desarrollo, comercialización y posicionamiento de activos inmobiliarios.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Slide 5 -->
+                                            <div class="carousel-item">
+                                                <div class="carousel-slide-bg carrousel-servicio2-5">
+                                                    <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
+                                                        <h3 class="mb-3">Gestión de activos</h3>
+                                                        <p class="lead mb-0">
+                                                            Optimización del rendimiento de carteras inmobiliarias mediante la implementación de prácticas de gestión eficientes y sostenibles.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Slide 6 -->
+                                            <div class="carousel-item">
+                                                <div class="carousel-slide-bg carrousel-servicio2-6">
+                                                    <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
+                                                        <h3 class="mb-3">Enfoque</h3>
+                                                        <p class="lead mb-0">
+                                                            Nuestro enfoque se basa en la integración de datos cuantitativos y cualitativos, el uso de herramientas tecnológicas avanzadas y una comprensión profunda del entorno regulatorio y económico, lo que nos permite ofrecer soluciones personalizadas y efectivas a nuestros clientes. </p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- Slide 2 -->
-                                        <div class="carousel-item">
-                                            <div class="carousel-slide-bg carrousel-servicio2-2">
-                                                <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
-                                                    <h3 class="mb-3">Estudios de mercado</h3>
-                                                    <p class="lead mb-0">
-                                                        Análisis de oferta y demanda, identificación de tendencias y evaluación de oportunidades de inversión.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Slide 3 -->
-                                        <div class="carousel-item">
-                                            <div class="carousel-slide-bg carrousel-servicio2-3">
-                                                <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
-                                                    <h3 class="mb-3">Análisis de viabilidad</h3>
-                                                    <p class="lead mb-0">
-                                                        Evaluación técnica, legal y financiera de proyectos inmobiliarios para determinar su rentabilidad y sostenibilidad.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Slide 4 -->
-                                        <div class="carousel-item">
-                                            <div class="carousel-slide-bg carrousel-servicio2-4">
-                                                <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
-                                                    <h3 class="mb-3">Asesoramiento estratégico</h3>
-                                                    <p class="lead mb-0">
-                                                        Diseño de estrategias de desarrollo, comercialización y posicionamiento de activos inmobiliarios.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Slide 5 -->
-                                        <div class="carousel-item">
-                                            <div class="carousel-slide-bg carrousel-servicio2-5">
-                                                <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
-                                                    <h3 class="mb-3">Gestión de activos</h3>
-                                                    <p class="lead mb-0">
-                                                        Optimización del rendimiento de carteras inmobiliarias mediante la implementación de prácticas de gestión eficientes y sostenibles.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Slide 6 -->
-                                        <div class="carousel-item">
-                                            <div class="carousel-slide-bg carrousel-servicio2-6">
-                                                <div class="bg-dark bg-opacity-90 text-white p-4 px-5 mx-auto" style="max-width: 700px;">
-                                                    <h3 class="mb-3">Enfoque</h3>
-                                                    <p class="lead mb-0">
-                                                        Nuestro enfoque se basa en la integración de datos cuantitativos y cualitativos, el uso de herramientas tecnológicas avanzadas y una comprensión profunda del entorno regulatorio y económico, lo que nos permite ofrecer soluciones personalizadas y efectivas a nuestros clientes. </p>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <!-- Controles Carrousel Servicio 2 -->
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselServicio2" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Anterior</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselServicio2" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Siguiente</span>
+                                        </button>
                                     </div>
-                                    <!-- Controles Carrousel Servicio 2 -->
-                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselServicio2" data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Anterior</span>
-                                    </button>
-                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselServicio2" data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Siguiente</span>
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -274,7 +275,6 @@ require_once __DIR__ . '/includes/config.php';
                 </div>
             </div>
         </div>
-    </div>
     </div>
     <!-- FIN SECCIÓN SERVICIOS-->
 
@@ -293,9 +293,9 @@ require_once __DIR__ . '/includes/config.php';
             <!-- Encabezado de sección -->
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-lg-8 col-xl-6 text-center">
-                    <h2 class="text-center mt-0">Preguntas Frecuentes</h2>
+                    <h2 class="text-center display-4 mt-0">Preguntas Frecuentes</h2>
                     <hr class="divider" />
-                    <p class="text-muted mb-5">Resuelve tus dudas antes de contactarnos.</p>
+                    <p class="text-muted mb-5 p-nosotros">Resuelve tus dudas antes de contactarnos.</p>
                 </div>
             </div>
             <div class="accordion" id="faqAccordion">
@@ -447,7 +447,7 @@ require_once __DIR__ . '/includes/config.php';
             <div class="text-center">
                 <h2 class="display-4 text-center">Atención personalizada</h2>
                 <hr class="divider" />
-                <p class="text-center">Para solicitudes, cotizaciones o información adicional, por favor complete el siguiente formulario.</p>
+                <p class="text-center p-nosotros">Para solicitudes, cotizaciones o información adicional, por favor complete el siguiente formulario.</p>
             </div>
             <div class="row gx-5 mt-5">
                 <!-- Imagen -->

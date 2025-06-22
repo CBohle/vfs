@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </a>
     </div>
     <div class="container" style="min-height: 100vh;">
-        <div class="row justify-content-center mx-2 mx-md-0 align-items-stretch">
+        <div class="row mx-2 mx-md-0 align-items-stretch justify-content-md-center justify-content-lg-center">
             <div class="row d-md-flex align-items-stretch">
                 <!-- Columna izquierda -->
                 <div class="col-12 col-md-6 d-flex flex-column mb-4">
