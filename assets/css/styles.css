@@ -162,19 +162,38 @@ h2,
   }
 }
 
+
+
+/* H3 */
+/* Por defecto (mobile first): celulares pequeñas y menores a 576px */
 h3,
 .h3 {
-  font-size: calc(1.3rem + 0.6vw);
-}
+    font-size: 2rem;
+    font-weight: 200;
+  }
 
-@media (min-width: 1200px) {
-
+/* Tablets: desde 576px hasta menos de 992px */
+@media (min-width: 576px) and (max-width: 991.98px) {
   h3,
   .h3 {
     font-size: 2.75rem;
     font-weight: 300;
   }
 }
+
+/* Computadores: desde 992px en adelante */
+@media (min-width: 992px) {
+  h3,
+  .h3 {
+    font-size: 2.75rem;
+    font-weight: 300;
+  }
+}
+
+
+
+
+
 
 h4,
 .h4 {
@@ -261,11 +280,7 @@ p {
   font-weight: 500;
 }
 
-.ul-servicios {
-  font-family: "Raleway", sans-serif;
-  font-size: 1.3rem;
-  font-weight: 300;
-}
+
 
 abbr[title] {
   -webkit-text-decoration: underline dotted;
@@ -13051,6 +13066,33 @@ header.masthead .h1 {
   .servicios-box p {
     font-size: 1.4rem;
   }
+}
+
+
+/* li modal servicios */
+/* Por defecto (mobile first): celulares pequeñas y menores a 576px */
+.ul-servicios {
+  font-family: "Raleway", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 200;
+}
+
+/* Tablets: desde 576px hasta menos de 992px */
+@media (min-width: 576px) and (max-width: 991.98px) {
+.ul-servicios {
+  font-family: "Raleway", sans-serif;
+  font-size: 1.3rem;
+  font-weight: 300;
+}
+}
+
+/* Computadores: desde 992px en adelante */
+@media (min-width: 992px) {
+.ul-servicios {
+  font-family: "Raleway", sans-serif;
+  font-size: 1.3rem;
+  font-weight: 300;
+}
 }
 
 
