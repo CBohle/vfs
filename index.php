@@ -27,9 +27,10 @@ require_once __DIR__ . '/includes/config.php';
     <!-- SimpleLightbox plugin CSS-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet" />
     <!-- Hoja de estilos CSS-->
-    <link href="<?= BASE_URL ?>assets/css/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/styles.css?v=<?= time() ?>">
     <!--SweetAlert2 CSS-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
 </head>
 
 <!-- INCLUDE HEADER  -->
@@ -90,11 +91,9 @@ require_once __DIR__ . '/includes/config.php';
                         <img class="img-fluid" src="<?= BASE_URL ?>assets/images/servicios/05.webp" alt="Consultoría inmobiliaria" />
                         <div class="servicios-box-caption">
                             <div class="text-white-tit-serv mb-10">TASACIÓN DE BIENES RAÍCES</div>
-                            <div class="project-name">
-                                <p class="mx-4 mb-10">
-                                    Nuestros servicios de tasación inmobiliaria están diseñados para determinar con precisión el valor de mercado de diversos tipos de propiedades.
-                                </p>
-                            </div>
+                            <p class="mx-4 mb-10">
+                                Nuestros servicios de tasación inmobiliaria están diseñados para determinar con precisión el valor de mercado de diversos tipos de propiedades.
+                            </p>
                             <div class="text-white-det-serv">Ver detalle</div>
                         </div>
                     </div>
@@ -171,11 +170,9 @@ require_once __DIR__ . '/includes/config.php';
                         <img class="img-fluid" src="<?= BASE_URL ?>assets/images/servicios/16.webp" alt="Consultoría inmobiliaria" />
                         <div class="servicios-box-caption">
                             <div class="text-white-tit-serv mb-10">CONSULTORÍA INMOBILIARIA</div>
-                            <div class="project-name">
-                                <p class="mx-4 mb-10">
-                                    Ofrecemos servicios de consultoría inmobiliaria orientados a maximizar el valor y la eficiencia de las inversiones y desarrollos inmobiliarios.
-                                </p>
-                            </div>
+                            <p class="mx-4 mb-10">
+                                Ofrecemos servicios de consultoría inmobiliaria orientados a maximizar el valor y la eficiencia de las inversiones y desarrollos inmobiliarios.
+                            </p>
                             <div class="text-white-det-serv">Ver detalle</div>
                         </div>
                     </div>

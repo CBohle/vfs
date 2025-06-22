@@ -5127,6 +5127,31 @@ fieldset:disabled .btn {
   font-weight: 550;
 }
 
+/* Por defecto: celulares (menos de 576px) */
+.accordion-button {
+  font-size: 1.1rem;
+  font-family: "Raleway", sans-serif;
+  font-weight: 400;
+}
+
+/* Tablets: entre 576px y 991.98px */
+@media (min-width: 576px) and (max-width: 991.98px) {
+  .accordion-button {
+    font-size: 1.3rem;
+    font-family: "Raleway", sans-serif;
+    font-weight: 400;
+  }
+}
+
+/* Computadores: 992px en adelante */
+@media (min-width: 992px) {
+  .accordion-button {
+    font-size: 1.1rem;
+    font-family: "Raleway", sans-serif;
+    font-weight: 400;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .accordion-button {
     transition: none;
@@ -8864,6 +8889,13 @@ fieldset:disabled .btn {
 
 .p-5 {
   padding: 3rem !important;
+}
+
+@media (max-width: 576px) {
+  .p-5 {
+    padding: 0.5rem !important; /* o 0 si quieres eliminarlo por completo */
+    margin-bottom: 3.0rem;
+  }
 }
 
 .px-0 {
@@ -12969,7 +13001,7 @@ header.masthead .h1 {
 /* Margin-bottom */
 /* Por defecto (mobile first): celulares pequeñas y menores a 576px */
 .mb-10 {
-  margin-bottom: 0.5rem;
+  margin-bottom: 1.0rem;
 }
 
 /* Tablets: desde 576px hasta menos de 992px */
@@ -13021,7 +13053,7 @@ header.masthead .h1 {
 .text-white-det-serv {
   --bs-text-opacity: 1;
   color: rgba(255, 255, 255, 0.5);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
 /* Tablets: desde 576px hasta menos de 992px */
@@ -13047,7 +13079,7 @@ header.masthead .h1 {
 /* Por defecto (mobile first): celulares pequeñas y menores a 576px */
 #servicios p,
 .servicios-box p {
-  font-size: 1.1rem;
+  font-size: 1.0rem;
 }
 
 /* Tablets: desde 576px hasta menos de 992px */
