@@ -246,6 +246,15 @@ p {
   font-weight: 500;
 }
 
+
+
+
+
+
+
+
+
+
 .ul-faq {
   font-family: "Raleway", sans-serif;
   font-size: 0.95rem;
@@ -8782,6 +8791,10 @@ fieldset:disabled .btn {
   margin-bottom: 3rem !important;
 }
 
+.mb-6 {
+  margin-bottom: 2.0rem !important;
+}
+
 .mb-auto {
   margin-bottom: auto !important;
 }
@@ -9215,11 +9228,6 @@ fieldset:disabled .btn {
 .text-black-50 {
   --bs-text-opacity: 1;
   color: rgba(0, 0, 0, 0.5) !important;
-}
-
-.text-white-50 {
-  --bs-text-opacity: 1;
-  color: rgba(255, 255, 255, 0.5) !important;
 }
 
 .text-reset {
@@ -9754,7 +9762,7 @@ fieldset:disabled .btn {
   }
 
   .mt-sm-1 {
-    margin-top: 0.25rem !important;
+    margin-top: 0.25rem;
   }
 
   .mt-sm-2 {
@@ -12899,8 +12907,6 @@ header.masthead {
   background-size: cover;
 }
 
-
-
 header.masthead h1,
 header.masthead .h1 {
   font-size: 2.5rem;
@@ -12915,10 +12921,9 @@ header.masthead .h1 {
   }
 
   header.masthead p {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 400;
   }
-
 
   header.masthead h1,
   header.masthead .h1 {
@@ -12934,7 +12939,124 @@ header.masthead .h1 {
   }
 }
 
-/* SERVICIOS */
+@media (max-width: 576px) {
+
+  header.masthead h1,
+  header.masthead .h1 {
+    font-size: 2.5rem;
+    font-weight: 200;
+  }
+}
+
+
+/* MÁRGENES CONTENIDO DE SERVICIOS - RESPONSIVO */
+
+/* Margin-bottom */
+/* Por defecto (mobile first): celulares pequeñas y menores a 576px */
+.mb-10 {
+  margin-bottom: 0.5rem;
+}
+
+/* Tablets: desde 576px hasta menos de 992px */
+@media (min-width: 576px) and (max-width: 991.98px) {
+  .mb-10 {
+    margin-bottom: 2.0rem;
+  }
+}
+
+/* Computadores: desde 992px en adelante */
+@media (min-width: 992px) {
+  .mb-10 {
+    margin-bottom: 2.0rem;
+  }
+}
+
+
+
+/* TAMAÑO DE LETRAS SECCIÓN SERVICIOS - RESPONSIVO */
+
+/* Título */
+/* Por defecto (mobile first): celulares pequeñas y menores a 576px */
+.text-white-tit-serv {
+  --bs-text-opacity: 1;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.2rem;
+}
+
+/* Tablets: desde 576px hasta menos de 992px */
+@media (min-width: 576px) and (max-width: 991.98px) {
+  .text-white-tit-serv {
+    --bs-text-opacity: 1;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.8rem;
+  }
+}
+
+/* Computadores: desde 992px en adelante */
+@media (min-width: 992px) {
+  .text-white-tit-serv {
+    --bs-text-opacity: 1;
+    color: rgba(255, 255, 255, 0.5) ;
+    font-size: 1.8rem;
+  }
+}
+
+/* Ver detalle */
+/* Por defecto (mobile first): celulares pequeñas y menores a 576px */
+.text-white-det-serv {
+  --bs-text-opacity: 1;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.9rem;
+}
+
+/* Tablets: desde 576px hasta menos de 992px */
+@media (min-width: 576px) and (max-width: 991.98px) {
+  .text-white-det-serv {
+    --bs-text-opacity: 1;
+    color: rgba(255, 255, 255, 0.5) ;
+    font-size: 1.2rem;
+  }
+}
+
+/* Computadores: desde 992px en adelante */
+@media (min-width: 992px) {
+  .text-white-det-serv {
+    --bs-text-opacity: 1;
+    color: rgba(255, 255, 255, 0.5) ;
+    font-size: 1.2rem;
+  }
+}
+
+
+/* Párrafo servicios */
+/* Por defecto (mobile first): celulares pequeñas y menores a 576px */
+#servicios p,
+.servicios-box p {
+  font-size: 1.1rem;
+}
+
+/* Tablets: desde 576px hasta menos de 992px */
+@media (min-width: 576px) and (max-width: 991.98px) {
+
+  #servicios p,
+  .servicios-box p {
+    font-size: 1.4rem;
+  }
+}
+
+/* Computadores: desde 992px en adelante */
+@media (min-width: 992px) {
+
+  #servicios p,
+  .servicios-box p {
+    font-size: 1.4rem;
+  }
+}
+
+
+
+
+
 #servicios .container-fluid,
 #servicios .container-sm,
 #servicios .container-md,
