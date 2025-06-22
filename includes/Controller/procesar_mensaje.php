@@ -74,9 +74,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mail = new PHPMailer(true);
         $mail->CharSet = 'UTF-8';
         // Ahora enviar el correo a los administradores
-        $stmt = $conexion->prepare("SELECT email FROM usuarios_admin WHERE rol_id IN (1, 5) AND activo = 1");
+        
+        $stmt = $conexion->prepare("
+            SELECT DISTINCT ua.email 
+            FROM usuarios_admin ua
+            JOIN permisos p ON ua.rol_id = p.rol_id
+            WHERE ua.activo = 1
+            AND p.modulo = 'mensajes'
+            AND p.accion = 'aviso'
+        ");
         if ($stmt === false) {
-            echo json_encode(['success' => false, 'error' => 'Error al preparar la consulta de administradores']);
+            echo json_encode(['success' => false, 'error' => 'Error al preparar la consulta de roles para dar avisos']);
             exit;
         }
 
@@ -84,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = $stmt->get_result();
 
         if (!$result) {
-            echo json_encode(['success' => false, 'error' => 'Error al ejecutar la consulta de administradores']);
+            echo json_encode(['success' => false, 'error' => 'Error al ejecutar la consulta de roles para dar avisos']);
             exit;
         }
 
