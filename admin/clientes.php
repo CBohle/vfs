@@ -96,7 +96,7 @@ if (!tienePermiso('clientes', 'ver')) {
 <body class="bg-light">
     <div class="container-fluid px-3 py-2">
         <div id="contenido-dinamico" class="mx-auto w-100" style="max-width: 100%;">
-            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2 gap-sm-3 gap-md-4">
                 <h2 class="mb-0">Clientes</h2>
                 <!-- Botones de exportación -->
                 <div id="exportButtons" class="d-flex gap-1"></div>
@@ -153,16 +153,14 @@ if (!tienePermiso('clientes', 'ver')) {
                             <label for="filtro_busqueda">Buscar palabra clave</label>
                         </div>
                         <!-- Grupo 3: Crear nuevo cliente -->
-                        <?php if ($_SESSION['rol_id'] != 4): ?>
-                            <div class="form-floating align-items-center">
-                                <label class="form-label d-block invisible">.</label>
-                                <button type="button" class="btn btn-info btn-sm w-100" style="color:rgb(255, 255, 255)" onclick="crearCliente()">
-                                    <h6 class="mb-1 fw-semibold">
-                                        <span id="ClientePorCrear">Nuevo Cliente</span>
-                                    </h6>
-                                </button>
-                            </div>
-                        <?php endif; ?>
+                        <div class="form-floating align-items-center">
+                            <label class="form-label d-block invisible">.</label>
+                            <button type="button" class="btn btn-info btn-sm w-100" style="color:rgb(255, 255, 255)" onclick="crearCliente()">
+                                <h6 class="mb-1 fw-semibold">
+                                    <span id="ClientePorCrear">Nuevo Cliente</span>
+                                </h6>
+                            </button>
+                        </div>   
 
                     </form>
                 </div>
@@ -211,7 +209,7 @@ if (!tienePermiso('clientes', 'ver')) {
     </div>
     <!-- Modal para Ver Clientes -->
     <div class="modal fade" id="modalVerCliente" tabindex="-1" aria-labelledby="modalVerClienteLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable modal-fullscreen-sm-down">
             <div class="modal-content">
                 <!-- Modal Header -->
                 <div class="modal-header d-flex justify-content-between align-items-center flex-wrap gap-2">
@@ -242,11 +240,6 @@ if (!tienePermiso('clientes', 'ver')) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script>
-        if (typeof rol_id === 'undefined') {
-            var rol_id = <?= json_encode($_SESSION['rol_id']) ?>;
-        }
-    </script>
     <script>
         window.tablaClientes = window.tablaClientes || null;
 

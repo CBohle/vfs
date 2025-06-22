@@ -214,7 +214,7 @@ if (!tienePermiso('postulaciones', 'ver')) {
     </div>
     <!-- Modal para Ver Postulacion -->
     <div class="modal fade" id="modalVerPostulacion" tabindex="-1" aria-labelledby="modalVerPostulacionLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable modal-fullscreen-sm-down">
             <div class="modal-content">
                 <!-- Modal Header -->
                 <div class="modal-header d-flex justify-content-between align-items-center flex-wrap gap-2">
