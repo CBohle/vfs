@@ -45,7 +45,7 @@ require_once __DIR__ . '/includes/config.php';
                     <hr class="divider" />
                 </div>
                 <div class="col-lg-8 align-self-baseline">
-                    <p class="text-white-75 mb-5 p-masthead">Somos una empresa de tasación y consultoría inmobiliaria que entrega soluciones integrales y asesoría precisa para apoyar decisiones estratégicas en inversión, financiamiento y gestión de activos.</p>
+                    <p class="text-white-75 mb-5 p-nosotros">Somos una empresa de tasación y consultoría inmobiliaria que entrega soluciones integrales y asesoría precisa para apoyar decisiones estratégicas en inversión, financiamiento y gestión de activos.</p>
                     <a class="btn btn-primary btn-xl" href="#nosotros">¡Conocer más!</a>
                 </div>
             </div>
@@ -80,9 +80,9 @@ require_once __DIR__ . '/includes/config.php';
     <div class="page-section1 bg-dark text-white" id="servicios">
         <div class="container-fluid p-0">
             <!-- Encabezado de sección -->
-            <h2 class="text-center mt-0">Tu socio en tasaciones</h2>
+            <h2 class="text-center display-4 mt-0">Tu socio en tasaciones</h2>
             <hr class="divider" />
-            <p class="text-muted mb-5 text-center text-white-75">Servicios</p>
+            <p class="text-muted p-nosotros mb-5 text-center text-white-75">Servicios</p>
             <div class="row g-0">
                 <!-- Servicio 1 -->
                 <div class="col-lg-6 col-sm-12 pe-4">
@@ -296,9 +296,9 @@ require_once __DIR__ . '/includes/config.php';
             <!-- Encabezado de sección -->
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-lg-8 col-xl-6 text-center">
-                    <h2 class="text-center mt-0">Preguntas Frecuentes</h2>
+                    <h2 class="text-center display-4 mt-0">Preguntas Frecuentes</h2>
                     <hr class="divider" />
-                    <p class="text-muted mb-5">Resuelve tus dudas antes de contactarnos.</p>
+                    <p class="text-muted mb-5 p-nosotros">Resuelve tus dudas antes de contactarnos.</p>
                 </div>
             </div>
             <div class="accordion" id="faqAccordion">
@@ -450,7 +450,7 @@ require_once __DIR__ . '/includes/config.php';
             <div class="text-center">
                 <h2 class="display-4 text-center">Atención personalizada</h2>
                 <hr class="divider" />
-                <p class="text-center">Para solicitudes, cotizaciones o información adicional, por favor complete el siguiente formulario.</p>
+                <p class="text-center p-nosotros">Para solicitudes, cotizaciones o información adicional, por favor complete el siguiente formulario.</p>
             </div>
             <div class="row gx-5 mt-5">
                 <!-- Imagen -->
