@@ -8,7 +8,10 @@ require_once __DIR__ . '/../includes/Controller/usuariosController.php';
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
     <title>Panel de administración</title>
     <!-- Bootstrap y estilos -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -35,61 +38,62 @@ require_once __DIR__ . '/../includes/Controller/usuariosController.php';
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-text navbar-blue fixed-top">
-        <div class="container-fluid px-4">
+        <div class="container-fluid d-flex align-items-center justify-content-between px-3" style="gap: 1rem">
             <!-- Logo -->
             <div class="d-flex align-items-center">
-                <img src="<?= BASE_URL ?>assets/images/logo/LogoVFS2.png" alt="Logo VFS" class="img-fluid me-2 logo" style="max-height: 40px;">
+                <img src="<?= BASE_URL ?>assets/images/logo/LogoVFS2.png" alt="Logo VFS" class="img-fluid logo" style="max-height: 40px;">
             </div>
-            <!-- Título central -->
-            <div class="d-flex align-items-center">
-                <h4 class="m-0">Panel de Administración</h4>
+            <!-- Título -->
+            <div class="flex-grow-1 text-center">
+                <h4 class="m-0 navbar-title">Panel de Administración</h4>
             </div>
             <!-- Botón hamburguesa -->
-            <button class="btn btn-outline me-3" id="toggleSidebar">
-                <i class="bi bi-list"></i>
-            </button>
+            <div class="d-flex align-items-center">
+                <button class="btn btn-outline" id="toggleSidebar" aria-label="Toggle sidebar">
+                    <i class="bi bi-list"></i>
+                </button>
+            </div>
         </div>
     </nav>
-
     <div class="wrapper bg-light">
-            <!-- Sidebar -->
-            <div class="sidebar sidebar-text" id="sidebar">
-                <ul class="nav flex-column">
-                        <li class="nav-item">
-                        <a class="nav-link active" data-section="inicioResumen">
-                            <i class="bi bi-house fs-6" style="margin-right: 5px"></i>
-                            Dashboard
+        <!-- Sidebar -->
+        <div class="sidebar sidebar-text" id="sidebar">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" data-section="inicioResumen">
+                        <i class="bi bi-house fs-6" style="margin-right: 5px"></i>
+                        Dashboard
+                    </a>
+                </li>
+
+                <?php if (tienePermiso('mensajes', 'ver')): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" data-section="mensajes">
+                            <i class="bi bi-chat-square-text fs-6" style="margin-right: 5px"></i>
+                            Mensajes <span id="badge-mensajes" class="badge bg-danger d-none"></span>
                         </a>
                     </li>
-                    
-                    <?php if (tienePermiso('mensajes', 'ver')): ?>
-                        <li class="nav-item">
-                            <a class="nav-link" data-section="mensajes">
-                                <i class="bi bi-chat-square-text fs-6" style="margin-right: 5px"></i>
-                                Mensajes <span id="badge-mensajes" class="badge bg-danger d-none"></span>
-                            </a>
-                        </li>
-                        
-                    <?php endif; ?>
-                   
-                  <?php if (tienePermiso('postulaciones', 'ver')): ?>
-    <li class="nav-item">
-        <a class="nav-link" data-section="postulaciones">
-            <i class="bi bi-bookmark-check fs-6" style="margin-right: 5px"></i>
-            Postulaciones <span id="badge-postulaciones" class="badge bg-danger d-none"></span>
-        </a>
-    </li>
-<?php endif; ?>
-  <?php if (tienePermiso('clientes', 'ver')): ?>
-        <li class="nav-item">
+
+                <?php endif; ?>
+
+                <?php if (tienePermiso('postulaciones', 'ver')): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" data-section="postulaciones">
+                            <i class="bi bi-bookmark-check fs-6" style="margin-right: 5px"></i>
+                            Postulaciones <span id="badge-postulaciones" class="badge bg-danger d-none"></span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+                <?php if (tienePermiso('clientes', 'ver')): ?>
+                    <li class="nav-item">
                         <a class="nav-link" data-section="clientes">
                             <i class="bi bi-people-fill fs-6" style="margin-right: 5px"></i>
                             Clientes
                         </a>
                     </li>
-    <?php endif; ?>
-                    
-                <?php if (tienePermiso('usuarios', 'ver') || tienePermiso('roles', 'ver')): ?>    
+                <?php endif; ?>
+
+                <?php if (tienePermiso('usuarios', 'ver') || tienePermiso('roles', 'ver')): ?>
                     <li class="nav-item">
                         <a class="nav-link" data-section="usuarios">
                             <i class="bi bi-person-vcard fs-6" style="margin-right: 5px"></i>
@@ -97,15 +101,15 @@ require_once __DIR__ . '/../includes/Controller/usuariosController.php';
                         </a>
                     </li>
                 <?php endif; ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?= BASE_URL ?>logout.php">
-                            <i class="bi bi-arrow-bar-left fs-6" style="margin-right: 5px"></i>
-                            Cerrar sesión
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        
+                <li class="nav-item">
+                    <a class="nav-link" href="<?= BASE_URL ?>logout.php">
+                        <i class="bi bi-arrow-bar-left fs-6" style="margin-right: 5px"></i>
+                        Cerrar sesión
+                    </a>
+                </li>
+            </ul>
+        </div>
+
         <!-- Contenido dinámico -->
         <div class="main-content" id="contenido-dinamico"></div>
     </div>
@@ -132,7 +136,7 @@ require_once __DIR__ . '/../includes/Controller/usuariosController.php';
 
             $('#contenido-dinamico').empty();
 
-            $('#contenido-dinamico').load(section + '.php', function () {
+            $('#contenido-dinamico').load(section + '.php', function() {
                 if (sessionStorage.getItem('recargaExitosa') === '1') {
                     sessionStorage.removeItem('recargaExitosa');
                     Swal.fire({
@@ -190,7 +194,7 @@ require_once __DIR__ . '/../includes/Controller/usuariosController.php';
             });
         }
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             const urlParams = new URLSearchParams(window.location.search);
             const seccionParam = urlParams.get('seccion');
 
@@ -201,7 +205,7 @@ require_once __DIR__ . '/../includes/Controller/usuariosController.php';
             }
 
             // Menú lateral: navegación
-            $('.nav-link[data-section]').click(function (e) {
+            $('.nav-link[data-section]').click(function(e) {
                 e.preventDefault();
                 const section = $(this).data('section');
                 cargarSeccion(section);
@@ -216,7 +220,7 @@ require_once __DIR__ . '/../includes/Controller/usuariosController.php';
                 $.ajax({
                     url: 'notificaciones.php',
                     type: 'GET',
-                    success: function (data) {
+                    success: function(data) {
                         if (data.mensajes > 0) {
                             $('#badge-mensajes').text(data.mensajes).removeClass('d-none');
                         } else {
@@ -263,6 +267,15 @@ require_once __DIR__ . '/../includes/Controller/usuariosController.php';
 
         window.addEventListener('resize', handleResize);
         handleResize();
+
+        const sidebarLinks = document.querySelectorAll('#sidebar .nav-link');
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.remove('show');
+                }
+            });
+        });
     </script>
 
 
