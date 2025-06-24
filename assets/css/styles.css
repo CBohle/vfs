@@ -168,12 +168,13 @@ h2,
 /* Por defecto (mobile first): celulares pequeñas y menores a 576px */
 h3,
 .h3 {
-    font-size: 2rem;
-    font-weight: 200;
-  }
+  font-size: 2rem;
+  font-weight: 200;
+}
 
 /* Tablets: desde 576px hasta menos de 992px */
 @media (min-width: 576px) and (max-width: 991.98px) {
+
   h3,
   .h3 {
     font-size: 2.75rem;
@@ -183,6 +184,7 @@ h3,
 
 /* Computadores: desde 992px en adelante */
 @media (min-width: 992px) {
+
   h3,
   .h3 {
     font-size: 2.75rem;
@@ -237,7 +239,7 @@ p {
   margin-top: 0;
   margin-bottom: 1rem;
   font-family: "Raleway", sans-serif;
-  font-size: 1.2rem;
+  font-size: 1.2rem !important;
   font-weight: 300;
 }
 
@@ -8893,7 +8895,8 @@ fieldset:disabled .btn {
 
 @media (max-width: 576px) {
   .p-5 {
-    padding: 0.5rem !important; /* o 0 si quieres eliminarlo por completo */
+    padding: 0.5rem !important;
+    /* o 0 si quieres eliminarlo por completo */
     margin-bottom: 3.0rem;
   }
 }
@@ -13018,6 +13021,26 @@ header.masthead .h1 {
   }
 }
 
+/* Margin-bottom */
+/* Por defecto (mobile first): celulares pequeñas y menores a 576px */
+.mb-11 {
+  margin-bottom: 0.3rem;
+}
+
+/* Tablets: desde 576px hasta menos de 992px */
+@media (min-width: 576px) and (max-width: 991.98px) {
+  .mb-11 {
+    margin-bottom: 2.0rem;
+  }
+}
+
+/* Computadores: desde 992px en adelante */
+@media (min-width: 992px) {
+  .mb-11 {
+    margin-bottom: 2.0rem;
+  }
+}
+
 
 
 /* TAMAÑO DE LETRAS SECCIÓN SERVICIOS - RESPONSIVO */
@@ -13027,7 +13050,7 @@ header.masthead .h1 {
 .text-white-tit-serv {
   --bs-text-opacity: 1;
   color: rgba(255, 255, 255, 0.5);
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 }
 
 /* Tablets: desde 576px hasta menos de 992px */
@@ -13043,7 +13066,7 @@ header.masthead .h1 {
 @media (min-width: 992px) {
   .text-white-tit-serv {
     --bs-text-opacity: 1;
-    color: rgba(255, 255, 255, 0.5) ;
+    color: rgba(255, 255, 255, 0.5);
     font-size: 1.8rem;
   }
 }
@@ -13060,7 +13083,7 @@ header.masthead .h1 {
 @media (min-width: 576px) and (max-width: 991.98px) {
   .text-white-det-serv {
     --bs-text-opacity: 1;
-    color: rgba(255, 255, 255, 0.5) ;
+    color: rgba(255, 255, 255, 0.5);
     font-size: 1.2rem;
   }
 }
@@ -13069,7 +13092,7 @@ header.masthead .h1 {
 @media (min-width: 992px) {
   .text-white-det-serv {
     --bs-text-opacity: 1;
-    color: rgba(255, 255, 255, 0.5) ;
+    color: rgba(255, 255, 255, 0.5);
     font-size: 1.2rem;
   }
 }
@@ -13079,7 +13102,9 @@ header.masthead .h1 {
 /* Por defecto (mobile first): celulares pequeñas y menores a 576px */
 #servicios p,
 .servicios-box p {
-  font-size: 1.0rem;
+  font-family: "Raleway", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 200;
 }
 
 /* Tablets: desde 576px hasta menos de 992px */
@@ -13087,7 +13112,9 @@ header.masthead .h1 {
 
   #servicios p,
   .servicios-box p {
-    font-size: 1.4rem;
+    font-family: "Raleway", sans-serif;
+    font-size: 1.3rem;
+    font-weight: 300;
   }
 }
 
@@ -13096,7 +13123,9 @@ header.masthead .h1 {
 
   #servicios p,
   .servicios-box p {
-    font-size: 1.4rem;
+    font-family: "Raleway", sans-serif;
+    font-size: 1.3rem;
+    font-weight: 300;
   }
 }
 
@@ -13105,26 +13134,26 @@ header.masthead .h1 {
 /* Por defecto (mobile first): celulares pequeñas y menores a 576px */
 .ul-servicios {
   font-family: "Raleway", sans-serif;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 200;
 }
 
 /* Tablets: desde 576px hasta menos de 992px */
 @media (min-width: 576px) and (max-width: 991.98px) {
-.ul-servicios {
-  font-family: "Raleway", sans-serif;
-  font-size: 1.3rem;
-  font-weight: 300;
-}
+  .ul-servicios {
+    font-family: "Raleway", sans-serif;
+    font-size: 1.3rem;
+    font-weight: 300;
+  }
 }
 
 /* Computadores: desde 992px en adelante */
 @media (min-width: 992px) {
-.ul-servicios {
-  font-family: "Raleway", sans-serif;
-  font-size: 1.3rem;
-  font-weight: 300;
-}
+  .ul-servicios {
+    font-family: "Raleway", sans-serif;
+    font-size: 1.3rem;
+    font-weight: 300;
+  }
 }
 
 
@@ -13173,7 +13202,6 @@ header.masthead .h1 {
 }
 
 .al-servicios {
-  margin-left: 20px;
   margin-bottom: 20px;
 }
 

@@ -78,19 +78,24 @@ require_once __DIR__ . '/includes/config.php';
     <!-- FIN SECCIÓN QUIÉNES SOMOS-->
 
     <!-- SERVICIOS-->
-    <div class="page-section1 bg-dark text-white" id="servicios">
-        <div class="container-fluid p-0">
+    <section class="page-section1 bg-dark text-white" id="servicios">
+        <div class="container-fluid px-4 px-lg-5">
             <!-- Encabezado de sección -->
-            <h2 class="text-center display-4 mt-0">Tu socio en tasaciones</h2>
-            <hr class="divider" />
-            <p class="text-muted p-nosotros mb-5 text-center text-white-75">Servicios</p>
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-lg-8 col-xl-6 text-center">
+                    <h2 class="text-center display-4 mt-0">Tu socio en tasaciones</h2>
+                    <hr class="divider" />
+                    <p class="text-muted mb-5 p-nosotros text-white-75">Servicios</p>
+                </div>
+            </div>
+            <!-- Contenido -->
             <div class="row g-0">
                 <!-- Servicio 1 -->
-                <div class="col-lg-6 col-sm-12 pe-4">
+                <div class="col-lg-6 col-sm-12">
                     <div class="servicios-box al-servicios" data-bs-toggle="modal" data-bs-target="#modalServicio1">
                         <img class="img-fluid" src="<?= BASE_URL ?>assets/images/servicios/05.webp" alt="Consultoría inmobiliaria" />
                         <div class="servicios-box-caption">
-                            <div class="text-white-tit-serv mb-10">TASACIÓN DE BIENES RAÍCES</div>
+                            <div class="text-white-tit-serv mb-11">TASACIÓN DE BIENES RAÍCES</div>
                             <p class="mx-4 mb-10">
                                 Nuestros servicios de tasación inmobiliaria están diseñados para determinar con precisión el valor de mercado de diversos tipos de propiedades.
                             </p>
@@ -165,11 +170,11 @@ require_once __DIR__ . '/includes/config.php';
                     </div>
                 </div>
                 <!-- Servicio 2 -->
-                <div class="col-lg-6 col-sm-12 pe-4">
+                <div class="col-lg-6 col-sm-12">
                     <div class="servicios-box al-servicios" data-bs-toggle="modal" data-bs-target="#modalServicio2">
                         <img class="img-fluid" src="<?= BASE_URL ?>assets/images/servicios/16.webp" alt="Consultoría inmobiliaria" />
                         <div class="servicios-box-caption">
-                            <div class="text-white-tit-serv mb-10">CONSULTORÍA INMOBILIARIA</div>
+                            <div class="text-white-tit-serv mb-11">CONSULTORÍA INMOBILIARIA</div>
                             <p class="mx-4 mb-10">
                                 Ofrecemos servicios de consultoría inmobiliaria orientados a maximizar el valor y la eficiencia de las inversiones y desarrollos inmobiliarios.
                             </p>
@@ -275,7 +280,8 @@ require_once __DIR__ . '/includes/config.php';
                 </div>
             </div>
         </div>
-    </div>
+        </div>
+    </section>
     <!-- FIN SECCIÓN SERVICIOS-->
 
     <!-- LLAMADA A LA ACCIÓN-->
