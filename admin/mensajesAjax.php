@@ -25,10 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 // Eliminar mensaje
 if (isset($_POST['accion']) && $_POST['accion'] === 'eliminar' && isset($_POST['id'])) {
-    if ($_SESSION['rol_id'] == 4) {
-        echo json_encode(['success' => false, 'error' => 'Sin permisos para eliminar']);
-        exit;
-    }
     $id = intval($_POST['id']);
     if (actualizar_estado($id, 'eliminado')) {
         echo json_encode(['success' => true]);
@@ -41,10 +37,6 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'eliminar' && isset($_POST['
 
 // Marcar como importante
 if (isset($_POST['accion']) && $_POST['accion'] === 'importante' && isset($_POST['mensaje_id'], $_POST['importante'])) {
-    if ($_SESSION['rol_id'] == 4) {
-        echo json_encode(['success' => false, 'error' => 'Sin permisos para marcar como importante']);
-        exit;
-    }
     $id = intval($_POST['mensaje_id']);
     $importante = intval($_POST['importante']);
     if (actualizar_importante($id, $importante)) {
@@ -58,10 +50,6 @@ if (isset($_POST['accion']) && $_POST['accion'] === 'importante' && isset($_POST
 
 // Recuperar mensaje y actualizar estado basado en la respuesta
 if (isset($_POST['accion']) && $_POST['accion'] === 'recuperar' && isset($_POST['id'])) {
-    if ($_SESSION['rol_id'] == 4) {
-        echo json_encode(['success' => false, 'error' => 'Sin permisos para recuperar']);
-        exit;
-    }
     $id = intval($_POST['id']);
     echo actualizar_estado_mensaje($id);
     exit;

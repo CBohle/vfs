@@ -153,7 +153,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->close();
 
         // Enviar correos a los administradores
-        $stmt_admins = $conexion->prepare("SELECT email FROM usuarios_admin WHERE rol_id IN (1, 5) AND activo = 1");
+        $stmt_admins = $conexion->prepare("
+            SELECT DISTINCT ua.email 
+            FROM usuarios_admin ua
+            JOIN permisos p ON ua.rol_id = p.rol_id
+            WHERE ua.activo = 1
+            AND p.modulo = 'postulaciones'
+            AND p.accion = 'aviso'
+        ");
         $stmt_admins->execute();
         $result = $stmt_admins->get_result();
 

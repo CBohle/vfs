@@ -228,18 +228,20 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
                                                 <th>Modificar</th>
                                                 <th>Crear</th>
                                                 <th>Eliminar</th>
+                                                <th>Aviso</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php foreach (['mensajes', 'postulaciones', 'clientes', 'usuarios', 'roles'] as $modulo): ?>
                                                 <tr>
                                                     <td class="text-start"><?= ucfirst($modulo) ?></td>
-                                                    <?php foreach (['ver', 'modificar', 'crear', 'eliminar'] as $accion): ?>
+                                                    <?php foreach (['ver', 'modificar', 'crear', 'eliminar','aviso'] as $accion): ?>
                                                         <?php
                                                         $bloqueado = false;
                                                         if (
                                                             ($accion === 'crear' && in_array($modulo, ['mensajes', 'postulaciones'])) ||
-                                                            ($accion === 'modificar' && $modulo === 'postulaciones')
+                                                            ($accion === 'modificar' && $modulo === 'postulaciones') || 
+                                                            ($accion === 'aviso' && in_array($modulo, ['clientes', 'usuarios', 'roles']))
                                                         ) {
                                                             $bloqueado = true;
                                                         }
