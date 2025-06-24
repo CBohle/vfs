@@ -123,6 +123,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit;
             }
         }
+        try {
+            $mail->clearAllRecipients(); // Limpia los destinatarios anteriores
+            $mail->setFrom($_ENV['MAIL_CONTACTO_USER'], 'VFS-Admin');
+            $mail->addAddress($email); // Correo del remitente
+            $mail->Subject = 'Confirmación de recepción de mensaje de atención personalizada';
+            $mail->isHTML(true);
+            $mail->Body = "
+            <p>Estimado(a) <strong>$nombre $apellido</strong>,</p>
+            <p>Gracias por contactarse con nuestro equipo. Hemos recibido su mensaje correctamente y será revisado a la brevedad por uno de nuestros especialistas.</p>
+            <p><strong>Resumen de su mensaje de contacto:</strong></p>
+            <hr>
+            <p><strong>Nombre:</strong> $nombre $apellido<br>
+            <strong>Email:</strong> $email<br>
+            <strong>Teléfono:</strong> $telefono<br>
+            <strong>Servicio:</strong> $servicio</p>
+            <p><strong>Mensaje:</strong><br>$mensaje</p>
+            <hr>
+            <p>Saludos cordiales,<br>
+            Equipo de VFS</p>
+            ";
+            $mail->send();
+        } catch (Exception $e) {
+            error_log("Error al enviar correo al contacto: {$mail->ErrorInfo}");
+        }
 
         echo json_encode([
             'success' => true,
