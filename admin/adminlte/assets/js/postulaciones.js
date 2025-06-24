@@ -268,7 +268,7 @@ function inicializarTablaPostulaciones() {
         className: "text-center",
         render: function (data, type, row) {
           if (data) {
-            return `<button class="btn btn-sm btn-secondary" onclick="verPDF('/vfs/${data}')"><i class="bi bi-file-earmark-pdf"></i></button>`;
+            return `<button class="btn btn-sm btn-secondary" onclick="verPDF('/${data}')"><i class="bi bi-file-earmark-pdf"></i></button>`;
           } else {
             return '<span class="text-muted">Vacio</span>';
           }
