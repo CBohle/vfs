@@ -237,6 +237,7 @@ function inicializarTablaPostulaciones() {
       },
       {
         data: "estado",
+        className: "col-estado",
         render: function (data) {
           let clase = "badge ";
           switch (data.toLowerCase()) {
