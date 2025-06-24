@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-/* Body */
+/* BODY */
 body {
     padding-top: 56px;
     margin: 0;
@@ -12,16 +12,71 @@ body {
     height: calc(100vh - 56px);
     overflow: hidden;
 }
+/* FIN BODY */
 
-/* Navbar */
-
+/* INICIO NAVBAR */
 .navbar {
     background-color: rgb(218, 227, 242);
-    color: rgb(0, 44, 103)
+    color: rgb(0, 44, 103);
 }
 
+/* Logo */
+.navbar .logo {
+    max-height: 40px;
+}
 
-/* Sidebar */
+/* Título del navbar */
+.navbar-title {
+    font-size: 1.9rem;
+    font-weight: 500;
+    white-space: nowrap; /* evita que se corte en dos líneas */
+}
+
+/* Responsive ajustes opcionales */
+@media (max-width: 768px) {
+    .navbar-title {
+        font-size: 1rem;
+    }
+
+    #toggleSidebar {
+        padding: 0.25rem 0.5rem;
+        font-size: 1.2rem;
+    }
+}
+/* Párrafo servicios */
+/* Por defecto (mobile first): celulares pequeñas y menores a 576px */
+#servicios p,
+.servicios-box p {
+  font-family: "Raleway", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 200;
+}
+
+/* Tablets: desde 576px hasta menos de 992px */
+@media (min-width: 576px) and (max-width: 991.98px) {
+
+  #servicios p,
+  .servicios-box p {
+    font-family: "Raleway", sans-serif;
+    font-size: 1.3rem;
+    font-weight: 300;
+  }
+}
+
+/* Computadores: desde 992px en adelante */
+@media (min-width: 992px) {
+
+  #servicios p,
+  .servicios-box p {
+    font-family: "Raleway", sans-serif;
+    font-size: 1.3rem;
+    font-weight: 300;
+  }
+}
+
+/* FIN NAVBAR */
+
+/* INICIO SIDEBAR */
 .sidebar {
     width: 210px;
     background-color: rgb(42, 42, 83);
@@ -85,6 +140,7 @@ body {
     }
 }
 
+/* FIN SIDEBAR */
 
 .alert-box {
     max-width: 350px;
@@ -128,4 +184,6 @@ h5 {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);        
     margin-bottom: 20px;
 }
+
+
 
