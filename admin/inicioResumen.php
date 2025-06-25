@@ -172,10 +172,6 @@ $promedio_formateado = $promedio_minutos > 60
                 </div>
             </div>
             <!-- Fin contenido -->
-            <!-- Footer -->
-            <?php
-            require_once __DIR__ . '/includes/footerAdmin.php';
-            ?>
             <!-- Fin Footer -->
             <script>
                 $('#verMensajes').click(() => {

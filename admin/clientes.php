@@ -754,10 +754,7 @@ if (!tienePermiso('clientes', 'ver')) {
             }, 'json');
         });
     </script>
-    <!-- Footer -->
-    <?php
-    require_once __DIR__ . '/includes/footerAdmin.php';
-    ?>
+    
 </body>
 
 </html>
