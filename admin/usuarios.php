@@ -235,12 +235,12 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
                                             <?php foreach (['mensajes', 'postulaciones', 'clientes', 'usuarios', 'roles'] as $modulo): ?>
                                                 <tr>
                                                     <td class="text-start"><?= ucfirst($modulo) ?></td>
-                                                    <?php foreach (['ver', 'modificar', 'crear', 'eliminar','aviso'] as $accion): ?>
+                                                    <?php foreach (['ver', 'modificar', 'crear', 'eliminar', 'aviso'] as $accion): ?>
                                                         <?php
                                                         $bloqueado = false;
                                                         if (
                                                             ($accion === 'crear' && in_array($modulo, ['mensajes', 'postulaciones'])) ||
-                                                            ($accion === 'modificar' && $modulo === 'postulaciones') || 
+                                                            ($accion === 'modificar' && $modulo === 'postulaciones') ||
                                                             ($accion === 'aviso' && in_array($modulo, ['clientes', 'usuarios', 'roles']))
                                                         ) {
                                                             $bloqueado = true;
@@ -885,7 +885,12 @@ $puedeEliminarRoles = tienePermiso('roles', 'eliminar');
                     });
                 }
             </script>
-            
+            <!-- Footer -->
+            <?php
+            require_once __DIR__ . '/includes/footerAdmin.php';
+            ?>
+            <!-- Fin Footer -->
+
 </body>
 
 </html>
