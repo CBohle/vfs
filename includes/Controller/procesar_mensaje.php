@@ -96,18 +96,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
+        $mail = new PHPMailer(true);
+        $mail->CharSet = 'UTF-8';
+        $mail->isSMTP(); // 💡 Asegúrate de hacerlo una sola vez
+        $mail->Host       = $_ENV['MAIL_HOST'];
+        $mail->SMTPAuth   = true;
+        $mail->Username   = $_ENV['MAIL_CONTACTO_USER'];
+        $mail->Password   = $_ENV['MAIL_CONTACTO_PASS'];
+        $mail->SMTPSecure = $_ENV['MAIL_SECURE'];
+        $mail->Port       = $_ENV['MAIL_PORT'];
+        $mail->setFrom($_ENV['MAIL_CONTACTO_USER'], 'VFS-Admin');
+
         while ($admin = $result->fetch_assoc()) {
             try {
-                $mail->isSMTP();
                 $mail->clearAllRecipients();
-                $mail->Host       = $_ENV['MAIL_HOST'];
-                $mail->SMTPAuth = true;
-                $mail->Username = $_ENV['MAIL_CONTACTO_USER'];
-                $mail->Password = $_ENV['MAIL_CONTACTO_PASS'];
-                $mail->SMTPSecure = $_ENV['MAIL_SECURE'];
-                $mail->Port       = $_ENV['MAIL_PORT'];
-
-                $mail->setFrom($_ENV['MAIL_CONTACTO_USER'], 'VFS-Admin');
                 $mail->addAddress($admin['email']);
                 $mail->Subject = 'Nuevo mensaje de contacto';
                 $mail->Body = "Has recibido un nuevo mensaje de contacto de:\n\nNombre: $nombre $apellido\nEmail: $email\nTeléfono: $telefono\nServicio: $servicio\n\nMensaje:\n$mensaje";
@@ -125,7 +127,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         try {
             $mail->clearAllRecipients(); // Limpia los destinatarios anteriores
-            $mail->setFrom($_ENV['MAIL_CONTACTO_USER'], 'VFS-Admin');
             $mail->addAddress($email); // Correo del remitente
             $mail->Subject = 'Confirmación de recepción de mensaje de atención personalizada';
             $mail->isHTML(true);
