@@ -190,8 +190,8 @@ if (!tienePermiso('postulaciones', 'ver')) {
                                                 <th class="d-none">Disponibilidad Comuna</th> <!-- columna oculta -->
                                                 <th>Disponibilidad<br>Region</th>
                                                 <th class="d-none">Disponibilidad Region</th> <!-- columna oculta -->
-                                                <th>Movilización<br>Propia</th>   
-                                                <th class="d-none">Movilizacion Propia</th> <!-- columna oculta -->                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+                                                <th>Movilización<br>Propia</th>
+                                                <th class="d-none">Movilizacion Propia</th> <!-- columna oculta -->
                                                 <th class="d-none">Email</th> <!-- columna oculta -->
                                                 <th class="d-none">Telefono</th> <!-- columna oculta -->
                                                 <th class="d-none">Dirección</th> <!-- columna oculta -->
@@ -233,7 +233,6 @@ if (!tienePermiso('postulaciones', 'ver')) {
             </div>
         </div>
     </div>
-
     <!-- Modal para ver PDF con descarga -->
     <div class="modal fade" id="modalPDF" tabindex="-1" aria-labelledby="modalPDFLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered">
@@ -253,7 +252,11 @@ if (!tienePermiso('postulaciones', 'ver')) {
             </div>
         </div>
     </div>
-
+    <!-- Footer -->
+    <?php
+    require_once __DIR__ . '/includes/footerAdmin.php';
+    ?>
+    <!-- Fin Footer -->
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
@@ -263,11 +266,6 @@ if (!tienePermiso('postulaciones', 'ver')) {
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Footer -->
-    <?php
-    require_once __DIR__ . '/includes/footerAdmin.php';
-    ?>
 </body>
 
 </html>

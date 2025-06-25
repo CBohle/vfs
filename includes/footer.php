@@ -103,16 +103,5 @@ if ($pagina_actual === 'index.php') {
             checkContactoFormValidity();
         }
 
-        // const postulacionForm = document.getElementById('postulacionForm');
-        // const submitButtonPostulacion = document.getElementById('submitButtonPostulacion');
-
-        // if (postulacionForm && submitButtonPostulacion) {
-        //     const checkPostulacionFormValidity = () => {
-        //         submitButtonPostulacion.disabled = !postulacionForm.checkValidity();
-        //     };
-
-        //     postulacionForm.addEventListener('input', checkPostulacionFormValidity);
-        //     checkPostulacionFormValidity();
-        // }
     });
 </script>
