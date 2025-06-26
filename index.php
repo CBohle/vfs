@@ -93,7 +93,7 @@ require_once __DIR__ . '/includes/config.php';
                 <!-- Servicio 1 -->
                 <div class="col-lg-6 col-sm-12">
                     <div class="servicios-box al-servicios" data-bs-toggle="modal" data-bs-target="#modalServicio1">
-                        <img class="img-fluid" src="<?= BASE_URL ?>assets/images/servicios/05.webp" alt="Consultoría inmobiliaria" />
+                        <img class="img-fluid" src="<?= BASE_URL ?>assets/images/servicios/05.webp" alt="Consultoría inmobiliaria" loading="lazy"/>
                         <div class="servicios-box-caption">
                             <div class="text-white-tit-serv mb-11">TASACIÓN DE BIENES RAÍCES</div>
                             <p class="mx-4 mb-10">
@@ -172,7 +172,7 @@ require_once __DIR__ . '/includes/config.php';
                 <!-- Servicio 2 -->
                 <div class="col-lg-6 col-sm-12">
                     <div class="servicios-box al-servicios" data-bs-toggle="modal" data-bs-target="#modalServicio2">
-                        <img class="img-fluid" src="<?= BASE_URL ?>assets/images/servicios/16.webp" alt="Consultoría inmobiliaria" />
+                        <img class="img-fluid" src="<?= BASE_URL ?>assets/images/servicios/16.webp" alt="Consultoría inmobiliaria" loading="lazy"/>
                         <div class="servicios-box-caption">
                             <div class="text-white-tit-serv mb-11">CONSULTORÍA INMOBILIARIA</div>
                             <p class="mx-4 mb-10">
