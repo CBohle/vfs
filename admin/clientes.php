@@ -228,7 +228,11 @@ if (!tienePermiso('clientes', 'ver')) {
             </div>
         </div>
     </div>
-
+    <!-- Footer -->
+    <?php
+    require_once __DIR__ . '/includes/footerAdmin.php';
+    ?>
+    <!-- Fin Footer -->
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
@@ -754,10 +758,7 @@ if (!tienePermiso('clientes', 'ver')) {
             }, 'json');
         });
     </script>
-    <!-- Footer -->
-    <?php
-    require_once __DIR__ . '/includes/footerAdmin.php';
-    ?>
+    
 </body>
 
 </html>

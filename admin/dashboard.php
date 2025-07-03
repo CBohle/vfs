@@ -57,65 +57,69 @@ require_once __DIR__ . '/../includes/Controller/usuariosController.php';
     </nav>
     <div class="wrapper bg-light">
         <!-- Sidebar -->
-        <div class="sidebar sidebar-text" id="sidebar">
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link active" data-section="inicioResumen">
-                        <i class="bi bi-house fs-6" style="margin-right: 5px"></i>
-                        Dashboard
-                    </a>
-                </li>
-
-                <?php if (tienePermiso('mensajes', 'ver')): ?>
+        <div class="sidebar sidebar-text " id="sidebar">
+            <div class="d-flex flex-column h-100">
+                <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" data-section="mensajes">
-                            <i class="bi bi-chat-square-text fs-6" style="margin-right: 5px"></i>
-                            Mensajes <span id="badge-mensajes" class="badge bg-danger d-none"></span>
+                        <a class="nav-link active" data-section="inicioResumen">
+                            <i class="bi bi-house fs-6" style="margin-right: 5px"></i>
+                            Dashboard
                         </a>
                     </li>
 
-                <?php endif; ?>
+                    <?php if (tienePermiso('mensajes', 'ver')): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" data-section="mensajes">
+                                <i class="bi bi-chat-square-text fs-6" style="margin-right: 5px"></i>
+                                Mensajes <span id="badge-mensajes" class="badge bg-danger d-none"></span>
+                            </a>
+                        </li>
 
-                <?php if (tienePermiso('postulaciones', 'ver')): ?>
-                    <li class="nav-item">
-                        <a class="nav-link" data-section="postulaciones">
-                            <i class="bi bi-bookmark-check fs-6" style="margin-right: 5px"></i>
-                            Postulaciones <span id="badge-postulaciones" class="badge bg-danger d-none"></span>
-                        </a>
-                    </li>
-                <?php endif; ?>
-                <?php if (tienePermiso('clientes', 'ver')): ?>
-                    <li class="nav-item">
-                        <a class="nav-link" data-section="clientes">
-                            <i class="bi bi-people-fill fs-6" style="margin-right: 5px"></i>
-                            Clientes
-                        </a>
-                    </li>
-                <?php endif; ?>
+                    <?php endif; ?>
 
-                <?php if (tienePermiso('usuarios', 'ver') || tienePermiso('roles', 'ver')): ?>
+                    <?php if (tienePermiso('postulaciones', 'ver')): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" data-section="postulaciones">
+                                <i class="bi bi-bookmark-check fs-6" style="margin-right: 5px"></i>
+                                Postulaciones <span id="badge-postulaciones" class="badge bg-danger d-none"></span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (tienePermiso('clientes', 'ver')): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" data-section="clientes">
+                                <i class="bi bi-people-fill fs-6" style="margin-right: 5px"></i>
+                                Clientes
+                            </a>
+                        </li>
+                    <?php endif; ?>
+
+                    <?php if (tienePermiso('usuarios', 'ver') || tienePermiso('roles', 'ver')): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" data-section="usuarios">
+                                <i class="bi bi-person-vcard fs-6" style="margin-right: 5px"></i>
+                                Usuarios
+                            </a>
+                        </li>
+                    <?php endif; ?>
                     <li class="nav-item">
-                        <a class="nav-link" data-section="usuarios">
-                            <i class="bi bi-person-vcard fs-6" style="margin-right: 5px"></i>
-                            Usuarios
+                        <a class="nav-link" href="<?= BASE_URL ?>logout.php">
+                            <i class="bi bi-arrow-bar-left fs-6" style="margin-right: 5px"></i>
+                            Cerrar sesión
                         </a>
                     </li>
-                <?php endif; ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?= BASE_URL ?>logout.php">
-                        <i class="bi bi-arrow-bar-left fs-6" style="margin-right: 5px"></i>
-                        Cerrar sesión
-                    </a>
-                </li>
-            </ul>
+                </ul>
+                <!-- Footer -->
+                <div class="sidebar-footer mt-auto px-3 py-2 text-muted-footer ">
+                    © 2025 VFS. Todos los derechos reservados.
+                </div>
+            </div>
         </div>
 
         <!-- Contenido dinámico -->
         <div class="main-content" id="contenido-dinamico"></div>
     </div>
 
-
-    <!-- Footer -->
 
 
     <!-- Scripts de DataTables -->

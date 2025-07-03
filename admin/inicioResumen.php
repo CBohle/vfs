@@ -122,53 +122,53 @@ $promedio_formateado = $promedio_minutos > 60
                     <h5>Pendientes</h5>
                 </div>
                 <div class="row g-3 mb-4">
-                <?php if (tienePermiso('mensajes', 'ver')): ?>
-                    <div class="col-md-6">
-                        <div class="card bg-warning-subtle h-100" id="verMensajes" style="cursor: pointer;">
-                            <div class="card-header">Mensajes</div>
-                            <div class="card-body">
-                                📬 Tienes <strong><?= $mensajes_pendientes ?></strong> mensajes <strong>pendientes</strong> por revisar.
+                    <?php if (tienePermiso('mensajes', 'ver')): ?>
+                        <div class="col-md-6">
+                            <div class="card bg-warning-subtle h-100" id="verMensajes" style="cursor: pointer;">
+                                <div class="card-header">Mensajes</div>
+                                <div class="card-body">
+                                    📬 Tienes <strong><?= $mensajes_pendientes ?></strong> mensajes <strong>pendientes</strong> por revisar.
+                                </div>
                             </div>
                         </div>
-                    </div>
-                <?php endif; ?>
-                <?php if (tienePermiso('postulaciones', 'ver')): ?>
-                    <div class="col-md-6">
-                        <div class="card bg-danger-subtle h-100" id="verPostulaciones" style="cursor: pointer;">
-                            <div class="card-header">Postulaciones</div>
-                            <div class="card-body">
-                                📄 Hay <strong><?= $postulaciones_pendientes ?></strong> <strong>postulaciones nuevas</strong> sin procesar.
+                    <?php endif; ?>
+                    <?php if (tienePermiso('postulaciones', 'ver')): ?>
+                        <div class="col-md-6">
+                            <div class="card bg-danger-subtle h-100" id="verPostulaciones" style="cursor: pointer;">
+                                <div class="card-header">Postulaciones</div>
+                                <div class="card-body">
+                                    📄 Hay <strong><?= $postulaciones_pendientes ?></strong> <strong>postulaciones nuevas</strong> sin procesar.
+                                </div>
                             </div>
                         </div>
-                    </div>
-                <?php endif; ?>
+                    <?php endif; ?>
                 </div>
-                
+
                 <!-- Datos -->
                 <div class="secc-title row">
                     <h5>Datos</h5>
                 </div>
                 <div class="row g-3 mb-4">
-                <?php if (tienePermiso('mensajes', 'ver')): ?>
-                    <div class="col-md-6">
-                        <div class="card bg-secondary-subtle h-100">
-                            <div class="card-header">Tiempo de respuesta</div>
-                            <div class="card-body">
-                                ⏱️ El tiempo <strong>promedio de respuesta</strong> es de <strong><?= $promedio_formateado ?></strong>.
+                    <?php if (tienePermiso('mensajes', 'ver')): ?>
+                        <div class="col-md-6">
+                            <div class="card bg-secondary-subtle h-100">
+                                <div class="card-header">Tiempo de respuesta</div>
+                                <div class="card-body">
+                                    ⏱️ El tiempo <strong>promedio de respuesta</strong> es de <strong><?= $promedio_formateado ?></strong>.
+                                </div>
                             </div>
                         </div>
-                    </div>
-                <?php endif; ?>
-                <?php if (tienePermiso('clientes', 'ver')): ?>
-                    <div class="col-md-6">
-                        <div class="card bg-success-subtle h-100" id="verClientes" style="cursor: pointer;">
-                            <div class="card-header">Clientes registrados</div>
-                            <div class="card-body">
-                                👥 Hay <strong><?= $total_clientes ?></strong> <strong>clientes</strong> registrados en la base de datos.
+                    <?php endif; ?>
+                    <?php if (tienePermiso('clientes', 'ver')): ?>
+                        <div class="col-md-6">
+                            <div class="card bg-success-subtle h-100" id="verClientes" style="cursor: pointer;">
+                                <div class="card-header">Clientes registrados</div>
+                                <div class="card-body">
+                                    👥 Hay <strong><?= $total_clientes ?></strong> <strong>clientes</strong> registrados en la base de datos.
+                                </div>
                             </div>
                         </div>
-                    </div>
-                <?php endif; ?>
+                    <?php endif; ?>
                 </div>
             </div>
             <!-- Fin contenido -->

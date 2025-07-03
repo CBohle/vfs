@@ -187,3 +187,16 @@ h5 {
 
 
 
+/* FOOTER */
+
+.text-muted-footer {
+  --bs-text-opacity: 0.25;
+  color: rgb(156, 155, 155) !important;
+  font-family: "Roboto", sans-serif;
+  font-size: 0.7rem;
+}
+
+.sidebar-footer {
+  border-top: 1px solid #6b6a6a; /* Cambia #FF0000 por el color que quieras */
+  /* Puedes cambiar también el color del texto si quieres */
+}
