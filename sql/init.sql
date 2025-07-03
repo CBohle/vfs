@@ -69,7 +69,7 @@ INSERT INTO permisos (rol_id, modulo, accion) VALUES
 (1, 'postulaciones', 'ver'), (1, 'postulaciones', 'modificar'), (1, 'postulaciones', 'crear'), (1, 'postulaciones', 'eliminar'),
 (1, 'clientes', 'ver'), (1, 'clientes', 'modificar'), (1, 'clientes', 'crear'), (1, 'clientes', 'eliminar'),
 (1, 'usuarios', 'ver'), (1, 'usuarios', 'modificar'), (1, 'usuarios', 'crear'), (1, 'usuarios', 'eliminar'),
-(1, 'roles', 'ver'), (1, 'roles', 'modificar'), (1, 'roles', 'crear'), (1, 'roles', 'eliminar');
+(1, 'roles', 'ver'), (1, 'roles', 'modificar'), (1, 'roles', 'crear'), (1, 'roles', 'eliminar'), (1, 'mensajes', 'aviso'), (1, 'postulaciones', 'aviso');
 
 CREATE TABLE usuarios_admin (
     id INT AUTO_INCREMENT PRIMARY KEY,
