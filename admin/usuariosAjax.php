@@ -10,7 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $accion = $_POST['accion'] ?? '';
-
 switch ($accion) {
     case 'obtenerRolPorId':
         $id = intval($_POST['id']);
@@ -112,18 +111,39 @@ switch ($accion) {
         $id = intval($_POST['id']);
         $rol = obtenerRolPorId($id);
 
+        if (!$rol) {
+            echo json_encode(['success' => false, 'error' => 'Rol no encontrado.']);
+            break;
+        }
+
         if (strtolower($rol['nombre']) === 'admin') {
             echo json_encode(['success' => false, 'error' => 'No se puede eliminar el rol admin.']);
+            break;
+        }
+
+        // Verificar si hay usuarios usando este rol
+        $stmt = $conexion->prepare("SELECT COUNT(*) as total FROM usuarios_admin WHERE rol_id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+
+        if ($result['total'] > 0) {
+            echo json_encode([
+                'success' => false,
+                'error' => 'No se pudo eliminar el rol, ya que está asignado a uno o más usuarios.'
+            ]);
+            break;
+        }
+
+        // Si no está en uso, se eliminar
+        $resultado = eliminarRol($id);
+        if ($resultado === true) {
+            echo json_encode(['success' => true]);
         } else {
-            echo json_encode(['success' => eliminarRol($id)]);
+            echo json_encode(['success' => false, 'error' => 'Error al eliminar el rol.']);
         }
         break;
-    case 'eliminarUsuario':
-        $id = intval($_POST['id']);
-        echo json_encode(['success' => eliminarUsuario($id)]);
-        break;
     default:
-        echo json_encode(['error' => 'Acción no válida.']);
+        echo json_encode(['success' => false, 'error' => 'Acción no válida.']);
         break;
 }
-?>
